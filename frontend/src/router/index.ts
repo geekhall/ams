@@ -18,6 +18,7 @@ const NoPermission = () => import('../views/403.vue')
 const NotFound = () => import('../views/404.vue')
 const Profile = () => import('../views/Profile.vue')
 const Setting = () => import('../views/Setting.vue')
+const Tabs = () => import('../views/Tabs.vue')
 
 
 // 2. Define some routes
@@ -74,6 +75,11 @@ const routes: RouteRecordRaw[] = [
         path: '/about', name: "about",
         meta: { title: '关于', permission: 'about' },
         component: About
+      },
+      {
+        path: '/tabs', name: "tabs",
+        meta: { title: 'Tabs', permission: 'tabs' },
+        component: Tabs
       },
     ]
   },
