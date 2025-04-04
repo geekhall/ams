@@ -1,0 +1,12 @@
+{
+  "sitename": "雷神",
+  "title": "雷神",
+  "header": {
+    "login": "登录",
+    "home": "首页",
+    "about": "关于",
+    "logout": "退出",
+    "content": "多语言国际化切换示例页面",
+    "description": "这是一个多语言国际化切换示例页面，可以切换中文和英文。可以通过修改语言文件locales/cn.json和locales/en.json来修改页面内容。"
+  }
+}

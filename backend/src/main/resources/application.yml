@@ -1,0 +1,113 @@
+########################################################
+# Server configuration
+########################################################
+server:
+  port: 8888 # ???
+
+########################################################
+# Spring Configuration
+########################################################
+spring:
+  application:
+    name: loki # Service name for Spring Cloud
+    profiles:
+      active: dev
+    # MySQL database connection
+  datasource:
+    url: jdbc:mysql://localhost:3316/loki?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
+    driver-class-name: com.mysql.jdbc.Driver
+    type: com.mysql.cj.jdbc.MysqlConnectionPoolDataSource
+    username: loki
+    password: loki@123
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+    mvc:
+      pathmatch:
+        # Failed to start bean 'documentationPluginsBootstrapper' in spring data rest
+        # springfox3.0.0 has compatibility problem with spring boot 2.6.x
+        matching-strategy: ant_path_matcher # to resolve spring fox null pointer problem
+#  security:
+#    user:
+#      name: geekhour
+#      password: geekhour
+#    oauth2:
+#      client:
+#        registration:
+#          github:
+#            client-id: Ov23lihG8uSCMvG3CKp9
+#            client-secret: b326333b3bd1a08b6e47ac2a321fcf46dc2d27dc
+
+########################################################
+# Mybatis-plus configuration
+########################################################
+mybatis-plus:
+  global-config:
+    db-config:
+      logic-delete-field: deleted # ?????????????since 3.3.0??????bean??????@TableLogic???
+      logic-delete-value: 1 # ??????????1?
+      logic-not-delete-value: 0 # ??????????0?
+#  configuration:
+#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl   # Mybatis??
+
+# ===== ???swagger?? ===== #
+#swagger:
+#  enable: true     # ??????Swagger
+#  application-name: ${spring.application.name}
+#  application-version: 1.0
+#  application-description: springfox swagger 3.0??Demo
+#  try-host: http://localhost:${server.port}
+#  group-name: loki
+springdoc:
+  api-docs:
+    enabled: true # ????swagger??
+    path: /api-docs # swagger????????/v3/api-docs
+  swagger-ui:
+    enabled: true # ????swagger-ui???OpenApi???OpenApi????
+    # http://localhost:8888/swagger-ui/index.html
+    path: /swagger-ui.html # swagger-ui??????/swagger-ui/index.html
+
+logging:
+  # ??????
+  level:
+    root: INFO # ????????????INFO?  TRACE < DEBUG < INFO < WARN < ERROR? SpringBoot?????????FATAL?OFF
+    net.geekhour.controller: info # ?????????????
+  # ??????
+  file:
+    path: ./log # ????????
+    name: ./log/loki_test.log # ???????????????????????? spring.log) ??path???????name??
+  # ??????
+  # %d ????????
+  # %thread ???????
+  # %-5level ???????5?????
+  # %logger{50} ???logger????50?????????????
+  # %msg ??????
+  # %n ?????
+  # 2022-03-28 16:34:30.871  WARN 2562 --- [           main] d.s.r.o.OperationImplicitParameterReader : Unable to interpret the implicit parameter configuration with dataType: Long, dataTypeClass: class java.lang.Void
+  # 2022-03-28 16:34:30.871  WARN 2562 --- [           main] d.s.r.o.OperationImplicitParameterReader : Unable to interpret the implicit parameter configuration with dataType: , dataTypeClass: class java.lang.Void
+  # 2022-03-28 16:34:30.897  INFO 2562 --- [           main] c.g.loki.server.ServerApplication        : Started ServerApplication in 4.125 seconds (JVM running for 4.667)
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss.SSS} -- [%thread] -- %-5level -- %logger{50} -- %msg%n" # ???????
+    file: "%d{yyyy-MM-dd HH:mm:ss.SSS} == [%thread] == %-5level == %logger{50} == %msg%n" # ??????
+
+# ===== APP ????? ===== #
+loki:
+  # ????
+  server:
+    port: 8888
+  # ???
+  application:
+    name: loki
+  # ????
+  application-version: 1.0
+  # ????
+  application-description: loki service
+  # ????
+  try-host: http://localhost:${server.port}
+  # ????
+  group-name: loki
+  app:
+    jwtCookieName: loki
+    jwtSecret: lokiSecretKeyGeekHourlokiSecretKeyGeekHourlokiSecretKeyGeekHourlokiSecretKeyGeekHourlokiSecretKeyGeekHourlokiSecretKeyGeekHour
+    jwtExpirationMs: 86400000
+    baseDirectory: /Users/yiny/workspace/vite/perseus/loki/public

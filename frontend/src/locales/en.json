@@ -1,0 +1,12 @@
+{
+  "sitename": "AMS",
+  "title": "AMS",
+  "header": {
+    "login": "Login",
+    "home": "Home",
+    "about": "About",
+    "logout": "Logout",
+    "content": "I18n sample page.",
+    "description": "This is a sample page for i18n. You can modify the file \"en.json\" and \"cn.json\" in the i18n folder."
+  }
+}
