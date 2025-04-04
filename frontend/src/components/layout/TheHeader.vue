@@ -32,7 +32,7 @@
           </span>
           <template #dropdown>
             <el-dropdown-menu>
-              <a href="https://github.com/geekhournet/geekhour/" target="_blank">
+              <a href="https://github.com/geekhall/ams" target="_blank">
                 <el-dropdown-item>
                   <el-icon
                     ><svg
