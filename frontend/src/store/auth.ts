@@ -3,7 +3,7 @@
 import { defineStore } from 'pinia'
 import { User, AuthState, AuthResponse } from '~/models/auth'
 import { AuthService } from '~/services/auth-service'
-
+import loki from '~/api/loki'
 export const useAuthStore = defineStore('auth', {
   state: (): AuthState => ({
     token: localStorage.getItem('token') || null,
@@ -26,6 +26,7 @@ export const useAuthStore = defineStore('auth', {
     async login(credentials: User) {
       console.log('credentials in authStore ::::: ', credentials);
       const response = await AuthService.login(credentials)
+      // const response: AuthResponse = await loki.post("/auth/login", credentials);
       // 保存到 Pinia 状态和 LocalStorage
       console.log('response in authStore ::::: ', response);
       this.setAuthData(response);
@@ -34,8 +35,8 @@ export const useAuthStore = defineStore('auth', {
     // 用户注册
     async register(user: User) {
       const response = await AuthService.register(user)
+      // const response = await loki.post("/auth/register", user);
       this.$state.user = { username: user.username, rememberPassword: user.password }
-
     },
 
     //设置认证数据
@@ -43,7 +44,6 @@ export const useAuthStore = defineStore('auth', {
       console.log('data in setAuthData ::::: ', data);
       console.log('data.code in setAuthData ::::: ', data.code);
       console.log('data.code === 200 in setAuthData ::::: ', data.code === 200);
-
 
       if (data.code === 200) {
         console.log('data.token in setAuthData ::::: ', data.token);

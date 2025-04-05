@@ -22,13 +22,13 @@ export interface RegisterInfo {
 export interface AuthResponse {
   code: number;
   message: string;
+  token: string;
   user: {
     password: any;
     id: number;
     username: string;
     email?: string;
     avatar?: string;
-    token: string;
   }
 }
 
