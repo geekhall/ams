@@ -1,5 +1,6 @@
 <template>
   <div class="content-container">
+    <h1>资产管理</h1>
     <div class="handle-box">
       <el-input
         v-model="query.assetName"

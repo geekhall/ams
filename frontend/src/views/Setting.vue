@@ -1,6 +1,6 @@
 <template>
   <div class="content-container">
-    <h1>Setting</h1>
+    <h1>系统设置</h1>
     <div>
       <p>{{ name }}</p>
       <p>{{ age }}</p>

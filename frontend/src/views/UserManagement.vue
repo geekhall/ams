@@ -1,5 +1,6 @@
 <template>
   <div class="content-container">
+    <h1>用户管理</h1>
     <div class="handle-box">
       <el-input v-model="query.name" placeholder="用户名" class="handle-input mr10"></el-input>
       <el-button type="primary" :icon="Search" @click="handleSearch">搜索</el-button>
@@ -120,7 +121,6 @@ const userStore = useUserStore()
 
 // 获取表格数据
 const getData = () => {
-  userStore.list()
   // getLokiData('/api/user/list', MethodType.POST)
   //   .then((res) => {
   //     tableData.value = res.data.items
