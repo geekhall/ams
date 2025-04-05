@@ -5,7 +5,8 @@
       <el-icon size="30" v-if="sidebar.collapse"><Expand /></el-icon>
       <el-icon size="30" v-else><Fold /> </el-icon>
     </div>
-    <div class="logo">AMS资产管理系统</div>
+    <div class="logo"></div>
+    <div class="title">AMS资产管理系统</div>
     <div class="header-right">
       <div class="header-user-con">
         <!-- 消息中心 -->
@@ -79,6 +80,7 @@ import { onMounted } from 'vue'
 import { useSidebarStore } from '~/store/sidebar'
 import { useRouter } from 'vue-router'
 import imgurl from '~/assets/img/avatar.png'
+import logoUrl from '~/assets/img/logo-only-white-70.png'
 import { SwitchButton } from '@element-plus/icons-vue'
 import { useAuthStore } from '~/store/auth'
 
@@ -122,7 +124,8 @@ const handleCommand = (command: string) => {
   height: 70px;
   font-size: 22px;
   color: white;
-  background-color: #2c2e3a;
+  // background-color: #2c2e3a;
+  background-color: #d32d2a;
 }
 .collapse-btn {
   display: flex;
@@ -135,8 +138,17 @@ const handleCommand = (command: string) => {
 }
 .header .logo {
   float: left;
+  width: 70px;
+  height: 70px;
+  background-image: url('~/assets/img/logo-only-white-70.png');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 50% auto; /* 宽度 100%，高度自动调整 */
+}
+.header .title {
+  float: left;
   line-height: 70px;
-  width: 250px;
+  width: 300px;
 }
 .header-right {
   float: right;

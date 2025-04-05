@@ -4,11 +4,8 @@
       class="sidebar-el-menu"
       :default-active="onRoutes"
       :collapse="sidebar.collapse"
-      text-color="#bfc3dd"
-      background-color="#324455"
-      active-text-color="#20a0ff"
-      unique-opened
-      router
+      :router="true"
+      :unique-opened="true"
     >
       <template v-for="item in items">
         <template v-if="item.subs">
