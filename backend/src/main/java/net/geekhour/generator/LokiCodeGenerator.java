@@ -59,10 +59,8 @@ public class LokiCodeGenerator {
                 .globalConfig(builder -> {
                     builder.author("Jasper Yang")           // 设置作者
                             .enableSwagger()                // 开启 swagger 模式
-//                            .disableOpenDir()             // 是否打开输出目录
                             .dateType(DateType.ONLY_DATE)   // 设置日期类型
                             .outputDir(System.getProperty("user.dir") + "/generator/src/main/java"); // 指定输出目录
-//                            .outputDir(System.getProperty("user.dir") + "/src/main/java"); // 指定输出目录
                 })
                 // 数据源配置
                 .dataSourceConfig(builder ->
@@ -97,9 +95,7 @@ public class LokiCodeGenerator {
                                         // 以下为Entity配置
                                         //_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
                                         .entityBuilder()                            // Entity配置
-//                                .disableSerialVersionUID()
                                         .enableFileOverride()                       // 开启文件覆盖
-//                                .javaTemplate("templates/entity.java") // 设置Entity模板
                                         .enableLombok()                             // 开启Lombok支持
                                         .logicDeletePropertyName("deleted")         // 逻辑删除字段名
                                         .enableChainModel()                         // 开启链式模型
@@ -110,7 +106,6 @@ public class LokiCodeGenerator {
                                         .versionPropertyName("version")             // 版本号属性名
                                         .logicDeleteColumnName("deleted")                   // 逻辑删除字段名
                                         .logicDeletePropertyName("1")                       // 逻辑删除属性值
-//                                .naming(NamingStrategy.no_change)                   // 数据库表映射到实体的命名策略，不做任何改变
                                         .naming(NamingStrategy.underline_to_camel)          // 数据库表映射到实体的命名策略，下划线转驼峰
                                         .columnNaming(NamingStrategy.underline_to_camel)    // 数据库表中字段映射到实体的命名策略，下划线转驼峰
                                         .addSuperEntityColumns("id", "created_by", "created_time", "updated_by", "updated_time")    // 设置父类公共字段
@@ -136,32 +131,8 @@ public class LokiCodeGenerator {
                                         .formatMapperFileName("%sMapper")   // 设置Mapper文件名格式
                                         .formatXmlFileName("%sMapper")      // 设置Mapper XML文件名格式
                 )
-//                .injectionConfig(consumer -> {
-//                    // 注入自定义配置，可以在 VM 中使用 cfg.abc 设置的值
-//                    List<CustomFile> customFiles = new ArrayList<>();
-//                    customFiles.add(
-//                            new CustomFile.Builder()
-//                                    .fileName("Controller.java")
-//                                    .templatePath(System.getProperty("user.dir")
-//                                            + "/src/main/resources/templates/controller.java.ftl").build());
-//                    consumer.customFile(customFiles);
-//                })
-                // 模板配置(暂未配置)
-//                .templateConfig(
-//                        builder -> builder
-//                                .entity("templates/entity.java.ftl") // 设置Entity模板
-//                                .controller("templates/controller.java.ftl") // 设置Controller模板
-//                                .service("templates/service.java.ftl") // 设置Service模板
-//                                .serviceImpl("templates/serviceImpl.java.ftl") // 设置ServiceImpl模板
-//                                .mapper("templates/mapper.java.ftl") // 设置Mapper模板
-//                                .xml("templates/mapper.xml.ftl") // 设置Mapper XML模板
-//                )
-                // 下面这一行可能报错：
-                // Caused by: java.lang.ClassNotFoundException: freemarker.template.Configuration
-                // ...
-                // 因为没有引入freemarker的依赖，解决方法是在pom.xml中引入freemarker的依赖：
+
                 .templateEngine(new FreemarkerTemplateEngine()) // 使用Freemarker引擎模板，默认的是Velocity引擎模板
-//                .templateEngine(new EnhanceFreemarkerTemplateEngine()) // 使用Freemarker引擎模板，默认的是Velocity引擎模板
                 .execute();
 
     }
