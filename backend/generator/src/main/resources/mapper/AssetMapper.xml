@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="net.geekhour.loki.mapper.AssetMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="net.geekhour.loki.entity.Asset">
+        <result column="id" property="id" />
+        <result column="asset_name" property="assetName" />
+        <result column="asset_code" property="assetCode" />
+        <result column="asset_type" property="assetType" />
+        <result column="department_id" property="departmentId" />
+        <result column="location" property="location" />
+        <result column="status" property="status" />
+        <result column="purchase_date" property="purchaseDate" />
+        <result column="purchase_price" property="purchasePrice" />
+        <result column="version" property="version" />
+        <result column="create_date" property="createDate" />
+        <result column="update_date" property="updateDate" />
+        <result column="deleted" property="deleted" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id,
+        asset_name, asset_code, asset_type, department_id, location, status, purchase_date, purchase_price, version, create_date, update_date, deleted
+    </sql>
+
+</mapper>

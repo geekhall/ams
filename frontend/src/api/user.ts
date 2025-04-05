@@ -6,7 +6,7 @@ import loki from "./loki";
 export const userRegister = async (params: any) => {
   return await loki.request({
     url: "/api/auth/register",
-    method: "post",
+    method: "POST",
     data: params,
   });
 };
@@ -17,7 +17,7 @@ export const userRegister = async (params: any) => {
 export const userLogin = async (params: any) => {
   return await loki.request({
     url: "/api/auth/login",
-    method: "post",
+    method: "POST",
     data: params,
   });
 };
@@ -28,7 +28,7 @@ export const userLogin = async (params: any) => {
 export const userLogout = async () => {
   return await loki.request({
     url: "/api/auth/logout",
-    method: "post",
+    method: "POST",
   });
 };
 
@@ -38,7 +38,7 @@ export const userLogout = async () => {
 export const getCurrentUser = async () => {
   return await loki.request({
     url: "/api/user/current",
-    method: "get",
+    method: "GET",
   });
 };
 
@@ -57,7 +57,7 @@ export const getUserInfo = async () => {
 export const getUserList = async (username: any) => {
   return await loki.request({
     url: "/api/user/list",
-    method: "post",
+    method: "POST",
     params: {
       username,
     },
@@ -70,7 +70,7 @@ export const getUserList = async (username: any) => {
 export const deleteUser = async (id: string) => {
   return await loki.request({
     url: `/api/user/${id}`,
-    method: "delete",
+    method: "DELETE",
     data: id,
     headers: {
       "Content-Type": "application/json",
