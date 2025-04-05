@@ -1,5 +1,5 @@
 <template>
-  <div class="content-container">
+  <div id="systemPage" class="content-container">
     <h1>系统清单</h1>
     <div class="handle-box">
       <el-input v-model="query.name" placeholder="系统名称" class="handle-input mr10"></el-input>

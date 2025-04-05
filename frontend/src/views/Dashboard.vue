@@ -1,5 +1,5 @@
 <template>
-  <div class="content-container">
+  <div id="dashboardPage" class="content-container">
     <el-row :gutter="20">
       <el-col :span="8">
         <el-card shadow="hover" class="mgb20">

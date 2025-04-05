@@ -62,8 +62,8 @@ const routes: RouteRecordRaw[] = [
         component: Setting
       },
       {
-        path: '/profile', name: "Profile",
-        meta: { title: 'Profile', permission: 'profile' },
+        path: '/profile', name: "profile",
+        meta: { title: '个人中心', permission: 'profile' },
         component: Profile
       },
       {

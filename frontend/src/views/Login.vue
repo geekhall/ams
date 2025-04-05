@@ -1,5 +1,5 @@
 <template>
-  <div class="login-container">
+  <div id="loginPage" class="login-container">
     <div class="login-form">
       <div class="ms-title">AMS资产管理系统</div>
       <el-form :model="param" :rules="rules" ref="loginForm" label-width="0px" class="ms-content">

@@ -1,6 +1,6 @@
 
 <template>
-  <div class="content-container">
+  <div id="aboutPage" class="content-container">
     <h1>About</h1>
     <hr />
     <p>About page</p>

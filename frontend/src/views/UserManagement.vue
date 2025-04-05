@@ -1,5 +1,5 @@
 <template>
-  <div class="content-container">
+  <div id="userManagementPage" class="content-container">
     <h1>用户管理</h1>
     <div class="handle-box">
       <el-input v-model="query.name" placeholder="用户名" class="handle-input mr10"></el-input>

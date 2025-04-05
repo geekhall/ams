@@ -1,5 +1,5 @@
 <template>
-  <div class="content-container">
+  <div id="tabsPage" class="content-container">
     <el-tabs v-model="message">
       <el-tab-pane :label="`未读消息(${state.unread.length})`" name="first">
         <el-table :data="state.unread" :show-header="false" style="width: 100%">

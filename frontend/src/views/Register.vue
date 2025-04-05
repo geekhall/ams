@@ -1,5 +1,5 @@
 <template>
-  <div class="register-wrap">
+  <div id="registerPage" class="register-wrap">
     <div class="ms-register">
       <div class="ms-title">AMS资产管理系统</div>
       <el-form

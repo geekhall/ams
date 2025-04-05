@@ -1,5 +1,5 @@
 <template>
-  <div class="content-container">
+  <div id="dutyPage" class="content-container">
     <h1>值班表</h1>
     <el-calendar ref="calendar">
       <template #header="{ date }">

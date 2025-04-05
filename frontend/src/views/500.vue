@@ -1,5 +1,5 @@
 <template>
-  <div class="content-container">
+  <div id="errorPage" class="content-container">
     <h1>500</h1>
   </div>
 </template>

@@ -1,5 +1,5 @@
 <template>
-  <div class="content-container">
+  <div id="iconSamplePage" class="content-container">
     <h1>Icons list</h1>
     <div class="icon-container">
       <div class="sub-title">System</div>

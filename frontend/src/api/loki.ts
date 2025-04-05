@@ -7,7 +7,6 @@ import { useAuthStore } from '~/store/auth';
 // const router = useRouter();
 const API_URL = "http://localhost:4000/api"
 
-
 // 创建 axios 全局实例
 const loki = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL || API_URL,

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="profilePage" class="content-container">
     <el-row :gutter="20">
       <el-col :span="12">
         <el-card shadow="hover">

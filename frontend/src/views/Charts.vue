@@ -1,5 +1,5 @@
 <template>
-  <div class="content-container">
+  <div id="chartPage" class="content-container">
     <div class="plugins-tips">
       vue-chartjs：vue.js封装chart.js的图表组件。 访问地址：
       <a href="https://vue-chartjs.org/" target="_blank">vue-chartjs</a>
