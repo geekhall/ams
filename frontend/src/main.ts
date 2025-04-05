@@ -8,7 +8,7 @@ import './style.css'                  // 项目内的样式，最好放在重置
 import './tailwind.css'               // TailwindCSS
 import 'uno.css'                      // UnoCSS
 import router from './router'  // 引入路由
-import store from './store'           // 引入Pinia
+// import store from './store'           // 引入Pinia
 import { createPinia } from 'pinia'
 import { createI18n } from 'vue-i18n' // 引入vue-i18n，用于国际化
 import messages from "@intlify/unplugin-vue-i18n/messages";

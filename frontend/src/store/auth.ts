@@ -2,7 +2,7 @@
 // 调用顺序：Vue组件 -> Pinia存储模块(store/auth.ts) -> 服务模块(services/auth-service.ts) -> API模块(api/loki.ts) -> Axios
 import { defineStore } from 'pinia'
 import { User, AuthState, AuthResponse } from '~/models/auth'
-import { AuthService } from '~/services/auth-service'
+import axios from 'axios'
 import loki from '~/api/loki'
 export const useAuthStore = defineStore('auth', {
   state: (): AuthState => ({
@@ -25,17 +25,14 @@ export const useAuthStore = defineStore('auth', {
   actions: {
     async login(credentials: User) {
       console.log('credentials in authStore ::::: ', credentials);
-      const response = await AuthService.login(credentials)
-      // const response: AuthResponse = await loki.post("/auth/login", credentials);
-      // 保存到 Pinia 状态和 LocalStorage
+      const response: AuthResponse = await loki.post("/auth/login", credentials);
       console.log('response in authStore ::::: ', response);
       this.setAuthData(response);
     },
 
     // 用户注册
     async register(user: User) {
-      const response = await AuthService.register(user)
-      // const response = await loki.post("/auth/register", user);
+      await loki.post("/auth/register", user);
       this.$state.user = { username: user.username, rememberPassword: user.password }
     },
 
@@ -77,7 +74,7 @@ export const useAuthStore = defineStore('auth', {
       this.$state.token = null
       this.$state.user = null
       localStorage.removeItem('token')
-      AuthService.logout()
+      delete axios.defaults.headers.common['Authorization']
     },
 
     // 初始化时从本地存储中加载认证数据
@@ -86,14 +83,6 @@ export const useAuthStore = defineStore('auth', {
       console.log('token', token)
       if (token) {
         this.$state.token = token
-        // 验证token是否有效（可选）
-        // AuthService.validateToken(token).then(response => {
-        //   if (response.data.code === 200) {
-        //     this.user = new User(response.data.user.username, response.data.user.password);
-        //   }
-        // }).catch(error => {
-        //   console.log(error)
-        // })
       }
     }
   }

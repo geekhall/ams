@@ -47,47 +47,6 @@
           </el-input>
         </el-form-item>
 
-        <!-- <el-form-item>
-          <div class="chapta-container">
-            <el-input v-model="param.chapta" placeholder="请输入验证码" style="margin-right: 1em">
-              <el-button tabindex="-1"
-                ><el-icon><Message /> </el-icon
-              ></el-button>
-            </el-input>
-            <el-image
-              class="chapta-img"
-              src="https://picsum.photos/200/300"
-              fit="cover"
-              style="width: 100px; height: 40px"
-            ></el-image>
-          </div>
-        </el-form-item> -->
-
-        <!-- <el-form-item>
-          <el-input v-model="param.phone" placeholder="请输入电话号码">
-            <template #prepend>
-              <el-button tabindex="-1"
-                ><el-icon><Phone /> </el-icon
-              ></el-button>
-            </template>
-          </el-input>
-        </el-form-item>
-
-        <el-form-item>
-          <div class="chapta-container">
-            <el-input
-              v-model="param.smsChapta"
-              placeholder="请输入验证码"
-              style="margin-right: 1em"
-            >
-              <el-button tabindex="-1"
-                ><el-icon><Message /> </el-icon
-              ></el-button>
-            </el-input>
-            <el-button type="primary" class="ms-btn">获取验证码</el-button>
-          </div>
-        </el-form-item> -->
-
         <el-form-item>
           <el-checkbox v-model="param.remember">记住密码</el-checkbox>
         </el-form-item>
@@ -109,7 +68,6 @@ import { useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus'
 import type { FormInstance, FormRules } from 'element-plus'
 import { Loading, Lock, User as UserIcon, Message as EmailIcon } from '@element-plus/icons-vue'
-import { AuthService } from '~/services/auth-service'
 import { User, RegisterInfo } from '~/models/auth'
 import { useAuthStore } from '~/store/auth'
 

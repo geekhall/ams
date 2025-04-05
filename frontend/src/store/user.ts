@@ -1,7 +1,7 @@
 // 调用顺序：Vue组件 -> Pinia存储模块(store/user.ts) -> 服务模块(services/user-service.ts) -> API模块(utils/http.ts) -> Axios
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
-import { UserService } from '~/services/user-service'
+import { getUserList } from '~/api/user'
 
 export const useUserStore = defineStore('user', () => {
   // state
@@ -34,16 +34,11 @@ export const useUserStore = defineStore('user', () => {
   // 获取用户信息列表
   const getUserList = async () => {
     console.log('get user list ::::: ')
-    const response = await UserService.list()
+
+    const response = await getUserList()
     console.log('get user list ::::: ', response)
   }
 
-  // const fetchUserInfo = async () => {
-  //   const response = await UserService.getUserInfo()
-  //   console.log('get user info ::::: ', response)
-  //   if (response.data.code === 200 && response.data.data) {
-  //   }
-  // }
 
   return {
     // state
