@@ -1,42 +1,78 @@
 // 调用顺序：Vue组件 -> Pinia存储模块(store/user.ts) -> 服务模块(services/user-service.ts) -> API模块(utils/http.ts) -> Axios
 import { defineStore } from 'pinia'
-import { User } from '~/models/user'
+import { ref, computed } from 'vue'
 import { UserService } from '~/services/user-service'
 
-// 定义一个名为 user 的 store
-export const useUserStore = defineStore('user', {
-  state: (): User => ({
-    name: '',
-    username: '',
-    email: '',
-    password: '',
-    sex: 0,
-    idCard: '',
-    phone: '',
-    avatar: '',
-    age: 0,
-    status: 0,
-    version: 0,
-  }),
-  getters: {
-    name: (state): string | null => state.name || null,
-    username: (state): string | null => state.username,
-    email: (state): string | null => state.email || null,
-    password: (state): string | null => state.password || null,
-    sex: (state): number | null => state.sex || null,
-    idCard: (state): string | null => state.idCard || null,
-    phone: (state): string | null => state.phone || null,
-    avatar: (state): string | null => state.avatar || null,
-    age: (state): number | null => state.age || null,
-    status: (state): number | null => state.status || null,
-    version: (state): number | null => state.version || null,
-  },
-  actions: {
-    async list() {
-      console.log('get user list ::::: ');
-      const response = await UserService.list()
-      console.log('get user list ::::: ', response);
-    },
+export const useUserStore = defineStore('user', () => {
+  // state
+  const name = ref<string>('')
+  const username = ref<string>('')
+  const email = ref<string>('')
+  const password = ref<string>('')
+  const sex = ref<number>(0)
+  const idCard = ref<string>('')
+  const phone = ref<string>('')
+  const avatar = ref<string>('')
+  const age = ref<number>(0)
+  const status = ref<number>(0)
+  const version = ref<number>(0)
+
+  // getters
+  const getName = computed(() => name.value || null)
+  const getUsername = computed(() => username.value)
+  const getEmail = computed(() => email.value || null)
+  const getPassword = computed(() => password.value || null)
+  const getSex = computed(() => sex.value || null)
+  const getIdCard = computed(() => idCard.value || null)
+  const getPhone = computed(() => phone.value || null)
+  const getAvatar = computed(() => avatar.value || null)
+  const getAge = computed(() => age.value || null)
+  const getStatus = computed(() => status.value || null)
+  const getVersion = computed(() => version.value || null)
+
+  // actions
+  // 获取用户信息列表
+  const getUserList = async () => {
+    console.log('get user list ::::: ')
+    const response = await UserService.list()
+    console.log('get user list ::::: ', response)
+  }
+
+  // const fetchUserInfo = async () => {
+  //   const response = await UserService.getUserInfo()
+  //   console.log('get user info ::::: ', response)
+  //   if (response.data.code === 200 && response.data.data) {
+  //   }
+  // }
+
+  return {
+    // state
+    name,
+    username,
+    email,
+    password,
+    sex,
+    idCard,
+    phone,
+    avatar,
+    age,
+    status,
+    version,
+
+    // getters
+    getName,
+    getUsername,
+    getEmail,
+    getPassword,
+    getSex,
+    getIdCard,
+    getPhone,
+    getAvatar,
+    getAge,
+    getStatus,
+    getVersion,
+
+    // actions
+    getUserList,
   }
 })
-
