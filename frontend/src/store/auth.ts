@@ -1,90 +1,93 @@
 // Pinia存储模块
 // 调用顺序：Vue组件 -> Pinia存储模块(store/auth.ts) -> API模块(api/loki.ts) -> Axios
+import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
 import { User, AuthState, AuthResponse } from '~/models/auth'
 import axios from 'axios'
 import loki from '~/api/loki'
-export const useAuthStore = defineStore('auth', {
-  state: (): AuthState => ({
-    token: localStorage.getItem('token') || null,
-    user: null,
-  }),
-  getters: {
-    isAuthenticated: (state): boolean => !!state.token,
-    getToken: (state): string | null => state.token,
-    username: (state): string | null => state.user?.username || null,
-    // desc: (state): string | null => state.user?.desc || null,
-    rememberedPassword: (state): string | null => state.user?.rememberPassword || null,
-    isLoggedIn(): boolean {
-      return this.token !== null
-    },
-    getUser(): User | null {
-      return this.user
+export const useAuthStore = defineStore('auth', () => {
+  // state
+  const token = ref<string | null>(localStorage.getItem('token') || null)
+  const user = ref<User | null>(null)
+
+  // getters
+  const isAuthenticated = computed(() => !!token.value)
+  const getToken = computed(() => token.value)
+  const username = computed(() => user.value?.username || null)
+  const rememberedPassword = computed(() => user.value?.rememberPassword || null)
+  const isLoggedIn = computed(() => token.value !== null)
+  const getUser = computed(() => user.value)
+
+  // actions
+  const login = async (credentials: User) => {
+    console.log('credentials in authStore ::::: ', credentials)
+    const response: AuthResponse = await loki.post('/auth/login', credentials)
+    console.log('response in authStore ::::: ', response)
+    setAuthData(response)
+  }
+
+  // 用户注册
+  const register = async (newUser: User) => {
+    const response = await loki.post('/auth/register', newUser)
+    user.value = { username: newUser.username, rememberPassword: newUser.password }
+  }
+
+  const setAuthData = (data: AuthResponse) => {
+    console.log('data in setAuthData ::::: ', data)
+    if (data.code === 200) {
+      token.value = data.token
+      if (token.value) {
+        localStorage.setItem('token', token.value)
+      }
+      user.value = { username: data.user.username }
+      return { success: true, message: data.message }
+    } else {
+      return { success: false, message: data.message }
     }
-  },
-  actions: {
-    async login(credentials: User) {
-      console.log('credentials in authStore ::::: ', credentials);
-      const response: AuthResponse = await loki.post("/auth/login", credentials);
-      console.log('response in authStore ::::: ', response);
-      this.setAuthData(response);
-    },
+  }
 
-    // 用户注册
-    async register(user: User) {
-      await loki.post("/auth/register", user);
-      this.$state.user = { username: user.username, rememberPassword: user.password }
-    },
-
-    //设置认证数据
-    setAuthData(data: AuthResponse) {
-      console.log('data in setAuthData ::::: ', data);
-      console.log('data.code in setAuthData ::::: ', data.code);
-      console.log('data.code === 200 in setAuthData ::::: ', data.code === 200);
-
-      if (data.code === 200) {
-        console.log('data.token in setAuthData ::::: ', data.token);
-
-        this.$state.token = data.token
-        console.log('this.token in setAuthData ::::: ', this.$state.token);
-
-
-        if (this.$state.token) {
-          localStorage.setItem('token', this.$state.token)
-        }
-        this.user = { username: data.user.username }
-        console.log('this.user in setAuthData ::::: ', this.user);
-
-        // axios.defaults.headers.common['Authorization'] = `Bearer ${this.token}`
-        return { success: true, message: data.message }
-      } else {
-        return { success: false, message: data.message }
-      }
-    },
-
-    // 设置记住的用户密码
-    setRememberPassword(password: string) {
-      if (this.$state.user) {
-        this.$state.user.rememberPassword = password
-      }
-    },
-
-    // 退出登录
-    logout() {
-      this.$state.token = null
-      this.$state.user = null
-      localStorage.removeItem('token')
-      delete axios.defaults.headers.common['Authorization']
-    },
-
-    // 初始化时从本地存储中加载认证数据
-    initialize() {
-      const token = localStorage.getItem('token')
-      console.log('token', token)
-      if (token) {
-        this.$state.token = token
-      }
+  const setRememberPassword = (password: string) => {
+    if (user.value) {
+      user.value.rememberPassword = password
     }
+  }
+
+  const logout = () => {
+    token.value = null
+    user.value = null
+    localStorage.removeItem('token')
+    delete axios.defaults.headers.common['Authorization']
+  }
+
+  // 初始化时从本地存储中加载认证数据
+  const initialize = () => {
+    const storedToken = localStorage.getItem('token')
+    console.log('token', storedToken)
+    if (storedToken) {
+      token.value = storedToken
+    }
+  }
+
+  return {
+    // state
+    token,
+    user,
+
+    // getters
+    isAuthenticated,
+    getToken,
+    username,
+    rememberedPassword,
+    isLoggedIn,
+    getUser,
+
+    // actions
+    login,
+    register,
+    setAuthData,
+    setRememberPassword,
+    logout,
+    initialize,
   }
 })
 
