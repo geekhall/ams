@@ -9,7 +9,7 @@ const Asset = () => import('../views/Asset.vue')
 const Project = () => import('../views/Project.vue')
 const System = () => import('../views/System.vue')
 const Duty = () => import('../views/Duty.vue')
-const User = () => import('../views/User.vue')
+const UserManagement = () => import('../views/UserManagement.vue')
 
 const About = () => import('../views/About.vue')
 const Login = () => import('../views/Login.vue')
@@ -19,7 +19,7 @@ const NotFound = () => import('../views/404.vue')
 const Profile = () => import('../views/Profile.vue')
 const Setting = () => import('../views/Setting.vue')
 const Tabs = () => import('../views/Tabs.vue')
-
+const IconSample = () => import('../views/IconSample.vue')
 
 // 2. Define some routes
 const routes: RouteRecordRaw[] = [
@@ -52,9 +52,9 @@ const routes: RouteRecordRaw[] = [
         component: Duty
       },
       {
-        path: '/user', name: "user",
-        meta: { title: '用户管理', permission: 'user' },
-        component: User
+        path: '/user', name: "userManagement",
+        meta: { title: '用户管理', permission: 'userManagement' },
+        component: UserManagement
       },
       {
         path: '/setting', name: "setting",
@@ -80,6 +80,12 @@ const routes: RouteRecordRaw[] = [
         path: '/tabs', name: "tabs",
         meta: { title: 'Tabs', permission: 'tabs' },
         component: Tabs
+      },
+
+      {
+        path: '/icon', name: "iconSample",
+        meta: { title: 'icon', permission: 'icon' },
+        component: IconSample
       },
     ]
   },

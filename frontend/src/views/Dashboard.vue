@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="content-container">
     <el-row :gutter="20">
       <el-col :span="8">
         <el-card shadow="hover" class="mgb20">
@@ -10,7 +10,9 @@
               <div class="user-role">{{ role }}</div>
             </div>
           </div>
-          <div class="user-info-list">上次登录时间：<span>2023-02-03</span></div>
+          <div class="user-info-list">
+            上次登录时间：<span>{{ formattedDate }}</span>
+          </div>
           <div class="user-info-list">上次登录地点：<span>北京</span></div>
         </el-card>
         <el-card shadow="hover">
@@ -56,10 +58,10 @@
           <el-col :span="8">
             <el-card shadow="hover" :body-style="{ padding: '0px' }">
               <div class="grid-content grid-content-3">
-                <el-icon class="grid-content-icon"><Goods /></el-icon>
+                <el-icon class="grid-content-icon"><DataAnalysis /></el-icon>
                 <div class="grid-content-right">
-                  <div class="grid-number">5000</div>
-                  <div>商品数量</div>
+                  <div class="grid-number">260000000</div>
+                  <div>资产规模</div>
                 </div>
               </div>
             </el-card>
@@ -141,6 +143,12 @@ const todoList = reactive([
     status: true
   }
 ])
+// 取当前日期，并格式化成YYYY-MM-DD的格式
+const date = new Date()
+const year = date.getFullYear()
+const month = (date.getMonth() + 1).toString().padStart(2, '0')
+const day = date.getDate().toString().padStart(2, '0')
+const formattedDate = `${year}-${month}-${day}`
 </script>
 
 <style lang="less" scoped>
