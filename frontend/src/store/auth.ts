@@ -1,5 +1,5 @@
 // Pinia存储模块
-// 调用顺序：Vue组件 -> Pinia存储模块(store/auth.ts) -> 服务模块(services/auth-service.ts) -> API模块(api/loki.ts) -> Axios
+// 调用顺序：Vue组件 -> Pinia存储模块(store/auth.ts) -> API模块(api/loki.ts) -> Axios
 import { defineStore } from 'pinia'
 import { User, AuthState, AuthResponse } from '~/models/auth'
 import axios from 'axios'

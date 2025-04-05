@@ -1,4 +1,4 @@
-// 调用顺序：Vue组件 -> Pinia存储模块(store/user.ts) -> 服务模块(services/user-service.ts) -> API模块(utils/http.ts) -> Axios
+// 调用顺序：Vue组件 -> Pinia存储模块(store/user.ts) -> API模块(api/user.ts) -> Axios
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 import { getUserList } from '~/api/user'

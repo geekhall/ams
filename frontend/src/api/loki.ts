@@ -1,5 +1,5 @@
 // Axios 请求拦截器和响应拦截器
-// 调用顺序：Vue组件 -> Pinia存储模块(store/auth.ts) -> 服务模块(services/auth-service.ts) -> API模块(api/loki.ts) -> Axios
+// 调用顺序：Vue组件 -> Pinia存储模块(store/auth.ts) -> API模块(api/loki.ts) -> Axios
 
 import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios';
 import { useAuthStore } from '~/store/auth';
