@@ -166,6 +166,7 @@ import { Delete, Edit, Search, Plus } from '@element-plus/icons-vue'
 import { useUserStore } from '~/store/user'
 import { getAssetList } from '~/api/asset'
 import { Asset } from '@/types/asset'
+import dayjs from 'dayjs'
 
 const query = reactive({
   id: '',
@@ -187,12 +188,12 @@ const userStore = useUserStore()
 // 表格编辑时弹窗和保存
 const addVisible = ref(false)
 let addForm = reactive({
-  assetName: '',
-  assetCode: '',
-  assetType: '',
-  departmentName: '',
+  assetName: '测试资产1',
+  assetCode: 'TEST-2025-1',
+  assetType: '服务器',
+  departmentName: '信息科技部',
   status: 0,
-  purchaseDate: '',
+  purchaseDate: dayjs().format('YYYY-MM-DD'),
   purchasePrice: 0,
   count: 0
 })
@@ -205,8 +206,8 @@ let editForm = reactive({
   departmentName: '',
   status: 1,
   purchaseDate: '',
-  purchasePrice: 0,
-  count: 0
+  purchasePrice: 100,
+  count: 1
 })
 let idx: number = -1
 
@@ -277,18 +278,19 @@ const saveAdd = () => {
   // 添加至后台的逻辑
 
   ElMessage.success('新增成功')
-  // 更新表格数据
-  tableData.value.push({
-    id: tableData.value.length + 1,
-    assetName: addForm.assetName,
-    assetCode: addForm.assetCode,
-    assetType: addForm.assetType,
-    departmentName: addForm.departmentName,
-    status: addForm.status,
-    purchaseDate: addForm.purchaseDate,
-    purchasePrice: addForm.purchasePrice,
-    count: addForm.count
-  })
+  // 更新表格数据（这里有问题，不应该更新到当前页面）
+  // tableData.value.push({
+  //   id: tableData.value.length + 1,
+  //   assetName: addForm.assetName,
+  //   assetCode: addForm.assetCode,
+  //   assetType: addForm.assetType,
+  //   departmentName: addForm.departmentName,
+  //   status: addForm.status,
+  //   purchaseDate: addForm.purchaseDate,
+  //   purchasePrice: addForm.purchasePrice,
+  //   count: addForm.count
+  // })
+  getData()
 }
 
 const saveEdit = () => {

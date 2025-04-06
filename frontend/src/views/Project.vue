@@ -14,32 +14,14 @@
       header-cell-class-name="table-header"
     >
       <el-table-column prop="id" label="ID" width="55" align="center"></el-table-column>
-      <el-table-column prop="username" label="用户名"></el-table-column>
-      <el-table-column prop="name" label="昵称">
-        <template #default="scope">{{ scope.row.intro }}</template>
-      </el-table-column>
-      <el-table-column label="头像(查看大图)" align="center">
-        <template #default="scope">
-          <el-image
-            class="table-td-avatar"
-            :src="scope.row.avatar"
-            :z-index="10"
-            :preview-src-list="[scope.row.avatar]"
-            preview-teleported
-          >
-          </el-image>
-        </template>
-      </el-table-column>
-      <el-table-column prop="type" label="等级"></el-table-column>
-      <el-table-column prop="status" label="状态" align="center">
-        <template #default="scope">
-          <el-tag :type="scope.row.level === 1 ? 'success' : scope.row.level === 2 ? 'danger' : ''">
-            {{ scope.row.level === 1 ? '正常' : scope.row.level === 2 ? '禁用' : '' }}
-          </el-tag>
-        </template>
-      </el-table-column>
+      <el-table-column prop="username" label="项目名称"></el-table-column>
+      <el-table-column prop="description" label="项目简介"></el-table-column>
+      <el-table-column prop="pm" label="项目负责人"></el-table-column>
+      <el-table-column prop="department" label="部门"></el-table-column>
+      <el-table-column prop="status" label="状态" align="center"> </el-table-column>
+      <el-table-column prop="planStart" label="计划开始时间"></el-table-column>
+      <el-table-column prop="planEnd" label="计划结束时间"></el-table-column>
 
-      <el-table-column prop="createTime" label="注册时间"></el-table-column>
       <el-table-column label="操作" width="220" align="center">
         <template #default="scope">
           <el-button

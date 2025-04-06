@@ -14,32 +14,19 @@
       header-cell-class-name="table-header"
     >
       <el-table-column prop="id" label="ID" width="55" align="center"></el-table-column>
-      <el-table-column prop="username" label="用户名"></el-table-column>
-      <el-table-column prop="name" label="昵称">
-        <template #default="scope">{{ scope.row.intro }}</template>
-      </el-table-column>
-      <el-table-column label="头像(查看大图)" align="center">
-        <template #default="scope">
-          <el-image
-            class="table-td-avatar"
-            :src="scope.row.avatar"
-            :z-index="10"
-            :preview-src-list="[scope.row.avatar]"
-            preview-teleported
-          >
-          </el-image>
-        </template>
-      </el-table-column>
-      <el-table-column prop="type" label="等级"></el-table-column>
+      <el-table-column prop="systemName" label="系统名称"></el-table-column>
+      <el-table-column prop="systemCode" label="系统编号"> </el-table-column>
+      <el-table-column prop="description" label="系统简介"></el-table-column>
+      <el-table-column prop="level" label="等保级别"></el-table-column>
       <el-table-column prop="status" label="状态" align="center">
         <template #default="scope">
           <el-tag :type="scope.row.level === 1 ? 'success' : scope.row.level === 2 ? 'danger' : ''">
-            {{ scope.row.level === 1 ? '正常' : scope.row.level === 2 ? '禁用' : '' }}
+            {{ scope.row.level === 1 ? '正常' : scope.row.level === 2 ? '下线' : '' }}
           </el-tag>
         </template>
       </el-table-column>
 
-      <el-table-column prop="createTime" label="注册时间"></el-table-column>
+      <el-table-column prop="createTime" label="上线时间"></el-table-column>
       <el-table-column label="操作" width="220" align="center">
         <template #default="scope">
           <el-button
