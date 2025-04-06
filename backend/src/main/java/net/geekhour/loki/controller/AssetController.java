@@ -1,6 +1,7 @@
 package net.geekhour.loki.controller;
 
 import net.geekhour.loki.mapper.AssetMapper;
+import net.geekhour.loki.service.IAssetService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -22,7 +23,7 @@ import java.util.Map;
 public class AssetController {
 
     @Autowired
-    AssetMapper assetMapper;
+    IAssetService assetService;
 
     /**
      * list all users (列出所有用户)
@@ -31,10 +32,7 @@ public class AssetController {
     @RequestMapping("/all")
     @PreAuthorize("hasRole('USER') || hasAuthority('system:user:list')")
     public ResponseEntity<?> all() {
-        return ResponseEntity.ok(Map.of(
-                "code", 200,
-                "message", "success!",
-                "data", assetMapper.selectList(null)));
+        return assetService.all();
     }
     /**
      * list all users (列出所有用户)
@@ -43,10 +41,7 @@ public class AssetController {
     @RequestMapping("/list")
     @PreAuthorize("hasRole('USER') || hasAuthority('system:user:list')")
     public ResponseEntity<?> getAssetList() {
-        return ResponseEntity.ok(Map.of(
-                "code", 200,
-                "message", "success!",
-                "data", assetMapper.getAssetList()));
+        return assetService.getAssetList();
     }
 
 }

@@ -2,6 +2,7 @@ package net.geekhour.loki.service;
 
 import net.geekhour.loki.entity.Asset;
 import com.baomidou.mybatisplus.extension.service.IService;
+import org.springframework.http.ResponseEntity;
 
 /**
  * <p>
@@ -13,4 +14,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface IAssetService extends IService<Asset> {
 
+    ResponseEntity<?> all();
+
+    ResponseEntity<?> getAssetList();
 }

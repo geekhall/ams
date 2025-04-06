@@ -23,9 +23,9 @@
       <el-table-column prop="assetType" label="资产类型" align="center"></el-table-column>
       <el-table-column prop="departmentName" label="所属部门" align="center"> </el-table-column>
       <el-table-column prop="status" label="状态" align="center"> </el-table-column>
-      <el-table-column prop="purchaseDate" label="购入时间"></el-table-column>
-      <el-table-column prop="purchasePrice" label="购买价格"></el-table-column>
-      <el-table-column prop="count" label="数量" align="center"></el-table-column>
+      <el-table-column prop="purchaseDate" label="购入时间" align="center"></el-table-column>
+      <el-table-column prop="purchasePrice" label="购买价格" align="right"></el-table-column>
+      <el-table-column prop="count" label="数量" align="center" width="100"></el-table-column>
       <el-table-column label="操作" width="220" align="center">
         <template #default="scope">
           <el-button
@@ -76,7 +76,7 @@
         <el-form-item label="所属部门">
           <el-input v-model="form.departmentName"></el-input>
         </el-form-item>
-        <el-form-item label="状态">
+        <el-form-item label="状态" label-width="120px">
           <el-select v-model="form.status" placeholder="请选择">
             <el-option label="在用" :value="1"></el-option>
             <el-option label="维修" :value="2"></el-option>
@@ -208,6 +208,7 @@ const handleEdit = (index: number, row: any) => {
   form.count = row.count
   // 这里可以根据需要设置其他字段
   editVisible.value = true
+  // 更新后台数据
 }
 const saveEdit = () => {
   editVisible.value = false
