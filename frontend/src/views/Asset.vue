@@ -8,7 +8,7 @@
         class="handle-input mr10"
       ></el-input>
       <el-button type="primary" :icon="Search" @click="handleSearch">搜索</el-button>
-      <el-button type="primary" :icon="Plus">新增</el-button>
+      <el-button type="primary" :icon="Plus" @click="handleAdd"> 新增 </el-button>
     </div>
     <el-table
       :data="tableData"
@@ -58,38 +58,95 @@
         @current-change="handlePageChange"
       ></el-pagination>
     </div>
-    <!-- 编辑弹出框 -->
-    <el-dialog title="编辑" v-model="editVisible" width="30%">
+    <!-- 新增弹出框 -->
+    <el-dialog title="新增资产" v-model="addVisible" width="30%">
       <el-form label-width="70px">
-        <el-form-item label="ID">
-          <el-input v-model="form.id" disabled></el-input>
-        </el-form-item>
         <el-form-item label="资产名称">
-          <el-input v-model="form.assetName"></el-input>
+          <el-input v-model="addForm.assetName"></el-input>
         </el-form-item>
         <el-form-item label="资产编号">
-          <el-input v-model="form.assetCode"></el-input>
+          <el-input v-model="addForm.assetCode"></el-input>
         </el-form-item>
         <el-form-item label="资产类型">
-          <el-input v-model="form.assetType"></el-input>
+          <el-input v-model="addForm.assetType"></el-input>
         </el-form-item>
         <el-form-item label="所属部门">
-          <el-input v-model="form.departmentName"></el-input>
+          <el-input v-model="addForm.departmentName"></el-input>
         </el-form-item>
-        <el-form-item label="状态" label-width="120px">
-          <el-select v-model="form.status" placeholder="请选择">
+        <el-form-item label="状态">
+          <el-select v-model="addForm.status" placeholder="请选择">
+            <el-option label="正常" :value="0"></el-option>
             <el-option label="在用" :value="1"></el-option>
             <el-option label="维修" :value="2"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="购入时间">
-          <el-input v-model="form.purchaseDate"></el-input>
+          <span class="demonstration"></span>
+          <el-date-picker
+            class="date-picker"
+            v-model="addForm.purchaseDate"
+            type="date"
+            format="YYYY-MM-DD"
+            value-format="YYYY-MM-DD"
+            size="default"
+            placeholder="选择日期"
+          />
         </el-form-item>
         <el-form-item label="购买价格">
-          <el-input v-model="form.purchasePrice"></el-input>
+          <el-input v-model="addForm.purchasePrice"></el-input>
         </el-form-item>
         <el-form-item label="数量">
-          <el-input v-model="form.count"></el-input>
+          <el-input v-model="addForm.count"></el-input>
+        </el-form-item>
+      </el-form>
+      <template #footer>
+        <span class="dialog-footer">
+          <el-button @click="addVisible = false">取 消</el-button>
+          <el-button type="primary" @click="saveAdd">确 定</el-button>
+        </span>
+      </template>
+    </el-dialog>
+    <!-- 编辑弹出框 -->
+    <el-dialog title="编辑" v-model="editVisible" width="30%">
+      <el-form label-width="70px">
+        <el-form-item label="ID">
+          <el-input v-model="editForm.id" disabled></el-input>
+        </el-form-item>
+        <el-form-item label="资产名称">
+          <el-input v-model="editForm.assetName"></el-input>
+        </el-form-item>
+        <el-form-item label="资产编号">
+          <el-input v-model="editForm.assetCode"></el-input>
+        </el-form-item>
+        <el-form-item label="资产类型">
+          <el-input v-model="editForm.assetType"></el-input>
+        </el-form-item>
+        <el-form-item label="所属部门">
+          <el-input v-model="editForm.departmentName"></el-input>
+        </el-form-item>
+        <el-form-item label="状态">
+          <el-select v-model="editForm.status" placeholder="请选择">
+            <el-option label="在用" :value="1"></el-option>
+            <el-option label="维修" :value="2"></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="购入时间">
+          <span class="demonstration"></span>
+          <el-date-picker
+            class="date-picker"
+            v-model="editForm.purchaseDate"
+            type="date"
+            format="YYYY-MM-DD"
+            value-format="YYYY-MM-DD"
+            size="default"
+            placeholder="选择日期"
+          />
+        </el-form-item>
+        <el-form-item label="购买价格">
+          <el-input v-model="editForm.purchasePrice"></el-input>
+        </el-form-item>
+        <el-form-item label="数量">
+          <el-input v-model="editForm.count"></el-input>
         </el-form-item>
       </el-form>
       <template #footer>
@@ -127,6 +184,31 @@ const query = reactive({
 const tableData = ref<Asset[]>([])
 const pageTotal = ref(0)
 const userStore = useUserStore()
+// 表格编辑时弹窗和保存
+const addVisible = ref(false)
+let addForm = reactive({
+  assetName: '',
+  assetCode: '',
+  assetType: '',
+  departmentName: '',
+  status: 0,
+  purchaseDate: '',
+  purchasePrice: 0,
+  count: 0
+})
+const editVisible = ref(false)
+let editForm = reactive({
+  id: '',
+  assetName: '',
+  assetCode: '',
+  assetType: '',
+  departmentName: '',
+  status: 1,
+  purchaseDate: '',
+  purchasePrice: 0,
+  count: 0
+})
+let idx: number = -1
 
 // 获取表格数据
 const getData = () => {
@@ -157,15 +239,70 @@ onMounted(() => {
   getData()
 })
 
-// 查询操作
+// 搜索操作
 const handleSearch = () => {
   query.pageIndex = 1
   getData()
 }
+
 // 分页导航
 const handlePageChange = (val: number) => {
   query.pageIndex = val
   getData()
+}
+
+// 新增操作
+const handleAdd = () => {
+  addVisible.value = true
+  // 这里可以添加新增逻辑
+}
+
+const handleEdit = (index: number, row: any) => {
+  idx = index
+  editForm.id = row.id
+  editForm.assetName = row.assetName
+  editForm.assetCode = row.assetCode
+  editForm.assetType = row.assetType
+  editForm.departmentName = row.departmentName
+  editForm.status = row.status
+  editForm.purchaseDate = row.purchaseDate
+  editForm.purchasePrice = row.purchasePrice
+  editForm.count = row.count
+  // 这里可以根据需要设置其他字段
+  editVisible.value = true
+  // 更新后台数据
+}
+const saveAdd = () => {
+  addVisible.value = false
+  // 添加至后台的逻辑
+
+  ElMessage.success('新增成功')
+  // 更新表格数据
+  tableData.value.push({
+    id: tableData.value.length + 1,
+    assetName: addForm.assetName,
+    assetCode: addForm.assetCode,
+    assetType: addForm.assetType,
+    departmentName: addForm.departmentName,
+    status: addForm.status,
+    purchaseDate: addForm.purchaseDate,
+    purchasePrice: addForm.purchasePrice,
+    count: addForm.count
+  })
+}
+
+const saveEdit = () => {
+  editVisible.value = false
+  ElMessage.success(`修改第 ${idx + 1} 行成功`)
+  // 更新表格数据
+  tableData.value[idx].assetName = editForm.assetName
+  tableData.value[idx].assetCode = editForm.assetCode
+  tableData.value[idx].assetType = editForm.assetType
+  tableData.value[idx].departmentName = editForm.departmentName
+  tableData.value[idx].status = editForm.status
+  tableData.value[idx].purchaseDate = editForm.purchaseDate
+  tableData.value[idx].purchasePrice = editForm.purchasePrice
+  tableData.value[idx].count = editForm.count
 }
 
 // 删除操作
@@ -179,49 +316,6 @@ const handleDelete = (index: number) => {
       tableData.value.splice(index, 1)
     })
     .catch(() => {})
-}
-
-// 表格编辑时弹窗和保存
-const editVisible = ref(false)
-let form = reactive({
-  id: '',
-  assetName: '',
-  assetCode: '',
-  assetType: '',
-  departmentName: '',
-  status: 1,
-  purchaseDate: '',
-  purchasePrice: 0,
-  count: 0
-})
-let idx: number = -1
-const handleEdit = (index: number, row: any) => {
-  idx = index
-  form.id = row.id
-  form.assetName = row.assetName
-  form.assetCode = row.assetCode
-  form.assetType = row.assetType
-  form.departmentName = row.departmentName
-  form.status = row.status
-  form.purchaseDate = row.purchaseDate
-  form.purchasePrice = row.purchasePrice
-  form.count = row.count
-  // 这里可以根据需要设置其他字段
-  editVisible.value = true
-  // 更新后台数据
-}
-const saveEdit = () => {
-  editVisible.value = false
-  ElMessage.success(`修改第 ${idx + 1} 行成功`)
-  // 更新表格数据
-  tableData.value[idx].assetName = form.assetName
-  tableData.value[idx].assetCode = form.assetCode
-  tableData.value[idx].assetType = form.assetType
-  tableData.value[idx].departmentName = form.departmentName
-  tableData.value[idx].status = form.status
-  tableData.value[idx].purchaseDate = form.purchaseDate
-  tableData.value[idx].purchasePrice = form.purchasePrice
-  tableData.value[idx].count = form.count
 }
 </script>
 
@@ -252,5 +346,8 @@ const saveEdit = () => {
   margin: auto;
   width: 40px;
   height: 40px;
+}
+.date-picker {
+  width: 100%;
 }
 </style>

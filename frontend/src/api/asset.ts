@@ -72,3 +72,43 @@ export const getAssetById = async (
     },
   });
 };
+
+// 添加资产
+export const addAsset = async (
+  asset: Asset
+): Promise<AssetListResponse> => {
+  return await loki.request({
+    url: "/asset/add",
+    method: "POST",
+    data: {
+      ...asset,
+    },
+  });
+};
+
+// 批量删除资产
+export const deleteAssets = async (
+  ids: string[]
+): Promise<AssetListResponse> => {
+  return await loki.request({
+    url: "/asset/delete/batch",
+    method: "POST",
+    data: {
+      ids,
+    },
+  });
+};
+
+// 批量更新资产
+export const updateAssets = async (
+  assets: Asset[]
+): Promise<AssetListResponse> => {
+  return await loki.request({
+    url: "/asset/update/batch",
+    method: "POST",
+    data: {
+      assets,
+    },
+  });
+};
+
