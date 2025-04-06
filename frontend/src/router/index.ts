@@ -78,7 +78,7 @@ const routes: RouteRecordRaw[] = [
       },
       {
         path: '/tabs', name: "tabs",
-        meta: { title: 'Tabs', permission: 'tabs' },
+        meta: { title: '消息', permission: 'tabs' },
         component: Tabs
       },
 
