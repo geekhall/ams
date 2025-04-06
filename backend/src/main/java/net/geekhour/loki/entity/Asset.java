@@ -32,6 +32,9 @@ public class Asset extends Model<Asset> {
 
     private static final long serialVersionUID = 1L;
 
+    @ApiModelProperty("主键ID")
+    private Long id;
+
     @ApiModelProperty("资产名称")
     @TableField("asset_name")
     private String assetName;
@@ -63,6 +66,10 @@ public class Asset extends Model<Asset> {
     @ApiModelProperty("购买价格")
     @TableField("purchase_price")
     private BigDecimal purchasePrice;
+
+    @ApiModelProperty("数量")
+    @TableField("count")
+    private Integer count;
 
     @ApiModelProperty("版本号")
     @TableField("version")

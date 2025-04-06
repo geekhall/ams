@@ -68,7 +68,7 @@ import { useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus'
 import type { FormInstance, FormRules } from 'element-plus'
 import { Loading, Lock, User as UserIcon, Message as EmailIcon } from '@element-plus/icons-vue'
-import { User, RegisterInfo } from '~/models/auth'
+import { User, RegisterInfo } from '~/types/auth'
 import { useAuthStore } from '~/store/auth'
 
 const permission = usePermissionStore()

@@ -3,8 +3,6 @@
 
 import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios';
 import { useAuthStore } from '~/store/auth';
-
-// const router = useRouter();
 const API_URL = "http://localhost:4000/api"
 
 // 创建 axios 全局实例
@@ -22,10 +20,10 @@ const loki = axios.create({
 loki.interceptors.request.use(
   (config) => {
     // Do something before request is sent
-    console.log("####### http.ts interceptors.request #######");
+    // console.log("####### http.ts interceptors.request #######");
 
     const authStore = useAuthStore();
-    console.log('authStore.token', authStore.token);
+    // console.log('authStore.token', authStore.token);
 
     if (authStore.token) {
       config.headers.Authorization = `Bearer ${authStore.token}`;
@@ -44,8 +42,8 @@ loki.interceptors.response.use(
   (response) => {
     // 状态码范围为2xx时，调用此函数
     // Do something with response data
-    console.log("####### http.ts interceptors.response #######");
-    console.log("response.data :::::: " + response.data);
+    // console.log("####### http.ts interceptors.response #######");
+    // console.log("response.data :::::: " + response.data);
     const { data } = response.data;
     // TODO : 未登录跳转到登录页
     // console.log(" data ", data);

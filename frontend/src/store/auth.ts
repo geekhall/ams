@@ -2,7 +2,7 @@
 // 调用顺序：Vue组件 -> Pinia存储模块(store/auth.ts) -> API模块(api/loki.ts) -> Axios
 import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
-import { User, AuthState, AuthResponse } from '~/models/auth'
+import { User, AuthState, AuthResponse } from '~/types/auth'
 import axios from 'axios'
 import loki from '~/api/loki'
 export const useAuthStore = defineStore('auth', () => {
@@ -62,7 +62,7 @@ export const useAuthStore = defineStore('auth', () => {
   // 初始化时从本地存储中加载认证数据
   const initialize = () => {
     const storedToken = localStorage.getItem('token')
-    console.log('token', storedToken)
+    // console.log('token', storedToken)
     if (storedToken) {
       token.value = storedToken
     }

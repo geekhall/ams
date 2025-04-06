@@ -1,8 +1,6 @@
 import loki from "./loki";
 
-/**
- * 用户注册
- */
+// 用户注册
 export const userRegister = async (params: any) => {
   return await loki.request({
     url: "/api/auth/register",
@@ -11,9 +9,8 @@ export const userRegister = async (params: any) => {
   });
 };
 
-/**
- * 用户登录
- */
+
+// 用户登录
 export const userLogin = async (params: any) => {
   return await loki.request({
     url: "/api/auth/login",
@@ -22,9 +19,7 @@ export const userLogin = async (params: any) => {
   });
 };
 
-/**
- * 用户退出登录
- */
+// 用户退出登录
 export const userLogout = async () => {
   return await loki.request({
     url: "/api/auth/logout",
@@ -32,9 +27,7 @@ export const userLogout = async () => {
   });
 };
 
-/**
- * 获取当前用户
- */
+// 获取当前用户
 export const getCurrentUser = async () => {
   return await loki.request({
     url: "/api/user/current",
@@ -42,18 +35,15 @@ export const getCurrentUser = async () => {
   });
 };
 
-/**
- * 获取当前用户信息
- */
+// 获取当前用户信息
 export const getUserInfo = async () => {
   return await loki.request({
     url: "/api/user/info",
     method: "get",
   });
 };
-/**
- * 获取用户列表
- */
+
+// 获取用户列表
 export const getUserList = async (username: any) => {
   return await loki.request({
     url: "/api/user/list",
@@ -64,9 +54,7 @@ export const getUserList = async (username: any) => {
   });
 };
 
-/**
- * 删除用户
- */
+// 删除用户
 export const deleteUser = async (id: string) => {
   return await loki.request({
     url: `/api/user/${id}`,

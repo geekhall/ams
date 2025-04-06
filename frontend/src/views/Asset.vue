@@ -21,17 +21,11 @@
       <el-table-column prop="assetName" label="资产名称" align="center"></el-table-column>
       <el-table-column prop="assetCode" label="资产编号" align="center"> </el-table-column>
       <el-table-column prop="assetType" label="资产类型" align="center"></el-table-column>
-      <el-table-column prop="department" label="所属部门" align="center"> </el-table-column>
-      <el-table-column prop="status" label="状态" align="center">
-        <template #default="scope">
-          <el-tag :type="scope.row.level === 1 ? 'success' : scope.row.level === 2 ? 'danger' : ''">
-            {{ scope.row.level === 1 ? '在用' : scope.row.level === 2 ? '维修' : '' }}
-          </el-tag>
-        </template>
-      </el-table-column>
-
-      <el-table-column prop="createTime" label="购入时间"></el-table-column>
-      <el-table-column prop="price" label="购买价格"></el-table-column>
+      <el-table-column prop="departmentName" label="所属部门" align="center"> </el-table-column>
+      <el-table-column prop="status" label="状态" align="center"> </el-table-column>
+      <el-table-column prop="purchaseDate" label="购入时间"></el-table-column>
+      <el-table-column prop="purchasePrice" label="购买价格"></el-table-column>
+      <el-table-column prop="count" label="数量" align="center"></el-table-column>
       <el-table-column label="操作" width="220" align="center">
         <template #default="scope">
           <el-button
@@ -67,6 +61,9 @@
     <!-- 编辑弹出框 -->
     <el-dialog title="编辑" v-model="editVisible" width="30%">
       <el-form label-width="70px">
+        <el-form-item label="ID">
+          <el-input v-model="form.id" disabled></el-input>
+        </el-form-item>
         <el-form-item label="资产名称">
           <el-input v-model="form.assetName"></el-input>
         </el-form-item>
@@ -77,7 +74,7 @@
           <el-input v-model="form.assetType"></el-input>
         </el-form-item>
         <el-form-item label="所属部门">
-          <el-input v-model="form.department"></el-input>
+          <el-input v-model="form.departmentName"></el-input>
         </el-form-item>
         <el-form-item label="状态">
           <el-select v-model="form.status" placeholder="请选择">
@@ -86,10 +83,13 @@
           </el-select>
         </el-form-item>
         <el-form-item label="购入时间">
-          <el-input v-model="form.createTime"></el-input>
+          <el-input v-model="form.purchaseDate"></el-input>
         </el-form-item>
         <el-form-item label="购买价格">
-          <el-input v-model="form.price"></el-input>
+          <el-input v-model="form.purchasePrice"></el-input>
+        </el-form-item>
+        <el-form-item label="数量">
+          <el-input v-model="form.count"></el-input>
         </el-form-item>
       </el-form>
       <template #footer>
@@ -106,59 +106,52 @@
 import { ref, reactive, onMounted } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { Delete, Edit, Search, Plus } from '@element-plus/icons-vue'
-import { getLokiData } from '../api/index'
-import { MethodType } from '~/utils/types'
 import { useUserStore } from '~/store/user'
-import { randomInt } from 'crypto'
-
-interface TableItem {
-  id: number
-  assetName: string
-  assetCode: string
-  assetType: string
-  department: string
-  status: number
-  createTime: string
-  price: number
-}
+import { getAssetList } from '~/api/asset'
+import { Asset } from '@/types/asset'
 
 const query = reactive({
+  id: '',
   assetName: '',
   assetCode: '',
   assetType: '',
-  department: '',
+  departmentName: '',
   status: '',
-  createTime: '',
-  price: '',
+  purchaseDate: '',
+  purchasePrice: '',
+  count: 0,
+  // 分页参数
   pageIndex: 1,
   pageSize: 10
 })
-const tableData = ref<TableItem[]>([])
+const tableData = ref<Asset[]>([])
 const pageTotal = ref(0)
 const userStore = useUserStore()
 
 // 获取表格数据
 const getData = () => {
-  // generate some mock data
   const data = []
-  for (let i = 0; i < query.pageSize; i++) {
-    // Mock data generation
-    // In a real application, you would fetch data from an API
-    // Here we are just generating some random data for demonstration
-    // You can replace this with your actual data fetching logic
-    data.push({
-      id: i + 1,
-      assetName: `资产名称 ${i + 1}`,
-      assetCode: `资产编号 ${i + 1}`,
-      assetType: `资产类型 ${i + 1}`,
-      department: `所属部门 ${i + 1}`,
-      status: Math.floor(Math.random() * 3) + 1,
-      createTime: `2023-01-01`,
-      price: Math.floor(Math.random() * 10000) + 1000
+  getAssetList()
+    .then((res) => {
+      // console.log('Asset.vue::::res.data=', res.data)
+      if (res.code === 200) {
+        // console.log('Asset.vue::::res.data=', res.data)
+        // 按照每10行一个分页，处理数据
+        const start = (query.pageIndex - 1) * query.pageSize
+        const end = start + query.pageSize
+        tableData.value = res.data.slice(start, end)
+        pageTotal.value = res.data.length
+      } else {
+        ElMessage.error(res.message)
+      }
     })
-  }
-  tableData.value = data
-  pageTotal.value = 50 // Mock total count
+    .catch((err) => {
+      // console.error('Asset.vue::::res.data=', err)
+      ElMessage.error('获取数据失败')
+    })
+    .finally(() => {
+      // 这里可以添加一些清理操作
+    })
 }
 onMounted(() => {
   getData()
@@ -191,37 +184,43 @@ const handleDelete = (index: number) => {
 // 表格编辑时弹窗和保存
 const editVisible = ref(false)
 let form = reactive({
+  id: '',
   assetName: '',
   assetCode: '',
   assetType: '',
-  department: '',
+  departmentName: '',
   status: 1,
-  createTime: '',
-  price: 0
+  purchaseDate: '',
+  purchasePrice: 0,
+  count: 0
 })
 let idx: number = -1
 const handleEdit = (index: number, row: any) => {
   idx = index
+  form.id = row.id
   form.assetName = row.assetName
   form.assetCode = row.assetCode
   form.assetType = row.assetType
-  form.department = row.department
+  form.departmentName = row.departmentName
   form.status = row.status
-  form.createTime = row.createTime
-  form.price = row.price
+  form.purchaseDate = row.purchaseDate
+  form.purchasePrice = row.purchasePrice
+  form.count = row.count
   // 这里可以根据需要设置其他字段
   editVisible.value = true
 }
 const saveEdit = () => {
   editVisible.value = false
   ElMessage.success(`修改第 ${idx + 1} 行成功`)
+  // 更新表格数据
   tableData.value[idx].assetName = form.assetName
   tableData.value[idx].assetCode = form.assetCode
   tableData.value[idx].assetType = form.assetType
-  tableData.value[idx].department = form.department
+  tableData.value[idx].departmentName = form.departmentName
   tableData.value[idx].status = form.status
-  tableData.value[idx].createTime = form.createTime
-  tableData.value[idx].price = form.price
+  tableData.value[idx].purchaseDate = form.purchaseDate
+  tableData.value[idx].purchasePrice = form.purchasePrice
+  tableData.value[idx].count = form.count
 }
 </script>
 

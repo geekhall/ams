@@ -130,9 +130,9 @@ router.beforeEach((to, from, next) => {
 
   // const role = localStorage.getItem('ms_username')
   const permission = usePermissionStore();
-  console.log('permission', permission)
-  console.log('authRequired', authRequired)
-  console.log('token in route.ts ############# ', token)
+  // console.log('permission', permission)
+  // console.log('authRequired', authRequired)
+  // console.log('token in route.ts ############# ', token)
 
   document.title = `${to.meta.title} | AMS`
 
@@ -144,7 +144,7 @@ router.beforeEach((to, from, next) => {
     //   console.log('no permission, redirect to 403 page.')
     //   next('/403')
   } else {
-    console.log('next to page.')
+    // console.log('next to page.')
     next()
     // validate token and permission
     // axios.get('/api/user/info').then(res => {
