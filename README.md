@@ -4,7 +4,7 @@ Asset Management System
 ## 架构
 ```
 前端
-  • 框架：Vue 3 + Vite
+  • 框架：Vue3 + Vite
   • 状态管理：Pinia
   • 路由管理：Vue Router
   • UI 框架：Element Plus

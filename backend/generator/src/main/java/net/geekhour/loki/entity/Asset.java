@@ -21,7 +21,7 @@ import lombok.experimental.Accessors;
  * </p>
  *
  * @author Jasper Yang
- * @since 2025-04-05
+ * @since 2025-04-07
  */
 @Getter
 @Setter
@@ -63,6 +63,10 @@ public class Asset extends Model<Asset> {
     @ApiModelProperty("购买价格")
     @TableField("purchase_price")
     private BigDecimal purchasePrice;
+
+    @ApiModelProperty("数量")
+    @TableField("count")
+    private Integer count;
 
     @ApiModelProperty("版本号")
     @TableField("version")

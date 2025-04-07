@@ -1,13 +1,18 @@
 package net.geekhour.loki.service.impl;
 
+import net.geekhour.loki.common.StringUtil;
 import net.geekhour.loki.entity.Asset;
+import net.geekhour.loki.entity.dto.AssetDTO;
 import net.geekhour.loki.mapper.AssetMapper;
 import net.geekhour.loki.service.IAssetService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -32,11 +37,22 @@ public class AssetServiceImpl extends ServiceImpl<AssetMapper, Asset> implements
                 "data", assetMapper.selectList(null)));
     }
 
+    /**
+     * list all assets (列出所有资产)
+     * @return AssetDTO
+     */
     @Override
-    public ResponseEntity<?> getAssetList() {
+    public ResponseEntity<?> getAssetList(String name) {
+        List<AssetDTO> assetList;
+        if (name == null || name.isEmpty()) {
+            assetList = assetMapper.getAssetList(null);
+        } else {
+            assetList = assetMapper.getAssetList(name);
+        }
+
         return ResponseEntity.ok(Map.of(
                 "code", 200,
                 "message", "success!",
-                "data", assetMapper.getAssetList()));
+                "data", assetList));
     }
 }
