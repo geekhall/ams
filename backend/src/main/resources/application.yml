@@ -27,16 +27,6 @@ spring:
         # Failed to start bean 'documentationPluginsBootstrapper' in spring data rest
         # springfox3.0.0 has compatibility problem with spring boot 2.6.x
         matching-strategy: ant_path_matcher # to resolve spring fox null pointer problem
-#  security:
-#    user:
-#      name: geekhour
-#      password: geekhour
-#    oauth2:
-#      client:
-#        registration:
-#          github:
-#            client-id: Ov23lihG8uSCMvG3CKp9
-#            client-secret: b326333b3bd1a08b6e47ac2a321fcf46dc2d27dc
 
 ########################################################
 # Mybatis-plus configuration

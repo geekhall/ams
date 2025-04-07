@@ -16,5 +16,5 @@ public interface IAssetService extends IService<Asset> {
 
     ResponseEntity<?> all();
 
-    ResponseEntity<?> getAssetList(String name);
+    ResponseEntity<?> getAssetList(Integer pageIndex, Integer pageSize, String name);
 }

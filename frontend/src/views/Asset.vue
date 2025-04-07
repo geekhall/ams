@@ -215,23 +215,20 @@ let idx: number = -1
 
 // 获取表格数据
 const getData = () => {
-  const data = []
-  getAssetList()
+  getAssetList({
+    name: query.assetName,
+    pageIndex: query.pageIndex,
+    pageSize: query.pageSize
+  })
     .then((res) => {
-      // console.log('Asset.vue::::res.data=', res.data)
       if (res.code === 200) {
-        // console.log('Asset.vue::::res.data=', res.data)
-        // 按照每10行一个分页，处理数据
-        const start = (query.pageIndex - 1) * query.pageSize
-        const end = start + query.pageSize
-        tableData.value = res.data.slice(start, end)
-        pageTotal.value = res.data.length
+        tableData.value = res.data.items
+        pageTotal.value = res.data.total
       } else {
         ElMessage.error(res.message)
       }
     })
     .catch((err) => {
-      // console.error('Asset.vue::::res.data=', err)
       ElMessage.error('获取数据失败')
     })
     .finally(() => {
@@ -248,23 +245,7 @@ const handleSearch = () => {
   // 获取输入框中的值
   console.log('query.assetName', query.assetName)
   // 这里可以添加搜索逻辑
-  getAssetList({ name: query.assetName })
-    .then((res) => {
-      console.log('Asset.vue::::res.data=', res.data)
-      if (res.code === 200) {
-        tableData.value = res.data
-        pageTotal.value = res.data.length
-      } else {
-        ElMessage.error(res.message)
-      }
-    })
-    .catch((err) => {
-      console.error('Asset.vue::::res.data=', err)
-      ElMessage.error('获取数据失败')
-    })
-    .finally(() => {
-      // 这里可以添加一些清理操作
-    })
+  getData()
 }
 
 // 分页导航

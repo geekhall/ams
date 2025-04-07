@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 /**
@@ -40,25 +41,36 @@ public class AssetController {
 
     /**
      * list all assets (列出所有资产)
+     * @param requestBody {name: "资产名称", pageIndex: 1, pageSize: 10}
      * @return AssetDTO
      */
     @RequestMapping("/list")
     @PreAuthorize("hasRole('USER') || hasAuthority('system:user:list')")
     public ResponseEntity<?> getAssetList(@RequestBody(required = false) String requestBody) {
         String name = null;
+        Integer pageIndex = 1;
+        Integer pageSize = 10;
         if (requestBody != null && !requestBody.isEmpty()) {
             try {
-                Map<String, String> requestMap = new ObjectMapper().readValue(requestBody, Map.class);
-                name = requestMap.get("name");
+                Map<String, Object> requestMap = new ObjectMapper().readValue(requestBody, Map.class);
+                name = (String) requestMap.get("name");
+                pageIndex = requestMap.get("pageIndex") == null ? 1 :
+                        Integer.parseInt(requestMap.get("pageIndex").toString());
+                pageSize = requestMap.get("pageSize") == null ? 10 :
+                        Integer.parseInt(requestMap.get("pageSize").toString());
             } catch (Exception e) {
+                e.printStackTrace();
                 return ResponseEntity.badRequest().body(Map.of(
                         "code", 400,
                         "message", "Invalid request body",
-                        "data", null));
+                        "data", Map.of(
+                                "items", new ArrayList<>(),
+                                "total", 0
+                        )));
             }
         }
-        System.out.println("#### AssetController name " + name);
-        return assetService.getAssetList(name);
+        Integer offset = (pageIndex - 1) * pageSize;
+        return assetService.getAssetList(offset, pageSize, name);
     }
 
 }

@@ -42,17 +42,17 @@ public class AssetServiceImpl extends ServiceImpl<AssetMapper, Asset> implements
      * @return AssetDTO
      */
     @Override
-    public ResponseEntity<?> getAssetList(String name) {
-        List<AssetDTO> assetList;
-        if (name == null || name.isEmpty()) {
-            assetList = assetMapper.getAssetList(null);
-        } else {
-            assetList = assetMapper.getAssetList(name);
-        }
+    public ResponseEntity<?> getAssetList(Integer pageIndex, Integer pageSize, String name) {
+
+        List<AssetDTO> assetList = assetMapper.getAssetList(pageIndex, pageSize, name);
+        Integer total = assetMapper.countAssets(name);
 
         return ResponseEntity.ok(Map.of(
                 "code", 200,
                 "message", "success!",
-                "data", assetList));
+                "data", Map.of(
+                        "items", assetList,
+                        "total", total
+                )));
     }
 }

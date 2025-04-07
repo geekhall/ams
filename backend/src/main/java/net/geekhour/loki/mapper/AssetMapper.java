@@ -32,17 +32,20 @@ public interface AssetMapper extends BaseMapper<Asset> {
             "<if test='name != null and name != \"\"'> " +
             "where a.asset_name like CONCAT('%', #{name}, '%') " +
             "</if>" +
+            "order by a.id " +
+            "limit #{offset}, #{pageSize}" +
             "</script>")
-    List<AssetDTO> getAssetList(@Param("name") String name);
-//    List<AssetDTO> getAssetList();
-//
-//    @Select("select a.id, a.asset_name, a.asset_code, c.`name` as asset_type, " +
-//            "b.name as department_name, a.location, "+
-//            "CASE WHEN a.`status` = 0 THEN '正常' WHEN a.`status` = 1 THEN '报废' WHEN a.`status` = 2 THEN '维修' END as status," +
-//            "FROM_UNIXTIME(a.purchase_date/1000, '%Y-%m-%d') as purchase_date, " +
-//            "a.purchase_price, a.count from h_asset a " +
-//            "left join h_department b on a.department_id=b.id " +
-//            "left join h_asset_type c on a.asset_type = c.id " +
-//            "where a.asset_name like CONCAT('%', #{name}, '%') ")
-//    List<AssetDTO> getAssetListByName(String name);
+    List<AssetDTO> getAssetList(@Param("offset") Integer offset,
+                                @Param("pageSize") Integer pageSize,
+                                @Param("name") String name);
+
+    @Select("<script>" +
+            "select count(*) from h_asset a " +
+            "left join h_department b on a.department_id=b.id " +
+            "left join h_asset_type c on a.asset_type = c.id " +
+            "<if test='name != null and name != \"\"'> " +
+            "where a.asset_name like CONCAT('%', #{name}, '%') " +
+            "</if>" +
+            "</script>")
+    int countAssets(@Param("name") String name);
 }

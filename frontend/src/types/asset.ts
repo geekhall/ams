@@ -14,5 +14,8 @@ export interface Asset {
 export interface AssetListResponse {
   code: number;
   message: string;
-  data: Asset[];
+  data: {
+    items: Asset[];
+    total: number;
+  };
 }
