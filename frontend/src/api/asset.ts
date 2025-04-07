@@ -1,38 +1,16 @@
 import loki from "./loki";
 import { Asset, AssetListResponse } from "~/types/asset";
 
-// 获取资产列表
-export const getAssetList = async (): Promise<AssetListResponse> => {
-  return await loki.request({
-    url: "/asset/list",
-    method: "POST",
-  });
-};
+// 获取资产列表（支持分页和按名称查询）
+export const getAssetList = async (
+  params?: { pageIndex?: number; pageSize?: number; name?: string }
+): Promise<AssetListResponse> => {
+  console.log("getAssetList：：：：params", params);
 
-// 获取资产列表
-export const getAssetListByPage = async (
-  page: number,
-  size: number
-): Promise<AssetListResponse> => {
   return await loki.request({
     url: "/asset/list",
     method: "POST",
-    data: {
-      page,
-      size,
-    },
-  });
-};
-// 按照资产名称获取资产列表
-export const getAssetListByName = async (
-  assetName: string
-): Promise<AssetListResponse> => {
-  return await loki.request({
-    url: "/asset/list",
-    method: "POST",
-    data: {
-      assetName,
-    },
+    data: params || {}, // 如果没有参数，传递空对象
   });
 };
 

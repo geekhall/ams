@@ -31,6 +31,19 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
 import type { CalendarDateType, CalendarInstance } from 'element-plus'
+const dutyData = ref([
+  {
+    date: '2025-04-06',
+    day: '白班：张三',
+    night: '夜班：李四'
+  },
+  {
+    date: '2025-04-07',
+    day: '白班：王五',
+    night: '夜班：赵六'
+  }
+])
+
 const selectedDate = ref(new Date())
 const isSpecialDate = (date: Date) => {
   const specialDates = [3, 15, 20] // 特定日期数组

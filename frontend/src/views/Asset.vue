@@ -187,6 +187,7 @@ const pageTotal = ref(0)
 const userStore = useUserStore()
 // 表格编辑时弹窗和保存
 const addVisible = ref(false)
+
 let addForm = reactive({
   assetName: '测试资产1',
   assetCode: 'TEST-2025-1',
@@ -243,7 +244,26 @@ onMounted(() => {
 // 搜索操作
 const handleSearch = () => {
   query.pageIndex = 1
-  getData()
+  // 获取输入框中的值
+  console.log('query.assetName', query.assetName)
+  // 这里可以添加搜索逻辑
+  getAssetList({ name: query.assetName })
+    .then((res) => {
+      console.log('Asset.vue::::res.data=', res.data)
+      if (res.code === 200) {
+        tableData.value = res.data
+        pageTotal.value = res.data.length
+      } else {
+        ElMessage.error(res.message)
+      }
+    })
+    .catch((err) => {
+      console.error('Asset.vue::::res.data=', err)
+      ElMessage.error('获取数据失败')
+    })
+    .finally(() => {
+      // 这里可以添加一些清理操作
+    })
 }
 
 // 分页导航
