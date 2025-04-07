@@ -56,7 +56,14 @@ import { computed } from 'vue'
 import { useSidebarStore } from '~/store/sidebar'
 import { useRoute } from 'vue-router'
 
-const items = [
+interface MenuItem {
+  icon: string
+  index: string
+  title: string
+  subs?: MenuItem[]
+  permission?: string
+}
+const items: MenuItem[] = [
   {
     icon: 'HomeFilled',
     index: '/',

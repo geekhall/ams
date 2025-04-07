@@ -6,8 +6,8 @@ import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
 import path from 'path'
 import VueI18nPlugin from '@intlify/unplugin-vue-i18n/vite'
 import { fileURLToPath, URL } from "node:url";
-// import { resolve, dirname } from "node:path";
 import { dirname } from "node:path";
+import tailwindcss from "@tailwindcss/vite";
 
 // pnpm i unplugin-element-plus
 import ElementPlus from 'unplugin-element-plus/vite'
@@ -38,8 +38,8 @@ export default defineConfig({
     ElementPlus({
       // use `unplugin-auto-import` to automatically import components
       // use `unplugin-vue-components` to manually import components
-
     }),
+    tailwindcss(),
     UnoCSS({
       // presets: []
       presets: [

@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "baseUrl": ".",
+    "baseUrl": "./",
     "module": "ESNext",
     "target": "ESNext",
     "useDefineForClassFields": true,
@@ -15,6 +15,9 @@
       "vite-plugin-pages/client"
     ],
     "paths": {
+      "@/*": [
+        "src/*"
+      ],
       "~/*": [
         "src/*"
       ]

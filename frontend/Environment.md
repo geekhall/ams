@@ -1125,34 +1125,13 @@ npx vite --port=4000
 
 
 ## Data
+参考[data/loki.sql](data/loki.sql)文件
 
-```sql
-DROP TABLE IF EXISTS `h_env`;
-CREATE TABLE `h_env` (
-  `id` bigint NOT NULL COMMENT '主键ID',
-  `name` varchar(256) DEFAULT NULL COMMENT '名称',
-  `description` varchar(256) DEFAULT NULL COMMENT '描述',
-  `db_type` varchar(256) DEFAULT NULL COMMENT '数据库类型',
-  `db_host` varchar(256) DEFAULT NULL COMMENT '数据库主机',
-  `db_port` varchar(256) DEFAULT NULL COMMENT '数据库端口',
-  `db_serv_type` varchar(256) DEFAULT NULL COMMENT '数据库连接类型(0-SID,1-SERVICE)',
-  `db_serv_name` varchar(256) DEFAULT NULL COMMENT '数据库连接名称',
-  `db_name` varchar(256) DEFAULT NULL COMMENT '数据库名称',
-  `db_user` varchar(256) DEFAULT NULL COMMENT '数据库用户名',
-  `db_password` varchar(256) DEFAULT NULL COMMENT '数据库密码',
-  `app_address` varchar(256) DEFAULT NULL COMMENT '应用地址',
-  `esb_address` varchar(256) DEFAULT NULL COMMENT 'ESB地址',
-	`counter_address` varchar(256) DEFAULT NULL COMMENT '柜面地址',
-  `user_id` bigint DEFAULT NULL COMMENT '用户ID',
-  `user_name` varchar(512) DEFAULT NULL COMMENT '使用人',
-  `user_project` varchar(512) DEFAULT NULL COMMENT '使用项目',
-  `use_from` datetime DEFAULT NULL COMMENT '使用开始时间',
-  `use_to` datetime DEFAULT NULL COMMENT '使用结束时间',
-  `version` int DEFAULT NULL COMMENT '版本号',
-  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
-  `update_time` datetime DEFAULT NULL COMMENT '修改时间',
-  `deleted` tinyint unsigned NOT NULL DEFAULT '0' COMMENT '逻辑删除',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='测试环境';
-
+## 打包部署
+pnpm i -g serve
+```bash
+pnpm run build
+cd dist;
+serve
 ```
+

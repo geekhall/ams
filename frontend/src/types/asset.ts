@@ -1,5 +1,5 @@
 
-interface Asset {
+export interface Asset {
   id: string;
   assetName: string
   assetCode: string
@@ -11,7 +11,7 @@ interface Asset {
   count: number
 }
 
-interface AssetListResponse {
+export interface AssetListResponse {
   code: number;
   message: string;
   data: Asset[];

@@ -138,7 +138,7 @@ router.beforeEach((to, from, next) => {
 
   if (authRequired && !token) {
     console.log('no login, redirect to login page.')
-    next('/login')
+    next('/login?redirect=' + to.path)
     // } else if (to.meta.permission && !permission.key.includes(to.meta.permission)) {
     //   // no permission, redirect to 403 page.
     //   console.log('no permission, redirect to 403 page.')
