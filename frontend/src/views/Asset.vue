@@ -6,6 +6,7 @@
         v-model="query.assetName"
         placeholder="输入资产名称"
         class="handle-input mr10"
+        @keyup.enter.native="handleSearch"
       ></el-input>
       <el-button type="primary" :icon="Search" @click="handleSearch">搜索</el-button>
       <el-button type="primary" :icon="Plus" @click="handleAdd"> 新增 </el-button>
@@ -163,8 +164,8 @@
 import { ref, reactive, onMounted } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { Delete, Edit, Search, Plus } from '@element-plus/icons-vue'
-import { useUserStore } from '~/store/user'
-import { getAssetList } from '~/api/asset'
+import { useUserStore } from '@/store/user'
+import { getAssetList } from '@/api/asset'
 import { Asset } from '@/types/asset'
 import dayjs from 'dayjs'
 
