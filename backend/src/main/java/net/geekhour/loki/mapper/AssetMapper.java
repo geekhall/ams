@@ -29,8 +29,9 @@ public interface AssetMapper extends BaseMapper<Asset> {
             "a.purchase_price, a.count from h_asset a " +
             "left join h_department b on a.department_id=b.id " +
             "left join h_asset_type c on a.asset_type = c.id " +
+            "where a.deleted = 0 and b.deleted=0 and c.deleted=0" +
             "<if test='name != null and name != \"\"'> " +
-            "where a.asset_name like CONCAT('%', #{name}, '%') " +
+            "and a.asset_name like CONCAT('%', #{name}, '%') " +
             "</if>" +
             "order by a.id " +
             "limit #{offset}, #{pageSize}" +
@@ -43,8 +44,9 @@ public interface AssetMapper extends BaseMapper<Asset> {
             "select count(*) from h_asset a " +
             "left join h_department b on a.department_id=b.id " +
             "left join h_asset_type c on a.asset_type = c.id " +
+            "where a.deleted = 0 and b.deleted=0 and c.deleted=0" +
             "<if test='name != null and name != \"\"'> " +
-            "where a.asset_name like CONCAT('%', #{name}, '%') " +
+            "and a.asset_name like CONCAT('%', #{name}, '%') " +
             "</if>" +
             "</script>")
     int countAssets(@Param("name") String name);

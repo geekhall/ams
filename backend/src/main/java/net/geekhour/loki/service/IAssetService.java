@@ -2,7 +2,10 @@ package net.geekhour.loki.service;
 
 import net.geekhour.loki.entity.Asset;
 import com.baomidou.mybatisplus.extension.service.IService;
+import net.geekhour.loki.entity.dto.AssetDTO;
 import org.springframework.http.ResponseEntity;
+
+import java.util.List;
 
 /**
  * <p>
@@ -14,7 +17,11 @@ import org.springframework.http.ResponseEntity;
  */
 public interface IAssetService extends IService<Asset> {
 
-    ResponseEntity<?> all();
+    List<Asset> all();
 
-    ResponseEntity<?> getAssetList(Integer pageIndex, Integer pageSize, String name);
+    List<AssetDTO> getAssetList(Integer offset, Integer size, String name);
+
+    int countAssets(String name);
+
+    boolean deleteAsset(Long id);
 }

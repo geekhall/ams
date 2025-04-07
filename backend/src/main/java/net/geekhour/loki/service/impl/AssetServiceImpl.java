@@ -10,6 +10,7 @@ import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,29 +31,23 @@ public class AssetServiceImpl extends ServiceImpl<AssetMapper, Asset> implements
     AssetMapper assetMapper;
 
     @Override
-    public ResponseEntity<?> all() {
-        return ResponseEntity.ok(Map.of(
-                "code", 200,
-                "message", "success!",
-                "data", assetMapper.selectList(null)));
+    public List<Asset> all() {
+        return assetMapper.selectList(null);
     }
 
-    /**
-     * list all assets (列出所有资产)
-     * @return AssetDTO
-     */
     @Override
-    public ResponseEntity<?> getAssetList(Integer pageIndex, Integer pageSize, String name) {
+    public List<AssetDTO> getAssetList(Integer offset, Integer size, String name) {
+        return assetMapper.getAssetList(offset, size, name);
+    }
 
-        List<AssetDTO> assetList = assetMapper.getAssetList(pageIndex, pageSize, name);
-        Integer total = assetMapper.countAssets(name);
+    @Override
+    public int countAssets(String name) {
+        return assetMapper.countAssets(name);
+    }
 
-        return ResponseEntity.ok(Map.of(
-                "code", 200,
-                "message", "success!",
-                "data", Map.of(
-                        "items", assetList,
-                        "total", total
-                )));
+    @Override
+    @Transactional
+    public boolean deleteAsset(Long id) {
+        return assetMapper.deleteById(id) > 0;
     }
 }

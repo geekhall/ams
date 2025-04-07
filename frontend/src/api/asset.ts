@@ -31,11 +31,8 @@ export const deleteAssetById = async (
   id: string
 ): Promise<AssetListResponse> => {
   return await loki.request({
-    url: "/asset/delete",
-    method: "POST",
-    data: {
-      id,
-    },
+    url: "/asset/delete/" + id,
+    method: "DELETE",
   });
 };
 // 按照资产ID获取资产信息

@@ -165,7 +165,7 @@ import { ref, reactive, onMounted } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { Delete, Edit, Search, Plus } from '@element-plus/icons-vue'
 import { useUserStore } from '@/store/user'
-import { getAssetList } from '@/api/asset'
+import { deleteAssetById, getAssetList } from '@/api/asset'
 import { Asset } from '@/types/asset'
 import dayjs from 'dayjs'
 
@@ -316,8 +316,21 @@ const handleDelete = (index: number) => {
     type: 'warning'
   })
     .then(() => {
-      ElMessage.success('删除成功')
-      tableData.value.splice(index, 1)
+      // 删除操作
+      deleteAssetById(tableData.value[index].id)
+        .then((res) => {
+          if (res.code === 200) {
+            ElMessage.success('删除成功')
+            // tableData.value.splice(index, 1)
+            // 更新表格数据
+            getData()
+          } else {
+            ElMessage.error(res.message)
+          }
+        })
+        .catch((err) => {
+          ElMessage.error('删除失败')
+        })
     })
     .catch(() => {})
 }
