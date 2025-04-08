@@ -1,5 +1,6 @@
 package net.geekhour.loki.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import net.geekhour.loki.entity.AssetType;
 import net.geekhour.loki.mapper.AssetTypeMapper;
 import net.geekhour.loki.service.IAssetTypeService;
@@ -35,4 +36,12 @@ public class AssetTypeServiceImpl extends ServiceImpl<AssetTypeMapper, AssetType
     public boolean deleteAssetType(Long id) {
         return assetTypeMapper.deleteById(id) > 0;
     }
+
+    @Override
+    public boolean existsByName(String name) {
+        QueryWrapper<AssetType> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("name", name);
+        return assetTypeMapper.selectCount(queryWrapper) > 0;
+    }
+
 }

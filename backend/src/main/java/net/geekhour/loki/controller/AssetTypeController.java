@@ -77,10 +77,28 @@ public class AssetTypeController {
     }
 
     // Update an existing AssetType
-    @PutMapping("/update")
+    @PostMapping("/update")
     @PreAuthorize("hasRole('ADMIN') || hasAuthority('system:asset:update')")
     public ResponseEntity<?> update(@RequestBody AssetType assetType) {
-        boolean updated = assetTypeService.updateById(assetType);
+        if (assetType.getId() == null) {
+            return ResponseEntity.badRequest().body(Map.of(
+                    "code", 400,
+                    "message", "AssetType ID cannot be null",
+                    "data", ""
+            ));
+        }
+        boolean updated = false;
+        try {
+            updated = assetTypeService.updateById(assetType);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(500).body(Map.of(
+                    "code", 500,
+                    "message", "Failed to update AssetType",
+                    "data", ""
+            ));
+        }
+
         if (updated) {
             return ResponseEntity.ok(Map.of(
                     "code", 200,
@@ -105,6 +123,42 @@ public class AssetTypeController {
             return ResponseEntity.ok(Map.of(
                     "code", 200,
                     "message", "AssetType deleted successfully",
+                    "data", ""
+            ));
+        } else {
+            return ResponseEntity.status(404).body(Map.of(
+                    "code", 404,
+                    "message", "AssetType not found",
+                    "data", ""
+            ));
+        }
+    }
+    // check if AssetType is exists
+    @PostMapping("/exists")
+    @PreAuthorize("hasRole('USER') || hasAuthority('system:asset:exists')")
+    public ResponseEntity<?> existsByName(@RequestBody AssetType assetType) {
+        if (assetType.getName() == null || assetType.getName().isEmpty()) {
+            return ResponseEntity.badRequest().body(Map.of(
+                    "code", 400,
+                    "message", "AssetType name cannot be empty",
+                    "data", ""
+            ));
+        }
+        boolean exists = false;
+        try {
+            exists = assetTypeService.existsByName(assetType.getName());
+        }catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(500).body(Map.of(
+                    "code", 500,
+                    "message", "Failed to check AssetType",
+                    "data", ""
+            ));
+        }
+        if (exists) {
+            return ResponseEntity.ok(Map.of(
+                    "code", 200,
+                    "message", "AssetType exists",
                     "data", ""
             ));
         } else {
