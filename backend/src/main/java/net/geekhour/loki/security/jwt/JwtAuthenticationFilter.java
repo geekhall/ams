@@ -1,6 +1,7 @@
 package net.geekhour.loki.security.jwt;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -71,7 +72,16 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         // 解析JWT，获取用户信息
         String token = authHeader.substring(7);
         System.out.println("########## JwtAuthenticationFilter.doFilterInternal:002  token: " + token);
-        Claims claims = JwtUtil.parseToken(token);
+        Claims claims = null;
+        try {
+            claims = JwtUtil.parseToken(token);
+        } catch (ExpiredJwtException e) {
+            // 返回401状态码，表示token过期，强制前端页面重新登录
+            System.out.println("########## JwtAuthenticationFilter.doFilterInternal:002  token过期" );
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.getWriter().write("token过期");
+            return;
+        }
         Long userid = Long.parseLong(claims.getSubject());
         String username = claims.get("username", String.class);
         System.out.println("########## JwtAuthenticationFilter.doFilterInternal:003  userid: " + userid);
