@@ -390,28 +390,6 @@ server: {
 
 ```
 
-在组件或者ts中使用Axios：
-
-```ts
-export const getLokiData = (api_url: string, api_method: MethodType ) => {
-  return request({
-    url: api_url,
-    method: api_method
-  } as AxiosRequestConfig)
-}
-
-// 获取表格数据
-const getData = () => {
-  getLokiData('/teacher/all', MethodType.GET)
-    .then((res) => {
-      tableData.value = res.data.items
-      pageTotal.value = res.data.pageTotal || 50
-    })
-    .catch((err) => {
-      ElMessage.error(err)
-    })
-}
-```
 
 ## 6. 安装及配置vue-i18n，添加国际化支持
 
