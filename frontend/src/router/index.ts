@@ -113,12 +113,8 @@ const routes: RouteRecordRaw[] = [
 
 // 3. Create the router instance and pass the `routes` option
 const router = createRouter({
-  // createWebHashHistory // (hash路由)
-  // createWebHistory // (history路由)
-  // createMemoryHistory // (内存路由)
-  // 添加baseUrl， createWebHistory({ base: '/base/' })
   history: createWebHistory(),
-  routes // short for `routes: routes`
+  routes
 })
 
 // 4. Add route guards（路由守卫）
@@ -139,6 +135,7 @@ router.beforeEach((to, from, next) => {
   if (authRequired && !token) {
     console.log('no login, redirect to login page.')
     next('/login?redirect=' + to.path)
+    // TODO: Permission check
     // } else if (to.meta.permission && !permission.key.includes(to.meta.permission)) {
     //   // no permission, redirect to 403 page.
     //   console.log('no permission, redirect to 403 page.')
