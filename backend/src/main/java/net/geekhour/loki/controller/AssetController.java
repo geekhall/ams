@@ -73,7 +73,7 @@ public class AssetController {
         }
         Integer offset = (pageIndex - 1) * pageSize;
         List<AssetDTO> assetList = assetService.getAssetList(offset, pageSize, name);
-        int total = assetService.countAssets(name);
+        Long total = assetService.countAssets(name);
         return ResponseEntity.ok(Map.of(
                 "code", 200,
                 "message", "success!",

@@ -20,4 +20,6 @@ public interface IAssetTypeService extends IService<AssetType> {
     boolean deleteAssetType(Long id);
 
     boolean existsByName(String name);
+
+    Long countAssetType();
 }

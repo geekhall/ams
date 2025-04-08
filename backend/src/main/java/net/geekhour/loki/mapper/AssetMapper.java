@@ -49,5 +49,5 @@ public interface AssetMapper extends BaseMapper<Asset> {
             "and a.asset_name like CONCAT('%', #{name}, '%') " +
             "</if>" +
             "</script>")
-    int countAssets(@Param("name") String name);
+    Long countAssets(@Param("name") String name);
 }

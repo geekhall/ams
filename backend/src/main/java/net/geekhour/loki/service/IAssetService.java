@@ -21,7 +21,7 @@ public interface IAssetService extends IService<Asset> {
 
     List<AssetDTO> getAssetList(Integer offset, Integer size, String name);
 
-    int countAssets(String name);
+    Long countAssets(String name);
 
     boolean deleteAsset(Long id);
 }

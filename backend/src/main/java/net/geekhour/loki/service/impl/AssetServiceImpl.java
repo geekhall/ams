@@ -41,7 +41,7 @@ public class AssetServiceImpl extends ServiceImpl<AssetMapper, Asset> implements
     }
 
     @Override
-    public int countAssets(String name) {
+    public Long countAssets(String name) {
         return assetMapper.countAssets(name);
     }
 

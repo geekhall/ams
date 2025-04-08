@@ -44,4 +44,9 @@ public class AssetTypeServiceImpl extends ServiceImpl<AssetTypeMapper, AssetType
         return assetTypeMapper.selectCount(queryWrapper) > 0;
     }
 
+    @Override
+    public Long countAssetType() {
+        return assetTypeMapper.selectCount(null);
+    }
+
 }
