@@ -123,8 +123,9 @@ const handleCommand = (command: string) => {
   height: 70px;
   font-size: 22px;
   color: white;
-  // background-color: #2c2e3a;
-  background-color: #d32d2a;
+  // background-color: #2c2e3a; // dark
+  // background-color: #d32d2a; // 盛京红
+  background: linear-gradient(135deg, #d32d2a, #ff5733);
 }
 .collapse-btn {
   display: flex;
