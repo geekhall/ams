@@ -1,17 +1,19 @@
+import { AxiosRequestConfig } from "axios";
 import loki from "./loki";
 import { Asset, AssetListResponse } from "~/types/asset";
+
 
 // 获取资产列表（支持分页和按名称查询）
 export const getAssetList = async (
   params?: { pageIndex?: number; pageSize?: number; name?: string }
 ): Promise<AssetListResponse> => {
-  console.log("getAssetList：：：：params", params);
 
   return await loki.request({
     url: "/asset/list",
     method: "POST",
     data: params || {}, // 如果没有参数，传递空对象
-  });
+  } as AxiosRequestConfig);
+
 };
 
 // 按照资产ID更新资产信息
@@ -24,7 +26,7 @@ export const updateAssetById = async (
     data: {
       ...asset,
     },
-  });
+  } as AxiosRequestConfig);
 };
 // 按照资产ID删除资产
 export const deleteAssetById = async (
@@ -33,7 +35,7 @@ export const deleteAssetById = async (
   return await loki.request({
     url: "/asset/delete/" + id,
     method: "DELETE",
-  });
+  } as AxiosRequestConfig);
 };
 // 按照资产ID获取资产信息
 export const getAssetById = async (
@@ -45,7 +47,7 @@ export const getAssetById = async (
     data: {
       id,
     },
-  });
+  } as AxiosRequestConfig);
 };
 
 // 添加资产
@@ -58,7 +60,7 @@ export const addAsset = async (
     data: {
       ...asset,
     },
-  });
+  } as AxiosRequestConfig);
 };
 
 // 批量删除资产
@@ -71,7 +73,7 @@ export const deleteAssets = async (
     data: {
       ids,
     },
-  });
+  } as AxiosRequestConfig);
 };
 
 // 批量更新资产
@@ -84,6 +86,6 @@ export const updateAssets = async (
     data: {
       assets,
     },
-  });
+  } as AxiosRequestConfig);
 };
 

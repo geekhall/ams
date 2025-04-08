@@ -166,7 +166,7 @@ import { ElMessage, ElMessageBox } from 'element-plus'
 import { Delete, Edit, Search, Plus } from '@element-plus/icons-vue'
 import { useUserStore } from '@/store/user'
 import { deleteAssetById, getAssetList } from '@/api/asset'
-import { Asset } from '@/types/asset'
+import { type Asset } from '@/types/asset'
 import dayjs from 'dayjs'
 
 const query = reactive({

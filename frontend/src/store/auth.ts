@@ -2,7 +2,7 @@
 // 调用顺序：Vue组件 -> Pinia存储模块(store/auth.ts) -> API模块(api/loki.ts) -> Axios
 import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
-import { User, AuthState, AuthResponse } from '~/types/auth'
+import { User, AuthResponse } from '~/types/auth'
 import axios from 'axios'
 import loki from '~/api/loki'
 export const useAuthStore = defineStore('auth', () => {

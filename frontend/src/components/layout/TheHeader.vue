@@ -80,7 +80,6 @@ import { onMounted } from 'vue'
 import { useSidebarStore } from '~/store/sidebar'
 import { useRouter } from 'vue-router'
 import imgurl from '~/assets/img/avatar.png'
-import logoUrl from '~/assets/img/logo-only-white-70.png'
 import { SwitchButton } from '@element-plus/icons-vue'
 import { useAuthStore } from '~/store/auth'
 

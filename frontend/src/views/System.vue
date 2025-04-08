@@ -83,8 +83,6 @@
 import { ref, reactive, onMounted } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { Delete, Edit, Search, Plus } from '@element-plus/icons-vue'
-import { getLokiData } from '../api/index'
-import { MethodType } from '~/utils/types'
 import { useUserStore } from '~/store/user'
 
 interface TableItem {
@@ -107,16 +105,7 @@ const pageTotal = ref(0)
 const userStore = useUserStore()
 
 // 获取表格数据
-const getData = () => {
-  // getLokiData('/api/user/list', MethodType.POST)
-  //   .then((res) => {
-  //     tableData.value = res.data.items
-  //     pageTotal.value = res.data.pageTotal || 50
-  //   })
-  //   .catch((err) => {
-  //     ElMessage.error(err)
-  //   })
-}
+const getData = () => {}
 onMounted(() => {
   getData()
 })
