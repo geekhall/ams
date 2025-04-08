@@ -144,19 +144,7 @@ router.beforeEach((to, from, next) => {
     //   console.log('no permission, redirect to 403 page.')
     //   next('/403')
   } else {
-    // console.log('next to page.')
     next()
-    // validate token and permission
-    // axios.get('/api/user/info').then(res => {
-    //   if (res.data.code === 200) {
-    //     next()
-    //   } else {
-    //     next('/login')
-    //   }
-    // }).catch(err => {
-    //   console.log(err)
-    //   next('/login')
-    // })
   }
 })
 

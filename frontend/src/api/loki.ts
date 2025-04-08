@@ -1,7 +1,7 @@
 // Axios 请求拦截器和响应拦截器
 // 调用顺序：Vue组件 -> Pinia存储模块(store/auth.ts) -> API模块(api/loki.ts) -> Axios
 
-import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios';
+import axios from 'axios';
 import { useAuthStore } from '~/store/auth';
 const API_URL = "http://localhost:4000/api"
 
