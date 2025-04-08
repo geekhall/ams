@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.List;
@@ -42,7 +43,24 @@ public class AssetTypeController {
     @PostMapping("/create")
     @PreAuthorize("hasRole('ADMIN') || hasAuthority('system:asset:create')")
     public ResponseEntity<?> create(@RequestBody AssetType assetType) {
-        boolean saved = assetTypeService.save(assetType);
+        boolean saved = false;
+        try {
+            if (assetType.getName() == null || assetType.getName().isEmpty()) {
+                return ResponseEntity.badRequest().body(Map.of(
+                        "code", 400,
+                        "message", "AssetType name cannot be empty",
+                        "data", ""
+                ));
+            }
+            saved = assetTypeService.save(assetType);
+        }catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(500).body(Map.of(
+                    "code", 500,
+                    "message", "Failed to create AssetType",
+                    "data", ""
+            ));
+        }
         if (saved) {
             return ResponseEntity.ok(Map.of(
                     "code", 200,

@@ -1,11 +1,6 @@
 package net.geekhour.loki.entity;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableLogic;
-import com.baomidou.mybatisplus.annotation.TableName;
-import com.baomidou.mybatisplus.annotation.Version;
+import com.baomidou.mybatisplus.annotation.*;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 import java.io.Serializable;
 import io.swagger.annotations.ApiModel;
@@ -47,13 +42,13 @@ public class AssetType extends Model<AssetType> {
     @Version
     private Integer version;
 
-    @ApiModelProperty("创建日期")
-    @TableField("create_date")
-    private Long createDate;
+    @ApiModelProperty("创建时间")
+    @TableField(value = "create_time", fill = FieldFill.INSERT)
+    private Long createTime;
 
-    @ApiModelProperty("更新日期")
-    @TableField("update_date")
-    private Long updateDate;
+    @ApiModelProperty("更新时间")
+    @TableField(value = "update_time", fill = FieldFill.INSERT_UPDATE)
+    private Long updateTime;
 
     @ApiModelProperty("逻辑删除")
     @TableField("deleted")

@@ -8,15 +8,15 @@
         <result column="name" property="name" />
         <result column="parent_id" property="parentId" />
         <result column="version" property="version" />
-        <result column="create_date" property="createDate" />
-        <result column="update_date" property="updateDate" />
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime" />
         <result column="deleted" property="deleted" />
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
         id,
-        name, parent_id, version, create_date, update_date, deleted
+        name, parent_id, version, create_time, update_time, deleted
     </sql>
 
 </mapper>

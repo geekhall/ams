@@ -15,15 +15,15 @@
         <result column="purchase_price" property="purchasePrice" />
         <result column="count" property="count" />
         <result column="version" property="version" />
-        <result column="create_date" property="createDate" />
-        <result column="update_date" property="updateDate" />
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime" />
         <result column="deleted" property="deleted" />
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
         id,
-        asset_name, asset_code, asset_type, department_id, location, status, purchase_date, purchase_price, count, version, create_date, update_date, deleted
+        asset_name, asset_code, asset_type, department_id, location, status, purchase_date, purchase_price, count, version, create_time, update_time, deleted
     </sql>
 
 </mapper>

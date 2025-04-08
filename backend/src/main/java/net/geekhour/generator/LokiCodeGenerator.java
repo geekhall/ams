@@ -50,7 +50,7 @@ public class LokiCodeGenerator {
                 .columnNaming(NamingStrategy.underline_to_camel)
                 .addSuperEntityColumns("id", "created_by", "created_time", "updated_by", "updated_time")
                 .addTableFills(new Column("create_time", FieldFill.INSERT))
-                .addTableFills(new Property("updateTime", FieldFill.INSERT_UPDATE))
+                .addTableFills(new Property("update_time", FieldFill.INSERT_UPDATE))
                 .idType(IdType.AUTO)
                 .build();
 
