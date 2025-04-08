@@ -4,7 +4,12 @@ import net.geekhour.loki.entity.AssetType;
 import net.geekhour.loki.mapper.AssetTypeMapper;
 import net.geekhour.loki.service.IAssetTypeService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Collection;
+import java.util.List;
 
 /**
  * <p>
@@ -17,4 +22,17 @@ import org.springframework.stereotype.Service;
 @Service
 public class AssetTypeServiceImpl extends ServiceImpl<AssetTypeMapper, AssetType> implements IAssetTypeService {
 
+    @Autowired
+    AssetTypeMapper assetTypeMapper;
+
+    @Override
+    public List<AssetType> list() {
+        return assetTypeMapper.selectList(null);
+    }
+
+    @Override
+    @Transactional
+    public boolean deleteAssetType(Long id) {
+        return assetTypeMapper.deleteById(id) > 0;
+    }
 }

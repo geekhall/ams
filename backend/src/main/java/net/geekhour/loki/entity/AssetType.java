@@ -31,6 +31,9 @@ public class AssetType extends Model<AssetType> {
 
     private static final long serialVersionUID = 1L;
 
+    @ApiModelProperty("主键ID")
+    private Long id;
+
     @ApiModelProperty("资产类型名称")
     @TableField("name")
     private String name;

@@ -71,28 +71,23 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         // 解析JWT，获取用户信息
         String token = authHeader.substring(7);
-        System.out.println("########## JwtAuthenticationFilter.doFilterInternal:002  token: " + token);
         Claims claims = null;
         try {
             claims = JwtUtil.parseToken(token);
         } catch (ExpiredJwtException e) {
             // 返回401状态码，表示token过期，强制前端页面重新登录
-            System.out.println("########## JwtAuthenticationFilter.doFilterInternal:002  token过期" );
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             response.getWriter().write("token过期");
             return;
         }
         Long userid = Long.parseLong(claims.getSubject());
         String username = claims.get("username", String.class);
-        System.out.println("########## JwtAuthenticationFilter.doFilterInternal:003  userid: " + userid);
-        System.out.println("########## JwtAuthenticationFilter.doFilterInternal:003  username: " + username);
         // 从Redis中获取用户信息
         UserDetailsImpl userDetails = redisCache.getCacheObject(SecurityConstants.REDIS_KEY_PREFIX + userid);
 
         if (Objects.isNull(userDetails)) {
             throw new RuntimeException("用户未登录");
         }
-        System.out.println("########## JwtAuthenticationFilter.doFilterInternal:004  userDetails: " + userDetails);
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
                 new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
         usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
