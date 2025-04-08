@@ -27,6 +27,20 @@ public class AssetTypeController {
     @Autowired
     IAssetTypeService assetTypeService;
 
+    @RequestMapping("/names")
+    @PreAuthorize("hasRole('USER') || hasAuthority('system:asset:all')")
+    public ResponseEntity<?> names() {
+        List<String> assetTypes = assetTypeService.list().stream()
+                .map(AssetType::getName)
+                .toList();
+
+        return ResponseEntity.ok(Map.of(
+                "code", 200,
+                "message", "success!",
+                "data", assetTypes
+        ));
+    }
+
     @RequestMapping("/list")
     @PreAuthorize("hasRole('USER') || hasAuthority('system:user:list')")
     public ResponseEntity<?> list() {
