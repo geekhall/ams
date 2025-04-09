@@ -1,6 +1,6 @@
 import { AxiosRequestConfig } from "axios";
 import loki from "./loki";
-import { Asset, AssetListResponse } from "~/types/asset";
+import { Asset, AssetListResponse, AssetNamesResponse, AssetTypeListResponse } from "~/types/asset";
 
 
 // 获取资产列表（支持分页和按名称查询）
@@ -89,3 +89,18 @@ export const updateAssets = async (
   } as AxiosRequestConfig);
 };
 
+// 获取资产类型名
+export const getAssetNames = async (): Promise<AssetNamesResponse> => {
+  return await loki.request({
+    url: "/at/names",
+    method: "POST",
+  } as AxiosRequestConfig);
+};
+
+// 获取资产类型列表
+export const getAssetTypeList = async (): Promise<AssetTypeListResponse> => {
+  return await loki.request({
+    url: "/at/list",
+    method: "POST",
+  } as AxiosRequestConfig);
+};

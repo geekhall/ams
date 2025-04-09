@@ -59,6 +59,7 @@
         @current-change="handlePageChange"
       ></el-pagination>
     </div>
+
     <!-- 新增弹出框 -->
     <el-dialog title="新增资产" v-model="addVisible" width="30%">
       <el-form label-width="70px">
@@ -69,7 +70,14 @@
           <el-input v-model="addForm.assetCode"></el-input>
         </el-form-item>
         <el-form-item label="资产类型">
-          <el-input v-model="addForm.assetType"></el-input>
+          <el-select v-model="addForm.assetType" placeholder="请选择">
+            <el-option
+              v-for="item in assetTypes"
+              :key="item.name"
+              :label="item.name"
+              :value="item.name"
+            ></el-option>
+          </el-select>
         </el-form-item>
         <el-form-item label="所属部门">
           <el-input v-model="addForm.departmentName"></el-input>
@@ -165,10 +173,25 @@ import { ref, reactive, onMounted } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { Delete, Edit, Search, Plus } from '@element-plus/icons-vue'
 import { useUserStore } from '@/store/user'
-import { deleteAssetById, getAssetList } from '@/api/asset'
-import { type Asset } from '@/types/asset'
+import { deleteAssetById, getAssetList, getAssetTypeList } from '@/api/asset'
+import { AssetTypeListResponse, type Asset, AssetType } from '@/types/asset'
 import dayjs from 'dayjs'
 
+const assetTypes = ref<AssetType[]>([])
+// 获取资产类型列表
+const getAssetTypes = () => {
+  console.log('getAssetTypes')
+
+  getAssetTypeList().then((res: AssetTypeListResponse) => {
+    if (res.code === 200) {
+      console.log('getAssetTypes res.data:', res.data)
+      assetTypes.value = res.data
+    } else {
+      ElMessage.error(res.message)
+    }
+  })
+  // assetTypes.value = res.data
+}
 const query = reactive({
   id: '',
   assetName: '',
@@ -184,6 +207,7 @@ const query = reactive({
   pageSize: 10
 })
 const tableData = ref<Asset[]>([])
+
 const pageTotal = ref(0)
 const userStore = useUserStore()
 // 表格编辑时弹窗和保存
@@ -256,10 +280,12 @@ const handlePageChange = (val: number) => {
 
 // 新增操作
 const handleAdd = () => {
+  getAssetTypes()
   addVisible.value = true
   // 这里可以添加新增逻辑
 }
 
+// 编辑操作
 const handleEdit = (index: number, row: any) => {
   idx = index
   editForm.id = row.id
@@ -275,6 +301,8 @@ const handleEdit = (index: number, row: any) => {
   editVisible.value = true
   // 更新后台数据
 }
+
+// 保存新增操作
 const saveAdd = () => {
   addVisible.value = false
   // 添加至后台的逻辑
@@ -295,6 +323,7 @@ const saveAdd = () => {
   getData()
 }
 
+// 保存编辑操作
 const saveEdit = () => {
   editVisible.value = false
   ElMessage.success(`修改第 ${idx + 1} 行成功`)

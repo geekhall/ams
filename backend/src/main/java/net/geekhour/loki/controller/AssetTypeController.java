@@ -30,6 +30,7 @@ public class AssetTypeController {
     @RequestMapping("/names")
     @PreAuthorize("hasRole('USER') || hasAuthority('system:asset:all')")
     public ResponseEntity<?> names() {
+        System.out.println("【AssetType】 controller 【names】 method called ...");
         List<String> assetTypes = assetTypeService.list().stream()
                 .map(AssetType::getName)
                 .toList();
@@ -44,7 +45,7 @@ public class AssetTypeController {
     @RequestMapping("/list")
     @PreAuthorize("hasRole('USER') || hasAuthority('system:user:list')")
     public ResponseEntity<?> list() {
-
+        System.out.println("【AssetType】 controller 【list】 method called ...");
         List<AssetType> assetTypes = assetTypeService.list();
         return ResponseEntity.ok(Map.of(
                 "code", 200,

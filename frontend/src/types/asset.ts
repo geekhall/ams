@@ -1,6 +1,6 @@
 
 export interface Asset {
-  id: string;
+  id: string
   assetName: string
   assetCode: string
   assetType: string
@@ -12,10 +12,29 @@ export interface Asset {
 }
 
 export interface AssetListResponse {
-  code: number;
-  message: string;
+  code: number
+  message: string
   data: {
-    items: Asset[];
-    total: number;
+    items: Asset[]
+    total: number
   };
+}
+
+export interface AssetNamesResponse {
+  code: number
+  message: string
+  data: {
+    names: string[]
+  };
+}
+
+export interface AssetType {
+  id: string
+  name: string
+}
+
+export interface AssetTypeListResponse {
+  code: number
+  message: string
+  data: AssetType[]
 }
