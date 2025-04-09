@@ -115,6 +115,7 @@
         </span>
       </template>
     </el-dialog>
+
     <!-- 编辑弹出框 -->
     <el-dialog title="编辑" v-model="editVisible" width="30%">
       <el-form label-width="70px">
@@ -128,7 +129,14 @@
           <el-input v-model="editForm.assetCode"></el-input>
         </el-form-item>
         <el-form-item label="资产类型">
-          <el-input v-model="editForm.assetType"></el-input>
+          <el-select v-model="editForm.assetType" placeholder="请选择">
+            <el-option
+              v-for="item in assetTypes"
+              :key="item.name"
+              :label="item.name"
+              :value="item.name"
+            ></el-option>
+          </el-select>
         </el-form-item>
         <el-form-item label="所属部门">
           <el-input v-model="editForm.departmentName"></el-input>
@@ -287,6 +295,7 @@ const handleAdd = () => {
 
 // 编辑操作
 const handleEdit = (index: number, row: any) => {
+  getAssetTypes()
   idx = index
   editForm.id = row.id
   editForm.assetName = row.assetName
