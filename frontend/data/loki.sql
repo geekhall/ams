@@ -11,7 +11,7 @@
  Target Server Version : 80032 (8.0.32)
  File Encoding         : 65001
 
- Date: 08/03/2025 18:08:25
+ Date: 09/04/2025 09:16:01
 */
 
 SET NAMES utf8mb4;
@@ -42,6 +42,113 @@ BEGIN;
 INSERT INTO `h_article` (`id`, `title`, `subtitle`, `summary`, `content`, `author_id`, `version`, `create_date`, `update_date`, `deleted`) VALUES (1, 'Spring Boot 教程', '快速入门指南', '介绍 Spring Boot 的基本概念', 'Spring Boot 是一个简化 Spring 开发的框架...', 1, 1, 1739284914, 1739284914, 0);
 INSERT INTO `h_article` (`id`, `title`, `subtitle`, `summary`, `content`, `author_id`, `version`, `create_date`, `update_date`, `deleted`) VALUES (2, 'MySQL 优化', '提升数据库性能的技巧', '本文分享了 MySQL 性能优化的方法', '在大规模数据应用中，优化 MySQL 是至关重要的...', 2, 1, 1739284914, 1739284914, 0);
 INSERT INTO `h_article` (`id`, `title`, `subtitle`, `summary`, `content`, `author_id`, `version`, `create_date`, `update_date`, `deleted`) VALUES (3, '微服务架构', '探索分布式系统设计', '微服务架构的基本思想和实践', '微服务是一种架构风格，它强调将应用拆分成多个独立的服务...', 3, 1, 1739284914, 1739284914, 0);
+COMMIT;
+
+-- ----------------------------
+-- Table structure for h_asset
+-- ----------------------------
+DROP TABLE IF EXISTS `h_asset`;
+CREATE TABLE `h_asset` (
+  `id` bigint NOT NULL COMMENT '主键ID',
+  `asset_name` varchar(255) NOT NULL COMMENT '资产名称',
+  `asset_code` varchar(255) NOT NULL COMMENT '资产编号',
+  `asset_type` bigint NOT NULL COMMENT '资产类型(外键关联h_asset_type)',
+  `department_id` bigint NOT NULL COMMENT '所属部门（外键关联h_department)',
+  `location` varchar(255) DEFAULT NULL COMMENT '存放地点',
+  `status` int NOT NULL DEFAULT '0' COMMENT '状态 0-正常 1-报废 2-维修',
+  `purchase_date` bigint DEFAULT NULL COMMENT '购入日期',
+  `purchase_price` decimal(10,2) DEFAULT '0.00' COMMENT '购买价格',
+  `count` int DEFAULT '1' COMMENT '数量',
+  `version` int DEFAULT '1' COMMENT '版本号',
+  `create_time` bigint DEFAULT NULL COMMENT '创建时间',
+  `update_time` bigint DEFAULT NULL COMMENT '修改时间',
+  `deleted` tinyint unsigned NOT NULL DEFAULT '0' COMMENT '逻辑删除',
+  PRIMARY KEY (`id`) USING BTREE,
+  UNIQUE KEY `asset_code` (`asset_code`),
+  UNIQUE KEY `asset_name` (`asset_name`),
+  UNIQUE KEY `asset_code_2` (`asset_code`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+
+-- ----------------------------
+-- Records of h_asset
+-- ----------------------------
+BEGIN;
+INSERT INTO `h_asset` (`id`, `asset_name`, `asset_code`, `asset_type`, `department_id`, `location`, `status`, `purchase_date`, `purchase_price`, `count`, `version`, `create_time`, `update_time`, `deleted`) VALUES (1, 'Dell电脑', 'DELL-2025', 1, 1, '科技部', 0, 1672531200000, 12000.00, 5, 1, 1672531200000, NULL, 0);
+INSERT INTO `h_asset` (`id`, `asset_name`, `asset_code`, `asset_type`, `department_id`, `location`, `status`, `purchase_date`, `purchase_price`, `count`, `version`, `create_time`, `update_time`, `deleted`) VALUES (2, '服务器', 'IP14-2023', 2, 1, '科技部', 0, 1672531200000, 8000.00, 10, 1, 1672531200000, NULL, 0);
+INSERT INTO `h_asset` (`id`, `asset_name`, `asset_code`, `asset_type`, `department_id`, `location`, `status`, `purchase_date`, `purchase_price`, `count`, `version`, `create_time`, `update_time`, `deleted`) VALUES (3, '交换机', 'DXPS-2023', 3, 2, '会议室', 0, 1672531200000, 10000.00, 2, 1, 1672531200000, NULL, 0);
+INSERT INTO `h_asset` (`id`, `asset_name`, `asset_code`, `asset_type`, `department_id`, `location`, `status`, `purchase_date`, `purchase_price`, `count`, `version`, `create_time`, `update_time`, `deleted`) VALUES (4, '路由器', 'RTP-2023', 4, 2, '科技部', 0, 1672531200000, 5000.00, 1, 1, 1672531200000, NULL, 0);
+INSERT INTO `h_asset` (`id`, `asset_name`, `asset_code`, `asset_type`, `department_id`, `location`, `status`, `purchase_date`, `purchase_price`, `count`, `version`, `create_time`, `update_time`, `deleted`) VALUES (5, '打印机', 'PRT-2023', 5, 3, '科技部', 0, 1672531200000, 3000.00, 1, 1, 1672531200000, NULL, 0);
+INSERT INTO `h_asset` (`id`, `asset_name`, `asset_code`, `asset_type`, `department_id`, `location`, `status`, `purchase_date`, `purchase_price`, `count`, `version`, `create_time`, `update_time`, `deleted`) VALUES (6, '显示器', 'MON-2023', 6, 3, '科技部', 0, 1672531200000, 2000.00, 2, 1, 1672531200000, NULL, 0);
+INSERT INTO `h_asset` (`id`, `asset_name`, `asset_code`, `asset_type`, `department_id`, `location`, `status`, `purchase_date`, `purchase_price`, `count`, `version`, `create_time`, `update_time`, `deleted`) VALUES (7, '手机', 'IPHONE-2023', 7, 4, '科技部', 0, 1672531200000, 8000.00, 10, 1, 1672531200000, NULL, 0);
+INSERT INTO `h_asset` (`id`, `asset_name`, `asset_code`, `asset_type`, `department_id`, `location`, `status`, `purchase_date`, `purchase_price`, `count`, `version`, `create_time`, `update_time`, `deleted`) VALUES (8, '平板', 'IPAD-2023', 8, 4, '科技部', 0, 1672531200000, 6000.00, 5, 1, 1672531200000, NULL, 0);
+INSERT INTO `h_asset` (`id`, `asset_name`, `asset_code`, `asset_type`, `department_id`, `location`, `status`, `purchase_date`, `purchase_price`, `count`, `version`, `create_time`, `update_time`, `deleted`) VALUES (9, '投影仪', 'PJT-2023', 9, 5, '会议室', 0, 1672531200000, 7000.00, 2, 1, 1672531200000, NULL, 0);
+INSERT INTO `h_asset` (`id`, `asset_name`, `asset_code`, `asset_type`, `department_id`, `location`, `status`, `purchase_date`, `purchase_price`, `count`, `version`, `create_time`, `update_time`, `deleted`) VALUES (10, '音响', 'SPK-2023', 10, 5, '会议室', 0, 1672531200000, 4000.00, 1, 1, 1672531200000, NULL, 0);
+INSERT INTO `h_asset` (`id`, `asset_name`, `asset_code`, `asset_type`, `department_id`, `location`, `status`, `purchase_date`, `purchase_price`, `count`, `version`, `create_time`, `update_time`, `deleted`) VALUES (11, '摄像头', 'CAM-2023', 11, 6, '科技部', 0, 1672531200000, 1500.00, 3, 1, 1672531200000, NULL, 0);
+INSERT INTO `h_asset` (`id`, `asset_name`, `asset_code`, `asset_type`, `department_id`, `location`, `status`, `purchase_date`, `purchase_price`, `count`, `version`, `create_time`, `update_time`, `deleted`) VALUES (12, '监控设备', 'CCTV-2023', 12, 6, '科技部', 0, 1672531200000, 5000.00, 2, 1, 1672531200000, NULL, 0);
+INSERT INTO `h_asset` (`id`, `asset_name`, `asset_code`, `asset_type`, `department_id`, `location`, `status`, `purchase_date`, `purchase_price`, `count`, `version`, `create_time`, `update_time`, `deleted`) VALUES (13, '门禁设备', 'ACD-2023', 13, 7, '科技部', 0, 1672531200000, 3000.00, 1, 1, 1672531200000, NULL, 0);
+INSERT INTO `h_asset` (`id`, `asset_name`, `asset_code`, `asset_type`, `department_id`, `location`, `status`, `purchase_date`, `purchase_price`, `count`, `version`, `create_time`, `update_time`, `deleted`) VALUES (14, '考勤机', 'AT-2023', 14, 7, '科技部', 0, 1672531200000, 2000.00, 1, 1, 1672531200000, NULL, 0);
+INSERT INTO `h_asset` (`id`, `asset_name`, `asset_code`, `asset_type`, `department_id`, `location`, `status`, `purchase_date`, `purchase_price`, `count`, `version`, `create_time`, `update_time`, `deleted`) VALUES (15, 'UPS', 'UPS-2023', 15, 8, '科技部', 0, 1672531200000, 2500.00, 2, 1, 1672531200000, NULL, 0);
+INSERT INTO `h_asset` (`id`, `asset_name`, `asset_code`, `asset_type`, `department_id`, `location`, `status`, `purchase_date`, `purchase_price`, `count`, `version`, `create_time`, `update_time`, `deleted`) VALUES (16, '电源线', 'CABLE-2023', 16, 8, '科技部', 0, 1672531200000, 100.00, 20, 1, 1672531200000, NULL, 0);
+INSERT INTO `h_asset` (`id`, `asset_name`, `asset_code`, `asset_type`, `department_id`, `location`, `status`, `purchase_date`, `purchase_price`, `count`, `version`, `create_time`, `update_time`, `deleted`) VALUES (17, '网线', 'LAN-2023', 17, 9, '科技部', 0, 1672531200000, 50.00, 30, 1, 1672531200000, NULL, 0);
+INSERT INTO `h_asset` (`id`, `asset_name`, `asset_code`, `asset_type`, `department_id`, `location`, `status`, `purchase_date`, `purchase_price`, `count`, `version`, `create_time`, `update_time`, `deleted`) VALUES (18, '鼠标', 'MOUSE-2023', 18, 9, '科技部', 0, 1672531200000, 200.00, 10, 1, 1672531200000, NULL, 0);
+INSERT INTO `h_asset` (`id`, `asset_name`, `asset_code`, `asset_type`, `department_id`, `location`, `status`, `purchase_date`, `purchase_price`, `count`, `version`, `create_time`, `update_time`, `deleted`) VALUES (19, '键盘', 'KEYBOARD-2023', 19, 10, '科技部', 0, 1672531200000, 300.00, 5, 1, 1672531200000, NULL, 0);
+INSERT INTO `h_asset` (`id`, `asset_name`, `asset_code`, `asset_type`, `department_id`, `location`, `status`, `purchase_date`, `purchase_price`, `count`, `version`, `create_time`, `update_time`, `deleted`) VALUES (20, '传真机', 'FAX-2023', 20, 10, '科技部', 0, 1672531200000, 1500.00, 2, 1, 1672531200000, NULL, 0);
+INSERT INTO `h_asset` (`id`, `asset_name`, `asset_code`, `asset_type`, `department_id`, `location`, `status`, `purchase_date`, `purchase_price`, `count`, `version`, `create_time`, `update_time`, `deleted`) VALUES (21, '办公设备', 'OFFICE-2023', 21, 11, '科技部', 0, 1672531200000, 500.00, 10, 1, 1672531200000, NULL, 0);
+INSERT INTO `h_asset` (`id`, `asset_name`, `asset_code`, `asset_type`, `department_id`, `location`, `status`, `purchase_date`, `purchase_price`, `count`, `version`, `create_time`, `update_time`, `deleted`) VALUES (22, '电脑', 'PC-2023', 22, 11, '科技部', 0, 1672531200000, 6000.00, 5, 1, 1672531200000, NULL, 0);
+INSERT INTO `h_asset` (`id`, `asset_name`, `asset_code`, `asset_type`, `department_id`, `location`, `status`, `purchase_date`, `purchase_price`, `count`, `version`, `create_time`, `update_time`, `deleted`) VALUES (23, '服务器机柜', 'RACK-2023', 23, 12, '科技部', 0, 1672531200000, 2000.00, 1, 1, 1672531200000, NULL, 0);
+INSERT INTO `h_asset` (`id`, `asset_name`, `asset_code`, `asset_type`, `department_id`, `location`, `status`, `purchase_date`, `purchase_price`, `count`, `version`, `create_time`, `update_time`, `deleted`) VALUES (24, '机房空调', 'AC-2023', 24, 12, '机房', 0, 1672531200000, 8000.00, 1, 1, 1672531200000, NULL, 0);
+COMMIT;
+
+-- ----------------------------
+-- Table structure for h_asset_type
+-- ----------------------------
+DROP TABLE IF EXISTS `h_asset_type`;
+CREATE TABLE `h_asset_type` (
+  `id` bigint NOT NULL COMMENT '主键ID',
+  `name` varchar(255) NOT NULL COMMENT '资产类型名称',
+  `parent_id` bigint DEFAULT NULL COMMENT '父类型（支持多级分类，跟类型为NULL）',
+  `version` int DEFAULT '1' COMMENT '版本号',
+  `create_time` bigint DEFAULT NULL COMMENT '创建时间',
+  `update_time` bigint DEFAULT NULL COMMENT '修改时间',
+  `deleted` tinyint unsigned NOT NULL DEFAULT '0' COMMENT '逻辑删除',
+  PRIMARY KEY (`id`) USING BTREE,
+  UNIQUE KEY `name` (`name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+
+-- ----------------------------
+-- Records of h_asset_type
+-- ----------------------------
+BEGIN;
+INSERT INTO `h_asset_type` (`id`, `name`, `parent_id`, `version`, `create_time`, `update_time`, `deleted`) VALUES (1, '服务器', NULL, 1, 1672531200000, NULL, 0);
+INSERT INTO `h_asset_type` (`id`, `name`, `parent_id`, `version`, `create_time`, `update_time`, `deleted`) VALUES (2, '主机', 1, 1, 1672531200000, NULL, 0);
+INSERT INTO `h_asset_type` (`id`, `name`, `parent_id`, `version`, `create_time`, `update_time`, `deleted`) VALUES (3, '显示器', NULL, 1, 1672531200000, NULL, 1);
+INSERT INTO `h_asset_type` (`id`, `name`, `parent_id`, `version`, `create_time`, `update_time`, `deleted`) VALUES (4, '网络设备', NULL, 1, 1672531200000, NULL, 0);
+INSERT INTO `h_asset_type` (`id`, `name`, `parent_id`, `version`, `create_time`, `update_time`, `deleted`) VALUES (5, '路由器', 4, 1, 1672531200000, NULL, 0);
+INSERT INTO `h_asset_type` (`id`, `name`, `parent_id`, `version`, `create_time`, `update_time`, `deleted`) VALUES (6, '交换机', 4, 1, 1672531200000, NULL, 0);
+INSERT INTO `h_asset_type` (`id`, `name`, `parent_id`, `version`, `create_time`, `update_time`, `deleted`) VALUES (7, '防火墙', 4, 1, 1672531200000, NULL, 0);
+INSERT INTO `h_asset_type` (`id`, `name`, `parent_id`, `version`, `create_time`, `update_time`, `deleted`) VALUES (8, '存储设备', NULL, 1, 1672531200000, NULL, 0);
+INSERT INTO `h_asset_type` (`id`, `name`, `parent_id`, `version`, `create_time`, `update_time`, `deleted`) VALUES (9, '硬盘', 8, 1, 1672531200000, NULL, 0);
+INSERT INTO `h_asset_type` (`id`, `name`, `parent_id`, `version`, `create_time`, `update_time`, `deleted`) VALUES (10, 'SSD', 8, 1, 1672531200000, NULL, 0);
+INSERT INTO `h_asset_type` (`id`, `name`, `parent_id`, `version`, `create_time`, `update_time`, `deleted`) VALUES (11, '打印机', NULL, 1, 1672531200000, NULL, 0);
+INSERT INTO `h_asset_type` (`id`, `name`, `parent_id`, `version`, `create_time`, `update_time`, `deleted`) VALUES (12, '传真机', NULL, 1, 1672531200000, NULL, 0);
+INSERT INTO `h_asset_type` (`id`, `name`, `parent_id`, `version`, `create_time`, `update_time`, `deleted`) VALUES (13, '办公设备', NULL, 1, 1672531200000, NULL, 0);
+INSERT INTO `h_asset_type` (`id`, `name`, `parent_id`, `version`, `create_time`, `update_time`, `deleted`) VALUES (14, '电脑', NULL, 1, 1672531200000, NULL, 0);
+INSERT INTO `h_asset_type` (`id`, `name`, `parent_id`, `version`, `create_time`, `update_time`, `deleted`) VALUES (15, '手机', NULL, 1, 1672531200000, NULL, 0);
+INSERT INTO `h_asset_type` (`id`, `name`, `parent_id`, `version`, `create_time`, `update_time`, `deleted`) VALUES (16, '平板', NULL, 1, 1672531200000, NULL, 0);
+INSERT INTO `h_asset_type` (`id`, `name`, `parent_id`, `version`, `create_time`, `update_time`, `deleted`) VALUES (17, '投影仪', NULL, 1, 1672531200000, NULL, 0);
+INSERT INTO `h_asset_type` (`id`, `name`, `parent_id`, `version`, `create_time`, `update_time`, `deleted`) VALUES (18, '音响', NULL, 1, 1672531200000, NULL, 0);
+INSERT INTO `h_asset_type` (`id`, `name`, `parent_id`, `version`, `create_time`, `update_time`, `deleted`) VALUES (19, '摄像头', NULL, 1, 1672531200000, NULL, 0);
+INSERT INTO `h_asset_type` (`id`, `name`, `parent_id`, `version`, `create_time`, `update_time`, `deleted`) VALUES (20, '监控设备', NULL, 1, 1672531200000, NULL, 0);
+INSERT INTO `h_asset_type` (`id`, `name`, `parent_id`, `version`, `create_time`, `update_time`, `deleted`) VALUES (21, '门禁设备', NULL, 1, 1672531200000, NULL, 0);
+INSERT INTO `h_asset_type` (`id`, `name`, `parent_id`, `version`, `create_time`, `update_time`, `deleted`) VALUES (22, '考勤机', NULL, 1, 1672531200000, NULL, 0);
+INSERT INTO `h_asset_type` (`id`, `name`, `parent_id`, `version`, `create_time`, `update_time`, `deleted`) VALUES (23, 'UPS', NULL, 1, 1672531200000, NULL, 0);
+INSERT INTO `h_asset_type` (`id`, `name`, `parent_id`, `version`, `create_time`, `update_time`, `deleted`) VALUES (24, '电源线', NULL, 1, 1672531200000, NULL, 0);
+INSERT INTO `h_asset_type` (`id`, `name`, `parent_id`, `version`, `create_time`, `update_time`, `deleted`) VALUES (25, '网线', NULL, 1, 1672531200000, NULL, 0);
+INSERT INTO `h_asset_type` (`id`, `name`, `parent_id`, `version`, `create_time`, `update_time`, `deleted`) VALUES (26, '鼠标', NULL, 1, 1672531200000, NULL, 0);
+INSERT INTO `h_asset_type` (`id`, `name`, `parent_id`, `version`, `create_time`, `update_time`, `deleted`) VALUES (27, '键盘', NULL, 1, 1672531200000, NULL, 0);
+INSERT INTO `h_asset_type` (`id`, `name`, `parent_id`, `version`, `create_time`, `update_time`, `deleted`) VALUES (1909619214547738625, 'API测试1', NULL, 1, NULL, NULL, 0);
+INSERT INTO `h_asset_type` (`id`, `name`, `parent_id`, `version`, `create_time`, `update_time`, `deleted`) VALUES (1909620524911210498, 'API测试2', NULL, 1, 1744123986830, NULL, 0);
+INSERT INTO `h_asset_type` (`id`, `name`, `parent_id`, `version`, `create_time`, `update_time`, `deleted`) VALUES (1909625806890520577, 'API测试33', NULL, 1, 1744125246152, 1744125939224, 0);
 COMMIT;
 
 -- ----------------------------
@@ -608,6 +715,9 @@ INSERT INTO `h_user` (`id`, `name`, `username`, `password`, `salt`, `sex`, `toke
 INSERT INTO `h_user` (`id`, `name`, `username`, `password`, `salt`, `sex`, `token`, `token_expire_time`, `id_card`, `phone`, `avatar`, `age`, `email`, `department_id`, `role_id`, `status`, `version`, `create_time`, `update_time`, `deleted`) VALUES (1898257629201788929, NULL, 'user6', '$2a$10$fSwTlCFtcGrmXfl9fn.5HujJdYaHiBBZ7bFzuMAGhFugM1c0/Lh2G', '300320', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'user6@gmail.com', NULL, 8, 0, NULL, NULL, NULL, 0);
 INSERT INTO `h_user` (`id`, `name`, `username`, `password`, `salt`, `sex`, `token`, `token_expire_time`, `id_card`, `phone`, `avatar`, `age`, `email`, `department_id`, `role_id`, `status`, `version`, `create_time`, `update_time`, `deleted`) VALUES (1898258120480616450, NULL, 'vip', '$2a$10$grLc14XgDDj2e4/YdNYmvuCSKkFu9kaH4mQ7QGoQ46D3PPs6/ZjA6', '825622', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'vip@gmail.com', NULL, 4, 0, NULL, NULL, NULL, 0);
 INSERT INTO `h_user` (`id`, `name`, `username`, `password`, `salt`, `sex`, `token`, `token_expire_time`, `id_card`, `phone`, `avatar`, `age`, `email`, `department_id`, `role_id`, `status`, `version`, `create_time`, `update_time`, `deleted`) VALUES (1898312658545778690, NULL, 'user1', '$2a$10$Fuez77lej9r2rwfN.gweQOoSTNomxiOYv9hrFyIKXxcBRbYIBEIP2', '184422', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'user1@gmail.com', NULL, NULL, 0, 1, '2025-03-08 17:59:41', NULL, 0);
+INSERT INTO `h_user` (`id`, `name`, `username`, `password`, `salt`, `sex`, `token`, `token_expire_time`, `id_card`, `phone`, `avatar`, `age`, `email`, `department_id`, `role_id`, `status`, `version`, `create_time`, `update_time`, `deleted`) VALUES (1908467995296985090, NULL, 'user2', '$2a$10$qhBqfY0IQRx3pZUhlSw22u4DZnq/MgCeDzWnjZ06kkzXyAGnJGdc6', '918829', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'user2@gmail.com', NULL, NULL, 0, 1, '2025-04-05 18:33:22', NULL, 0);
+INSERT INTO `h_user` (`id`, `name`, `username`, `password`, `salt`, `sex`, `token`, `token_expire_time`, `id_card`, `phone`, `avatar`, `age`, `email`, `department_id`, `role_id`, `status`, `version`, `create_time`, `update_time`, `deleted`) VALUES (1908471088071897089, NULL, 'user3', '$2a$10$ModBuaFjpIrk0mytCIHRaeGEW5jShGs.bEh.4hFpP76vISIh.AZ6q', '365897', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'user3@gmail.com', NULL, NULL, 0, 1, '2025-04-05 18:45:40', NULL, 0);
+INSERT INTO `h_user` (`id`, `name`, `username`, `password`, `salt`, `sex`, `token`, `token_expire_time`, `id_card`, `phone`, `avatar`, `age`, `email`, `department_id`, `role_id`, `status`, `version`, `create_time`, `update_time`, `deleted`) VALUES (1908480162679287810, NULL, 'user4', '$2a$10$FxKawF.Syku4qGKsNaz5P.1i3YzGuEq/nUseRgyFPBbUWdwps1Vle', '665001', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'user4@gmail.com', NULL, NULL, 0, 1, '2025-04-05 19:21:43', NULL, 0);
 COMMIT;
 
 -- ----------------------------
@@ -639,7 +749,10 @@ INSERT INTO `h_user_role` (`id`, `user_id`, `role_id`, `version`, `create_time`,
 INSERT INTO `h_user_role` (`id`, `user_id`, `role_id`, `version`, `create_time`, `update_time`, `deleted`) VALUES (8, 1898258120480616450, 8, 1, NULL, NULL, 0);
 INSERT INTO `h_user_role` (`id`, `user_id`, `role_id`, `version`, `create_time`, `update_time`, `deleted`) VALUES (9, 1898257421470494721, 8, 1, NULL, NULL, 0);
 INSERT INTO `h_user_role` (`id`, `user_id`, `role_id`, `version`, `create_time`, `update_time`, `deleted`) VALUES (10, 1898257629201788929, 8, 1, NULL, NULL, 0);
+INSERT INTO `h_user_role` (`id`, `user_id`, `role_id`, `version`, `create_time`, `update_time`, `deleted`) VALUES (4776551169792290936, 1908467995296985090, 8, 1, NULL, NULL, 0);
+INSERT INTO `h_user_role` (`id`, `user_id`, `role_id`, `version`, `create_time`, `update_time`, `deleted`) VALUES (5113087338550938664, 1908480162679287810, 8, 1, NULL, NULL, 0);
 INSERT INTO `h_user_role` (`id`, `user_id`, `role_id`, `version`, `create_time`, `update_time`, `deleted`) VALUES (7490582593860205658, 1898312658545778690, 8, 1, NULL, NULL, 0);
+INSERT INTO `h_user_role` (`id`, `user_id`, `role_id`, `version`, `create_time`, `update_time`, `deleted`) VALUES (8990838681356496533, 1908471088071897089, 8, 1, NULL, NULL, 0);
 COMMIT;
 
 -- ----------------------------
@@ -742,109 +855,3 @@ BEGIN;
 COMMIT;
 
 SET FOREIGN_KEY_CHECKS = 1;
-
--- ----------------------------
--- Table structure for h_asset
--- ----------------------------
-DROP TABLE IF EXISTS `h_asset`;
-CREATE TABLE `h_asset` (
-  `id` bigint NOT NULL COMMENT '主键ID',
-  `asset_name` varchar(255) NOT NULL COMMENT '资产名称',
-  `asset_code` varchar(255) NOT NULL UNIQUE COMMENT '资产编号',
-  `asset_type` bigint NOT NULL COMMENT '资产类型(外键关联h_asset_type)',
-  `department_id` BIGINT NOT NULL COMMENT '所属部门（外键关联h_department)',
-  `location` varchar(255) DEFAULT NULL COMMENT '存放地点',
-	`status` int NOT NULL DEFAULT 0 COMMENT '状态 0-正常 1-报废 2-维修',
-	`purchase_date` bigint DEFAULT NULL COMMENT '购入日期',
-	`purchase_price` DECIMAL(10,2) DEFAULT 0 COMMENT '购买价格',
-  `count` int DEFAULT 1 COMMENT '数量',
-  `version` int DEFAULT '1' COMMENT '版本号',
-  `create_date` bigint DEFAULT NULL COMMENT '创建日期',
-  `update_date` bigint DEFAULT NULL COMMENT '更新日期',
-  `deleted` tinyint unsigned NOT NULL DEFAULT '0' COMMENT '逻辑删除',
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
-
-insert into `h_asset` (`id`, `asset_name`, `asset_code`, `asset_type`, `department_id`, `location`, `status`, `purchase_date`, `purchase_price`,`count`, `version`, `create_date`, `update_date`, `deleted`) values
-(1, 'Dell电脑', 'DELL-2025', 1, 1, '科技部', 0, 1672531200000, 12000.00, 5, 1, 1672531200000, NULL, 0),
-(2, '服务器', 'IP14-2023', 2, 1, '科技部', 0, 1672531200000, 8000.00, 10, 1, 1672531200000, NULL, 0),
-(3, '交换机', 'DXPS-2023', 3, 2, '会议室', 0, 1672531200000, 10000.00, 2, 1, 1672531200000, NULL, 0),
-(4, '路由器', 'RTP-2023', 4, 2, '科技部', 0, 1672531200000, 5000.00, 1, 1, 1672531200000, NULL, 0),
-(5, '打印机', 'PRT-2023', 5, 3, '科技部', 0, 1672531200000, 3000.00, 1, 1, 1672531200000, NULL, 0),
-(6, '显示器', 'MON-2023', 6, 3, '科技部', 0, 1672531200000, 2000.00, 2, 1, 1672531200000, NULL, 0),
-(7,'手机','IPHONE-2023',7 ,4 ,'科技部' ,0 ,1672531200000 ,8000.00 ,10 ,1 ,1672531200000 ,NULL ,0),
-(8,'平板','IPAD-2023',8 ,4 ,'科技部' ,0 ,1672531200000 ,6000.00 ,5 ,1 ,1672531200000 ,NULL ,0),
-(9,'投影仪','PJT-2023',9 ,5 ,'会议室' ,0 ,1672531200000 ,7000.00 ,2 ,1 ,1672531200000 ,NULL ,0),
-(10,'音响','SPK-2023',10 ,5 ,'会议室' ,0 ,1672531200000 ,4000.00 ,1 ,1 ,1672531200000 ,NULL ,0),
-(11,'摄像头','CAM-2023',11 ,6 ,'科技部' ,0 ,1672531200000 ,1500.00 ,3 ,1 ,1672531200000 ,NULL ,0),
-(12,'监控设备','CCTV-2023',12, 6, '科技部', 0, 1672531200000, 5000.00, 2, 1, 1672531200000, NULL, 0),
-(13,'门禁设备','ACD-2023',13, 7, '科技部', 0, 1672531200000, 3000.00, 1, 1, 1672531200000, NULL, 0),
-(14,'考勤机','AT-2023',14, 7, '科技部', 0, 1672531200000, 2000.00, 1, 1, 1672531200000, NULL, 0),
-(15,'UPS','UPS-2023',15,8 ,'科技部' ,0 ,1672531200000 ,2500.00 ,2 ,1 ,1672531200000 ,NULL ,0),
-(16,'电源线','CABLE-2023',16, 8, '科技部', 0, 1672531200000, 100.00, 20, 1, 1672531200000, NULL, 0),
-(17,'网线','LAN-2023',17 ,9 ,'科技部' ,0 ,1672531200000 ,50.00 ,30 ,1 ,1672531200000 ,NULL ,0),
-(18,'鼠标','MOUSE-2023',18 ,9 ,'科技部' ,0 ,1672531200000 ,200.00 ,10 ,1 ,1672531200000 ,NULL ,0),
-(19,'键盘','KEYBOARD-2023',19,10 ,'科技部' ,0 ,1672531200000 ,300.00 ,5 ,1 ,1672531200000 ,NULL ,0),
-(20,'传真机','FAX-2023',20,10 ,'科技部' ,0 ,1672531200000 ,1500.00 ,2 ,1 ,1672531200000 ,NULL ,0),
-(21,'办公设备','OFFICE-2023',21,11 ,'科技部' ,0 ,1672531200000 ,500.00 ,10 ,1 ,1672531200000 ,NULL ,0),
-(22,'电脑','PC-2023',22,11 ,'科技部' ,0 ,1672531200000 ,6000.00 ,5 ,1 ,1672531200000 ,NULL ,0),
-(23,'服务器机柜','RACK-2023',23,12 ,'科技部' ,0 ,1672531200000 ,2000.00 ,1 ,1 ,1672531200000 ,NULL ,0),
-(24,'机房空调','AC-2023',24,12 ,'机房' ,0 ,1672531200000 ,8000.00 ,1 ,1 ,1672531200000 ,NULL ,0);
-
-
--- ----------------------------
--- Table structure for h_asset_type
--- ----------------------------
-DROP TABLE IF EXISTS `h_asset_type`;
-CREATE TABLE `h_asset_type` (
-  `id` bigint NOT NULL COMMENT '主键ID',
-  `name` varchar(255) NOT NULL COMMENT '资产类型名称',
-  `parent_id` BIGINT DEFAULT NULL COMMENT '父类型（支持多级分类，跟类型为NULL）',
-  `version` int DEFAULT '1' COMMENT '版本号',
-  `create_date` bigint DEFAULT NULL COMMENT '创建日期',
-  `update_date` bigint DEFAULT NULL COMMENT '更新日期',
-  `deleted` tinyint unsigned NOT NULL DEFAULT '0' COMMENT '逻辑删除',
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
-
-insert into `h_asset_type` (`id`, `name`, `parent_id`, `version`, `create_date`, `update_date`, `deleted`) values
-(1, '服务器', NULL, 1, 1672531200000, NULL, 0),
-(2, '主机', 1, 1, 1672531200000, NULL, 0),
-(3, '显示器', NULL, 1, 1672531200000, NULL, 0),
-(4, '网络设备', NULL, 1, 1672531200000, NULL, 0),
-(5, '路由器', 4, 1, 1672531200000, NULL, 0),
-(6, '交换机', 4, 1, 1672531200000, NULL, 0),
-(7, '防火墙', 4, 1, 1672531200000, NULL, 0),
-(8, '存储设备', NULL, 1, 1672531200000, NULL, 0),
-(9, '硬盘', 8, 1, 1672531200000, NULL, 0),
-(10, 'SSD', 8, 1, 1672531200000, NULL, 0),
-(11, '打印机', NULL, 1, 1672531200000, NULL, 0),
-(12, '传真机', NULL, 1, 1672531200000, NULL, 0),
-(13, '办公设备', NULL, 1, 1672531200000, NULL, 0),
-(14, '电脑', NULL, 1, 1672531200000, NULL, 0),
-(15,'手机',NULL ,1 ,1672531200000 ,NULL ,0);
-(16,'平板',NULL ,1 ,1672531200000 ,NULL ,0),
-(17,'投影仪',NULL ,1 ,1672531200000 ,NULL ,0),
-(18,'音响',NULL ,1 ,1672531200000 ,NULL ,0),
-(19,'摄像头',NULL ,1 ,1672531200000 ,NULL ,0),
-(20,'监控设备',NULL ,1 ,1672531200000 ,NULL ,0),
-(21,'门禁设备',NULL ,1 ,1672531200000 ,NULL ,0),
-(22,'考勤机',NULL ,1 ,1672531200000 ,NULL ,0),
-(23,'UPS',NULL ,1 ,1672531200000 ,NULL ,0),
-(24,'电源线',NULL ,1 ,1672531200000 ,NULL ,0),
-(25,'网线',NULL ,1 ,1672531200000 ,NULL ,0),
-(26,'鼠标',NULL ,1 ,1672531200000 ,NULL ,0),
-(27,'键盘',NULL ,1 ,1672531200000 ,NULL ,0);
-
-
-select a.id, a.asset_name, a.asset_code, c.`name` as asset_type,
-    b.name as department_name, a.location,
-    CASE WHEN a.`status` = 0 THEN '正常' WHEN a.`status` = 1 THEN '报废' WHEN a.`status` = 2 THEN '维修' END as status,
-    FROM_UNIXTIME(a.purchase_date/1000, '%Y-%m-%d') as purchase_date,
-    a.purchase_price, a.count from h_asset a
-    left join h_department b on a.department_id=b.id
-    left join h_asset_type c on a.asset_type = c.id
-    where a.asset_name like '%电脑%'
-
-
-    CONCAT('%', #{name}, '%')
