@@ -195,7 +195,7 @@
 import { ref, reactive, onMounted } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { Delete, Edit, Search, Plus } from '@element-plus/icons-vue'
-import { deleteAssetById, getAssetList, getAssetTypeList, addAsset } from '@/api/asset'
+import { deleteAssetById, getAssetList, getAssetTypeList, addAsset, updateAsset } from '@/api/asset'
 import { getDepartmentList } from '@/api/department'
 import { AssetTypeListResponse, type Asset, AssetType } from '@/types/asset'
 import { DepartmentListResponse } from '@/types/department'
@@ -276,6 +276,8 @@ const getData = () => {
   })
     .then((res) => {
       if (res.code === 200) {
+        console.log('getAssetList res.data:', res.data)
+
         tableData.value = res.data.items
         pageTotal.value = res.data.total
       } else {
@@ -342,6 +344,7 @@ const saveAdd = () => {
 // 编辑操作
 const handleEdit = (index: number, row: any) => {
   getAssetTypes()
+  getDepartments()
   idx = index
   editForm.id = row.id
   editForm.assetName = row.assetName
@@ -361,8 +364,20 @@ const handleEdit = (index: number, row: any) => {
 const saveEdit = () => {
   editVisible.value = false
   // 编辑至后台的逻辑
+  updateAsset(editForm)
+    .then((res) => {
+      if (res.code === 200) {
+        ElMessage.success(`修改第 ${idx + 1} 行成功`)
+        // 更新表格数据
+        getData()
+      } else {
+        ElMessage.error(res.message)
+      }
+    })
+    .catch((err) => {
+      ElMessage.error('修改失败')
+    })
 
-  ElMessage.success(`修改第 ${idx + 1} 行成功`)
   // 更新表格数据
   tableData.value[idx].assetName = editForm.assetName
   tableData.value[idx].assetCode = editForm.assetCode

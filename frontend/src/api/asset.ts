@@ -15,9 +15,21 @@ export const getAssetList = async (
   } as AxiosRequestConfig);
 
 };
+// 添加资产
+export const addAsset = async (
+  asset: AssetDTO
+): Promise<AssetListResponse> => {
+  return await loki.request({
+    url: "/asset/create",
+    method: "POST",
+    data: {
+      ...asset,
+    },
+  } as AxiosRequestConfig);
+};
 
-// 按照资产ID更新资产信息
-export const updateAssetById = async (
+// 更新资产信息
+export const updateAsset = async (
   asset: Asset
 ): Promise<AssetListResponse> => {
   return await loki.request({
@@ -50,18 +62,6 @@ export const getAssetById = async (
   } as AxiosRequestConfig);
 };
 
-// 添加资产
-export const addAsset = async (
-  asset: AssetDTO
-): Promise<AssetListResponse> => {
-  return await loki.request({
-    url: "/asset/create",
-    method: "POST",
-    data: {
-      ...asset,
-    },
-  } as AxiosRequestConfig);
-};
 
 // 批量删除资产
 export const deleteAssets = async (
