@@ -18,7 +18,7 @@
       ref="multipleTable"
       header-cell-class-name="table-header"
     >
-      <el-table-column prop="id" label="ID" width="55" align="center"></el-table-column>
+      <el-table-column prop="id" label="ID" width="180" align="center"></el-table-column>
       <el-table-column prop="assetName" label="资产名称" align="center"></el-table-column>
       <el-table-column prop="assetCode" label="资产编号" align="center"> </el-table-column>
       <el-table-column prop="assetType" label="资产类型" align="center"></el-table-column>
@@ -195,7 +195,6 @@
 import { ref, reactive, onMounted } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { Delete, Edit, Search, Plus } from '@element-plus/icons-vue'
-import { useUserStore } from '@/store/user'
 import { deleteAssetById, getAssetList, getAssetTypeList, addAsset } from '@/api/asset'
 import { getDepartmentList } from '@/api/department'
 import { AssetTypeListResponse, type Asset, AssetType } from '@/types/asset'
@@ -316,7 +315,10 @@ const handleAdd = () => {
   addVisible.value = true
   // 这里可以添加新增逻辑
 }
-
+const getMaxPage = () => {
+  let maxPage = Math.ceil(pageTotal.value / query.pageSize)
+  return maxPage
+}
 // 保存新增操作
 const saveAdd = () => {
   addVisible.value = false
@@ -326,6 +328,7 @@ const saveAdd = () => {
       if (res.code === 200) {
         ElMessage.success('新增成功')
         // 更新表格数据
+        query.pageIndex = getMaxPage()
         getData()
       } else {
         ElMessage.error(res.message)
@@ -334,20 +337,6 @@ const saveAdd = () => {
     .catch((err) => {
       ElMessage.error('新增失败')
     })
-
-  // 更新表格数据（这里有问题，不应该更新到当前页面）
-  // tableData.value.push({
-  //   id: tableData.value.length + 1,
-  //   assetName: addForm.assetName,
-  //   assetCode: addForm.assetCode,
-  //   assetType: addForm.assetType,
-  //   departmentName: addForm.departmentName,
-  //   status: addForm.status,
-  //   purchaseDate: addForm.purchaseDate,
-  //   purchasePrice: addForm.purchasePrice,
-  //   count: addForm.count
-  // })
-  getData()
 }
 
 // 编辑操作
@@ -371,6 +360,8 @@ const handleEdit = (index: number, row: any) => {
 // 保存编辑操作
 const saveEdit = () => {
   editVisible.value = false
+  // 编辑至后台的逻辑
+
   ElMessage.success(`修改第 ${idx + 1} 行成功`)
   // 更新表格数据
   tableData.value[idx].assetName = editForm.assetName
@@ -441,3 +432,7 @@ const handleDelete = (index: number) => {
   width: 100%;
 }
 </style>
+
+function getMaxPage(): number {
+  throw new Error('Function not implemented.')
+}
