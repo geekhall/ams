@@ -131,7 +131,9 @@ public class AssetServiceImpl extends ServiceImpl<AssetMapper, Asset> implements
         }
 
         Asset asset = new Asset();
-        asset.setId(Long.valueOf(assetDTO.getId()));
+        if (assetDTO.getId() != null && !assetDTO.getId().isEmpty()) {
+            asset.setId(Long.valueOf(assetDTO.getId()));
+        }
         asset.setAssetName(assetDTO.getAssetName());
         asset.setAssetCode(assetDTO.getAssetCode());
         asset.setAssetType(assetTypeId);
