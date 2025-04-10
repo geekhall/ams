@@ -23,7 +23,7 @@ import java.math.BigDecimal;
 public class AssetDTO extends Model<AssetDTO> {
 
     private static final long serialVersionUID = 1L;
-    private Long id;
+    private String id;
     private String assetName;
     private String assetCode;
     private String assetType;

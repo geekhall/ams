@@ -33,7 +33,7 @@ public class AssetController {
      * @return Asset
      */
     @RequestMapping("/all")
-    @PreAuthorize("hasRole('USER') || hasAuthority('system:user:list')")
+    @PreAuthorize("hasRole('USER') || hasAuthority('user:asset:list')")
     public ResponseEntity<?> all() {
         return ResponseEntity.ok(Map.of(
                 "code", 200,
@@ -47,7 +47,7 @@ public class AssetController {
      * @return AssetDTO
      */
     @RequestMapping("/list")
-    @PreAuthorize("hasRole('USER') || hasAuthority('system:user:list')")
+    @PreAuthorize("hasRole('USER') || hasAuthority('user:asset:list')")
     public ResponseEntity<?> getAssetList(@RequestBody(required = false) String requestBody) {
         String name = null;
         Integer pageIndex = 1;
@@ -89,7 +89,7 @@ public class AssetController {
      * @return ResponseEntity
      */
     @DeleteMapping("/delete/{id}")
-    @PreAuthorize("hasRole('USER') || hasAuthority('system:asset:delete')")
+    @PreAuthorize("hasRole('USER') || hasAuthority('user:asset:delete')")
     public ResponseEntity<?> deleteAsset(@PathVariable Long id) {
         boolean deleted = assetService.deleteAsset(id);
         if (deleted) {
@@ -111,7 +111,7 @@ public class AssetController {
      * @return ResponseEntity
      */
     @PostMapping("/create")
-    @PreAuthorize("hasRole('ADMIN') || hasAuthority('system:asset:create')")
+    @PreAuthorize("hasRole('USER') || hasAuthority('user:asset:create')")
     public ResponseEntity<?> createAsset(@RequestBody AssetDTO assetDTO) {
         if (assetDTO.getAssetName() == null || assetDTO.getAssetName().isEmpty()) {
             return ResponseEntity.badRequest().body(Map.of(
@@ -165,6 +165,66 @@ public class AssetController {
             return ResponseEntity.status(500).body(Map.of(
                     "code", 500,
                     "message", "Failed to create asset",
+                    "data", ""
+            ));
+        }
+    }
+
+    /**
+     * Update an existing asset
+     * @param assetDTO Updated asset details
+     * @return ResponseEntity
+     */
+    @PostMapping("/update")
+    @PreAuthorize("hasRole('USER') || hasAuthority('user:asset:update')")
+    public ResponseEntity<?> updateAsset(@RequestBody AssetDTO assetDTO) {
+        System.out.println("【Asset】 controller 【update】 method called ...");
+        if (assetDTO.getId() == null) {
+            return ResponseEntity.badRequest().body(Map.of(
+                    "code", 400,
+                    "message", "Asset ID cannot be null",
+                    "data", ""
+            ));
+        }
+        System.out.println("【Asset】 controller 【update】 method called ... 001");
+        if (assetDTO.getAssetName() == null || assetDTO.getAssetName().isEmpty()) {
+            return ResponseEntity.badRequest().body(Map.of(
+                    "code", 400,
+                    "message", "Asset name cannot be empty",
+                    "data", ""
+            ));
+        }
+        System.out.println("【Asset】 controller 【update】 method called ... 002");
+        if (assetDTO.getAssetCode() == null || assetDTO.getAssetCode().isEmpty()) {
+            return ResponseEntity.badRequest().body(Map.of(
+                    "code", 400,
+                    "message", "Asset code cannot be empty",
+                    "data", ""
+            ));
+        }
+        System.out.println("【Asset】 controller 【update】 method called ... 003");
+        boolean updated = false;
+        try {
+            updated = assetService.updateAsset(assetDTO);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(500).body(Map.of(
+                    "code", 500,
+                    "message", "Failed to update asset",
+                    "data", ""
+            ));
+        }
+        System.out.println("【Asset】 controller 【update】 method called ... 004");
+        if (updated) {
+            return ResponseEntity.ok(Map.of(
+                    "code", 200,
+                    "message", "Asset updated successfully",
+                    "data", assetDTO
+            ));
+        } else {
+            return ResponseEntity.status(404).body(Map.of(
+                    "code", 404,
+                    "message", "Asset not found",
                     "data", ""
             ));
         }

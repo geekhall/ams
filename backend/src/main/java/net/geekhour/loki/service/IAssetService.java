@@ -30,4 +30,6 @@ public interface IAssetService extends IService<Asset> {
     boolean checkAssetCodeExists(String assetCode);
 
     boolean checkAssetNameExists(String assetName);
+
+    boolean updateAsset(AssetDTO assetDTO);
 }
