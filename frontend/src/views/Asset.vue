@@ -363,12 +363,14 @@ const handleEdit = (index: number, row: any) => {
 // 保存编辑操作
 const saveEdit = () => {
   editVisible.value = false
+  let currentPage = query.pageIndex
   // 编辑至后台的逻辑
   updateAsset(editForm)
     .then((res) => {
       if (res.code === 200) {
         ElMessage.success(`修改第 ${idx + 1} 行成功`)
         // 更新表格数据
+        query.pageIndex = currentPage
         getData()
       } else {
         ElMessage.error(res.message)
@@ -377,16 +379,6 @@ const saveEdit = () => {
     .catch((err) => {
       ElMessage.error('修改失败')
     })
-
-  // 更新表格数据
-  tableData.value[idx].assetName = editForm.assetName
-  tableData.value[idx].assetCode = editForm.assetCode
-  tableData.value[idx].assetType = editForm.assetType
-  tableData.value[idx].departmentName = editForm.departmentName
-  tableData.value[idx].status = editForm.status
-  tableData.value[idx].purchaseDate = editForm.purchaseDate
-  tableData.value[idx].purchasePrice = editForm.purchasePrice
-  tableData.value[idx].count = editForm.count
 }
 
 // 删除操作
