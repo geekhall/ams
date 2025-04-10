@@ -104,4 +104,69 @@ public class AssetController {
                     "data", ""));
         }
     }
+
+    /**
+     * Create a new asset
+     * @param assetDTO Asset details
+     * @return ResponseEntity
+     */
+    @PostMapping("/create")
+    @PreAuthorize("hasRole('ADMIN') || hasAuthority('system:asset:create')")
+    public ResponseEntity<?> createAsset(@RequestBody AssetDTO assetDTO) {
+        if (assetDTO.getAssetName() == null || assetDTO.getAssetName().isEmpty()) {
+            return ResponseEntity.badRequest().body(Map.of(
+                    "code", 400,
+                    "message", "Asset name cannot be empty",
+                    "data", ""
+            ));
+        }
+        if (assetDTO.getAssetCode() == null || assetDTO.getAssetCode().isEmpty()) {
+            return ResponseEntity.badRequest().body(Map.of(
+                    "code", 400,
+                    "message", "Asset code cannot be empty",
+                    "data", ""
+            ));
+        }
+        // TODO: 检查AssetCode和AssetName重复
+        if (assetService.checkAssetCodeExists(assetDTO.getAssetCode())) {
+            return ResponseEntity.badRequest().body(Map.of(
+                    "code", 400,
+                    "message", "Asset code already exists",
+                    "data", ""
+            ));
+        }
+        if (assetService.checkAssetNameExists(assetDTO.getAssetName())) {
+            return ResponseEntity.badRequest().body(Map.of(
+                    "code", 400,
+                    "message", "Asset name already exists",
+                    "data", ""
+            ));
+        }
+
+        boolean created = false;
+        try {
+            created = assetService.createAsset(assetDTO);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(500).body(Map.of(
+                    "code", 500,
+                    "message", "Failed to create asset",
+                    "data", ""
+            ));
+        }
+
+        if (created) {
+            return ResponseEntity.ok(Map.of(
+                    "code", 200,
+                    "message", "Asset created successfully",
+                    "data", assetDTO
+            ));
+        } else {
+            return ResponseEntity.status(500).body(Map.of(
+                    "code", 500,
+                    "message", "Failed to create asset",
+                    "data", ""
+            ));
+        }
+    }
 }

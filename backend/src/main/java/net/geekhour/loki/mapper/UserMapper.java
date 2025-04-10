@@ -28,6 +28,7 @@ public interface UserMapper extends BaseMapper<User> {
     @Select("select EXISTS (SELECT 1 FROM h_user where username = #{role_name})")
     boolean existsByUsername(String username);
 
+    // TODO: remove password from select
     @Select("select * from h_user where email = #{email}")
     User selectByEmail(String email);
 

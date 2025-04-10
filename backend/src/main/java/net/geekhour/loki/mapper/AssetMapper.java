@@ -49,4 +49,10 @@ public interface AssetMapper extends BaseMapper<Asset> {
             "</if>" +
             "</script>")
     Long countAssets(@Param("name") String name);
+
+    @Select("select count(*) from h_asset where asset_code = #{assetCode} and deleted = 0")
+    boolean checkAssetCodeExists(@Param("assetCode") String assetCode);
+
+    @Select("select count(*) from h_asset where asset_name = #{assetName} and deleted = 0")
+    boolean checkAssetNameExists(@Param("assetName")String assetName);
 }

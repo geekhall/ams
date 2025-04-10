@@ -24,4 +24,10 @@ public interface IAssetService extends IService<Asset> {
     Long countAssets(String name);
 
     boolean deleteAsset(Long id);
+
+    boolean createAsset(AssetDTO assetDTO);
+
+    boolean checkAssetCodeExists(String assetCode);
+
+    boolean checkAssetNameExists(String assetName);
 }
