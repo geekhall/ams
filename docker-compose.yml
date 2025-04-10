@@ -10,9 +10,9 @@ services:
       - mysql
       - redis
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/ams?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
-      SPRING_DATASOURCE_USERNAME: root
-      SPRING_DATASOURCE_PASSWORD: root
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/loki?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+      SPRING_DATASOURCE_USERNAME: loki
+      SPRING_DATASOURCE_PASSWORD: loki@123
       SPRING_REDIS_HOST: redis
       SPRING_REDIS_PORT: 6379
 
@@ -28,8 +28,8 @@ services:
     container_name: mysql
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: ams
+      MYSQL_ROOT_PASSWORD: loki@123
+      MYSQL_DATABASE: loki
     ports:
       - "3306:3306"
     volumes:
