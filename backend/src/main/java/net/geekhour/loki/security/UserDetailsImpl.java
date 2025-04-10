@@ -52,11 +52,7 @@ public class UserDetailsImpl implements UserDetails {
         if ( authorities != null ) {
             return authorities;
         }
-//        for (String permission : permissions) {
-//            System.out.println("UserDetailsImpl.getAuthorities 001  permission: " + permission);
-//            SimpleGrantedAuthority simpleGrantedAuthority = new SimpleGrantedAuthority(permission);
-//            authorities.add(simpleGrantedAuthority);
-//        }
+
         authorities = permissions.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
         System.out.println("UserDetailsImpl.getAuthorities 002  authorities: " + authorities);
         return authorities;

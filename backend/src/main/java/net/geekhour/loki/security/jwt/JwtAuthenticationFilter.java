@@ -57,14 +57,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                                     @NotNull HttpServletResponse response,
                                     @NotNull FilterChain filterChain) throws ServletException, IOException {
 
-        logger.info("JwtAuthenticationFilter.doFilterInternal:000  " );
-        System.out.println("########## JwtAuthenticationFilter.doFilterInternal:000  " );
-        System.out.println("Request URI: " + request.getRequestURI());
         String authHeader = request.getHeader(SecurityConstants.AUTHORIZATION_HEADER);
-        System.out.println("Authorization Header: " + authHeader);
         if (!StringUtils.hasText(authHeader) || !authHeader.startsWith(SecurityConstants.TOKEN_PREFIX)) {
             // 如果没有 JWT 或格式不正确，继续执行下一个过滤器，返回。
-            System.out.println("########## JwtAuthenticationFilter.doFilterInternal:001" );
             filterChain.doFilter(request, response);
             return;
         }
@@ -100,7 +95,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         // 导致即使在这里设置了SpringSecurityContext，也会设置到全局的SecurityContextHolder中
         // 而在AuthorizationFilter中获取的时候却从ThreadLocal中获取不到，只能得到一个匿名的Authorization，导致授权失败。
         SecurityContextHolder.setStrategyName(SecurityContextHolder.MODE_THREADLOCAL);
-//        SecurityContextHolder.getContextHolderStrategy().getContext().setAuthentication(usernamePasswordAuthenticationToken);
         SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
 
         filterChain.doFilter(request, response);

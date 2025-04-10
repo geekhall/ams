@@ -47,18 +47,13 @@ public class UserDetailsServiceImpl implements UserDetailsService , UserDetailsP
 
         // 查询用户信息
         User user = userMapper.selectByUsername(username);
-        System.out.println("########## UserDetailsServiceImpl 001  username: " + username);
-        System.out.println("########## UserDetailsServiceImpl 002  user: " + user);
 
         if (user == null) {
-            System.out.println("########## UserDetailsServiceImpl 003 用户不存在！ User not exists!");
             throw new UsernameNotFoundException("User not exists!");
         }
         // 查询用户角色和权限信息
         List<String> roles = userMapper.getRolesByUsername(username);
         List<String> permissions = userMapper.getPermissionsByUsername(username);
-        System.out.println("########## UserDetailsServiceImpl 004  roles: " + roles);
-        System.out.println("########## UserDetailsServiceImpl 004  permissions: " + permissions);
         Collection<GrantedAuthority> authorities = new ArrayList<>();
         for (String role : roles) {
             authorities.add(new SimpleGrantedAuthority(role));
