@@ -20,6 +20,7 @@ export interface RegisterInfo {
   remember?: boolean
   idCard?: string
 }
+
 export interface AuthResponse {
   code: number;
   message: string;

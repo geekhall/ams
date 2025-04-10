@@ -1,6 +1,6 @@
+import { ApiResponse } from "."
 
-export interface Asset {
-  id: string
+export interface AssetDTO {
   assetName: string
   assetCode: string
   assetType: string
@@ -11,30 +11,22 @@ export interface Asset {
   count: number
 }
 
-export interface AssetListResponse {
-  code: number
-  message: string
-  data: {
-    items: Asset[]
-    total: number
-  };
+export interface Asset extends AssetDTO {
+  id: string
 }
 
-export interface AssetNamesResponse {
-  code: number
-  message: string
-  data: {
-    names: string[]
-  };
-}
+export type AssetListResponse = ApiResponse<{
+  items: Asset[]
+  total: number
+}>
+
+export type AssetNamesResponse = ApiResponse<{
+  names: string[]
+}>
 
 export interface AssetType {
   id: string
   name: string
 }
 
-export interface AssetTypeListResponse {
-  code: number
-  message: string
-  data: AssetType[]
-}
+export type AssetTypeListResponse = ApiResponse<AssetType[]>

@@ -1,6 +1,6 @@
 import { AxiosRequestConfig } from "axios";
 import loki from "./loki";
-import { Asset, AssetListResponse, AssetNamesResponse, AssetTypeListResponse } from "~/types/asset";
+import { Asset, AssetDTO, AssetListResponse, AssetNamesResponse, AssetTypeListResponse } from "~/types/asset";
 
 
 // 获取资产列表（支持分页和按名称查询）
@@ -52,10 +52,10 @@ export const getAssetById = async (
 
 // 添加资产
 export const addAsset = async (
-  asset: Asset
+  asset: AssetDTO
 ): Promise<AssetListResponse> => {
   return await loki.request({
-    url: "/asset/add",
+    url: "/asset/create",
     method: "POST",
     data: {
       ...asset,

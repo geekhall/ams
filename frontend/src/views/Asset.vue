@@ -196,7 +196,7 @@ import { ref, reactive, onMounted } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { Delete, Edit, Search, Plus } from '@element-plus/icons-vue'
 import { useUserStore } from '@/store/user'
-import { deleteAssetById, getAssetList, getAssetTypeList } from '@/api/asset'
+import { deleteAssetById, getAssetList, getAssetTypeList, addAsset } from '@/api/asset'
 import { getDepartmentList } from '@/api/department'
 import { AssetTypeListResponse, type Asset, AssetType } from '@/types/asset'
 import { DepartmentListResponse } from '@/types/department'
@@ -321,8 +321,20 @@ const handleAdd = () => {
 const saveAdd = () => {
   addVisible.value = false
   // 添加至后台的逻辑
+  addAsset(addForm)
+    .then((res) => {
+      if (res.code === 200) {
+        ElMessage.success('新增成功')
+        // 更新表格数据
+        getData()
+      } else {
+        ElMessage.error(res.message)
+      }
+    })
+    .catch((err) => {
+      ElMessage.error('新增失败')
+    })
 
-  ElMessage.success('新增成功')
   // 更新表格数据（这里有问题，不应该更新到当前页面）
   // tableData.value.push({
   //   id: tableData.value.length + 1,
