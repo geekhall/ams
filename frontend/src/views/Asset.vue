@@ -292,6 +292,10 @@ const getData = () => {
     })
 }
 onMounted(() => {
+  const savedPageIndex = localStorage.getItem('AMSCurrentAssetPageIndex')
+  if (savedPageIndex) {
+    query.pageIndex = parseInt(savedPageIndex, 10)
+  }
   getData()
 })
 
@@ -307,6 +311,7 @@ const handleSearch = () => {
 // 分页导航
 const handlePageChange = (val: number) => {
   query.pageIndex = val
+  localStorage.setItem('AMSCurrentAssetPageIndex', val.toString())
   getData()
 }
 
@@ -318,7 +323,11 @@ const handleAdd = () => {
   // 这里可以添加新增逻辑
 }
 const getMaxPage = () => {
-  let maxPage = Math.ceil(pageTotal.value / query.pageSize)
+  if (!pageTotal.value) {
+    return 1
+  }
+
+  let maxPage = Math.ceil((pageTotal.value + 1) / query.pageSize)
   return maxPage
 }
 // 保存新增操作
@@ -329,8 +338,9 @@ const saveAdd = () => {
     .then((res) => {
       if (res.code === 200) {
         ElMessage.success('新增成功')
-        // 更新表格数据
+        // 更新当前页码
         query.pageIndex = getMaxPage()
+        // 更新表格数据
         getData()
       } else {
         ElMessage.error(res.message)
