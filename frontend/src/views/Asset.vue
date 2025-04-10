@@ -80,13 +80,20 @@
           </el-select>
         </el-form-item>
         <el-form-item label="所属部门">
-          <el-input v-model="addForm.departmentName"></el-input>
+          <el-select v-model="addForm.departmentName">
+            <el-option
+              v-for="item in departments"
+              :key="item.name"
+              :label="item.name"
+              :value="item.name"
+            ></el-option>
+          </el-select>
         </el-form-item>
         <el-form-item label="状态">
-          <el-select v-model="addForm.status" placeholder="请选择">
-            <el-option label="正常" :value="0"></el-option>
-            <el-option label="在用" :value="1"></el-option>
-            <el-option label="维修" :value="2"></el-option>
+          <el-select v-model="addForm.status">
+            <el-option label="正常" value="正常"></el-option>
+            <el-option label="维修" value="维修"></el-option>
+            <el-option label="报废" value="报废"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="购入时间">
@@ -129,7 +136,7 @@
           <el-input v-model="editForm.assetCode"></el-input>
         </el-form-item>
         <el-form-item label="资产类型">
-          <el-select v-model="editForm.assetType" placeholder="请选择">
+          <el-select v-model="addForm.assetType" placeholder="请选择">
             <el-option
               v-for="item in assetTypes"
               :key="item.name"
@@ -139,12 +146,20 @@
           </el-select>
         </el-form-item>
         <el-form-item label="所属部门">
-          <el-input v-model="editForm.departmentName"></el-input>
+          <el-select v-model="editForm.departmentName">
+            <el-option
+              v-for="item in departments"
+              :key="item.name"
+              :label="item.name"
+              :value="item.name"
+            ></el-option>
+          </el-select>
         </el-form-item>
         <el-form-item label="状态">
-          <el-select v-model="editForm.status" placeholder="请选择">
-            <el-option label="在用" :value="1"></el-option>
-            <el-option label="维修" :value="2"></el-option>
+          <el-select v-model="editForm.status">
+            <el-option label="正常" value="正常"></el-option>
+            <el-option label="维修" value="维修"></el-option>
+            <el-option label="报废" value="报废"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="购入时间">
@@ -182,24 +197,14 @@ import { ElMessage, ElMessageBox } from 'element-plus'
 import { Delete, Edit, Search, Plus } from '@element-plus/icons-vue'
 import { useUserStore } from '@/store/user'
 import { deleteAssetById, getAssetList, getAssetTypeList } from '@/api/asset'
+import { getDepartmentList } from '@/api/department'
 import { AssetTypeListResponse, type Asset, AssetType } from '@/types/asset'
+import { DepartmentListResponse } from '@/types/department'
 import dayjs from 'dayjs'
+import { Department } from '@/types/department'
 
 const assetTypes = ref<AssetType[]>([])
-// 获取资产类型列表
-const getAssetTypes = () => {
-  console.log('getAssetTypes')
-
-  getAssetTypeList().then((res: AssetTypeListResponse) => {
-    if (res.code === 200) {
-      console.log('getAssetTypes res.data:', res.data)
-      assetTypes.value = res.data
-    } else {
-      ElMessage.error(res.message)
-    }
-  })
-  // assetTypes.value = res.data
-}
+const departments = ref<Department[]>([])
 const query = reactive({
   id: '',
   assetName: '',
@@ -215,18 +220,15 @@ const query = reactive({
   pageSize: 10
 })
 const tableData = ref<Asset[]>([])
-
 const pageTotal = ref(0)
-const userStore = useUserStore()
 // 表格编辑时弹窗和保存
 const addVisible = ref(false)
-
 let addForm = reactive({
   assetName: '测试资产1',
   assetCode: 'TEST-2025-1',
   assetType: '服务器',
   departmentName: '信息科技部',
-  status: 0,
+  status: '正常',
   purchaseDate: dayjs().format('YYYY-MM-DD'),
   purchasePrice: 0,
   count: 0
@@ -238,13 +240,34 @@ let editForm = reactive({
   assetCode: '',
   assetType: '',
   departmentName: '',
-  status: 1,
+  status: '',
   purchaseDate: '',
   purchasePrice: 100,
   count: 1
 })
 let idx: number = -1
-
+// 获取资产类型列表
+const getAssetTypes = () => {
+  getAssetTypeList().then((res: AssetTypeListResponse) => {
+    if (res.code === 200) {
+      console.log('getAssetTypes res.data:', res.data)
+      assetTypes.value = res.data
+    } else {
+      ElMessage.error(res.message)
+    }
+  })
+}
+// 获取部门列表
+const getDepartments = () => {
+  getDepartmentList().then((res: DepartmentListResponse) => {
+    if (res.code === 200) {
+      console.log('getDepartmentList res.data:', res.data)
+      departments.value = res.data
+    } else {
+      ElMessage.error(res.message)
+    }
+  })
+}
 // 获取表格数据
 const getData = () => {
   getAssetList({
@@ -289,26 +312,9 @@ const handlePageChange = (val: number) => {
 // 新增操作
 const handleAdd = () => {
   getAssetTypes()
+  getDepartments()
   addVisible.value = true
   // 这里可以添加新增逻辑
-}
-
-// 编辑操作
-const handleEdit = (index: number, row: any) => {
-  getAssetTypes()
-  idx = index
-  editForm.id = row.id
-  editForm.assetName = row.assetName
-  editForm.assetCode = row.assetCode
-  editForm.assetType = row.assetType
-  editForm.departmentName = row.departmentName
-  editForm.status = row.status
-  editForm.purchaseDate = row.purchaseDate
-  editForm.purchasePrice = row.purchasePrice
-  editForm.count = row.count
-  // 这里可以根据需要设置其他字段
-  editVisible.value = true
-  // 更新后台数据
 }
 
 // 保存新增操作
@@ -330,6 +336,24 @@ const saveAdd = () => {
   //   count: addForm.count
   // })
   getData()
+}
+
+// 编辑操作
+const handleEdit = (index: number, row: any) => {
+  getAssetTypes()
+  idx = index
+  editForm.id = row.id
+  editForm.assetName = row.assetName
+  editForm.assetCode = row.assetCode
+  editForm.assetType = row.assetType
+  editForm.departmentName = row.departmentName
+  editForm.status = row.status
+  editForm.purchaseDate = row.purchaseDate
+  editForm.purchasePrice = row.purchasePrice
+  editForm.count = row.count
+  // 这里可以根据需要设置其他字段
+  editVisible.value = true
+  // 更新后台数据
 }
 
 // 保存编辑操作
@@ -359,7 +383,6 @@ const handleDelete = (index: number) => {
         .then((res) => {
           if (res.code === 200) {
             ElMessage.success('删除成功')
-            // tableData.value.splice(index, 1)
             // 更新表格数据
             getData()
           } else {

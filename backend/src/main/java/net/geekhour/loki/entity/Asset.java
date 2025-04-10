@@ -50,9 +50,9 @@ public class Asset extends Model<Asset> {
     @TableField("location")
     private String location;
 
-    @ApiModelProperty("状态 0-正常 1-报废 2-维修")
+    @ApiModelProperty("状态 正常 报废 维修")
     @TableField("status")
-    private Integer status;
+    private String status;
 
     @ApiModelProperty("购入日期")
     @TableField("purchase_date")

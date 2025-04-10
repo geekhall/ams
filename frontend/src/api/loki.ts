@@ -3,6 +3,7 @@
 
 import axios from 'axios';
 import { useAuthStore } from '~/store/auth';
+import router from '~/router';
 const API_URL = "http://localhost:4000/api"
 
 // 创建 axios 全局实例
@@ -69,7 +70,7 @@ loki.interceptors.response.use(
         case 401:
           error.message = '未授权，请登录';
           authStore.logout();
-          // router.push('/login');
+          router.push('/login');
           break;
         case 403:
           error.message = '拒绝访问';

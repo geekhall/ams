@@ -5,7 +5,7 @@ export interface Asset {
   assetCode: string
   assetType: string
   departmentName: string
-  status: number
+  status: string
   purchaseDate: string
   purchasePrice: number
   count: number

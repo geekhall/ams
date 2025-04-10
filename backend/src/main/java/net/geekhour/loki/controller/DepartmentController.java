@@ -46,7 +46,7 @@ public class DepartmentController {
     // List all departments
     @RequestMapping("/list")
     @PreAuthorize("hasRole('USER') || hasAuthority('system:department:list')")
-    public ResponseEntity<?> list() {
+    public ResponseEntity<?> list(@RequestBody(required = false) String requestBody) {
         List<Department> departments = departmentService.list();
         return ResponseEntity.ok(Map.of(
                 "code", 200,
