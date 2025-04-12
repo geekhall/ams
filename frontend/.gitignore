@@ -36,7 +36,8 @@ dist-ssr
 *.lock
 
 data/
-
+src/.env.development
+src/.env.production
 
 vite.config.ts.*
 auto-imports.d.ts
