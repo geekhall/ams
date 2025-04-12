@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="net.geekhour.loki.mapper.BudgetMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="net.geekhour.loki.entity.Budget">
+        <result column="id" property="id" />
+        <result column="year" property="year" />
+        <result column="name" property="name" />
+        <result column="description" property="description" />
+        <result column="type" property="type" />
+        <result column="category" property="category" />
+        <result column="is_approved" property="approved" />
+        <result column="amount" property="amount" />
+        <result column="department_id" property="departmentId" />
+        <result column="priority" property="priority" />
+        <result column="business_priority" property="businessPriority" />
+        <result column="business_description" property="businessDescription" />
+        <result column="planned_start_date" property="plannedStartDate" />
+        <result column="status" property="status" />
+        <result column="applicant_id" property="applicantId" />
+        <result column="version" property="version" />
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime" />
+        <result column="deleted" property="deleted" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id,
+        year, name, description, type, category, is_approved, amount, department_id, priority, business_priority, business_description, planned_start_date, status, applicant_id, version, create_time, update_time, deleted
+    </sql>
+
+</mapper>

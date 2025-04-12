@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="net.geekhour.loki.mapper.BudgetAdjustmentMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="net.geekhour.loki.entity.BudgetAdjustment">
+        <result column="id" property="id" />
+        <result column="budget_id" property="budgetId" />
+        <result column="user_id" property="userId" />
+        <result column="adjustment_amount" property="adjustmentAmount" />
+        <result column="adjustment_reason" property="adjustmentReason" />
+        <result column="adjustment_date" property="adjustmentDate" />
+        <result column="status" property="status" />
+        <result column="approver_id" property="approverId" />
+        <result column="version" property="version" />
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime" />
+        <result column="deleted" property="deleted" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id,
+        budget_id, user_id, adjustment_amount, adjustment_reason, adjustment_date, status, approver_id, version, create_time, update_time, deleted
+    </sql>
+
+</mapper>
