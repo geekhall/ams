@@ -1,21 +1,34 @@
 <template>
   <div id="budgetDetailPage" class="content-container">
-    <h1>预算明细</h1>
-    <div class="handle-box">
-      <el-input
-        v-model="query.assetName"
-        placeholder="输入预算名称"
-        class="handle-input mr10"
-        @keyup.enter.native="handleSearch"
-      ></el-input>
-      <el-button type="primary" :icon="Search" @click="handleSearch">搜索</el-button>
-      <el-button type="primary" :icon="Plus" @click="handleAdd"> 新增 </el-button>
+    <h1>{{ formatYear(selectedYear) }}年度 预算明细</h1>
+    <div class="table-title">
+      <div class="handle-box">
+        <el-button type="danger" :icon="Select" @click="handleSelectYear" style="margin-right: 10px"
+          >选择年度</el-button
+        >
+        <el-button type="warning" :icon="Switch" @click="toggleTech" style="margin-right: 20px">
+          {{ buttonName }}
+        </el-button>
+        <el-input
+          v-model="query.assetName"
+          placeholder="输入预算名称"
+          class="handle-input mr10"
+          @keyup.enter.native="handleSearch"
+        ></el-input>
+        <el-button type="primary" :icon="Search" @click="handleSearch">搜索</el-button>
+        <el-button type="primary" :icon="Plus" @click="handleAdd"> 新增 </el-button>
+      </div>
+      <div>
+        <el-button type="primary" :icon="Upload" @click="handleImport">导入</el-button>
+        <el-button type="primary" :icon="Download" @click="handleExport">导出</el-button>
+      </div>
     </div>
     <el-table
       :data="tableData"
       border
       class="table"
       ref="multipleTable"
+      @row-dblclick="handleRowDblClick"
       header-cell-class-name="table-header"
     >
       <el-table-column prop="id" label="ID" width="80" align="center"></el-table-column>
@@ -29,10 +42,17 @@
       </el-table-column>
       <el-table-column prop="" label="预算金额" align="center"> </el-table-column>
       <el-table-column prop="" label="部门" align="center"> </el-table-column>
-      <el-table-column prop="" label="优先级" align="center" width="60px"> </el-table-column>
-      <el-table-column prop="" label="业务优先级" align="center" width="90px"> </el-table-column>
-      <el-table-column prop="" label="业务优先级情况说明" align="center"> </el-table-column>
-      <el-table-column prop="" label="预计启动时间" align="center" width="90px"> </el-table-column>
+
+      <el-table-column v-if="isTech" prop="" label="团队" align="center"> </el-table-column>
+
+      <el-table-column v-if="!isTech" prop="" label="优先级" align="center" width="60px">
+      </el-table-column>
+      <el-table-column v-if="!isTech" prop="" label="业务优先级" align="center" width="90px">
+      </el-table-column>
+      <el-table-column v-if="!isTech" prop="" label="业务优先级情况说明" align="center">
+      </el-table-column>
+      <el-table-column v-if="!isTech" prop="" label="预计启动时间" align="center" width="90px">
+      </el-table-column>
       <el-table-column prop="" label="备注" align="center"> </el-table-column>
 
       <el-table-column label="操作" width="220" align="center">
@@ -67,6 +87,26 @@
         @current-change="handlePageChange"
       ></el-pagination>
     </div>
+    <!-- 选择年度弹出框 -->
+    <el-dialog title="选择预算年度" v-model="yearVisible" width="30%">
+      <el-form>
+        <el-form-item label="年度">
+          <div class="year-picker">
+            <div class="container">
+              <div class="block">
+                <el-date-picker v-model="selectedYear" type="year" placeholder="选择年份" />
+              </div>
+            </div>
+          </div>
+        </el-form-item>
+      </el-form>
+      <template #footer>
+        <span class="dialog-footer">
+          <el-button @click="yearVisible = false">取 消</el-button>
+          <el-button type="primary" @click="saveYear">确 定</el-button>
+        </span>
+      </template>
+    </el-dialog>
 
     <!-- 新增弹出框 -->
     <el-dialog title="新增资产" v-model="addVisible" width="30%">
@@ -202,13 +242,66 @@
 <script lang="ts" setup>
 import { ref, reactive, onMounted } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
-import { Delete, Edit, Search, Plus } from '@element-plus/icons-vue'
+import {
+  Delete,
+  Edit,
+  Search,
+  Plus,
+  Switch,
+  Select,
+  Upload,
+  Download
+} from '@element-plus/icons-vue'
 import { deleteAssetById, getAssetList, getAssetTypeList, addAsset, updateAsset } from '@/api/asset'
 import { getDepartmentList } from '@/api/department'
 import { AssetTypeListResponse, type Asset, AssetType } from '@/types/asset'
 import { DepartmentListResponse } from '@/types/department'
 import dayjs from 'dayjs'
 import { Department } from '@/types/department'
+
+const isTech = ref(true)
+const buttonName = ref('科技')
+const toggleTech = () => {
+  isTech.value = !isTech.value
+  buttonName.value = isTech.value === true ? '科技' : '业务'
+}
+
+// 表格编辑时弹窗和保存
+const yearVisible = ref(false)
+
+// 格式化日期为年度
+const formatYear = (date: Date | string | null | undefined) => {
+  if (!date) {
+    return ''
+  }
+  return dayjs(date).format('YYYY')
+}
+const selectedYear = ref(new Date())
+// 选择年度操作
+const handleSelectYear = () => {
+  yearVisible.value = true
+  // 这里可以添加新增逻辑
+  // selectedYear.value = new Date()
+}
+
+// 保存年度操作
+const saveYear = () => {
+  // 检查selectedYear的值是否有效
+  if (!selectedYear.value || isNaN(selectedYear.value.getTime())) {
+    ElMessage.error('请选择有效的年度')
+    return
+  }
+  // 关闭弹窗
+  yearVisible.value = false
+  // 添加至后台的逻辑
+  ElMessage.success(`已选择 ${selectedYear.value.getFullYear()} 年度的额度信息`)
+  // 更新年度
+  addForm.year = selectedYear.value.getFullYear()
+  editForm.year = selectedYear.value.getFullYear()
+
+  // 更新表格数据
+  getData()
+}
 
 const assetTypes = ref<AssetType[]>([])
 const departments = ref<Department[]>([])
@@ -423,9 +516,30 @@ const handleDelete = (index: number) => {
     })
     .catch(() => {})
 }
+// 双击行时的处理函数
+const handleRowDblClick = (row: any, column: any, event: Event) => {
+  console.log('双击行数据:', row)
+  console.log('双击的列:', column)
+  console.log('事件对象:', event)
+  // 执行更多操作
+}
+
+const handleImport = () => {
+  // 这里可以添加导入逻辑
+  ElMessage.success('导入成功')
+}
+const handleExport = () => {
+  // 这里可以添加导出逻辑
+  ElMessage.success('导出成功')
+}
 </script>
 
 <style scoped>
+.table-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
 .handle-box {
   margin-bottom: 20px;
 }
@@ -438,10 +552,18 @@ const handleDelete = (index: number) => {
   width: 300px;
 }
 .table {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   width: 100%;
-
-  max-width: 100%;
-  overflow-x: auto; /* 启用横向滚动 */
+  border-radius: 4px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+  border: 1px solid #e4e7ed;
+  margin-top: 20px;
+  margin-bottom: 20px;
   font-size: 14px;
 }
 .el-table {

@@ -14,6 +14,7 @@
       <el-button type="primary" :icon="Search" @click="handleSearch">搜索</el-button>
       <el-button type="primary" :icon="Plus" @click="handleAdd"> 新增 </el-button>
     </div>
+
     <el-table
       :data="tableData"
       border
@@ -146,7 +147,7 @@ import { getDepartmentList } from '@/api/department'
 import { type Quota } from '@/types/quota'
 import { Department, DepartmentListResponse } from '@/types/department'
 import dayjs from 'dayjs'
-const selectedYear = ref(new Date())
+
 const departments = ref<Department[]>([])
 const query = reactive({
   id: '',
@@ -168,7 +169,7 @@ const formatYear = (date: Date | string | null | undefined) => {
   }
   return dayjs(date).format('YYYY')
 }
-
+const selectedYear = ref(new Date())
 // 选择年度操作
 const handleSelectYear = () => {
   yearVisible.value = true
@@ -367,7 +368,6 @@ const handleDelete = (index: number) => {
   align-items: center;
   flex-direction: row;
   width: 100%;
-  margin-bottom: 20px;
 }
 
 .handle-select {
@@ -383,7 +383,6 @@ const handleDelete = (index: number) => {
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  margin-top: 20px;
 }
 
 .totalQuota {
@@ -398,7 +397,6 @@ const handleDelete = (index: number) => {
   justify-content: center;
   align-items: center;
   width: 100%;
-
   border-radius: 4px;
   overflow: hidden;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
