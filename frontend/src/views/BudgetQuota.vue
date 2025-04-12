@@ -1,10 +1,10 @@
 <template>
   <div id="budgetQuotaPage" class="content-container">
-    <h1>部门额度</h1>
+    <h1>{{ currentYear }}年度 部门预算额度管理</h1>
     <div class="handle-box">
       <el-input
-        v-model="query.assetName"
-        placeholder="输入预算名称"
+        v-model="query.departmentName"
+        placeholder="输入部门名称"
         class="handle-input mr10"
         @keyup.enter.native="handleSearch"
       ></el-input>
@@ -18,16 +18,11 @@
       ref="multipleTable"
       header-cell-class-name="table-header"
     >
-      <el-table-column prop="id" label="ID" width="180" align="center"></el-table-column>
-      <el-table-column prop="assetName" label="预算名称" align="center"></el-table-column>
-      <el-table-column prop="assetCode" label="预算编号" align="center"> </el-table-column>
-      <el-table-column prop="assetType" label="预算类型" align="center"></el-table-column>
-      <el-table-column prop="departmentName" label="所属部门" align="center"> </el-table-column>
-      <el-table-column prop="status" label="状态" align="center"> </el-table-column>
-      <el-table-column prop="purchaseDate" label="购入时间" align="center"></el-table-column>
-      <el-table-column prop="purchasePrice" label="购买价格" align="right"></el-table-column>
-      <el-table-column prop="count" label="数量" align="center" width="100"></el-table-column>
-      <el-table-column label="操作" width="220" align="center">
+      <el-table-column prop="id" label="ID" align="center"></el-table-column>
+      <el-table-column prop="year" label="年度" align="center"></el-table-column>
+      <el-table-column prop="departmentName" label="部门" align="center"></el-table-column>
+      <el-table-column prop="quota" label="预算额度" align="center"> </el-table-column>
+      <el-table-column label="操作" align="center">
         <template #default="scope">
           <el-button
             text
@@ -59,27 +54,20 @@
         @current-change="handlePageChange"
       ></el-pagination>
     </div>
-
     <!-- 新增弹出框 -->
-    <el-dialog title="新增资产" v-model="addVisible" width="30%">
+    <el-dialog title="新增部门额度" v-model="addVisible" width="30%">
       <el-form label-width="70px">
-        <el-form-item label="资产名称">
-          <el-input v-model="addForm.assetName"></el-input>
+        <el-form-item label="年度">
+          <div class="year-picker">
+            <div class="container">
+              <div class="block">
+                <el-date-picker v-model="addForm.year" type="year" placeholder="选择年份" />
+              </div>
+            </div>
+          </div>
         </el-form-item>
-        <el-form-item label="资产编号">
-          <el-input v-model="addForm.assetCode"></el-input>
-        </el-form-item>
-        <el-form-item label="资产类型">
-          <el-select v-model="addForm.assetType" placeholder="请选择">
-            <el-option
-              v-for="item in assetTypes"
-              :key="item.name"
-              :label="item.name"
-              :value="item.name"
-            ></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="所属部门">
+
+        <el-form-item label="部门">
           <el-select v-model="addForm.departmentName">
             <el-option
               v-for="item in departments"
@@ -89,30 +77,8 @@
             ></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="状态">
-          <el-select v-model="addForm.status">
-            <el-option label="正常" value="正常"></el-option>
-            <el-option label="维修" value="维修"></el-option>
-            <el-option label="报废" value="报废"></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="购入时间">
-          <span class="demonstration"></span>
-          <el-date-picker
-            class="date-picker"
-            v-model="addForm.purchaseDate"
-            type="date"
-            format="YYYY-MM-DD"
-            value-format="YYYY-MM-DD"
-            size="default"
-            placeholder="选择日期"
-          />
-        </el-form-item>
-        <el-form-item label="购买价格">
+        <el-form-item label="额度">
           <el-input v-model="addForm.purchasePrice"></el-input>
-        </el-form-item>
-        <el-form-item label="数量">
-          <el-input v-model="addForm.count"></el-input>
         </el-form-item>
       </el-form>
       <template #footer>
@@ -126,26 +92,19 @@
     <!-- 编辑弹出框 -->
     <el-dialog title="编辑" v-model="editVisible" width="30%">
       <el-form label-width="70px">
-        <el-form-item label="ID">
+        <el-form-item label="ID" v-show="false">
           <el-input v-model="editForm.id" disabled></el-input>
         </el-form-item>
-        <el-form-item label="资产名称">
-          <el-input v-model="editForm.assetName"></el-input>
+        <el-form-item label="年度">
+          <div class="year-picker">
+            <div class="container">
+              <div class="block">
+                <el-date-picker v-model="value2" type="year" placeholder="选择年份" />
+              </div>
+            </div>
+          </div>
         </el-form-item>
-        <el-form-item label="资产编号">
-          <el-input v-model="editForm.assetCode"></el-input>
-        </el-form-item>
-        <el-form-item label="资产类型">
-          <el-select v-model="addForm.assetType" placeholder="请选择">
-            <el-option
-              v-for="item in assetTypes"
-              :key="item.name"
-              :label="item.name"
-              :value="item.name"
-            ></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="所属部门">
+        <el-form-item label="部门">
           <el-select v-model="editForm.departmentName">
             <el-option
               v-for="item in departments"
@@ -155,30 +114,8 @@
             ></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="状态">
-          <el-select v-model="editForm.status">
-            <el-option label="正常" value="正常"></el-option>
-            <el-option label="维修" value="维修"></el-option>
-            <el-option label="报废" value="报废"></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="购入时间">
-          <span class="demonstration"></span>
-          <el-date-picker
-            class="date-picker"
-            v-model="editForm.purchaseDate"
-            type="date"
-            format="YYYY-MM-DD"
-            value-format="YYYY-MM-DD"
-            size="default"
-            placeholder="选择日期"
-          />
-        </el-form-item>
-        <el-form-item label="购买价格">
-          <el-input v-model="editForm.purchasePrice"></el-input>
-        </el-form-item>
-        <el-form-item label="数量">
-          <el-input v-model="editForm.count"></el-input>
+        <el-form-item label="预算额度">
+          <el-input v-model="editForm.quota"></el-input>
         </el-form-item>
       </el-form>
       <template #footer>
@@ -201,61 +138,36 @@ import { AssetTypeListResponse, type Asset, AssetType } from '@/types/asset'
 import { DepartmentListResponse } from '@/types/department'
 import dayjs from 'dayjs'
 import { Department } from '@/types/department'
-
+const value2 = ref('')
+const currentYear = new Date().getFullYear()
 const assetTypes = ref<AssetType[]>([])
 const departments = ref<Department[]>([])
 const query = reactive({
   id: '',
-  assetName: '',
-  assetCode: '',
-  assetType: '',
+  year: '2005',
   departmentName: '',
-  status: '',
-  purchaseDate: '',
-  purchasePrice: '',
-  count: 0,
+  quota: 0,
   // 分页参数
   pageIndex: 1,
-  pageSize: 10
+  pageSize: 15
 })
 const tableData = ref<Asset[]>([])
 const pageTotal = ref(0)
 // 表格编辑时弹窗和保存
 const addVisible = ref(false)
 let addForm = reactive({
-  assetName: '测试资产1',
-  assetCode: 'TEST-2025-1',
-  assetType: '服务器',
+  year: '2005',
   departmentName: '信息科技部',
-  status: '正常',
-  purchaseDate: dayjs().format('YYYY-MM-DD'),
-  purchasePrice: 0,
-  count: 0
+  quota: 0
 })
 const editVisible = ref(false)
 let editForm = reactive({
   id: '',
-  assetName: '',
-  assetCode: '',
-  assetType: '',
+  year: '',
   departmentName: '',
-  status: '',
-  purchaseDate: '',
-  purchasePrice: 100,
-  count: 1
+  quota: 100
 })
 let idx: number = -1
-// 获取资产类型列表
-const getAssetTypes = () => {
-  getAssetTypeList().then((res: AssetTypeListResponse) => {
-    if (res.code === 200) {
-      console.log('getAssetTypes res.data:', res.data)
-      assetTypes.value = res.data
-    } else {
-      ElMessage.error(res.message)
-    }
-  })
-}
 // 获取部门列表
 const getDepartments = () => {
   getDepartmentList().then((res: DepartmentListResponse) => {
@@ -270,7 +182,7 @@ const getDepartments = () => {
 // 获取表格数据
 const getData = () => {
   getAssetList({
-    name: query.assetName,
+    name: query.departmentName,
     pageIndex: query.pageIndex,
     pageSize: query.pageSize
   })
@@ -317,7 +229,6 @@ const handlePageChange = (val: number) => {
 
 // 新增操作
 const handleAdd = () => {
-  getAssetTypes()
   getDepartments()
   addVisible.value = true
   // 这里可以添加新增逻辑
@@ -353,18 +264,12 @@ const saveAdd = () => {
 
 // 编辑操作
 const handleEdit = (index: number, row: any) => {
-  getAssetTypes()
   getDepartments()
   idx = index
   editForm.id = row.id
-  editForm.assetName = row.assetName
-  editForm.assetCode = row.assetCode
-  editForm.assetType = row.assetType
+  editForm.year = row.year
   editForm.departmentName = row.departmentName
-  editForm.status = row.status
-  editForm.purchaseDate = row.purchaseDate
-  editForm.purchasePrice = row.purchasePrice
-  editForm.count = row.count
+  editForm.quota = row.quota
   // 这里可以根据需要设置其他字段
   editVisible.value = true
   // 更新后台数据
@@ -429,8 +334,21 @@ const handleDelete = (index: number) => {
 .handle-input {
   width: 300px;
 }
+
 .table {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   width: 100%;
+  max-width: 1200px;
+  border-radius: 4px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+  border: 1px solid #e4e7ed;
+  margin-top: 20px;
+  margin-bottom: 20px;
   font-size: 14px;
 }
 .red {
@@ -448,8 +366,38 @@ const handleDelete = (index: number) => {
 .date-picker {
   width: 100%;
 }
-</style>
-
-function getMaxPage(): number {
-  throw new Error('Function not implemented.')
+.year-picker {
+  display: flex;
+  width: 100%;
+  padding: 0;
+  flex-wrap: wrap;
 }
+
+.year-picker .block {
+  text-align: left;
+  widows: 100%;
+  border-right: solid 1px var(--el-border-color);
+  flex: 1;
+}
+
+.year-picker .block:last-child {
+  border-right: none;
+}
+
+.year-picker .container {
+  flex: 1;
+  border-right: solid 1px var(--el-border-color);
+}
+
+.year-picker .container .block {
+  border-right: none;
+}
+
+.year-picker .container .block:last-child {
+  border-top: solid 1px var(--el-border-color);
+}
+
+.year-picker .container:last-child {
+  border-right: none;
+}
+</style>
