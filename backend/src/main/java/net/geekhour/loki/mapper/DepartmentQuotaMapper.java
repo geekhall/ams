@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -112,6 +113,21 @@ public interface DepartmentQuotaMapper extends BaseMapper<DepartmentQuota> {
             "</if>" +
             "</script>")
     long countQuotas(@Param("year") int year, @Param("name") String name);
+
+    @Select("<script>" +
+            "SELECT SUM(a.quota)" +
+            " FROM h_department_quota a" +
+            " LEFT JOIN h_department b" +
+            " on a.department_id = b.id" +
+            " WHERE a.deleted = 0 and b.deleted=0 and a.quota>0" +
+            "<if test='year != null and year != \"\"'> " +
+            "AND a.budget_year = #{year} " +
+            "</if>" +
+            "<if test='name != null and name != \"\"'> " +
+            "AND b.name LIKE CONCAT('%', #{name}, '%') " +
+            "</if>" +
+            "</script>")
+    BigDecimal totalQuotas(@Param("year") int year, @Param("name") String name);
 
     @Select("SELECT COUNT(*) FROM h_department_quota " +
             "WHERE department_id = " +

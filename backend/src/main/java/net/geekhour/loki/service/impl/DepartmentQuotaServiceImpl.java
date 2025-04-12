@@ -11,6 +11,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Objects;
 
@@ -116,6 +117,11 @@ public class DepartmentQuotaServiceImpl extends ServiceImpl<DepartmentQuotaMappe
     @Override
     public boolean deleteQuota(Long id) {
         return departmentQuotaMapper.deleteById(id) > 0;
+    }
+
+    @Override
+    public BigDecimal totalQuotas(Integer year, String name) {
+        return departmentQuotaMapper.totalQuotas(year, name);
     }
 
 }

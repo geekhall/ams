@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
@@ -80,12 +81,14 @@ public class DepartmentQuotaController {
         }
         Integer offset = (pageIndex - 1) * pageSize;
         List<DepartmentQuotaDTO> quotaList = departmentQuotaService.getQuotaList(year, offset, pageSize, name);
-        Long total = departmentQuotaService.countQuotas(year, name);
+        Long count = departmentQuotaService.countQuotas(year, name);
+        BigDecimal total = departmentQuotaService.totalQuotas(year, name);
         return ResponseEntity.ok(Map.of(
                 "code", 200,
                 "message", "success!",
                 "data", Map.of(
                         "items", quotaList,
+                        "count", count,
                         "total", total
                 )));
     }
