@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @since 2025-04-04
  */
 @RestController
-@RequestMapping("/loki/rolePermission")
+@RequestMapping("/api/rolePermission")
 public class RolePermissionController {
 
 }

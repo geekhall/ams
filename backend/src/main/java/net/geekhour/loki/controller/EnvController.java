@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @since 2024-11-03
  */
 @RestController
-@RequestMapping("/loki/env")
+@RequestMapping("/api/env")
 public class EnvController {
 
 }

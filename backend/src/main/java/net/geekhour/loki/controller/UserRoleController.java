@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @since 2025-04-04
  */
 @RestController
-@RequestMapping("/loki/userRole")
+@RequestMapping("/api/ur")
 public class UserRoleController {
 
 }

@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @since 2025-04-12
  */
 @RestController
-@RequestMapping("/loki/departmentQuota")
+@RequestMapping("/api/quota")
 public class DepartmentQuotaController {
 
 }

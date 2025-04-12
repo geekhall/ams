@@ -26,7 +26,7 @@ import java.util.Map;
  * @since 2024-11-03
  */
 @RestController
-@RequestMapping("/loki/product")
+@RequestMapping("/api/product")
 public class ProductController {
 
     @Autowired

@@ -18,7 +18,7 @@ import java.util.List;
  * @since 2024-11-03
  */
 @RestController
-@RequestMapping("/loki/environment")
+@RequestMapping("/api/environment")
 public class EnvironmentController {
 
     @Autowired
