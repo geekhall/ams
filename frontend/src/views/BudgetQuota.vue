@@ -155,7 +155,7 @@ const query = reactive({
   yearTotal: 0,
   // 分页参数
   pageIndex: 1,
-  pageSize: 15
+  pageSize: 16
 })
 const tableData = ref<Quota[]>([])
 const pageTotal = ref(0)
@@ -379,14 +379,15 @@ const handleDelete = (index: number) => {
 }
 .footer-container {
   display: flex;
-  justify-content: flex-start;
+  max-width: 1200px;
+  padding: 0 20px;
+  justify-content: space-between;
   align-items: center;
   width: 100%;
   margin-top: 20px;
 }
 
 .totalQuota {
-  margin-left: 100px;
   font-size: 20px;
   font-weight: bold;
   color: #f26c6f;
