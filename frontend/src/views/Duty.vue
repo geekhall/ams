@@ -19,9 +19,11 @@
         <p :class="data.isSelected ? 'is-selected' : ''">
           {{ data.day.split('-').slice(1).join('/') }}
           <br />
-          {{ '白班：张三' }}
+          {{ getDutyInfo(data.day)?.day || '无白班信息' }}
           <br />
-          {{ '夜班：李四' }}
+          {{ getDutyInfo(data.day)?.night || '无夜班信息' }}
+          <br />
+          {{ getDutyInfo(data.day)?.core || '无值班信息' }}
         </p>
       </template>
     </el-calendar>
@@ -29,20 +31,60 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import type { CalendarDateType, CalendarInstance } from 'element-plus'
 const dutyData = ref([
   {
     date: '2025-04-06',
     day: '白班：张三',
-    night: '夜班：李四'
+    night: '夜班：李四',
+    core: '核心值班：银洋'
   },
   {
     date: '2025-04-07',
     day: '白班：王五',
-    night: '夜班：赵六'
+    night: '夜班：赵六',
+    core: '核心值班：银洋'
+  },
+  {
+    date: '2025-04-08',
+    day: '白班：钱七',
+    night: '夜班：孙八'
+  },
+  {
+    date: '2025-04-09',
+    day: '白班：周九',
+    night: '夜班：吴十'
+  },
+  {
+    date: '2025-04-10',
+    day: '白班：郑十一',
+    night: '夜班：冯十二'
+  },
+  {
+    date: '2025-04-11',
+    day: '白班：陈十三',
+    night: '夜班：褚十四'
+  },
+  {
+    date: '2025-04-12',
+    day: '白班：卫十五',
+    night: '夜班：蒋十六'
+  },
+  {
+    date: '2025-04-13',
+    day: '白班：沈十七',
+    night: '夜班：韩十八'
+  },
+  {
+    date: '2025-04-14',
+    day: '白班：杨十九',
+    night: '夜班：朱二十'
   }
 ])
+const getDutyInfo = (date: string) => {
+  return dutyData.value.find((item) => item.date === date)
+}
 
 const selectedDate = ref(new Date())
 const isSpecialDate = (date: Date) => {

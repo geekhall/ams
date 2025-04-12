@@ -77,6 +77,32 @@ const items: MenuItem[] = [
     permission: 'asset'
   },
   {
+    icon: 'Money',
+    index: '',
+    title: '预算管理',
+    permission: 'budget',
+    subs: [
+      {
+        icon: 'DocumentCopy',
+        index: '/budget/overview',
+        title: '预算概览',
+        permission: 'budget'
+      },
+      {
+        icon: 'DocumentCopy',
+        index: '/budget/quota',
+        title: '部门额度',
+        permission: 'budget'
+      },
+      {
+        icon: 'DocumentCopy',
+        index: '/budget/detail',
+        title: '预算明细',
+        permission: 'budget'
+      }
+    ]
+  },
+  {
     icon: 'List',
     index: '/project',
     title: '项目清单',
