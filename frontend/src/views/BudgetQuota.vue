@@ -159,7 +159,10 @@ const pageTotal = ref(0)
 // 表格编辑时弹窗和保存
 const yearVisible = ref(false)
 // 格式化日期为年度
-const formatYear = (date: Date) => {
+const formatYear = (date: Date | string | null | undefined) => {
+  if (!date) {
+    return ''
+  }
   return dayjs(date).format('YYYY')
 }
 
@@ -172,6 +175,12 @@ const handleSelectYear = () => {
 
 // 保存年度操作
 const saveYear = () => {
+  // 检查selectedYear的值是否有效
+  if (!selectedYear.value || isNaN(selectedYear.value.getTime())) {
+    ElMessage.error('请选择有效的年度')
+    return
+  }
+  // 关闭弹窗
   yearVisible.value = false
   // 添加至后台的逻辑
   ElMessage.success(`已选择 ${selectedYear.value.getFullYear()} 年度的额度信息`)
