@@ -105,6 +105,7 @@ loki.interceptors.response.use(
       }
       const message = error.response?.data?.message || error.message;
       console.log(error.message);
+      console.log(error.response.data.message)
       return Promise.reject(new Error(message));
     } else {
       if (error.message.includes('timeout')) {

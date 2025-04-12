@@ -1,7 +1,10 @@
 <template>
   <div id="budgetQuotaPage" class="content-container">
-    <h1>{{ currentYear }}年度 部门预算额度管理</h1>
+    <h1>{{ formatYear(selectedYear) }}年度 部门预算额度管理</h1>
     <div class="handle-box">
+      <el-button type="danger" :icon="Select" @click="handleSelectYear" style="margin-right: 10px"
+        >选择年度</el-button
+      >
       <el-input
         v-model="query.departmentName"
         placeholder="输入部门名称"
@@ -19,7 +22,6 @@
       header-cell-class-name="table-header"
     >
       <el-table-column prop="id" label="ID" align="center"></el-table-column>
-      <el-table-column prop="year" label="年度" align="center"></el-table-column>
       <el-table-column prop="departmentName" label="部门" align="center"></el-table-column>
       <el-table-column prop="quota" label="预算额度" align="center"> </el-table-column>
       <el-table-column label="操作" align="center">
@@ -54,19 +56,31 @@
         @current-change="handlePageChange"
       ></el-pagination>
     </div>
-    <!-- 新增弹出框 -->
-    <el-dialog title="新增部门额度" v-model="addVisible" width="30%">
+
+    <!-- 选择年度弹出框 -->
+    <el-dialog title="选择预算年度" v-model="yearVisible" width="30%">
       <el-form label-width="70px">
         <el-form-item label="年度">
           <div class="year-picker">
             <div class="container">
               <div class="block">
-                <el-date-picker v-model="addForm.year" type="year" placeholder="选择年份" />
+                <el-date-picker v-model="selectedYear" type="year" placeholder="选择年份" />
               </div>
             </div>
           </div>
         </el-form-item>
+      </el-form>
+      <template #footer>
+        <span class="dialog-footer">
+          <el-button @click="yearVisible = false">取 消</el-button>
+          <el-button type="primary" @click="saveYear">确 定</el-button>
+        </span>
+      </template>
+    </el-dialog>
 
+    <!-- 新增弹出框 -->
+    <el-dialog title="新增部门额度" v-model="addVisible" width="30%">
+      <el-form label-width="70px">
         <el-form-item label="部门">
           <el-select v-model="addForm.departmentName">
             <el-option
@@ -78,7 +92,7 @@
           </el-select>
         </el-form-item>
         <el-form-item label="额度">
-          <el-input v-model="addForm.purchasePrice"></el-input>
+          <el-input v-model="addForm.quota"></el-input>
         </el-form-item>
       </el-form>
       <template #footer>
@@ -95,15 +109,7 @@
         <el-form-item label="ID" v-show="false">
           <el-input v-model="editForm.id" disabled></el-input>
         </el-form-item>
-        <el-form-item label="年度">
-          <div class="year-picker">
-            <div class="container">
-              <div class="block">
-                <el-date-picker v-model="value2" type="year" placeholder="选择年份" />
-              </div>
-            </div>
-          </div>
-        </el-form-item>
+
         <el-form-item label="部门">
           <el-select v-model="editForm.departmentName">
             <el-option
@@ -131,41 +137,64 @@
 <script lang="ts" setup>
 import { ref, reactive, onMounted } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
-import { Delete, Edit, Search, Plus } from '@element-plus/icons-vue'
-import { deleteAssetById, getAssetList, getAssetTypeList, addAsset, updateAsset } from '@/api/asset'
+import { Delete, Edit, Search, Plus, Select } from '@element-plus/icons-vue'
+import { deleteQuotaById, getQuotaList, addQuota, updateQuota } from '@/api/quota'
 import { getDepartmentList } from '@/api/department'
-import { AssetTypeListResponse, type Asset, AssetType } from '@/types/asset'
+import { QuotaListResponse, type Quota } from '@/types/quota'
 import { DepartmentListResponse } from '@/types/department'
 import dayjs from 'dayjs'
 import { Department } from '@/types/department'
-const value2 = ref('')
-const currentYear = new Date().getFullYear()
-const assetTypes = ref<AssetType[]>([])
+const selectedYear = ref(new Date())
 const departments = ref<Department[]>([])
 const query = reactive({
   id: '',
-  year: '2005',
   departmentName: '',
   quota: 0,
   // 分页参数
   pageIndex: 1,
   pageSize: 15
 })
-const tableData = ref<Asset[]>([])
+const tableData = ref<Quota[]>([])
 const pageTotal = ref(0)
 // 表格编辑时弹窗和保存
+const yearVisible = ref(false)
+// 格式化日期为年度
+const formatYear = (date: Date) => {
+  return dayjs(date).format('YYYY')
+}
+
+// 选择年度操作
+const handleSelectYear = () => {
+  yearVisible.value = true
+  // 这里可以添加新增逻辑
+  // selectedYear.value = new Date()
+}
+
+// 保存年度操作
+const saveYear = () => {
+  yearVisible.value = false
+  // 添加至后台的逻辑
+  ElMessage.success(`已选择 ${selectedYear.value.getFullYear()} 年度的额度信息`)
+  // 更新年度
+  addForm.year = selectedYear.value.getFullYear()
+  editForm.year = selectedYear.value.getFullYear()
+
+  // 更新表格数据
+  getData()
+}
+
 const addVisible = ref(false)
 let addForm = reactive({
-  year: '2005',
+  year: selectedYear.value.getFullYear(),
   departmentName: '信息科技部',
   quota: 0
 })
 const editVisible = ref(false)
 let editForm = reactive({
   id: '',
-  year: '',
+  year: selectedYear.value.getFullYear(),
   departmentName: '',
-  quota: 100
+  quota: 0
 })
 let idx: number = -1
 // 获取部门列表
@@ -181,15 +210,14 @@ const getDepartments = () => {
 }
 // 获取表格数据
 const getData = () => {
-  getAssetList({
+  getQuotaList({
     name: query.departmentName,
+    year: selectedYear.value.getFullYear(),
     pageIndex: query.pageIndex,
     pageSize: query.pageSize
   })
     .then((res) => {
       if (res.code === 200) {
-        console.log('getAssetList res.data:', res.data)
-
         tableData.value = res.data.items
         pageTotal.value = res.data.total
       } else {
@@ -204,7 +232,7 @@ const getData = () => {
     })
 }
 onMounted(() => {
-  const savedPageIndex = localStorage.getItem('AMSCurrentAssetPageIndex')
+  const savedPageIndex = localStorage.getItem('AMSCurrentQuotaPageIndex')
   if (savedPageIndex) {
     query.pageIndex = parseInt(savedPageIndex, 10)
   }
@@ -214,8 +242,6 @@ onMounted(() => {
 // 搜索操作
 const handleSearch = () => {
   query.pageIndex = 1
-  // 获取输入框中的值
-  console.log('query.assetName', query.assetName)
   // 这里可以添加搜索逻辑
   getData()
 }
@@ -223,7 +249,7 @@ const handleSearch = () => {
 // 分页导航
 const handlePageChange = (val: number) => {
   query.pageIndex = val
-  localStorage.setItem('AMSCurrentAssetPageIndex', val.toString())
+  localStorage.setItem('AMSCurrentQuotaPageIndex', val.toString())
   getData()
 }
 
@@ -245,7 +271,7 @@ const getMaxPage = () => {
 const saveAdd = () => {
   addVisible.value = false
   // 添加至后台的逻辑
-  addAsset(addForm)
+  addQuota(addForm)
     .then((res) => {
       if (res.code === 200) {
         ElMessage.success('新增成功')
@@ -258,7 +284,7 @@ const saveAdd = () => {
       }
     })
     .catch((err) => {
-      ElMessage.error('新增失败')
+      ElMessage.error('新增失败: ' + err.message)
     })
 }
 
@@ -267,7 +293,6 @@ const handleEdit = (index: number, row: any) => {
   getDepartments()
   idx = index
   editForm.id = row.id
-  editForm.year = row.year
   editForm.departmentName = row.departmentName
   editForm.quota = row.quota
   // 这里可以根据需要设置其他字段
@@ -280,7 +305,7 @@ const saveEdit = () => {
   editVisible.value = false
   let currentPage = query.pageIndex
   // 编辑至后台的逻辑
-  updateAsset(editForm)
+  updateQuota(editForm)
     .then((res) => {
       if (res.code === 200) {
         ElMessage.success(`修改第 ${idx + 1} 行成功`)
@@ -304,7 +329,7 @@ const handleDelete = (index: number) => {
   })
     .then(() => {
       // 删除操作
-      deleteAssetById(tableData.value[index].id)
+      deleteQuotaById(tableData.value[index].id)
         .then((res) => {
           if (res.code === 200) {
             ElMessage.success('删除成功')
