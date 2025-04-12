@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * <p>
@@ -68,14 +69,48 @@ public class DepartmentQuotaServiceImpl extends ServiceImpl<DepartmentQuotaMappe
             return null;
         }
         DepartmentQuota quota = new DepartmentQuota();
+        if (quotaDTO.getId() != null && !quotaDTO.getId().isEmpty()){
+            quota.setId(Long.valueOf(quotaDTO.getId()));
+        }
         quota.setDepartmentId(departmentId);
         quota.setBudgetYear(quotaDTO.getYear());
         quota.setQuota(quotaDTO.getQuota());
-        quota.setVersion(1);
-        quota.setCreateTime(System.currentTimeMillis());
-        quota.setUpdateTime(System.currentTimeMillis());
-        quota.setDeleted((byte) 0);
+
         return quota;
+    }
+
+    @Override
+    public boolean updateQuota(DepartmentQuotaDTO quotaDTO) {
+        System.out.println("quotaDTO.getId : " + quotaDTO.getId());
+        System.out.println("quotaDTO.getDepartmentName() : " + quotaDTO.getDepartmentName());
+        System.out.println("quotaDTO.getYear() : " + quotaDTO.getYear());
+        System.out.println("quotaDTO.getQuota() : " + quotaDTO.getQuota());
+        DepartmentQuota existingQuota = departmentQuotaMapper.selectById(quotaDTO.getId());
+        if (existingQuota == null) {
+            return false; // DepartmentQuota must exist for update
+        }
+        System.out.println("updateQuota ###### step 001");
+
+        // 不能跨年修改
+        if (!Objects.equals(existingQuota.getBudgetYear(), quotaDTO.getYear())) {
+            log.error("updateQuota ###### 不能跨年修改");
+            System.out.println("updateQuota ###### 不能跨年修改");
+            return false;
+        }
+        System.out.println("updateQuota ###### step 002");
+        // 不能修改部门
+        if (existingQuota.getDepartmentId() != departmentMapper.selectIdByName(quotaDTO.getDepartmentName())) {
+            log.error("updateQuota ###### 不能修改部门");
+            System.out.println("updateQuota ###### 不能修改部门");
+            return false;
+        }
+        System.out.println("updateQuota ###### step 003");
+        DepartmentQuota quota = mapToQuota(quotaDTO);
+        if (quota == null) {
+            return false;
+        }
+        System.out.println("updateQuota ###### step 004");
+        return departmentQuotaMapper.updateById(quota) > 0;
     }
 
 }

@@ -97,6 +97,14 @@ public class DepartmentQuotaController {
                     "data", ""
             ));
         }
+        Long currentYear = System.currentTimeMillis() / 1000 / 60 / 60 / 24 / 365 + 1970;
+        if (quotaDTO.getYear() == null || quotaDTO.getYear() < currentYear) {
+            return ResponseEntity.badRequest().body(Map.of(
+                    "code", 400,
+                    "message", "Budget year cannot be null or in the past",
+                    "data", ""
+            ));
+        }
         boolean created = false;
         try {
             created = departmentQuotaService.createQuota(quotaDTO);
@@ -124,47 +132,47 @@ public class DepartmentQuotaController {
         }
     }
 
-//    /**
-//     * Update an existing department quota
-//     * @param quotaDTO DepartmentQuotaDTO
-//     * @return ResponseEntity
-//     */
-//    @PostMapping("/update")
-//    @PreAuthorize("hasRole('USER') || hasAuthority('user:quota:update')")
-//    public ResponseEntity<?> updateQuota(@RequestBody DepartmentQuotaDTO quotaDTO) {
-//        if (quotaDTO.getId() == null) {
-//            return ResponseEntity.badRequest().body(Map.of(
-//                    "code", 400,
-//                    "message", "Quota ID cannot be null",
-//                    "data", ""
-//            ));
-//        }
-//        boolean updated = false;
-//        try {
-//            updated = departmentQuotaService.updateQuota(quotaDTO);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            return ResponseEntity.status(500).body(Map.of(
-//                    "code", 500,
-//                    "message", "Failed to update quota",
-//                    "data", ""
-//            ));
-//        }
-//
-//        if (updated) {
-//            return ResponseEntity.ok(Map.of(
-//                    "code", 200,
-//                    "message", "Quota updated successfully",
-//                    "data", quotaDTO
-//            ));
-//        } else {
-//            return ResponseEntity.status(404).body(Map.of(
-//                    "code", 404,
-//                    "message", "Quota not found",
-//                    "data", ""
-//            ));
-//        }
-//    }
+    /**
+     * Update an existing department quota
+     * @param quotaDTO DepartmentQuotaDTO
+     * @return ResponseEntity
+     */
+    @PostMapping("/update")
+    @PreAuthorize("hasRole('USER') || hasAuthority('user:quota:update')")
+    public ResponseEntity<?> updateQuota(@RequestBody DepartmentQuotaDTO quotaDTO) {
+        if (quotaDTO.getId() == null) {
+            return ResponseEntity.badRequest().body(Map.of(
+                    "code", 400,
+                    "message", "Quota ID cannot be null",
+                    "data", ""
+            ));
+        }
+        boolean updated = false;
+        try {
+            updated = departmentQuotaService.updateQuota(quotaDTO);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(500).body(Map.of(
+                    "code", 500,
+                    "message", "Failed to update quota",
+                    "data", ""
+            ));
+        }
+
+        if (updated) {
+            return ResponseEntity.ok(Map.of(
+                    "code", 200,
+                    "message", "Quota updated successfully",
+                    "data", quotaDTO
+            ));
+        } else {
+            return ResponseEntity.status(404).body(Map.of(
+                    "code", 404,
+                    "message", "Quota not found",
+                    "data", ""
+            ));
+        }
+    }
 //
 //    /**
 //     * Delete a department quota by ID

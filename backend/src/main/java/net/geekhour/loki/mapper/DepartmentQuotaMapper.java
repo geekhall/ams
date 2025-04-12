@@ -87,7 +87,7 @@ public interface DepartmentQuotaMapper extends BaseMapper<DepartmentQuota> {
             "<if test='name != null and name != \"\"'> " +
             "AND b.name LIKE CONCAT('%', #{name}, '%') " +
             "</if>" +
-            " ORDER BY a.id" +
+            " ORDER BY b.id" +
             " LIMIT #{offset}, #{pageSize}" +
             "</script>")
     List<DepartmentQuotaDTO> getQuotaList(@Param("offset") int offset, @Param("pageSize") int pageSize, @Param("name") String name);

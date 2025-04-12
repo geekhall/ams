@@ -147,10 +147,6 @@ public class AssetServiceImpl extends ServiceImpl<AssetMapper, Asset> implements
         asset.setPurchaseDate(purchaseDateTimestamp);
         asset.setPurchasePrice(assetDTO.getPurchasePrice());
         asset.setCount(assetDTO.getCount());
-        asset.setVersion(1); // Set initial version
-        asset.setCreateTime(System.currentTimeMillis());
-        asset.setUpdateTime(System.currentTimeMillis());
-        asset.setDeleted((byte) 0); // Set as not deleted
         return asset;
     }
 }

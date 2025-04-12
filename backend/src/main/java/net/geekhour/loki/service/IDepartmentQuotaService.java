@@ -3,6 +3,7 @@ package net.geekhour.loki.service;
 import net.geekhour.loki.entity.DepartmentQuota;
 import com.baomidou.mybatisplus.extension.service.IService;
 import net.geekhour.loki.entity.dto.DepartmentQuotaDTO;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
@@ -20,4 +21,6 @@ public interface IDepartmentQuotaService extends IService<DepartmentQuota> {
     long countQuotas(String name);
 
     boolean createQuota(DepartmentQuotaDTO quotaDTO);
+
+    boolean updateQuota(DepartmentQuotaDTO quotaDTO);
 }
