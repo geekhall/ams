@@ -1,5 +1,6 @@
 package net.geekhour.loki.entity;
 
+import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -20,7 +21,7 @@ import lombok.experimental.Accessors;
  * </p>
  *
  * @author Jasper Yang
- * @since 2025-04-07
+ * @since 2025-04-11
  */
 @Getter
 @Setter
@@ -44,13 +45,13 @@ public class AssetType extends Model<AssetType> {
     @Version
     private Integer version;
 
-    @ApiModelProperty("创建日期")
-    @TableField("create_date")
-    private Long createDate;
+    @ApiModelProperty("创建时间")
+    @TableField(value = "create_time", fill = FieldFill.INSERT)
+    private Long createTime;
 
-    @ApiModelProperty("更新日期")
-    @TableField("update_date")
-    private Long updateDate;
+    @ApiModelProperty("修改时间")
+    @TableField(value = "update_time", fill = FieldFill.INSERT_UPDATE)
+    private Long updateTime;
 
     @ApiModelProperty("逻辑删除")
     @TableField("deleted")
