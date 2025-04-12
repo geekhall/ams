@@ -35,6 +35,7 @@ dist-ssr
 *.swp
 *.lock
 
+data/
 
 
 vite.config.ts.*
