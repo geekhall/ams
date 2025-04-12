@@ -23,4 +23,6 @@ public interface IDepartmentQuotaService extends IService<DepartmentQuota> {
     boolean createQuota(DepartmentQuotaDTO quotaDTO);
 
     boolean updateQuota(DepartmentQuotaDTO quotaDTO);
+
+    boolean deleteQuota(Long id);
 }

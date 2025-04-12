@@ -113,4 +113,9 @@ public class DepartmentQuotaServiceImpl extends ServiceImpl<DepartmentQuotaMappe
         return departmentQuotaMapper.updateById(quota) > 0;
     }
 
+    @Override
+    public boolean deleteQuota(Long id) {
+        return departmentQuotaMapper.deleteById(id) > 0;
+    }
+
 }

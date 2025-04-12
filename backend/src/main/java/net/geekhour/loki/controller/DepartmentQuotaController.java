@@ -173,27 +173,27 @@ public class DepartmentQuotaController {
             ));
         }
     }
-//
-//    /**
-//     * Delete a department quota by ID
-//     * @param id Quota ID
-//     * @return ResponseEntity
-//     */
-//    @DeleteMapping("/delete/{id}")
-//    @PreAuthorize("hasRole('USER') || hasAuthority('user:quota:delete')")
-//    public ResponseEntity<?> deleteQuota(@PathVariable Long id) {
-//        boolean deleted = departmentQuotaService.deleteQuota(id);
-//        if (deleted) {
-//            return ResponseEntity.ok(Map.of(
-//                    "code", 200,
-//                    "message", "Quota deleted successfully",
-//                    "data", ""));
-//        } else {
-//            return ResponseEntity.status(404).body(Map.of(
-//                    "code", 404,
-//                    "message", "Quota not found",
-//                    "data", ""));
-//        }
-//    }
+
+    /**
+     * Delete a department quota by ID
+     * @param id Quota ID
+     * @return ResponseEntity
+     */
+    @DeleteMapping("/delete/{id}")
+    @PreAuthorize("hasRole('USER') || hasAuthority('user:quota:delete')")
+    public ResponseEntity<?> deleteQuota(@PathVariable Long id) {
+        boolean deleted = departmentQuotaService.deleteQuota(id);
+        if (deleted) {
+            return ResponseEntity.ok(Map.of(
+                    "code", 200,
+                    "message", "Quota deleted successfully",
+                    "data", ""));
+        } else {
+            return ResponseEntity.status(404).body(Map.of(
+                    "code", 404,
+                    "message", "Quota not found",
+                    "data", ""));
+        }
+    }
 
 }
