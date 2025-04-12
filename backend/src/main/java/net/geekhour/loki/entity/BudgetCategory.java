@@ -32,6 +32,9 @@ public class BudgetCategory extends Model<BudgetCategory> {
 
     private static final long serialVersionUID = 1L;
 
+    @ApiModelProperty("主键ID")
+    private Long id;
+
     @ApiModelProperty("预算性质名称")
     @TableField("name")
     private String name;

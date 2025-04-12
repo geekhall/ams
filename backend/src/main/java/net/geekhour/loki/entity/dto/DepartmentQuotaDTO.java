@@ -10,24 +10,18 @@ import java.math.BigDecimal;
 
 /**
  * @author Jasper Yang
- * @create 2025/04/06 20:03
+ * @create 2025/04/12 17:38
  */
 @Getter
 @Setter
 @Accessors(chain = true)
-public class AssetDTO extends Model<AssetDTO> {
-
+public class DepartmentQuotaDTO extends Model<DepartmentQuotaDTO> {
     private static final long serialVersionUID = 1L;
+
     private String id;
-    private String assetName;
-    private String assetCode;
-    private String assetType;
+    private Integer year;
     private String departmentName;
-    private String location;
-    private String status;
-    private String purchaseDate;
-    private BigDecimal purchasePrice;
-    private Integer count;
+    private BigDecimal quota;
 
     @Override
     public Serializable pkVal() {

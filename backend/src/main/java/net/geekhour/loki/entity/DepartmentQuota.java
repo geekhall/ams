@@ -33,6 +33,9 @@ public class DepartmentQuota extends Model<DepartmentQuota> {
 
     private static final long serialVersionUID = 1L;
 
+    @ApiModelProperty("主键ID")
+    private Long id;
+
     @ApiModelProperty("部门ID")
     @TableField("department_id")
     private Long departmentId;

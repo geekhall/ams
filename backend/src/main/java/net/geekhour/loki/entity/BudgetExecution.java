@@ -33,6 +33,9 @@ public class BudgetExecution extends Model<BudgetExecution> {
 
     private static final long serialVersionUID = 1L;
 
+    @ApiModelProperty("主键ID")
+    private Long id;
+
     @ApiModelProperty("预算ID")
     @TableField("budget_id")
     private Long budgetId;
