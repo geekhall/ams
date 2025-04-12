@@ -11,7 +11,7 @@
  Target Server Version : 80032 (8.0.32)
  File Encoding         : 65001
 
- Date: 09/04/2025 09:16:01
+ Date: 11/04/2025 08:36:31
 */
 
 SET NAMES utf8mb4;
@@ -55,7 +55,7 @@ CREATE TABLE `h_asset` (
   `asset_type` bigint NOT NULL COMMENT '资产类型(外键关联h_asset_type)',
   `department_id` bigint NOT NULL COMMENT '所属部门（外键关联h_department)',
   `location` varchar(255) DEFAULT NULL COMMENT '存放地点',
-  `status` int NOT NULL DEFAULT '0' COMMENT '状态 0-正常 1-报废 2-维修',
+  `status` varchar(255) NOT NULL COMMENT '状态 正常 报废 维修',
   `purchase_date` bigint DEFAULT NULL COMMENT '购入日期',
   `purchase_price` decimal(10,2) DEFAULT '0.00' COMMENT '购买价格',
   `count` int DEFAULT '1' COMMENT '数量',
@@ -73,30 +73,39 @@ CREATE TABLE `h_asset` (
 -- Records of h_asset
 -- ----------------------------
 BEGIN;
-INSERT INTO `h_asset` (`id`, `asset_name`, `asset_code`, `asset_type`, `department_id`, `location`, `status`, `purchase_date`, `purchase_price`, `count`, `version`, `create_time`, `update_time`, `deleted`) VALUES (1, 'Dell电脑', 'DELL-2025', 1, 1, '科技部', 0, 1672531200000, 12000.00, 5, 1, 1672531200000, NULL, 0);
-INSERT INTO `h_asset` (`id`, `asset_name`, `asset_code`, `asset_type`, `department_id`, `location`, `status`, `purchase_date`, `purchase_price`, `count`, `version`, `create_time`, `update_time`, `deleted`) VALUES (2, '服务器', 'IP14-2023', 2, 1, '科技部', 0, 1672531200000, 8000.00, 10, 1, 1672531200000, NULL, 0);
-INSERT INTO `h_asset` (`id`, `asset_name`, `asset_code`, `asset_type`, `department_id`, `location`, `status`, `purchase_date`, `purchase_price`, `count`, `version`, `create_time`, `update_time`, `deleted`) VALUES (3, '交换机', 'DXPS-2023', 3, 2, '会议室', 0, 1672531200000, 10000.00, 2, 1, 1672531200000, NULL, 0);
-INSERT INTO `h_asset` (`id`, `asset_name`, `asset_code`, `asset_type`, `department_id`, `location`, `status`, `purchase_date`, `purchase_price`, `count`, `version`, `create_time`, `update_time`, `deleted`) VALUES (4, '路由器', 'RTP-2023', 4, 2, '科技部', 0, 1672531200000, 5000.00, 1, 1, 1672531200000, NULL, 0);
-INSERT INTO `h_asset` (`id`, `asset_name`, `asset_code`, `asset_type`, `department_id`, `location`, `status`, `purchase_date`, `purchase_price`, `count`, `version`, `create_time`, `update_time`, `deleted`) VALUES (5, '打印机', 'PRT-2023', 5, 3, '科技部', 0, 1672531200000, 3000.00, 1, 1, 1672531200000, NULL, 0);
-INSERT INTO `h_asset` (`id`, `asset_name`, `asset_code`, `asset_type`, `department_id`, `location`, `status`, `purchase_date`, `purchase_price`, `count`, `version`, `create_time`, `update_time`, `deleted`) VALUES (6, '显示器', 'MON-2023', 6, 3, '科技部', 0, 1672531200000, 2000.00, 2, 1, 1672531200000, NULL, 0);
-INSERT INTO `h_asset` (`id`, `asset_name`, `asset_code`, `asset_type`, `department_id`, `location`, `status`, `purchase_date`, `purchase_price`, `count`, `version`, `create_time`, `update_time`, `deleted`) VALUES (7, '手机', 'IPHONE-2023', 7, 4, '科技部', 0, 1672531200000, 8000.00, 10, 1, 1672531200000, NULL, 0);
-INSERT INTO `h_asset` (`id`, `asset_name`, `asset_code`, `asset_type`, `department_id`, `location`, `status`, `purchase_date`, `purchase_price`, `count`, `version`, `create_time`, `update_time`, `deleted`) VALUES (8, '平板', 'IPAD-2023', 8, 4, '科技部', 0, 1672531200000, 6000.00, 5, 1, 1672531200000, NULL, 0);
-INSERT INTO `h_asset` (`id`, `asset_name`, `asset_code`, `asset_type`, `department_id`, `location`, `status`, `purchase_date`, `purchase_price`, `count`, `version`, `create_time`, `update_time`, `deleted`) VALUES (9, '投影仪', 'PJT-2023', 9, 5, '会议室', 0, 1672531200000, 7000.00, 2, 1, 1672531200000, NULL, 0);
-INSERT INTO `h_asset` (`id`, `asset_name`, `asset_code`, `asset_type`, `department_id`, `location`, `status`, `purchase_date`, `purchase_price`, `count`, `version`, `create_time`, `update_time`, `deleted`) VALUES (10, '音响', 'SPK-2023', 10, 5, '会议室', 0, 1672531200000, 4000.00, 1, 1, 1672531200000, NULL, 0);
-INSERT INTO `h_asset` (`id`, `asset_name`, `asset_code`, `asset_type`, `department_id`, `location`, `status`, `purchase_date`, `purchase_price`, `count`, `version`, `create_time`, `update_time`, `deleted`) VALUES (11, '摄像头', 'CAM-2023', 11, 6, '科技部', 0, 1672531200000, 1500.00, 3, 1, 1672531200000, NULL, 0);
-INSERT INTO `h_asset` (`id`, `asset_name`, `asset_code`, `asset_type`, `department_id`, `location`, `status`, `purchase_date`, `purchase_price`, `count`, `version`, `create_time`, `update_time`, `deleted`) VALUES (12, '监控设备', 'CCTV-2023', 12, 6, '科技部', 0, 1672531200000, 5000.00, 2, 1, 1672531200000, NULL, 0);
-INSERT INTO `h_asset` (`id`, `asset_name`, `asset_code`, `asset_type`, `department_id`, `location`, `status`, `purchase_date`, `purchase_price`, `count`, `version`, `create_time`, `update_time`, `deleted`) VALUES (13, '门禁设备', 'ACD-2023', 13, 7, '科技部', 0, 1672531200000, 3000.00, 1, 1, 1672531200000, NULL, 0);
-INSERT INTO `h_asset` (`id`, `asset_name`, `asset_code`, `asset_type`, `department_id`, `location`, `status`, `purchase_date`, `purchase_price`, `count`, `version`, `create_time`, `update_time`, `deleted`) VALUES (14, '考勤机', 'AT-2023', 14, 7, '科技部', 0, 1672531200000, 2000.00, 1, 1, 1672531200000, NULL, 0);
-INSERT INTO `h_asset` (`id`, `asset_name`, `asset_code`, `asset_type`, `department_id`, `location`, `status`, `purchase_date`, `purchase_price`, `count`, `version`, `create_time`, `update_time`, `deleted`) VALUES (15, 'UPS', 'UPS-2023', 15, 8, '科技部', 0, 1672531200000, 2500.00, 2, 1, 1672531200000, NULL, 0);
-INSERT INTO `h_asset` (`id`, `asset_name`, `asset_code`, `asset_type`, `department_id`, `location`, `status`, `purchase_date`, `purchase_price`, `count`, `version`, `create_time`, `update_time`, `deleted`) VALUES (16, '电源线', 'CABLE-2023', 16, 8, '科技部', 0, 1672531200000, 100.00, 20, 1, 1672531200000, NULL, 0);
-INSERT INTO `h_asset` (`id`, `asset_name`, `asset_code`, `asset_type`, `department_id`, `location`, `status`, `purchase_date`, `purchase_price`, `count`, `version`, `create_time`, `update_time`, `deleted`) VALUES (17, '网线', 'LAN-2023', 17, 9, '科技部', 0, 1672531200000, 50.00, 30, 1, 1672531200000, NULL, 0);
-INSERT INTO `h_asset` (`id`, `asset_name`, `asset_code`, `asset_type`, `department_id`, `location`, `status`, `purchase_date`, `purchase_price`, `count`, `version`, `create_time`, `update_time`, `deleted`) VALUES (18, '鼠标', 'MOUSE-2023', 18, 9, '科技部', 0, 1672531200000, 200.00, 10, 1, 1672531200000, NULL, 0);
-INSERT INTO `h_asset` (`id`, `asset_name`, `asset_code`, `asset_type`, `department_id`, `location`, `status`, `purchase_date`, `purchase_price`, `count`, `version`, `create_time`, `update_time`, `deleted`) VALUES (19, '键盘', 'KEYBOARD-2023', 19, 10, '科技部', 0, 1672531200000, 300.00, 5, 1, 1672531200000, NULL, 0);
-INSERT INTO `h_asset` (`id`, `asset_name`, `asset_code`, `asset_type`, `department_id`, `location`, `status`, `purchase_date`, `purchase_price`, `count`, `version`, `create_time`, `update_time`, `deleted`) VALUES (20, '传真机', 'FAX-2023', 20, 10, '科技部', 0, 1672531200000, 1500.00, 2, 1, 1672531200000, NULL, 0);
-INSERT INTO `h_asset` (`id`, `asset_name`, `asset_code`, `asset_type`, `department_id`, `location`, `status`, `purchase_date`, `purchase_price`, `count`, `version`, `create_time`, `update_time`, `deleted`) VALUES (21, '办公设备', 'OFFICE-2023', 21, 11, '科技部', 0, 1672531200000, 500.00, 10, 1, 1672531200000, NULL, 0);
-INSERT INTO `h_asset` (`id`, `asset_name`, `asset_code`, `asset_type`, `department_id`, `location`, `status`, `purchase_date`, `purchase_price`, `count`, `version`, `create_time`, `update_time`, `deleted`) VALUES (22, '电脑', 'PC-2023', 22, 11, '科技部', 0, 1672531200000, 6000.00, 5, 1, 1672531200000, NULL, 0);
-INSERT INTO `h_asset` (`id`, `asset_name`, `asset_code`, `asset_type`, `department_id`, `location`, `status`, `purchase_date`, `purchase_price`, `count`, `version`, `create_time`, `update_time`, `deleted`) VALUES (23, '服务器机柜', 'RACK-2023', 23, 12, '科技部', 0, 1672531200000, 2000.00, 1, 1, 1672531200000, NULL, 0);
-INSERT INTO `h_asset` (`id`, `asset_name`, `asset_code`, `asset_type`, `department_id`, `location`, `status`, `purchase_date`, `purchase_price`, `count`, `version`, `create_time`, `update_time`, `deleted`) VALUES (24, '机房空调', 'AC-2023', 24, 12, '机房', 0, 1672531200000, 8000.00, 1, 1, 1672531200000, NULL, 0);
+INSERT INTO `h_asset` (`id`, `asset_name`, `asset_code`, `asset_type`, `department_id`, `location`, `status`, `purchase_date`, `purchase_price`, `count`, `version`, `create_time`, `update_time`, `deleted`) VALUES (1, 'Dell电脑', 'DELL-2025', 1, 1, '科技部', '正常', 1672531200000, 12000.00, 5, 1, 1672531200000, NULL, 0);
+INSERT INTO `h_asset` (`id`, `asset_name`, `asset_code`, `asset_type`, `department_id`, `location`, `status`, `purchase_date`, `purchase_price`, `count`, `version`, `create_time`, `update_time`, `deleted`) VALUES (2, '服务器', 'IP14-2023', 2, 1, '科技部', '正常', 1672531200000, 8000.00, 10, 1, 1672531200000, NULL, 0);
+INSERT INTO `h_asset` (`id`, `asset_name`, `asset_code`, `asset_type`, `department_id`, `location`, `status`, `purchase_date`, `purchase_price`, `count`, `version`, `create_time`, `update_time`, `deleted`) VALUES (3, '交换机', 'DXPS-2023', 3, 2, '会议室', '正常', 1672531200000, 10000.00, 2, 1, 1672531200000, NULL, 0);
+INSERT INTO `h_asset` (`id`, `asset_name`, `asset_code`, `asset_type`, `department_id`, `location`, `status`, `purchase_date`, `purchase_price`, `count`, `version`, `create_time`, `update_time`, `deleted`) VALUES (4, '路由器', 'RTP-2023', 4, 2, '科技部', '正常', 1672531200000, 5000.00, 1, 1, 1672531200000, NULL, 0);
+INSERT INTO `h_asset` (`id`, `asset_name`, `asset_code`, `asset_type`, `department_id`, `location`, `status`, `purchase_date`, `purchase_price`, `count`, `version`, `create_time`, `update_time`, `deleted`) VALUES (5, '打印机', 'PRT-2023', 5, 3, '科技部', '正常', 1672531200000, 3000.00, 1, 1, 1672531200000, NULL, 0);
+INSERT INTO `h_asset` (`id`, `asset_name`, `asset_code`, `asset_type`, `department_id`, `location`, `status`, `purchase_date`, `purchase_price`, `count`, `version`, `create_time`, `update_time`, `deleted`) VALUES (6, '显示器', 'MON-2023', 6, 3, '科技部', '正常', 1672531200000, 2000.00, 2, 1, 1672531200000, NULL, 0);
+INSERT INTO `h_asset` (`id`, `asset_name`, `asset_code`, `asset_type`, `department_id`, `location`, `status`, `purchase_date`, `purchase_price`, `count`, `version`, `create_time`, `update_time`, `deleted`) VALUES (7, '手机', 'IPHONE-2023', 7, 4, '科技部', '正常', 1672531200000, 8000.00, 10, 1, 1672531200000, NULL, 0);
+INSERT INTO `h_asset` (`id`, `asset_name`, `asset_code`, `asset_type`, `department_id`, `location`, `status`, `purchase_date`, `purchase_price`, `count`, `version`, `create_time`, `update_time`, `deleted`) VALUES (8, '平板', 'IPAD-2023', 8, 4, '科技部', '正常', 1672531200000, 6000.00, 5, 1, 1672531200000, NULL, 0);
+INSERT INTO `h_asset` (`id`, `asset_name`, `asset_code`, `asset_type`, `department_id`, `location`, `status`, `purchase_date`, `purchase_price`, `count`, `version`, `create_time`, `update_time`, `deleted`) VALUES (9, '投影仪', 'PJT-2023', 9, 5, '会议室', '正常', 1672531200000, 7000.00, 2, 1, 1672531200000, NULL, 0);
+INSERT INTO `h_asset` (`id`, `asset_name`, `asset_code`, `asset_type`, `department_id`, `location`, `status`, `purchase_date`, `purchase_price`, `count`, `version`, `create_time`, `update_time`, `deleted`) VALUES (10, '音响', 'SPK-2023', 10, 5, '会议室', '正常', 1672531200000, 4000.00, 1, 1, 1672531200000, NULL, 0);
+INSERT INTO `h_asset` (`id`, `asset_name`, `asset_code`, `asset_type`, `department_id`, `location`, `status`, `purchase_date`, `purchase_price`, `count`, `version`, `create_time`, `update_time`, `deleted`) VALUES (11, '摄像头', 'CAM-2023', 11, 6, '科技部', '正常', 1672531200000, 1500.00, 3, 1, 1672531200000, NULL, 0);
+INSERT INTO `h_asset` (`id`, `asset_name`, `asset_code`, `asset_type`, `department_id`, `location`, `status`, `purchase_date`, `purchase_price`, `count`, `version`, `create_time`, `update_time`, `deleted`) VALUES (12, '监控设备', 'CCTV-2023', 12, 6, '科技部', '正常', 1672531200000, 5000.00, 2, 1, 1672531200000, NULL, 0);
+INSERT INTO `h_asset` (`id`, `asset_name`, `asset_code`, `asset_type`, `department_id`, `location`, `status`, `purchase_date`, `purchase_price`, `count`, `version`, `create_time`, `update_time`, `deleted`) VALUES (13, '门禁设备', 'ACD-2023', 13, 7, '科技部', '正常', 1672531200000, 3000.00, 1, 1, 1672531200000, NULL, 0);
+INSERT INTO `h_asset` (`id`, `asset_name`, `asset_code`, `asset_type`, `department_id`, `location`, `status`, `purchase_date`, `purchase_price`, `count`, `version`, `create_time`, `update_time`, `deleted`) VALUES (14, '考勤机', 'AT-2023', 14, 7, '科技部', '正常', 1672531200000, 2000.00, 1, 1, 1672531200000, NULL, 0);
+INSERT INTO `h_asset` (`id`, `asset_name`, `asset_code`, `asset_type`, `department_id`, `location`, `status`, `purchase_date`, `purchase_price`, `count`, `version`, `create_time`, `update_time`, `deleted`) VALUES (15, 'UPS', 'UPS-2025', 15, 8, '科技部', '正常', 1672502400000, 2500.00, 2, 1, 1672531200000, 1744298662338, 0);
+INSERT INTO `h_asset` (`id`, `asset_name`, `asset_code`, `asset_type`, `department_id`, `location`, `status`, `purchase_date`, `purchase_price`, `count`, `version`, `create_time`, `update_time`, `deleted`) VALUES (16, '电源线', 'CABLE-2023', 16, 8, '科技部', '正常', 1672531200000, 100.00, 20, 1, 1672531200000, NULL, 0);
+INSERT INTO `h_asset` (`id`, `asset_name`, `asset_code`, `asset_type`, `department_id`, `location`, `status`, `purchase_date`, `purchase_price`, `count`, `version`, `create_time`, `update_time`, `deleted`) VALUES (17, '网线', 'LAN-2023', 17, 9, '科技部', '正常', 1672531200000, 50.00, 30, 1, 1672531200000, NULL, 0);
+INSERT INTO `h_asset` (`id`, `asset_name`, `asset_code`, `asset_type`, `department_id`, `location`, `status`, `purchase_date`, `purchase_price`, `count`, `version`, `create_time`, `update_time`, `deleted`) VALUES (18, '鼠标', 'MOUSE-2023', 18, 9, '科技部', '正常', 1672531200000, 200.00, 10, 1, 1672531200000, 1744288245023, 0);
+INSERT INTO `h_asset` (`id`, `asset_name`, `asset_code`, `asset_type`, `department_id`, `location`, `status`, `purchase_date`, `purchase_price`, `count`, `version`, `create_time`, `update_time`, `deleted`) VALUES (19, '键盘', 'KEYBOARD-2023', 19, 10, '科技部', '正常', 1672531200000, 300.00, 5, 1, 1672531200000, 1744288235878, 0);
+INSERT INTO `h_asset` (`id`, `asset_name`, `asset_code`, `asset_type`, `department_id`, `location`, `status`, `purchase_date`, `purchase_price`, `count`, `version`, `create_time`, `update_time`, `deleted`) VALUES (20, '传真机', 'FAX-2023', 20, 10, '科技部', '正常', 1672531200000, 1500.00, 2, 1, 1672531200000, 1744288248700, 0);
+INSERT INTO `h_asset` (`id`, `asset_name`, `asset_code`, `asset_type`, `department_id`, `location`, `status`, `purchase_date`, `purchase_price`, `count`, `version`, `create_time`, `update_time`, `deleted`) VALUES (21, '办公设备', 'OFFICE-2023', 21, 11, '科技部', '正常', 1672531200000, 500.00, 10, 1, 1672531200000, 1744288252268, 0);
+INSERT INTO `h_asset` (`id`, `asset_name`, `asset_code`, `asset_type`, `department_id`, `location`, `status`, `purchase_date`, `purchase_price`, `count`, `version`, `create_time`, `update_time`, `deleted`) VALUES (22, '电脑', 'PC-2023', 22, 11, '科技部', '正常', 1672531200000, 6000.00, 5, 1, 1672531200000, NULL, 0);
+INSERT INTO `h_asset` (`id`, `asset_name`, `asset_code`, `asset_type`, `department_id`, `location`, `status`, `purchase_date`, `purchase_price`, `count`, `version`, `create_time`, `update_time`, `deleted`) VALUES (23, '服务器机柜', 'RACK-2023', 23, 12, '科技部', '正常', 1672531200000, 2000.00, 1, 1, 1672531200000, NULL, 0);
+INSERT INTO `h_asset` (`id`, `asset_name`, `asset_code`, `asset_type`, `department_id`, `location`, `status`, `purchase_date`, `purchase_price`, `count`, `version`, `create_time`, `update_time`, `deleted`) VALUES (24, '机房空调', 'AC-2023', 24, 8, '机房', '报废', 1672502400000, 8000.00, 1, 1, 1672531200000, 1744298115575, 0);
+INSERT INTO `h_asset` (`id`, `asset_name`, `asset_code`, `asset_type`, `department_id`, `location`, `status`, `purchase_date`, `purchase_price`, `count`, `version`, `create_time`, `update_time`, `deleted`) VALUES (1910322874336444417, '测试资产1', 'TEST-2025-1', 1, 1, NULL, '维修', 1743609600000, 111.00, 2, 1, 1744291439982, 1744298102287, 0);
+INSERT INTO `h_asset` (`id`, `asset_name`, `asset_code`, `asset_type`, `department_id`, `location`, `status`, `purchase_date`, `purchase_price`, `count`, `version`, `create_time`, `update_time`, `deleted`) VALUES (1910323327828807681, '测试资产12', 'TEST-2025-12', 1, 1, NULL, '正常', 1744128000000, 22.00, 23, 1, 1744291548104, 1744298088266, 0);
+INSERT INTO `h_asset` (`id`, `asset_name`, `asset_code`, `asset_type`, `department_id`, `location`, `status`, `purchase_date`, `purchase_price`, `count`, `version`, `create_time`, `update_time`, `deleted`) VALUES (1910324022036410369, '测试资产13', 'TEST-2025-13', 1, 1, NULL, '正常', 1744214400000, 22.00, 23, 1, 1744291713615, NULL, 0);
+INSERT INTO `h_asset` (`id`, `asset_name`, `asset_code`, `asset_type`, `department_id`, `location`, `status`, `purchase_date`, `purchase_price`, `count`, `version`, `create_time`, `update_time`, `deleted`) VALUES (1910328673377009666, '测试资产122', 'TEST-2025-122', 1, 1, NULL, '正常', 1744214400000, 21231.00, 11, 1, 1744292822581, 1744298423305, 1);
+INSERT INTO `h_asset` (`id`, `asset_name`, `asset_code`, `asset_type`, `department_id`, `location`, `status`, `purchase_date`, `purchase_price`, `count`, `version`, `create_time`, `update_time`, `deleted`) VALUES (1910338981256560641, '测试资产134', 'TEST-2025-134', 1, 1, NULL, '正常', 1744214400000, 1111.00, 22, 1, 1744295280172, NULL, 0);
+INSERT INTO `h_asset` (`id`, `asset_name`, `asset_code`, `asset_type`, `department_id`, `location`, `status`, `purchase_date`, `purchase_price`, `count`, `version`, `create_time`, `update_time`, `deleted`) VALUES (1910342483366170626, '测试资产1222', 'TEST-2025-1222', 1, 1, NULL, '正常', 1744214400000, 222.00, 22, 1, 1744296115139, NULL, 0);
+INSERT INTO `h_asset` (`id`, `asset_name`, `asset_code`, `asset_type`, `department_id`, `location`, `status`, `purchase_date`, `purchase_price`, `count`, `version`, `create_time`, `update_time`, `deleted`) VALUES (1910344710797488129, '测试资产144', 'TEST-2025-14', 1, 1, NULL, '正常', 1744128000000, 4442.00, 42, 1, 1744296646201, 1744297928610, 0);
+INSERT INTO `h_asset` (`id`, `asset_name`, `asset_code`, `asset_type`, `department_id`, `location`, `status`, `purchase_date`, `purchase_price`, `count`, `version`, `create_time`, `update_time`, `deleted`) VALUES (1910352072333651970, '测试资产166', 'TEST-2025-16', 4, 1, NULL, '正常', 1744214400000, 666.00, 6, 1, 1744298401327, NULL, 0);
+INSERT INTO `h_asset` (`id`, `asset_name`, `asset_code`, `asset_type`, `department_id`, `location`, `status`, `purchase_date`, `purchase_price`, `count`, `version`, `create_time`, `update_time`, `deleted`) VALUES (1910354939274653697, '测试资产17', 'TEST-2025-17', 1, 1, NULL, '正常', 1744214400000, 7.00, 7, 1, 1744299084859, 1744299099146, 1);
 COMMIT;
 
 -- ----------------------------
@@ -106,7 +115,7 @@ DROP TABLE IF EXISTS `h_asset_type`;
 CREATE TABLE `h_asset_type` (
   `id` bigint NOT NULL COMMENT '主键ID',
   `name` varchar(255) NOT NULL COMMENT '资产类型名称',
-  `parent_id` bigint DEFAULT NULL COMMENT '父类型（支持多级分类，跟类型为NULL）',
+  `parent_id` bigint DEFAULT NULL COMMENT '父类型（支持多级分类，根类型为NULL）',
   `version` int DEFAULT '1' COMMENT '版本号',
   `create_time` bigint DEFAULT NULL COMMENT '创建时间',
   `update_time` bigint DEFAULT NULL COMMENT '修改时间',
@@ -223,27 +232,70 @@ CREATE TABLE `h_department` (
 -- Records of h_department
 -- ----------------------------
 BEGIN;
-INSERT INTO `h_department` (`id`, `name`, `description`, `code`, `parent_id`, `level`, `sort`, `version`, `create_time`, `update_time`, `deleted`) VALUES (1, '信息科技部', '信息科技部', '0001', NULL, 1, 1, 1, '2023-03-04 11:27:17', NULL, 0);
-INSERT INTO `h_department` (`id`, `name`, `description`, `code`, `parent_id`, `level`, `sort`, `version`, `create_time`, `update_time`, `deleted`) VALUES (2, '人力资源部', '人力资源部', '0002', NULL, 1, 2, 1, '2023-03-04 11:27:17', NULL, 0);
-INSERT INTO `h_department` (`id`, `name`, `description`, `code`, `parent_id`, `level`, `sort`, `version`, `create_time`, `update_time`, `deleted`) VALUES (3, '财务部', '财务部', '0003', NULL, 1, 3, 1, '2023-03-04 11:27:17', NULL, 0);
-INSERT INTO `h_department` (`id`, `name`, `description`, `code`, `parent_id`, `level`, `sort`, `version`, `create_time`, `update_time`, `deleted`) VALUES (4, '市场部', '市场部', '0004', NULL, 1, 4, 1, '2023-03-04 11:27:17', NULL, 0);
-INSERT INTO `h_department` (`id`, `name`, `description`, `code`, `parent_id`, `level`, `sort`, `version`, `create_time`, `update_time`, `deleted`) VALUES (5, '销售部', '销售部', '0005', NULL, 1, 5, 1, '2023-03-04 11:27:17', NULL, 0);
-INSERT INTO `h_department` (`id`, `name`, `description`, `code`, `parent_id`, `level`, `sort`, `version`, `create_time`, `update_time`, `deleted`) VALUES (6, '研发部', '研发部', '0006', NULL, 1, 6, 1, '2023-03-04 11:27:17', NULL, 0);
-INSERT INTO `h_department` (`id`, `name`, `description`, `code`, `parent_id`, `level`, `sort`, `version`, `create_time`, `update_time`, `deleted`) VALUES (7, '运营部', '运营部', '0007', NULL, 1, 7, 1, '2023-03-04 11:27:17', NULL, 0);
-INSERT INTO `h_department` (`id`, `name`, `description`, `code`, `parent_id`, `level`, `sort`, `version`, `create_time`, `update_time`, `deleted`) VALUES (8, '产品部', '产品部', '0008', NULL, 1, 8, 1, '2023-03-04 11:27:17', NULL, 0);
-INSERT INTO `h_department` (`id`, `name`, `description`, `code`, `parent_id`, `level`, `sort`, `version`, `create_time`, `update_time`, `deleted`) VALUES (9, '行政部', '行政部', '0009', NULL, 1, 9, 1, '2023-03-04 11:27:17', NULL, 0);
-INSERT INTO `h_department` (`id`, `name`, `description`, `code`, `parent_id`, `level`, `sort`, `version`, `create_time`, `update_time`, `deleted`) VALUES (10, '客服部', '客服部', '0010', NULL, 1, 10, 1, '2023-03-04 11:27:17', NULL, 0);
-INSERT INTO `h_department` (`id`, `name`, `description`, `code`, `parent_id`, `level`, `sort`, `version`, `create_time`, `update_time`, `deleted`) VALUES (11, '技术部', '技术部', '0011', NULL, 1, 11, 1, '2023-03-04 11:27:17', NULL, 0);
-INSERT INTO `h_department` (`id`, `name`, `description`, `code`, `parent_id`, `level`, `sort`, `version`, `create_time`, `update_time`, `deleted`) VALUES (12, '质量部', '质量部', '0012', NULL, 1, 12, 1, '2023-03-04 11:27:17', NULL, 0);
-INSERT INTO `h_department` (`id`, `name`, `description`, `code`, `parent_id`, `level`, `sort`, `version`, `create_time`, `update_time`, `deleted`) VALUES (13, '采购部', '采购部', '0013', NULL, 1, 13, 1, '2023-03-04 11:27:17', NULL, 0);
-INSERT INTO `h_department` (`id`, `name`, `description`, `code`, `parent_id`, `level`, `sort`, `version`, `create_time`, `update_time`, `deleted`) VALUES (14, '后勤部', '后勤部', '0014', NULL, 1, 14, 1, '2023-03-04 11:27:17', NULL, 0);
-INSERT INTO `h_department` (`id`, `name`, `description`, `code`, `parent_id`, `level`, `sort`, `version`, `create_time`, `update_time`, `deleted`) VALUES (15, '法务部', '法务部', '0015', NULL, 1, 15, 1, '2023-03-04 11:27:17', NULL, 0);
-INSERT INTO `h_department` (`id`, `name`, `description`, `code`, `parent_id`, `level`, `sort`, `version`, `create_time`, `update_time`, `deleted`) VALUES (16, '风控部', '风控部', '0016', NULL, 1, 16, 1, '2023-03-04 11:27:17', NULL, 0);
-INSERT INTO `h_department` (`id`, `name`, `description`, `code`, `parent_id`, `level`, `sort`, `version`, `create_time`, `update_time`, `deleted`) VALUES (17, '风险部', '风险部', '0017', NULL, 1, 17, 1, '2023-03-04 11:27:17', NULL, 0);
-INSERT INTO `h_department` (`id`, `name`, `description`, `code`, `parent_id`, `level`, `sort`, `version`, `create_time`, `update_time`, `deleted`) VALUES (18, '审计部', '审计部', '0018', NULL, 1, 18, 1, '2023-03-04 11:27:17', NULL, 0);
-INSERT INTO `h_department` (`id`, `name`, `description`, `code`, `parent_id`, `level`, `sort`, `version`, `create_time`, `update_time`, `deleted`) VALUES (19, '资产部', '资产部', '0019', NULL, 1, 19, 1, '2023-03-04 11:27:17', NULL, 0);
-INSERT INTO `h_department` (`id`, `name`, `description`, `code`, `parent_id`, `level`, `sort`, `version`, `create_time`, `update_time`, `deleted`) VALUES (20, '资金部', '资金部', '0020', NULL, 1, 20, 1, '2023-03-04 11:27:17', NULL, 0);
-INSERT INTO `h_department` (`id`, `name`, `description`, `code`, `parent_id`, `level`, `sort`, `version`, `create_time`, `update_time`, `deleted`) VALUES (21, '投资部', '投资部', '0021', NULL, 1, 21, 1, '2023-03-04 11:27:17', NULL, 0);
+INSERT INTO `h_department` (`id`, `name`, `description`, `code`, `parent_id`, `level`, `sort`, `version`, `create_time`, `update_time`, `deleted`) VALUES (1, '总行领导', '总行领导', '0001', NULL, 1, 1, 1, '2023-03-04 11:27:17', NULL, 0);
+INSERT INTO `h_department` (`id`, `name`, `description`, `code`, `parent_id`, `level`, `sort`, `version`, `create_time`, `update_time`, `deleted`) VALUES (2, '驻盛京银行纪检监察组', '驻盛京银行纪检监察组', '0002', NULL, 1, 2, 1, '2023-03-04 11:27:17', NULL, 0);
+INSERT INTO `h_department` (`id`, `name`, `description`, `code`, `parent_id`, `level`, `sort`, `version`, `create_time`, `update_time`, `deleted`) VALUES (3, '驻盛京银行纪检监察组纪检监察部', '驻盛京银行纪检监察组纪检监察部', '0003', NULL, 1, 3, 1, '2023-03-04 11:27:17', NULL, 0);
+INSERT INTO `h_department` (`id`, `name`, `description`, `code`, `parent_id`, `level`, `sort`, `version`, `create_time`, `update_time`, `deleted`) VALUES (4, '党委办公室', '党委办公室', '0004', NULL, 1, 4, 1, '2023-03-04 11:27:17', NULL, 0);
+INSERT INTO `h_department` (`id`, `name`, `description`, `code`, `parent_id`, `level`, `sort`, `version`, `create_time`, `update_time`, `deleted`) VALUES (5, '办公室', '办公室', '0005', NULL, 1, 5, 1, '2023-03-04 11:27:17', NULL, 0);
+INSERT INTO `h_department` (`id`, `name`, `description`, `code`, `parent_id`, `level`, `sort`, `version`, `create_time`, `update_time`, `deleted`) VALUES (6, '党委组织部', '党委组织部', '0006', NULL, 1, 6, 1, '2023-03-04 11:27:17', NULL, 0);
+INSERT INTO `h_department` (`id`, `name`, `description`, `code`, `parent_id`, `level`, `sort`, `version`, `create_time`, `update_time`, `deleted`) VALUES (7, '人力资源部', '人力资源部', '0007', NULL, 1, 7, 1, '2023-03-04 11:27:17', NULL, 0);
+INSERT INTO `h_department` (`id`, `name`, `description`, `code`, `parent_id`, `level`, `sort`, `version`, `create_time`, `update_time`, `deleted`) VALUES (8, '计划财务部', '计划财务部', '0008', NULL, 1, 8, 1, '2023-03-04 11:27:17', NULL, 0);
+INSERT INTO `h_department` (`id`, `name`, `description`, `code`, `parent_id`, `level`, `sort`, `version`, `create_time`, `update_time`, `deleted`) VALUES (9, '董事会办公室', '董事会办公室', '0009', NULL, 1, 9, 1, '2023-03-04 11:27:17', NULL, 0);
+INSERT INTO `h_department` (`id`, `name`, `description`, `code`, `parent_id`, `level`, `sort`, `version`, `create_time`, `update_time`, `deleted`) VALUES (10, '监事会办公室', '监事会办公室', '0010', NULL, 1, 10, 1, '2023-03-04 11:27:17', NULL, 0);
+INSERT INTO `h_department` (`id`, `name`, `description`, `code`, `parent_id`, `level`, `sort`, `version`, `create_time`, `update_time`, `deleted`) VALUES (11, '工会', '工会', '0011', NULL, 1, 11, 1, '2023-03-04 11:27:17', NULL, 0);
+INSERT INTO `h_department` (`id`, `name`, `description`, `code`, `parent_id`, `level`, `sort`, `version`, `create_time`, `update_time`, `deleted`) VALUES (12, '公司银行部', '公司银行部', '0012', NULL, 1, 12, 1, '2023-03-04 11:27:17', NULL, 0);
+INSERT INTO `h_department` (`id`, `name`, `description`, `code`, `parent_id`, `level`, `sort`, `version`, `create_time`, `update_time`, `deleted`) VALUES (13, '机构业务部', '机构业务部', '0013', NULL, 1, 13, 1, '2023-03-04 11:27:17', NULL, 0);
+INSERT INTO `h_department` (`id`, `name`, `description`, `code`, `parent_id`, `level`, `sort`, `version`, `create_time`, `update_time`, `deleted`) VALUES (14, '交易银行部', '交易银行部', '0014', NULL, 1, 14, 1, '2023-03-04 11:27:17', NULL, 0);
+INSERT INTO `h_department` (`id`, `name`, `description`, `code`, `parent_id`, `level`, `sort`, `version`, `create_time`, `update_time`, `deleted`) VALUES (15, '小企业金融服务中心', '小企业金融服务中心', '0015', NULL, 1, 15, 1, '2023-03-04 11:27:17', NULL, 0);
+INSERT INTO `h_department` (`id`, `name`, `description`, `code`, `parent_id`, `level`, `sort`, `version`, `create_time`, `update_time`, `deleted`) VALUES (16, '零售银行部', '零售银行部', '0016', NULL, 1, 16, 1, '2023-03-04 11:27:17', NULL, 0);
+INSERT INTO `h_department` (`id`, `name`, `description`, `code`, `parent_id`, `level`, `sort`, `version`, `create_time`, `update_time`, `deleted`) VALUES (17, '零售信贷部', '零售信贷部', '0017', NULL, 1, 17, 1, '2023-03-04 11:27:17', NULL, 0);
+INSERT INTO `h_department` (`id`, `name`, `description`, `code`, `parent_id`, `level`, `sort`, `version`, `create_time`, `update_time`, `deleted`) VALUES (18, '数字金融部', '数字金融部', '0018', NULL, 1, 18, 1, '2023-03-04 11:27:17', NULL, 0);
+INSERT INTO `h_department` (`id`, `name`, `description`, `code`, `parent_id`, `level`, `sort`, `version`, `create_time`, `update_time`, `deleted`) VALUES (19, '信用卡中心', '信用卡中心', '0019', NULL, 1, 19, 1, '2023-03-04 11:27:17', NULL, 0);
+INSERT INTO `h_department` (`id`, `name`, `description`, `code`, `parent_id`, `level`, `sort`, `version`, `create_time`, `update_time`, `deleted`) VALUES (20, '资金运营中心', '资金运营中心', '0020', NULL, 1, 20, 1, '2023-03-04 11:27:17', NULL, 0);
+INSERT INTO `h_department` (`id`, `name`, `description`, `code`, `parent_id`, `level`, `sort`, `version`, `create_time`, `update_time`, `deleted`) VALUES (21, '资产管理部', '资产管理部', '0021', NULL, 1, 21, 1, '2023-03-04 11:27:17', NULL, 0);
+INSERT INTO `h_department` (`id`, `name`, `description`, `code`, `parent_id`, `level`, `sort`, `version`, `create_time`, `update_time`, `deleted`) VALUES (22, '风险管理部', '风险管理部', '0022', NULL, 1, 22, 1, '2023-03-04 11:27:17', NULL, 0);
+INSERT INTO `h_department` (`id`, `name`, `description`, `code`, `parent_id`, `level`, `sort`, `version`, `create_time`, `update_time`, `deleted`) VALUES (23, '授信审批部', '授信审批部', '0023', NULL, 1, 23, 1, '2023-03-04 11:27:17', NULL, 0);
+INSERT INTO `h_department` (`id`, `name`, `description`, `code`, `parent_id`, `level`, `sort`, `version`, `create_time`, `update_time`, `deleted`) VALUES (24, '资产保全部', '资产保全部', '0024', NULL, 1, 24, 1, '2023-03-04 11:27:17', NULL, 0);
+INSERT INTO `h_department` (`id`, `name`, `description`, `code`, `parent_id`, `level`, `sort`, `version`, `create_time`, `update_time`, `deleted`) VALUES (25, '资产保全二部', '资产保全二部', '0025', NULL, 1, 25, 1, '2023-03-04 11:27:17', NULL, 0);
+INSERT INTO `h_department` (`id`, `name`, `description`, `code`, `parent_id`, `level`, `sort`, `version`, `create_time`, `update_time`, `deleted`) VALUES (26, '资产保全三部', '资产保全三部', '0026', NULL, 1, 26, 1, '2023-03-04 11:27:17', NULL, 0);
+INSERT INTO `h_department` (`id`, `name`, `description`, `code`, `parent_id`, `level`, `sort`, `version`, `create_time`, `update_time`, `deleted`) VALUES (27, '特殊资产经营中心', '特殊资产经营中心', '0027', NULL, 1, 27, 1, '2023-03-04 11:27:17', NULL, 0);
+INSERT INTO `h_department` (`id`, `name`, `description`, `code`, `parent_id`, `level`, `sort`, `version`, `create_time`, `update_time`, `deleted`) VALUES (28, '合规部', '合规部', '0028', NULL, 1, 28, 1, '2023-03-04 11:27:17', NULL, 0);
+INSERT INTO `h_department` (`id`, `name`, `description`, `code`, `parent_id`, `level`, `sort`, `version`, `create_time`, `update_time`, `deleted`) VALUES (29, '督查办公室', '督查办公室', '0029', NULL, 1, 29, 1, '2023-03-04 11:27:17', NULL, 0);
+INSERT INTO `h_department` (`id`, `name`, `description`, `code`, `parent_id`, `level`, `sort`, `version`, `create_time`, `update_time`, `deleted`) VALUES (30, '审计部', '审计部', '0030', NULL, 1, 30, 1, '2023-03-04 11:27:17', NULL, 0);
+INSERT INTO `h_department` (`id`, `name`, `description`, `code`, `parent_id`, `level`, `sort`, `version`, `create_time`, `update_time`, `deleted`) VALUES (31, '运营管理部', '运营管理部', '0031', NULL, 1, 31, 1, '2023-03-04 11:27:17', NULL, 0);
+INSERT INTO `h_department` (`id`, `name`, `description`, `code`, `parent_id`, `level`, `sort`, `version`, `create_time`, `update_time`, `deleted`) VALUES (32, '信息科技部', '信息科技部', '0032', NULL, 1, 32, 1, '2023-03-04 11:27:17', NULL, 0);
+INSERT INTO `h_department` (`id`, `name`, `description`, `code`, `parent_id`, `level`, `sort`, `version`, `create_time`, `update_time`, `deleted`) VALUES (33, '保卫部', '保卫部', '0033', NULL, 1, 33, 1, '2023-03-04 11:27:17', NULL, 0);
+INSERT INTO `h_department` (`id`, `name`, `description`, `code`, `parent_id`, `level`, `sort`, `version`, `create_time`, `update_time`, `deleted`) VALUES (34, '机关党委', '机关党委', '0034', NULL, 1, 34, 1, '2023-03-04 11:27:17', NULL, 0);
+INSERT INTO `h_department` (`id`, `name`, `description`, `code`, `parent_id`, `level`, `sort`, `version`, `create_time`, `update_time`, `deleted`) VALUES (35, '团委', '团委', '0035', NULL, 1, 35, 1, '2023-03-04 11:27:17', NULL, 0);
+INSERT INTO `h_department` (`id`, `name`, `description`, `code`, `parent_id`, `level`, `sort`, `version`, `create_time`, `update_time`, `deleted`) VALUES (36, '资深专员', '资深专员', '0036', NULL, 1, 36, 1, '2023-03-04 11:27:17', NULL, 0);
+INSERT INTO `h_department` (`id`, `name`, `description`, `code`, `parent_id`, `level`, `sort`, `version`, `create_time`, `update_time`, `deleted`) VALUES (37, '沈阳分行', '沈阳分行', '0037', NULL, 1, 37, 1, '2023-03-04 11:27:17', NULL, 0);
+INSERT INTO `h_department` (`id`, `name`, `description`, `code`, `parent_id`, `level`, `sort`, `version`, `create_time`, `update_time`, `deleted`) VALUES (38, '北京分行', '北京分行', '0038', NULL, 1, 38, 1, '2023-03-04 11:27:17', NULL, 0);
+INSERT INTO `h_department` (`id`, `name`, `description`, `code`, `parent_id`, `level`, `sort`, `version`, `create_time`, `update_time`, `deleted`) VALUES (39, '上海分行', '上海分行', '0039', NULL, 1, 39, 1, '2023-03-04 11:27:17', NULL, 0);
+INSERT INTO `h_department` (`id`, `name`, `description`, `code`, `parent_id`, `level`, `sort`, `version`, `create_time`, `update_time`, `deleted`) VALUES (40, '天津分行', '天津分行', '0040', NULL, 1, 40, 1, '2023-03-04 11:27:17', NULL, 0);
+INSERT INTO `h_department` (`id`, `name`, `description`, `code`, `parent_id`, `level`, `sort`, `version`, `create_time`, `update_time`, `deleted`) VALUES (41, '长春分行', '长春分行', '0041', NULL, 1, 41, 1, '2023-03-04 11:27:17', NULL, 0);
+INSERT INTO `h_department` (`id`, `name`, `description`, `code`, `parent_id`, `level`, `sort`, `version`, `create_time`, `update_time`, `deleted`) VALUES (42, '大连分行', '大连分行', '0042', NULL, 1, 42, 1, '2023-03-04 11:27:17', NULL, 0);
+INSERT INTO `h_department` (`id`, `name`, `description`, `code`, `parent_id`, `level`, `sort`, `version`, `create_time`, `update_time`, `deleted`) VALUES (43, '鞍山分行', '鞍山分行', '0043', NULL, 1, 43, 1, '2023-03-04 11:27:17', NULL, 0);
+INSERT INTO `h_department` (`id`, `name`, `description`, `code`, `parent_id`, `level`, `sort`, `version`, `create_time`, `update_time`, `deleted`) VALUES (44, '抚顺分行', '抚顺分行', '0044', NULL, 1, 44, 1, '2023-03-04 11:27:17', NULL, 0);
+INSERT INTO `h_department` (`id`, `name`, `description`, `code`, `parent_id`, `level`, `sort`, `version`, `create_time`, `update_time`, `deleted`) VALUES (45, '本溪分行', '本溪分行', '0045', NULL, 1, 45, 1, '2023-03-04 11:27:17', NULL, 0);
+INSERT INTO `h_department` (`id`, `name`, `description`, `code`, `parent_id`, `level`, `sort`, `version`, `create_time`, `update_time`, `deleted`) VALUES (46, '丹东分行', '丹东分行', '0046', NULL, 1, 46, 1, '2023-03-04 11:27:17', NULL, 0);
+INSERT INTO `h_department` (`id`, `name`, `description`, `code`, `parent_id`, `level`, `sort`, `version`, `create_time`, `update_time`, `deleted`) VALUES (47, '锦州分行', '锦州分行', '0047', NULL, 1, 47, 1, '2023-03-04 11:27:17', NULL, 0);
+INSERT INTO `h_department` (`id`, `name`, `description`, `code`, `parent_id`, `level`, `sort`, `version`, `create_time`, `update_time`, `deleted`) VALUES (48, '营口分行', '营口分行', '0048', NULL, 1, 48, 1, '2023-03-04 11:27:17', NULL, 0);
+INSERT INTO `h_department` (`id`, `name`, `description`, `code`, `parent_id`, `level`, `sort`, `version`, `create_time`, `update_time`, `deleted`) VALUES (49, '阜新分行', '阜新分行', '0049', NULL, 1, 49, 1, '2023-03-04 11:27:17', NULL, 0);
+INSERT INTO `h_department` (`id`, `name`, `description`, `code`, `parent_id`, `level`, `sort`, `version`, `create_time`, `update_time`, `deleted`) VALUES (50, '辽阳分行', '辽阳分行', '0050', NULL, 1, 50, 1, '2023-03-04 11:27:17', NULL, 0);
+INSERT INTO `h_department` (`id`, `name`, `description`, `code`, `parent_id`, `level`, `sort`, `version`, `create_time`, `update_time`, `deleted`) VALUES (51, '盘锦分行', '盘锦分行', '0051', NULL, 1, 51, 1, '2023-03-04 11:27:17', NULL, 0);
+INSERT INTO `h_department` (`id`, `name`, `description`, `code`, `parent_id`, `level`, `sort`, `version`, `create_time`, `update_time`, `deleted`) VALUES (52, '铁岭分行', '铁岭分行', '0052', NULL, 1, 52, 1, '2023-03-04 11:27:17', NULL, 0);
+INSERT INTO `h_department` (`id`, `name`, `description`, `code`, `parent_id`, `level`, `sort`, `version`, `create_time`, `update_time`, `deleted`) VALUES (53, '朝阳分行', '朝阳分行', '0053', NULL, 1, 53, 1, '2023-03-04 11:27:17', NULL, 0);
+INSERT INTO `h_department` (`id`, `name`, `description`, `code`, `parent_id`, `level`, `sort`, `version`, `create_time`, `update_time`, `deleted`) VALUES (54, '葫芦岛分行', '葫芦岛分行', '0054', NULL, 1, 54, 1, '2023-03-04 11:27:17', NULL, 0);
+INSERT INTO `h_department` (`id`, `name`, `description`, `code`, `parent_id`, `level`, `sort`, `version`, `create_time`, `update_time`, `deleted`) VALUES (55, '盛银消费金融有限公司', '盛银消费金融有限公司', '0055', NULL, 1, 55, 1, '2023-03-04 11:27:17', NULL, 0);
+INSERT INTO `h_department` (`id`, `name`, `description`, `code`, `parent_id`, `level`, `sort`, `version`, `create_time`, `update_time`, `deleted`) VALUES (56, '盛银数科（沈阳）技术有限公司', '盛银数科（沈阳）技术有限公司', '0056', NULL, 1, 56, 1, '2023-03-04 11:27:17', NULL, 0);
+INSERT INTO `h_department` (`id`, `name`, `description`, `code`, `parent_id`, `level`, `sort`, `version`, `create_time`, `update_time`, `deleted`) VALUES (57, '上海宝山富民村镇银行', '上海宝山富民村镇银行', '0057', NULL, 1, 57, 1, '2023-03-04 11:27:17', NULL, 0);
+INSERT INTO `h_department` (`id`, `name`, `description`, `code`, `parent_id`, `level`, `sort`, `version`, `create_time`, `update_time`, `deleted`) VALUES (58, '沈阳沈北富民村镇银行', '沈阳沈北富民村镇银行', '0058', NULL, 1, 58, 1, '2023-03-04 11:27:17', NULL, 0);
+INSERT INTO `h_department` (`id`, `name`, `description`, `code`, `parent_id`, `level`, `sort`, `version`, `create_time`, `update_time`, `deleted`) VALUES (59, '沈阳辽中富民村镇银行', '沈阳辽中富民村镇银行', '0059', NULL, 1, 59, 1, '2023-03-04 11:27:17', NULL, 0);
+INSERT INTO `h_department` (`id`, `name`, `description`, `code`, `parent_id`, `level`, `sort`, `version`, `create_time`, `update_time`, `deleted`) VALUES (60, '沈阳法库富民村镇银行', '沈阳法库富民村镇银行', '0060', NULL, 1, 60, 1, '2023-03-04 11:27:17', NULL, 0);
+INSERT INTO `h_department` (`id`, `name`, `description`, `code`, `parent_id`, `level`, `sort`, `version`, `create_time`, `update_time`, `deleted`) VALUES (61, '沈阳新民富民村镇银行', '沈阳新民富民村镇银行', '0061', NULL, 1, 61, 1, '2023-03-04 11:27:17', NULL, 0);
+INSERT INTO `h_department` (`id`, `name`, `description`, `code`, `parent_id`, `level`, `sort`, `version`, `create_time`, `update_time`, `deleted`) VALUES (62, '宁波江北富民村镇银行', '宁波江北富民村镇银行', '0062', NULL, 1, 62, 1, '2023-03-04 11:27:17', NULL, 0);
+INSERT INTO `h_department` (`id`, `name`, `description`, `code`, `parent_id`, `level`, `sort`, `version`, `create_time`, `update_time`, `deleted`) VALUES (63, '其他', '其他', '0063', NULL, 1, 63, 1, '2023-03-04 11:27:17', NULL, 0);
+
 COMMIT;
 
 -- ----------------------------
@@ -855,3 +907,126 @@ BEGIN;
 COMMIT;
 
 SET FOREIGN_KEY_CHECKS = 1;
+
+-- ----------------------------
+-- Table structure for h_budget
+-- ----------------------------
+
+DROP TABLE IF EXISTS `h_budget`;
+CREATE TABLE `h_budget` (
+  `id` bigint NOT NULL COMMENT '主键ID',
+  `year` int NOT NULL COMMENT '预算年度',
+  `name` varchar(255) NOT NULL COMMENT '项目名称',
+  `description` varchar(255) DEFAULT NULL COMMENT '项目描述',
+  `type` bigint NOT NULL COMMENT '项目类型(外键关联h_budget_type)',
+  `category` varchar(255) NOT NULL COMMENT '项目性质(外键关联h_budget_category)',
+  `is_approved` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否信创 0-是 1-否',
+  `amount` decimal(10,2) NOT NULL COMMENT '预算金额',
+  `department_id` bigint NOT NULL COMMENT '所属部门（外键关联h_department)',
+  `priority` int NOT NULL DEFAULT '0' COMMENT '优先级 1-高 2-中 3-低',
+  `business_priority` int NOT NULL DEFAULT '0' COMMENT '业务优先级',
+  `business_description` varchar(255) DEFAULT NULL COMMENT '业务优先级情况说明',
+  `planned_start_date` bigint DEFAULT NULL COMMENT '计划开始日期',
+  `status` int NOT NULL DEFAULT '0' COMMENT '状态 0-待审批 1-审批中 2-已审批 3-已拒绝',
+  `applicant_id` bigint DEFAULT NULL COMMENT '申请人ID',
+  `version` int DEFAULT '1' COMMENT '版本号',
+  `create_time` bigint DEFAULT NULL COMMENT '创建时间',
+  `update_time` bigint DEFAULT NULL COMMENT '修改时间',
+  `deleted` tinyint unsigned NOT NULL DEFAULT '0' COMMENT '逻辑删除',
+  PRIMARY KEY (`id`) USING BTREE,
+  UNIQUE KEY `name` (`name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+
+
+-- ----------------------------
+-- Table structure for h_budget_type
+-- ----------------------------
+DROP TABLE IF EXISTS `h_budget_type`;
+CREATE TABLE `h_budget_type` (
+  `id` bigint NOT NULL COMMENT '主键ID',
+  `name` varchar(255) NOT NULL COMMENT '预算类型名称',
+  `parent_id` bigint DEFAULT NULL COMMENT '父类型（支持多级分类，根类型为NULL）',
+  `version` int DEFAULT '1' COMMENT '版本号',
+  `create_time` bigint DEFAULT NULL COMMENT '创建时间',
+  `update_time` bigint DEFAULT NULL COMMENT '修改时间',
+  `deleted` tinyint unsigned NOT NULL DEFAULT '0' COMMENT '逻辑删除',
+  PRIMARY KEY (`id`) USING BTREE,
+  UNIQUE KEY `name` (`name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+
+-- ----------------------------
+-- Table structure for h_budget_category
+-- ----------------------------
+DROP TABLE IF EXISTS `h_budget_category`;
+CREATE TABLE `h_budget_category` (
+  `id` bigint NOT NULL COMMENT '主键ID',
+  `name` varchar(255) NOT NULL COMMENT '预算性质名称',
+  `parent_id` bigint DEFAULT NULL COMMENT '父类型（支持多级分类，根类型为NULL）',
+  `version` int DEFAULT '1' COMMENT '版本号',
+  `create_time` bigint DEFAULT NULL COMMENT '创建时间',
+  `update_time` bigint DEFAULT NULL COMMENT '修改时间',
+  `deleted` tinyint unsigned NOT NULL DEFAULT '0' COMMENT '逻辑删除',
+  PRIMARY KEY (`id`) USING BTREE,
+  UNIQUE KEY `name` (`name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+
+-- ----------------------------
+-- Records of h_budget_type
+-- ----------------------------
+BEGIN;
+INSERT INTO `h_budget_type` (`id`, `name`, `parent_id`, `version`, `create_time`, `update_time`, `deleted`) VALUES (1, '基础硬件', NULL, 1, 1672531200000, NULL, 0);
+INSERT INTO `h_budget_type` (`id`, `name`, `parent_id`, `version`, `create_time`, `update_time`, `deleted`) VALUES (2, '软件', NULL, 1, 1672531200000, NULL, 0);
+INSERT INTO `h_budget_type` (`id`, `name`, `parent_id`, `version`, `create_time`, `update_time`, `deleted`) VALUES (3, '人力资源池', NULL, 1, 1672531200000, NULL, 0);
+INSERT INTO `h_budget_type` (`id`, `name`, `parent_id`, `version`, `create_time`, `update_time`, `deleted`) VALUES (4, '软硬件联合', NULL, 1, 1672531200000, NULL, 0);
+INSERT INTO `h_budget_type` (`id`, `name`, `parent_id`, `version`, `create_time`, `update_time`, `deleted`) VALUES (5, '其他', NULL, 1, 1672531200000, NULL, 0);
+
+
+-- ----------------------------
+-- Records of h_budget_category
+-- ----------------------------
+BEGIN;
+INSERT INTO `h_budget_category` (`id`, `name`, `parent_id`, `version`, `create_time`, `update_time`, `deleted`) VALUES (1, '基础设施建设-基础软硬件平台建设', NULL, 1, 1672531200000, NULL, 0);
+INSERT INTO `h_budget_category` (`id`, `name`, `parent_id`, `version`, `create_time`, `update_time`, `deleted`) VALUES (2, '基础设施建设-系统升级（每年固定）', NULL, 1, 1672531200000, NULL, 0);
+INSERT INTO `h_budget_category` (`id`, `name`, `parent_id`, `version`, `create_time`, `update_time`, `deleted`) VALUES (3, '基础设施建设-系统升级（按需升级）', NULL, 1, 1672531200000, NULL, 0);
+INSERT INTO `h_budget_category` (`id`, `name`, `parent_id`, `version`, `create_time`, `update_time`, `deleted`) VALUES (4, '基础设施建设-老旧设备更换', NULL, 1, 1672531200000, NULL, 0);
+INSERT INTO `h_budget_category` (`id`, `name`, `parent_id`, `version`, `create_time`, `update_time`, `deleted`) VALUES (5, '日常运营类', NULL, 1, 1672531200000, NULL, 0);
+INSERT INTO `h_budget_category` (`id`, `name`, `parent_id`, `version`, `create_time`, `update_time`, `deleted`) VALUES (6, '日常安全防护类', NULL, 1, 1672531200000, NULL, 0);
+INSERT INTO `h_budget_category` (`id`, `name`, `parent_id`, `version`, `create_time`, `update_time`, `deleted`) VALUES (7, '日常运维监控类', NULL, 1, 1672531200000, NULL, 0);
+INSERT INTO `h_budget_category` (`id`, `name`, `parent_id`, `version`, `create_time`, `update_time`, `deleted`) VALUES (8, '信息科技工具平台类', NULL, 1, 1672531200000, NULL, 0);
+INSERT INTO `h_budget_category` (`id`, `name`, `parent_id`, `version`, `create_time`, `update_time`, `deleted`) VALUES (9, '业务规划类', NULL, 1, 1672531200000, NULL, 0);
+
+-- ----------------------------
+-- Table structure for h_department_quota
+-- ----------------------------
+DROP TABLE IF EXISTS `h_department_quota`;
+CREATE TABLE `h_department_quota` (
+  `id` bigint NOT NULL COMMENT '主键ID',
+  `department_id` bigint NOT NULL COMMENT '部门ID',
+  `budget_year` int NOT NULL COMMENT '预算年度',
+  `quota` decimal(10,2) NOT NULL COMMENT '预算额度',
+  `version` int DEFAULT '1' COMMENT '版本号',
+  `create_time` bigint DEFAULT NULL COMMENT '创建时间',
+  `update_time` bigint DEFAULT NULL COMMENT '修改时间',
+  `deleted` tinyint unsigned NOT NULL DEFAULT '0' COMMENT '逻辑删除',
+  PRIMARY KEY (`id`) USING BTREE,
+  UNIQUE KEY `department_budget_year` (`department_id`, `budget_year`),
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+
+
+INSERT INTO `h_department_quota` (`id`, `department_id`, `budget_year`, `quota`, `version`, `create_time`, `update_time`, `deleted`) VALUES (1, 5, 2025, 5000000.00, 1, NULL, NULL, 0);
+INSERT INTO `h_department_quota` (`id`, `department_id`, `budget_year`, `quota`, `version`, `create_time`, `update_time`, `deleted`) VALUES (2, 7, 2025, 960000.00, 1, NULL, NULL, 0);
+INSERT INTO `h_department_quota` (`id`, `department_id`, `budget_year`, `quota`, `version`, `create_time`, `update_time`, `deleted`) VALUES (3, 8, 2025, 13650000.00, 1, NULL, NULL, 0);
+INSERT INTO `h_department_quota` (`id`, `department_id`, `budget_year`, `quota`, `version`, `create_time`, `update_time`, `deleted`) VALUES (4, 12, 2025, 13930000.00, 1, NULL, NULL, 0);
+INSERT INTO `h_department_quota` (`id`, `department_id`, `budget_year`, `quota`, `version`, `create_time`, `update_time`, `deleted`) VALUES (5, 14, 2025, 4630000.00, 1, NULL, NULL, 0);
+INSERT INTO `h_department_quota` (`id`, `department_id`, `budget_year`, `quota`, `version`, `create_time`, `update_time`, `deleted`) VALUES (6, 15, 2025, 32707600.00, 1, NULL, NULL, 0);
+INSERT INTO `h_department_quota` (`id`, `department_id`, `budget_year`, `quota`, `version`, `create_time`, `update_time`, `deleted`) VALUES (7, 16, 2025, 9923900.00, 1, NULL, NULL, 0);
+INSERT INTO `h_department_quota` (`id`, `department_id`, `budget_year`, `quota`, `version`, `create_time`, `update_time`, `deleted`) VALUES (8, 17, 2025, 26280000.00, 1, NULL, NULL, 0);
+INSERT INTO `h_department_quota` (`id`, `department_id`, `budget_year`, `quota`, `version`, `create_time`, `update_time`, `deleted`) VALUES (9, 18, 2025, 17300000.00, 1, NULL, NULL, 0);
+INSERT INTO `h_department_quota` (`id`, `department_id`, `budget_year`, `quota`, `version`, `create_time`, `update_time`, `deleted`) VALUES (10, 19, 2025, 18000000.00, 1, NULL, NULL, 0);
+INSERT INTO `h_department_quota` (`id`, `department_id`, `budget_year`, `quota`, `version`, `create_time`, `update_time`, `deleted`) VALUES (11, 20, 2025, 18008000.00, 1, NULL, NULL, 0);
+INSERT INTO `h_department_quota` (`id`, `department_id`, `budget_year`, `quota`, `version`, `create_time`, `update_time`, `deleted`) VALUES (12, 21, 2025, 3840000.00, 1, NULL, NULL, 0);
+INSERT INTO `h_department_quota` (`id`, `department_id`, `budget_year`, `quota`, `version`, `create_time`, `update_time`, `deleted`) VALUES (13, 22, 2025, 5400000.00, 1, NULL, NULL, 0);
+INSERT INTO `h_department_quota` (`id`, `department_id`, `budget_year`, `quota`, `version`, `create_time`, `update_time`, `deleted`) VALUES (14, 24, 2025, 4000000.00, 1, NULL, NULL, 0);
+INSERT INTO `h_department_quota` (`id`, `department_id`, `budget_year`, `quota`, `version`, `create_time`, `update_time`, `deleted`) VALUES (15, 28, 2025, 2660000.00, 1, NULL, NULL, 0);
+INSERT INTO `h_department_quota` (`id`, `department_id`, `budget_year`, `quota`, `version`, `create_time`, `update_time`, `deleted`) VALUES (16, 31, 2025, 20248000.00, 1, NULL, NULL, 0);
+
