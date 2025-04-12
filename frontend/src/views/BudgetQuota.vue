@@ -23,7 +23,7 @@
     >
       <el-table-column prop="id" label="ID" align="center"></el-table-column>
       <el-table-column prop="departmentName" label="部门" align="center"></el-table-column>
-      <el-table-column prop="quota" label="预算额度" align="center"> </el-table-column>
+      <el-table-column prop="quota" label="预算额度" align="right"> </el-table-column>
       <el-table-column label="操作" align="center">
         <template #default="scope">
           <el-button
@@ -46,20 +46,23 @@
         </template>
       </el-table-column>
     </el-table>
-    <div class="pagination">
-      <el-pagination
-        background
-        layout="total, prev, pager, next"
-        :current-page="query.pageIndex"
-        :page-size="query.pageSize"
-        :total="pageTotal"
-        @current-change="handlePageChange"
-      ></el-pagination>
+    <div class="footer-container">
+      <div class="pagination">
+        <el-pagination
+          background
+          layout="total, prev, pager, next"
+          :current-page="query.pageIndex"
+          :page-size="query.pageSize"
+          :total="pageTotal"
+          @current-change="handlePageChange"
+        ></el-pagination>
+      </div>
+      <div class="totalQuota">总计：{{ query.yearTotal }}</div>
     </div>
 
     <!-- 选择年度弹出框 -->
     <el-dialog title="选择预算年度" v-model="yearVisible" width="30%">
-      <el-form label-width="70px">
+      <el-form>
         <el-form-item label="年度">
           <div class="year-picker">
             <div class="container">
@@ -140,16 +143,16 @@ import { ElMessage, ElMessageBox } from 'element-plus'
 import { Delete, Edit, Search, Plus, Select } from '@element-plus/icons-vue'
 import { deleteQuotaById, getQuotaList, addQuota, updateQuota } from '@/api/quota'
 import { getDepartmentList } from '@/api/department'
-import { QuotaListResponse, type Quota } from '@/types/quota'
-import { DepartmentListResponse } from '@/types/department'
+import { type Quota } from '@/types/quota'
+import { Department, DepartmentListResponse } from '@/types/department'
 import dayjs from 'dayjs'
-import { Department } from '@/types/department'
 const selectedYear = ref(new Date())
 const departments = ref<Department[]>([])
 const query = reactive({
   id: '',
   departmentName: '',
   quota: 0,
+  yearTotal: 0,
   // 分页参数
   pageIndex: 1,
   pageSize: 15
@@ -228,7 +231,8 @@ const getData = () => {
     .then((res) => {
       if (res.code === 200) {
         tableData.value = res.data.items
-        pageTotal.value = res.data.total
+        pageTotal.value = res.data.count
+        query.yearTotal = res.data.total
       } else {
         ElMessage.error(res.message)
       }
@@ -358,6 +362,11 @@ const handleDelete = (index: number) => {
 
 <style scoped>
 .handle-box {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-direction: row;
+  width: 100%;
   margin-bottom: 20px;
 }
 
@@ -368,7 +377,21 @@ const handleDelete = (index: number) => {
 .handle-input {
   width: 300px;
 }
+.footer-container {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  width: 100%;
+  margin-top: 20px;
+}
 
+.totalQuota {
+  margin-left: 100px;
+  font-size: 20px;
+  font-weight: bold;
+  color: #f26c6f;
+  text-align: right;
+}
 .table {
   display: flex;
   flex-direction: column;

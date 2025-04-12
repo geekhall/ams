@@ -12,5 +12,6 @@ export interface Quota extends QuotaDTO {
 
 export type QuotaListResponse = ApiResponse<{
   items: Quota[]
+  count: number
   total: number
 }>
