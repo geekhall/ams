@@ -79,30 +79,39 @@ public interface DepartmentQuotaMapper extends BaseMapper<DepartmentQuota> {
 //    ORDER BY a.id
 //    LIMIT #{offset}, #{pageSize}
     @Select("<script>" +
-            "SELECT a.id, a.budget_year as year, b.name as departmentName, a.quota" +
+            "SELECT a.id, b.name as departmentName, a.quota" +
             " FROM h_department_quota a" +
             " LEFT JOIN h_department b" +
             " on a.department_id = b.id" +
             " WHERE a.deleted = 0 and b.deleted=0 and a.quota>0" +
+            "<if test='year != null and year != \"\"'> " +
+            "AND a.budget_year = #{year} " +
+            "</if>" +
             "<if test='name != null and name != \"\"'> " +
             "AND b.name LIKE CONCAT('%', #{name}, '%') " +
             "</if>" +
             " ORDER BY b.id" +
             " LIMIT #{offset}, #{pageSize}" +
             "</script>")
-    List<DepartmentQuotaDTO> getQuotaList(@Param("offset") int offset, @Param("pageSize") int pageSize, @Param("name") String name);
+    List<DepartmentQuotaDTO> getQuotaList(@Param("year") int year,
+                                          @Param("offset") int offset,
+                                          @Param("pageSize") int pageSize,
+                                          @Param("name") String name);
 
     @Select("<script>" +
             "SELECT COUNT(*)" +
             " FROM h_department_quota a" +
             " LEFT JOIN h_department b" +
             " on a.department_id = b.id" +
-            " WHERE a.deleted = 0 and b.deleted=0" +
+            " WHERE a.deleted = 0 and b.deleted=0 and a.quota>0" +
+            "<if test='year != null and year != \"\"'> " +
+            "AND a.budget_year = #{year} " +
+            "</if>" +
             "<if test='name != null and name != \"\"'> " +
             "AND b.name LIKE CONCAT('%', #{name}, '%') " +
             "</if>" +
             "</script>")
-    long countQuotas(@Param("name") String name);
+    long countQuotas(@Param("year") int year, @Param("name") String name);
 
     @Select("SELECT COUNT(*) FROM h_department_quota " +
             "WHERE department_id = " +

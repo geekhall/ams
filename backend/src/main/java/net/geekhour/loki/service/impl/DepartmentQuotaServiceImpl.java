@@ -35,13 +35,13 @@ public class DepartmentQuotaServiceImpl extends ServiceImpl<DepartmentQuotaMappe
     }
 
     @Override
-    public List<DepartmentQuotaDTO> getQuotaList(int offset, int pageSize, String name) {
-        return departmentQuotaMapper.getQuotaList(offset, pageSize, name);
+    public List<DepartmentQuotaDTO> getQuotaList(int year, int offset, int pageSize, String name) {
+        return departmentQuotaMapper.getQuotaList(year, offset, pageSize, name);
     }
 
     @Override
-    public long countQuotas(String name) {
-        return departmentQuotaMapper.countQuotas(name);
+    public long countQuotas(int year, String name) {
+        return departmentQuotaMapper.countQuotas(year, name);
     }
 
     @Override

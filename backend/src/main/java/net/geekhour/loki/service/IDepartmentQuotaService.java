@@ -17,8 +17,8 @@ import java.util.List;
  */
 public interface IDepartmentQuotaService extends IService<DepartmentQuota> {
     List<DepartmentQuota> all();
-    List<DepartmentQuotaDTO> getQuotaList(int offset, int pageSize, String name);
-    long countQuotas(String name);
+    List<DepartmentQuotaDTO> getQuotaList(int year, int offset, int pageSize, String name);
+    long countQuotas(int year, String name);
 
     boolean createQuota(DepartmentQuotaDTO quotaDTO);
 

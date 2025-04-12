@@ -8,7 +8,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -49,16 +51,22 @@ public class DepartmentQuotaController {
     @PreAuthorize("hasRole('USER') || hasAuthority('user:quota:list')")
     public ResponseEntity<?> getQuotaList(@RequestBody(required = false) String requestBody) {
         String name = null;
+        // 获取当前年份
+        Integer year = LocalDate.now().getYear();
         Integer pageIndex = 1;
         Integer pageSize = 15;
+        System.out.println(" ##########  year: " + year);
         if (requestBody != null && !requestBody.isEmpty()) {
             try {
                 Map<String, Object> requestMap = new ObjectMapper().readValue(requestBody, Map.class);
                 name = (String) requestMap.get("name");
+                year = requestMap.get("year") == null ? year :
+                        Integer.parseInt(requestMap.get("year").toString());
                 pageIndex = requestMap.get("pageIndex") == null ? 1 :
                         Integer.parseInt(requestMap.get("pageIndex").toString());
                 pageSize = requestMap.get("pageSize") == null ? 15 :
                         Integer.parseInt(requestMap.get("pageSize").toString());
+                System.out.println(" ##########  year: " + year);
             } catch (Exception e) {
                 e.printStackTrace();
                 return ResponseEntity.badRequest().body(Map.of(
@@ -71,8 +79,8 @@ public class DepartmentQuotaController {
             }
         }
         Integer offset = (pageIndex - 1) * pageSize;
-        List<DepartmentQuotaDTO> quotaList = departmentQuotaService.getQuotaList(offset, pageSize, name);
-        Long total = departmentQuotaService.countQuotas(name);
+        List<DepartmentQuotaDTO> quotaList = departmentQuotaService.getQuotaList(year, offset, pageSize, name);
+        Long total = departmentQuotaService.countQuotas(year, name);
         return ResponseEntity.ok(Map.of(
                 "code", 200,
                 "message", "success!",
@@ -93,15 +101,17 @@ public class DepartmentQuotaController {
         if (quotaDTO.getDepartmentName() == null || quotaDTO.getDepartmentName().isEmpty()) {
             return ResponseEntity.badRequest().body(Map.of(
                     "code", 400,
-                    "message", "Department name cannot be empty",
+                    "message", "部门名称不能为空",
                     "data", ""
             ));
         }
         Long currentYear = System.currentTimeMillis() / 1000 / 60 / 60 / 24 / 365 + 1970;
+        System.out.println("currentYear: " + currentYear);
+        System.out.println("quotaDTO.getYear(): " + quotaDTO.getYear());
         if (quotaDTO.getYear() == null || quotaDTO.getYear() < currentYear) {
             return ResponseEntity.badRequest().body(Map.of(
                     "code", 400,
-                    "message", "Budget year cannot be null or in the past",
+                    "message", "预算年度不能为空或小于当前年份",
                     "data", ""
             ));
         }
