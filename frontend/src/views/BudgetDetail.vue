@@ -18,15 +18,23 @@
       ref="multipleTable"
       header-cell-class-name="table-header"
     >
-      <el-table-column prop="id" label="ID" width="180" align="center"></el-table-column>
-      <el-table-column prop="assetName" label="预算名称" align="center"></el-table-column>
-      <el-table-column prop="assetCode" label="预算编号" align="center"> </el-table-column>
-      <el-table-column prop="assetType" label="预算类型" align="center"></el-table-column>
-      <el-table-column prop="departmentName" label="所属部门" align="center"> </el-table-column>
-      <el-table-column prop="status" label="状态" align="center"> </el-table-column>
-      <el-table-column prop="purchaseDate" label="购入时间" align="center"></el-table-column>
-      <el-table-column prop="purchasePrice" label="购买价格" align="right"></el-table-column>
-      <el-table-column prop="count" label="数量" align="center" width="100"></el-table-column>
+      <el-table-column prop="id" label="ID" width="80" align="center"></el-table-column>
+      <el-table-column prop="projectInfo" label="项目概述" align="center">
+        <el-table-column prop="budgetType" label="项目类型" align="center"></el-table-column>
+        <el-table-column prop="budgetCategory" label="项目性质" align="center"></el-table-column>
+        <el-table-column prop="isApproved" label="是否信创" align="center" width="60px">
+        </el-table-column>
+        <el-table-column prop="budgetName" label="项目名称" align="center"> </el-table-column>
+        <el-table-column prop="description" label="项目概述" align="center"> </el-table-column>
+      </el-table-column>
+      <el-table-column prop="" label="预算金额" align="center"> </el-table-column>
+      <el-table-column prop="" label="部门" align="center"> </el-table-column>
+      <el-table-column prop="" label="优先级" align="center" width="60px"> </el-table-column>
+      <el-table-column prop="" label="业务优先级" align="center" width="90px"> </el-table-column>
+      <el-table-column prop="" label="业务优先级情况说明" align="center"> </el-table-column>
+      <el-table-column prop="" label="预计启动时间" align="center" width="90px"> </el-table-column>
+      <el-table-column prop="" label="备注" align="center"> </el-table-column>
+
       <el-table-column label="操作" width="220" align="center">
         <template #default="scope">
           <el-button
@@ -431,7 +439,13 @@ const handleDelete = (index: number) => {
 }
 .table {
   width: 100%;
+
+  max-width: 100%;
+  overflow-x: auto; /* 启用横向滚动 */
   font-size: 14px;
+}
+.el-table {
+  width: 100%; /* 设置表格宽度为100% */
 }
 .red {
   color: #f56c6c;

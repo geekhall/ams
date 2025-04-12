@@ -379,7 +379,6 @@ const handleDelete = (index: number) => {
 }
 .footer-container {
   display: flex;
-  max-width: 1200px;
   padding: 0 20px;
   justify-content: space-between;
   align-items: center;
@@ -399,7 +398,7 @@ const handleDelete = (index: number) => {
   justify-content: center;
   align-items: center;
   width: 100%;
-  max-width: 1200px;
+
   border-radius: 4px;
   overflow: hidden;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
