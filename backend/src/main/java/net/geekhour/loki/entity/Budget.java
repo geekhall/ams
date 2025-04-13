@@ -33,6 +33,9 @@ public class Budget extends Model<Budget> {
 
     private static final long serialVersionUID = 1L;
 
+    @ApiModelProperty("主键ID")
+    private Long id;
+
     @ApiModelProperty("预算年度")
     @TableField("year")
     private Integer year;

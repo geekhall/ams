@@ -31,7 +31,6 @@ public class GlobalExceptionHandler {
         return Result.error().message("全局异常");
     }
 
-
     /**
      * 特定异常处理
      * @param e Exception

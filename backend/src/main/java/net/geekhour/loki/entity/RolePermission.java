@@ -28,6 +28,9 @@ public class RolePermission extends Model<RolePermission> {
 
     private static final long serialVersionUID = 1L;
 
+    @ApiModelProperty("主键ID")
+    private Long id;
+
     @ApiModelProperty("角色ID")
     @TableField("role_id")
     private Long roleId;

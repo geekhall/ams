@@ -32,6 +32,9 @@ public class Team extends Model<Team> {
 
     private static final long serialVersionUID = 1L;
 
+    @ApiModelProperty("主键ID")
+    private Long id;
+
     @ApiModelProperty("团队名称")
     @TableField("name")
     private String name;

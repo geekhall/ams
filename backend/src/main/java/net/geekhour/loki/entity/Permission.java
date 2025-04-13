@@ -28,6 +28,9 @@ public class Permission extends Model<Permission> {
 
     private static final long serialVersionUID = 1L;
 
+    @ApiModelProperty("主键ID")
+    private Long id;
+
     @ApiModelProperty("权限名称")
     @TableField("name")
     private String name;

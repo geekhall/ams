@@ -13,4 +13,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface ITeamService extends IService<Team> {
 
+    boolean existsByName(String name);
 }

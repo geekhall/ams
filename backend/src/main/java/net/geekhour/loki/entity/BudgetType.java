@@ -32,7 +32,6 @@ public class BudgetType extends Model<BudgetType> {
 
     private static final long serialVersionUID = 1L;
 
-
     @ApiModelProperty("主键ID")
     private Long id;
 
