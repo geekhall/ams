@@ -54,7 +54,7 @@ public class Budget extends Model<Budget> {
 
     @ApiModelProperty("项目性质(外键关联h_budget_category)")
     @TableField("category")
-    private String category;
+    private Long category;
 
     @ApiModelProperty("是否信创 0-是 1-否")
     @TableField("is_inno")
@@ -74,11 +74,11 @@ public class Budget extends Model<Budget> {
 
     @ApiModelProperty("优先级 1-高 2-中 3-低")
     @TableField("priority")
-    private Integer priority;
+    private String priority;
 
     @ApiModelProperty("业务优先级")
     @TableField("business_priority")
-    private Integer businessPriority;
+    private String businessPriority;
 
     @ApiModelProperty("业务优先级情况说明")
     @TableField("business_description")

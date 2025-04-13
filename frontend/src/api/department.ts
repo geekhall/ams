@@ -2,16 +2,6 @@ import { AxiosRequestConfig } from "axios";
 import loki from "./loki";
 import { Department, DepartmentListResponse } from "~/types/department";
 
-// 获取部门列表（支持分页和按名称查询）
-// export const getDepartmentList = async (
-//   params?: { pageIndex?: number; pageSize?: number; name?: string }
-// ): Promise<DepartmentListResponse> => {
-//   return await loki.request({
-//     url: "/department/list",
-//     method: "POST",
-//     data: params || {}, // 如果没有参数，传递空对象
-//   } as AxiosRequestConfig);
-// };
 
 // 获取部门列表
 export const getDepartmentList = async (): Promise<DepartmentListResponse> => {

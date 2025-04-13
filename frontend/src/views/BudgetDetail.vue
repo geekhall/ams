@@ -186,13 +186,13 @@
             ></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="优先级">
+        <el-form-item label="优先级" v-if="!isTech">
           <el-input v-model="addForm.priority"></el-input>
         </el-form-item>
-        <el-form-item label="业务优先级">
+        <el-form-item label="业务优先级" v-if="!isTech">
           <el-input v-model="addForm.businessPriority"></el-input>
         </el-form-item>
-        <el-form-item label="业务优先级情况说明">
+        <el-form-item label="业务优先级情况说明" v-if="!isTech">
           <el-input v-model="addForm.businessDescription"></el-input>
         </el-form-item>
         <el-form-item label="备注">
@@ -268,13 +268,13 @@
             ></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="优先级">
+        <el-form-item label="优先级" v-if="!isTech">
           <el-input v-model="editForm.priority"></el-input>
         </el-form-item>
-        <el-form-item label="业务优先级">
+        <el-form-item label="业务优先级" v-if="!isTech">
           <el-input v-model="editForm.businessPriority"></el-input>
         </el-form-item>
-        <el-form-item label="业务优先级情况说明">
+        <el-form-item label="业务优先级情况说明" v-if="!isTech">
           <el-input v-model="editForm.businessDescription"></el-input>
         </el-form-item>
         <el-form-item label="备注">
@@ -284,7 +284,7 @@
       <template #footer>
         <span class="dialog-footer">
           <el-button @click="editVisible = false">取 消</el-button>
-          <el-button type="primary" @click="saveAdd">确 定</el-button>
+          <el-button type="primary" @click="saveEdit">确 定</el-button>
         </span>
       </template>
     </el-dialog>
@@ -313,17 +313,17 @@ import {
   updateBudget
 } from '@/api/budget'
 import { getDepartmentList } from '@/api/department'
+import { getTeamList } from '@/api/team'
 import {
-  BudgetTypeListResponse,
   type Budget,
   BudgetType,
+  BudgetTypeListResponse,
   BudgetCategory,
   BudgetCategoryListResponse
 } from '@/types/budget'
-import { DepartmentListResponse } from '@/types/department'
+import { Department, DepartmentListResponse } from '@/types/department'
+import { Team, TeamListResponse } from '@/types/team'
 import dayjs from 'dayjs'
-import { Department } from '@/types/department'
-import { Team } from '@/types/team'
 
 const isTech = ref(true)
 const buttonName = ref('科技')
@@ -464,6 +464,18 @@ const getDepartments = () => {
     }
   })
 }
+
+const getTeams = () => {
+  getTeamList().then((res: TeamListResponse) => {
+    if (res.code === 200) {
+      console.log('getTeamList res.data:', res.data)
+      teamNames.value = res.data
+    } else {
+      ElMessage.error(res.message)
+    }
+  })
+}
+
 // 获取表格数据
 const getData = () => {
   getBudgetList({

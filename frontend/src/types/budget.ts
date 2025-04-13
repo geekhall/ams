@@ -1,6 +1,7 @@
 import { ApiResponse } from "."
 
 export interface BudgetDTO {
+  year: number,
   name: string,
   description: string,
   budgetType: string,

@@ -28,7 +28,7 @@ public class BudgetDTO extends Model<AssetDTO> {
     private BigDecimal amount;
     private String departmentName;
     private String teamName;
-    private Integer priority;
+    private String priority;
     private String businessPriority;
     private String businessDescription;
     private String plannedStartDate;

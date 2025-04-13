@@ -3,6 +3,7 @@ package net.geekhour.loki.mapper;
 import net.geekhour.loki.entity.BudgetType;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
 /**
@@ -17,5 +18,8 @@ import org.apache.ibatis.annotations.Select;
 public interface BudgetTypeMapper extends BaseMapper<BudgetType> {
 
     @Select("SELECT COUNT(*) FROM h_budget_type WHERE name = #{name} and deleted=0")
-    int existsByName(String name);
+    int existsByName(@Param("name") String name);
+
+    @Select("SELECT id FROM h_budget_type WHERE name = #{name} and deleted=0")
+    Long selectIdByName(@Param("name") String name);
 }

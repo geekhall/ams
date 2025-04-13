@@ -10,6 +10,4 @@ export interface Team {
   sort: number
   status: string
 }
-export type TeamListResponse = ApiResponse<{
-  items: Team[]
-}>
+export type TeamListResponse = ApiResponse<Team[]>

@@ -78,6 +78,7 @@ public class BudgetController {
     @PostMapping("/create")
     @PreAuthorize("hasRole('USER') || hasAuthority('user:budget:create')")
     public ResponseEntity<?> createBudget(@RequestBody BudgetDTO budgetDTO) {
+        System.out.println("BudgetController createBudget: " + budgetDTO);
         if (budgetDTO.getName() == null || budgetDTO.getName().isEmpty()) {
             return ResponseUtil.error(400, "Budget name cannot be empty");
         }

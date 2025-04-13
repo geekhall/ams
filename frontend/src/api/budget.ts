@@ -26,6 +26,8 @@ export const getBudgetList = async (
 export const addBudget = async (
   budget: BudgetDTO
 ): Promise<BudgetListResponse> => {
+  console.log("budget", budget);
+
   return await loki.request({
     url: "/budget/create",
     method: "POST",

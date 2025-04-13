@@ -10,6 +10,4 @@ export interface Department {
   sort: number
   status: string
 }
-export type DepartmentListResponse = ApiResponse<{
-  items: Department[]
-}>
+export type DepartmentListResponse = ApiResponse<Department[]>

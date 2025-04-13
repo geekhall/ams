@@ -20,6 +20,26 @@ import java.util.List;
 @Mapper
 public interface BudgetMapper extends BaseMapper<Budget> {
 
+    /*
+    select a.id, a.year, c.`name` as budgetType, d.`name` as budgetCategory,
+        case when a.is_inno=1 THEN '是' ELSE '否' END AS inno,
+        a.`name`, a.description,
+        a.amount, b.name as departmentName, e.name as teamName,
+        a.priority, a.business_priority, a.business_description,
+        FROM_UNIXTIME(a.planned_start_date/1000, '%Y-%m-%d') as planned_start_date,
+        a.remark, a.status
+        from h_budget a
+        left join h_department b on a.department_id = b.id
+        left join h_budget_type c on a.type = c.id
+        left join h_budget_category d on a.category = d.id
+        left join h_team e on a.team_id = e.id
+        where a.deleted=0 and b.deleted=0 and c.deleted=0
+        and d.deleted = 0 and e.deleted = 0
+        and a.year = '2025'
+        and a.name like CONCAT('%', #{name}, '%')
+        order by a.id
+        limit #{offset}, #{pageSize}
+     */
     @Select("<script>" +
             "select a.id, a.year, c.`name` as budgetType, d.`name` as budgetCategory, " +
             "case when a.is_inno=1 THEN '是' ELSE '否' END AS inno, " +
@@ -66,4 +86,7 @@ public interface BudgetMapper extends BaseMapper<Budget> {
             "</if>" +
             "</script>")
     Long countBudgets(@Param("year") Integer year, @Param("name") String name);
+
+    @Select("select count(*) from h_budget where name = #{name} and deleted = 0")
+    boolean checkBudgetNameExists(@Param("name")  String name);
 }
