@@ -37,7 +37,6 @@ public class ProductController {
     @RequestMapping("/user")
     @PreAuthorize("hasAuthority('ROLE_USER')")
     public ResponseEntity<?> userResource() {
-        System.out.println("User Resource accessed");
         return ResponseEntity.ok(Map.of(
                 "code", 200,
                 "message", "User Resource accessed"));
@@ -46,7 +45,6 @@ public class ProductController {
     @RequestMapping("/admin")
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<?> adminResource() {
-        System.out.println("Admin Resource accessed");
         return ResponseEntity.ok(Map.of(
                 "code", 200,
                 "message", "Admin Resource accessed"));
@@ -61,7 +59,6 @@ public class ProductController {
     @ResponseBody
     @RequestMapping("/{id}")
     public Product getProduct(@PathVariable("id") Long id) {
-        System.out.println("getProduct called , id = " + id);
         Product product = productMapper.selectById(id);
         System.out.println(product);
         return product;
@@ -80,7 +77,6 @@ public class ProductController {
     }
 
     /**
-     * http://localhost:8080/product/order
      * 
      * @return
      */
@@ -105,9 +101,6 @@ public class ProductController {
         product.setId(id);
         queryWrapper.setEntity(product);
         int delete = productMapper.delete(queryWrapper);
-        System.out.println("product " + id + " has bean deleted ");
-        // int result = productMapper.deleteById(id);
-        // System.out.println(result);
     }
 
     /**
@@ -115,7 +108,6 @@ public class ProductController {
      */
     @RequestMapping("/bargain")
     public void bargain() {
-        // 将 （品牌为苹果，并且价格大于等于8000）, 或者品牌为华为 的产品 描述修改为打折啦。
         QueryWrapper<Product> queryWrapper = new QueryWrapper<>();
         queryWrapper.like("brand", "Apple")
                 .ge("price", 8000)
@@ -156,8 +148,6 @@ public class ProductController {
     }
 
     /**
-     * http://localhost:8080/product/pricegt/10000
-     * http://localhost:8080/product/pricegt/10000
      */
     @ResponseBody
     @RequestMapping("/pricegt/{price}")

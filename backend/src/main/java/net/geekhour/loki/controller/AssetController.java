@@ -1,6 +1,7 @@
 package net.geekhour.loki.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import net.geekhour.loki.common.ResponseUtil;
 import net.geekhour.loki.entity.dto.AssetDTO;
 import net.geekhour.loki.mapper.AssetMapper;
 import net.geekhour.loki.service.IAssetService;
@@ -35,10 +36,7 @@ public class AssetController {
     @RequestMapping("/all")
     @PreAuthorize("hasRole('USER') || hasAuthority('user:asset:list')")
     public ResponseEntity<?> all() {
-        return ResponseEntity.ok(Map.of(
-                "code", 200,
-                "message", "success!",
-                "data", assetService.all()));
+        return ResponseUtil.success(assetService.all());
     }
 
     /**
@@ -62,25 +60,16 @@ public class AssetController {
                         Integer.parseInt(requestMap.get("pageSize").toString());
             } catch (Exception e) {
                 e.printStackTrace();
-                return ResponseEntity.badRequest().body(Map.of(
-                        "code", 400,
-                        "message", "Invalid request body",
-                        "data", Map.of(
-                                "items", new ArrayList<>(),
-                                "total", 0
-                        )));
+                return ResponseUtil.error(400, e.getMessage());
             }
         }
         Integer offset = (pageIndex - 1) * pageSize;
         List<AssetDTO> assetList = assetService.getAssetList(offset, pageSize, name);
         Long total = assetService.countAssets(name);
-        return ResponseEntity.ok(Map.of(
-                "code", 200,
-                "message", "success!",
-                "data", Map.of(
-                        "items", assetList,
-                        "total", total
-                )));
+        return ResponseUtil.success(Map.of(
+                "items", assetList,
+                "total", total
+        ));
     }
 
     /**
@@ -91,18 +80,9 @@ public class AssetController {
     @DeleteMapping("/delete/{id}")
     @PreAuthorize("hasRole('USER') || hasAuthority('user:asset:delete')")
     public ResponseEntity<?> deleteAsset(@PathVariable Long id) {
-        boolean deleted = assetService.deleteAsset(id);
-        if (deleted) {
-            return ResponseEntity.ok(Map.of(
-                    "code", 200,
-                    "message", "Asset deleted successfully",
-                    "data", ""));
-        } else {
-            return ResponseEntity.status(404).body(Map.of(
-                    "code", 404,
-                    "message", "Asset not found",
-                    "data", ""));
-        }
+        return assetService.deleteAsset(id)
+                ? ResponseUtil.success(id)
+                : ResponseUtil.error(404, "资产不存在");
     }
 
     /**
@@ -114,59 +94,25 @@ public class AssetController {
     @PreAuthorize("hasRole('USER') || hasAuthority('user:asset:create')")
     public ResponseEntity<?> createAsset(@RequestBody AssetDTO assetDTO) {
         if (assetDTO.getAssetName() == null || assetDTO.getAssetName().isEmpty()) {
-            return ResponseEntity.badRequest().body(Map.of(
-                    "code", 400,
-                    "message", "Asset name cannot be empty",
-                    "data", ""
-            ));
+            return ResponseUtil.error(400, "资产名称不能为空");
         }
         if (assetDTO.getAssetCode() == null || assetDTO.getAssetCode().isEmpty()) {
-            return ResponseEntity.badRequest().body(Map.of(
-                    "code", 400,
-                    "message", "Asset code cannot be empty",
-                    "data", ""
-            ));
-        }
-        // TODO: 检查AssetCode和AssetName重复
-        if (assetService.checkAssetCodeExists(assetDTO.getAssetCode())) {
-            return ResponseEntity.badRequest().body(Map.of(
-                    "code", 400,
-                    "message", "Asset code already exists",
-                    "data", ""
-            ));
+            return ResponseUtil.error(400, "资产编码不能为空");
         }
         if (assetService.checkAssetNameExists(assetDTO.getAssetName())) {
-            return ResponseEntity.badRequest().body(Map.of(
-                    "code", 400,
-                    "message", "Asset name already exists",
-                    "data", ""
-            ));
+            return ResponseUtil.error(400, "资产名称已存在");
+        }
+        if (assetService.checkAssetCodeExists(assetDTO.getAssetCode())) {
+            return ResponseUtil.error(400, "资产编码已存在");
         }
 
-        boolean created = false;
         try {
-            created = assetService.createAsset(assetDTO);
+            return assetService.createAsset(assetDTO)
+                    ? ResponseUtil.success(assetDTO)
+                    : ResponseUtil.error(500, "资产创建失败");
         } catch (Exception e) {
             e.printStackTrace();
-            return ResponseEntity.status(500).body(Map.of(
-                    "code", 500,
-                    "message", "Failed to create asset",
-                    "data", ""
-            ));
-        }
-
-        if (created) {
-            return ResponseEntity.ok(Map.of(
-                    "code", 200,
-                    "message", "Asset created successfully",
-                    "data", assetDTO
-            ));
-        } else {
-            return ResponseEntity.status(500).body(Map.of(
-                    "code", 500,
-                    "message", "Failed to create asset",
-                    "data", ""
-            ));
+            return ResponseUtil.error(500, e.getMessage());
         }
     }
 
@@ -180,53 +126,21 @@ public class AssetController {
     public ResponseEntity<?> updateAsset(@RequestBody AssetDTO assetDTO) {
         System.out.println("【Asset】 controller 【update】 method called ...");
         if (assetDTO.getId() == null) {
-            return ResponseEntity.badRequest().body(Map.of(
-                    "code", 400,
-                    "message", "Asset ID cannot be null",
-                    "data", ""
-            ));
+            return ResponseUtil.error(400, "资产ID不能为空");
         }
-        System.out.println("【Asset】 controller 【update】 method called ... 001");
         if (assetDTO.getAssetName() == null || assetDTO.getAssetName().isEmpty()) {
-            return ResponseEntity.badRequest().body(Map.of(
-                    "code", 400,
-                    "message", "Asset name cannot be empty",
-                    "data", ""
-            ));
+            return ResponseUtil.error(400, "资产名称不能为空");
         }
-        System.out.println("【Asset】 controller 【update】 method called ... 002");
         if (assetDTO.getAssetCode() == null || assetDTO.getAssetCode().isEmpty()) {
-            return ResponseEntity.badRequest().body(Map.of(
-                    "code", 400,
-                    "message", "Asset code cannot be empty",
-                    "data", ""
-            ));
+            return ResponseUtil.error(400, "资产编码不能为空");
         }
-        System.out.println("【Asset】 controller 【update】 method called ... 003");
-        boolean updated = false;
         try {
-            updated = assetService.updateAsset(assetDTO);
+            return assetService.updateAsset(assetDTO)
+                    ? ResponseUtil.success(assetDTO)
+                    : ResponseUtil.error(500, "更新资产失败");
         } catch (Exception e) {
             e.printStackTrace();
-            return ResponseEntity.status(500).body(Map.of(
-                    "code", 500,
-                    "message", "Failed to update asset",
-                    "data", ""
-            ));
-        }
-        System.out.println("【Asset】 controller 【update】 method called ... 004");
-        if (updated) {
-            return ResponseEntity.ok(Map.of(
-                    "code", 200,
-                    "message", "Asset updated successfully",
-                    "data", assetDTO
-            ));
-        } else {
-            return ResponseEntity.status(404).body(Map.of(
-                    "code", 404,
-                    "message", "Asset not found",
-                    "data", ""
-            ));
+            return ResponseUtil.error(500, e.getMessage());
         }
     }
 }

@@ -31,7 +31,6 @@ public class AssetTypeController {
     @RequestMapping("/names")
     @PreAuthorize("hasRole('USER') || hasAuthority('system:asset:all')")
     public ResponseEntity<?> names() {
-        System.out.println("【AssetType】 controller 【names】 method called ...");
         List<String> assetTypes = assetTypeService.list().stream()
                 .map(AssetType::getName)
                 .toList();
@@ -42,29 +41,23 @@ public class AssetTypeController {
     @RequestMapping("/list")
     @PreAuthorize("hasRole('USER') || hasAuthority('system:user:list')")
     public ResponseEntity<?> list() {
-        System.out.println("【AssetType】 controller 【list】 method called ...");
-        List<AssetType> assetTypes = assetTypeService.list();
-        return ResponseUtil.success(assetTypes);
+        return ResponseUtil.success(assetTypeService.list());
     }
 
     // Create a new AssetType
     @PostMapping("/create")
     @PreAuthorize("hasRole('ADMIN') || hasAuthority('system:asset:create')")
     public ResponseEntity<?> create(@RequestBody AssetType assetType) {
-        boolean saved = false;
+        if (assetType.getName() == null || assetType.getName().isEmpty()) {
+            return ResponseUtil.error(400, "资产类型名不能为空");
+        }
         try {
-            if (assetType.getName() == null || assetType.getName().isEmpty()) {
-                return ResponseUtil.error(400, "资产类型名不能为空");
-            }
-            saved = assetTypeService.save(assetType);
+            return assetTypeService.save(assetType)
+                    ? ResponseUtil.success(assetType)
+                    : ResponseUtil.error(500, "创建资产类型失败");
         }catch (Exception e) {
             e.printStackTrace();
             return ResponseUtil.error(500, e.getMessage());
-        }
-        if (saved) {
-            return ResponseUtil.success(assetType);
-        } else {
-            return ResponseUtil.error(500, "创建资产类型失败");
         }
     }
 
@@ -75,18 +68,13 @@ public class AssetTypeController {
         if (assetType.getId() == null) {
             return ResponseUtil.error(400, "资产类型ID不能为空");
         }
-        boolean updated = false;
         try {
-            updated = assetTypeService.updateById(assetType);
+            return assetTypeService.updateById(assetType)
+                    ? ResponseUtil.success(assetType)
+                    : ResponseUtil.error(404, "资产类型未找到");
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseUtil.error(500, e.getMessage());
-        }
-
-        if (updated) {
-            return ResponseUtil.success(assetType);
-        } else {
-            return ResponseUtil.error(404, "资产类型未找到");
         }
     }
 
@@ -94,12 +82,9 @@ public class AssetTypeController {
     @DeleteMapping("/delete/{id}")
     @PreAuthorize("hasRole('ADMIN') || hasAuthority('system:asset:delete')")
     public ResponseEntity<?> delete(@PathVariable Long id) {
-        boolean deleted = assetTypeService.deleteAssetType(id);
-        if (deleted) {
-            return ResponseUtil.success(id);
-        } else {
-            return ResponseUtil.error(404, "资产类型未找到");
-        }
+        return assetTypeService.deleteAssetType(id)
+                ? ResponseUtil.success(id)
+                : ResponseUtil.error(404, "资产类型未找到");
     }
     // check if AssetType is exists
     @PostMapping("/exists")
@@ -108,13 +93,13 @@ public class AssetTypeController {
         if (assetType.getName() == null || assetType.getName().isEmpty()) {
             return ResponseUtil.error(400, "资产类型名不能为空");
         }
-        boolean exists = false;
         try {
-            exists = assetTypeService.existsByName(assetType.getName());
+            return assetTypeService.existsByName(assetType.getName())
+                    ? ResponseUtil.success(assetType)
+                    : ResponseUtil.error(404, "资产类型未找到");
         }catch (Exception e) {
             e.printStackTrace();
             return ResponseUtil.error(500, e.getMessage());
         }
-        return ResponseUtil.success(exists);
     }
 }

@@ -62,7 +62,6 @@ public class UserController {
     @GetMapping("/exists")
     @PreAuthorize("hasRole('ADMIN') || hasAuthority('system:user:exists')")
     public Result exists(@RequestParam String username) {
-        System.out.println("【User】 controller 【exists】 method called ...");
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("username", username);
         if (userMapper.exists(queryWrapper)) {
@@ -73,13 +72,11 @@ public class UserController {
 
     @PostMapping("/logout")
     public Result logout(){
-        System.out.println("【User】 controller 【logout】 method called ...");
         return Result.ok();
     }
 
     @GetMapping("/info")
     public Result info(){
-        System.out.println("【User】 controller 【info】 method called ...");
         return Result.ok().data("roles", "[admin]").data("avatar", "https://gitee.com/geekhall/pic/raw/main/img/20220410130517.png");
     }
 

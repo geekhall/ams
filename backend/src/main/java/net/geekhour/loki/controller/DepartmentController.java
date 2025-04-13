@@ -1,5 +1,6 @@
 package net.geekhour.loki.controller;
 
+import net.geekhour.loki.common.ResponseUtil;
 import net.geekhour.loki.entity.Department;
 import net.geekhour.loki.service.IDepartmentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,26 +34,17 @@ public class DepartmentController {
                 .map(Department::getName)
                 .toList();
 
-        return ResponseEntity.ok(Map.of(
-                "code", 200,
-                "message", "success!",
-                "data", Map.of(
+        return ResponseUtil.success( Map.of(
                         "items" , departmentNames,
                         "total" , departmentNames.size()
-                )
-        ));
+                ));
     }
 
     // List all departments
     @RequestMapping("/list")
     @PreAuthorize("hasRole('USER') || hasAuthority('system:department:list')")
     public ResponseEntity<?> list(@RequestBody(required = false) String requestBody) {
-        List<Department> departments = departmentService.list();
-        return ResponseEntity.ok(Map.of(
-                "code", 200,
-                "message", "success!",
-                "data", departments
-        ));
+        return ResponseUtil.success(departmentService.list());
     }
 
     // Create a new department
@@ -60,25 +52,15 @@ public class DepartmentController {
     @PreAuthorize("hasRole('ADMIN') || hasAuthority('system:department:create')")
     public ResponseEntity<?> create(@RequestBody Department department) {
         if (department.getName() == null || department.getName().isEmpty()) {
-            return ResponseEntity.badRequest().body(Map.of(
-                    "code", 400,
-                    "message", "Department name cannot be empty",
-                    "data", ""
-            ));
+            return ResponseUtil.error(400, "部门名称不能为空");
         }
-        boolean saved = departmentService.save(department);
-        if (saved) {
-            return ResponseEntity.ok(Map.of(
-                    "code", 200,
-                    "message", "Department created successfully",
-                    "data", department
-            ));
-        } else {
-            return ResponseEntity.status(500).body(Map.of(
-                    "code", 500,
-                    "message", "Failed to create department",
-                    "data", ""
-            ));
+        try {
+
+            return departmentService.save(department)
+                    ? ResponseUtil.success(department)
+                    : ResponseUtil.error(500, "部门创建失败");
+        } catch (Exception e) {
+            return ResponseUtil.error(500, e.getMessage());
         }
     }
 
@@ -93,19 +75,12 @@ public class DepartmentController {
                     "data", ""
             ));
         }
-        boolean updated = departmentService.updateById(department);
-        if (updated) {
-            return ResponseEntity.ok(Map.of(
-                    "code", 200,
-                    "message", "Department updated successfully",
-                    "data", department
-            ));
-        } else {
-            return ResponseEntity.status(404).body(Map.of(
-                    "code", 404,
-                    "message", "Department not found",
-                    "data", ""
-            ));
+        try {
+            return departmentService.updateById(department)
+                    ? ResponseUtil.success(department)
+                    : ResponseUtil.error(500, "部门更新失败");
+        } catch (Exception e) {
+            return ResponseUtil.error(500, e.getMessage());
         }
     }
 
@@ -113,19 +88,12 @@ public class DepartmentController {
     @DeleteMapping("/delete/{id}")
     @PreAuthorize("hasRole('ADMIN') || hasAuthority('system:department:delete')")
     public ResponseEntity<?> delete(@PathVariable Long id) {
-        boolean deleted = departmentService.removeById(id);
-        if (deleted) {
-            return ResponseEntity.ok(Map.of(
-                    "code", 200,
-                    "message", "Department deleted successfully",
-                    "data", ""
-            ));
-        } else {
-            return ResponseEntity.status(404).body(Map.of(
-                    "code", 404,
-                    "message", "Department not found",
-                    "data", ""
-            ));
+        try {
+            return departmentService.removeById(id)
+                    ? ResponseUtil.success(id)
+                    : ResponseUtil.error(500, "部门删除失败");
+        } catch (Exception e) {
+            return ResponseUtil.error(500, e.getMessage());
         }
     }
 
@@ -134,25 +102,14 @@ public class DepartmentController {
     @PreAuthorize("hasRole('USER') || hasAuthority('system:department:exists')")
     public ResponseEntity<?> existsByName(@RequestBody Department department) {
         if (department.getName() == null || department.getName().isEmpty()) {
-            return ResponseEntity.badRequest().body(Map.of(
-                    "code", 400,
-                    "message", "Department name cannot be empty",
-                    "data", ""
-            ));
+            return ResponseUtil.error(400, "部门名称不能为空");
         }
-        boolean exists = departmentService.existsByName(department.getName());
-        if (exists) {
-            return ResponseEntity.ok(Map.of(
-                    "code", 200,
-                    "message", "Department exists",
-                    "data", ""
-            ));
-        } else {
-            return ResponseEntity.status(404).body(Map.of(
-                    "code", 404,
-                    "message", "Department not found",
-                    "data", ""
-            ));
+        try {
+            return departmentService.existsByName(department.getName())
+                    ? ResponseUtil.success(Map.of("exists", true))
+                    : ResponseUtil.error(404, "部门不存在");
+        } catch (Exception e) {
+            return ResponseUtil.error(500, e.getMessage());
         }
     }
 }

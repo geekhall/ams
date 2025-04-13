@@ -1,6 +1,7 @@
 package net.geekhour.loki.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import net.geekhour.loki.common.ResponseUtil;
 import net.geekhour.loki.entity.dto.DepartmentQuotaDTO;
 import net.geekhour.loki.service.IDepartmentQuotaService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,10 +38,7 @@ public class DepartmentQuotaController {
     @RequestMapping("/all")
     @PreAuthorize("hasRole('USER') || hasAuthority('user:quota:list')")
     public ResponseEntity<?> all() {
-        return ResponseEntity.ok(Map.of(
-                "code", 200,
-                "message", "success!",
-                "data", departmentQuotaService.all()));
+        return ResponseUtil.success(departmentQuotaService.all());
     }
 
     /**
@@ -70,27 +68,18 @@ public class DepartmentQuotaController {
                 System.out.println(" ##########  year: " + year);
             } catch (Exception e) {
                 e.printStackTrace();
-                return ResponseEntity.badRequest().body(Map.of(
-                        "code", 400,
-                        "message", "Invalid request body",
-                        "data", Map.of(
-                                "items", new ArrayList<>(),
-                                "total", 0
-                        )));
+                return ResponseUtil.error(500, e.getMessage());
             }
         }
         Integer offset = (pageIndex - 1) * pageSize;
         List<DepartmentQuotaDTO> quotaList = departmentQuotaService.getQuotaList(year, offset, pageSize, name);
         Long count = departmentQuotaService.countQuotas(year, name);
         BigDecimal total = departmentQuotaService.totalQuotas(year, name);
-        return ResponseEntity.ok(Map.of(
-                "code", 200,
-                "message", "success!",
-                "data", Map.of(
+        return ResponseUtil.success(Map.of(
                         "items", quotaList,
                         "count", count,
                         "total", total
-                )));
+                ));
     }
 
     /**
@@ -102,46 +91,21 @@ public class DepartmentQuotaController {
     @PreAuthorize("hasRole('USER') || hasAuthority('user:quota:create')")
     public ResponseEntity<?> createQuota(@RequestBody DepartmentQuotaDTO quotaDTO) {
         if (quotaDTO.getDepartmentName() == null || quotaDTO.getDepartmentName().isEmpty()) {
-            return ResponseEntity.badRequest().body(Map.of(
-                    "code", 400,
-                    "message", "部门名称不能为空",
-                    "data", ""
-            ));
+            return ResponseUtil.error(400, "部门名称不能为空");
         }
         Long currentYear = System.currentTimeMillis() / 1000 / 60 / 60 / 24 / 365 + 1970;
         System.out.println("currentYear: " + currentYear);
         System.out.println("quotaDTO.getYear(): " + quotaDTO.getYear());
         if (quotaDTO.getYear() == null || quotaDTO.getYear() < currentYear) {
-            return ResponseEntity.badRequest().body(Map.of(
-                    "code", 400,
-                    "message", "预算年度不能为空或小于当前年份",
-                    "data", ""
-            ));
+            return ResponseUtil.error(400,"预算年度不能为空或小于当前年份");
         }
-        boolean created = false;
         try {
-            created = departmentQuotaService.createQuota(quotaDTO);
+            boolean created = departmentQuotaService.createQuota(quotaDTO);
+            return created ? ResponseUtil.success(quotaDTO)
+                           : ResponseUtil.error(500, "部门预算创建失败");
         } catch (Exception e) {
             e.printStackTrace();
-            return ResponseEntity.status(500).body(Map.of(
-                    "code", 500,
-                    "message", "Failed to create quota",
-                    "data", ""
-            ));
-        }
-
-        if (created) {
-            return ResponseEntity.ok(Map.of(
-                    "code", 200,
-                    "message", "Quota created successfully",
-                    "data", quotaDTO
-            ));
-        } else {
-            return ResponseEntity.status(500).body(Map.of(
-                    "code", 500,
-                    "message", "Failed to create quota",
-                    "data", ""
-            ));
+            return ResponseUtil.error(500, e.getMessage());
         }
     }
 
@@ -154,36 +118,15 @@ public class DepartmentQuotaController {
     @PreAuthorize("hasRole('USER') || hasAuthority('user:quota:update')")
     public ResponseEntity<?> updateQuota(@RequestBody DepartmentQuotaDTO quotaDTO) {
         if (quotaDTO.getId() == null) {
-            return ResponseEntity.badRequest().body(Map.of(
-                    "code", 400,
-                    "message", "Quota ID cannot be null",
-                    "data", ""
-            ));
+            return ResponseUtil.error(400,"部门预算ID不能为空");
         }
-        boolean updated = false;
         try {
-            updated = departmentQuotaService.updateQuota(quotaDTO);
+            boolean updated = departmentQuotaService.updateQuota(quotaDTO);
+            return updated ? ResponseUtil.success(quotaDTO)
+                           : ResponseUtil.error(500, "部门预算更新失败");
         } catch (Exception e) {
             e.printStackTrace();
-            return ResponseEntity.status(500).body(Map.of(
-                    "code", 500,
-                    "message", "Failed to update quota",
-                    "data", ""
-            ));
-        }
-
-        if (updated) {
-            return ResponseEntity.ok(Map.of(
-                    "code", 200,
-                    "message", "Quota updated successfully",
-                    "data", quotaDTO
-            ));
-        } else {
-            return ResponseEntity.status(404).body(Map.of(
-                    "code", 404,
-                    "message", "Quota not found",
-                    "data", ""
-            ));
+            return ResponseUtil.error(500, e.getMessage());
         }
     }
 
@@ -195,17 +138,13 @@ public class DepartmentQuotaController {
     @DeleteMapping("/delete/{id}")
     @PreAuthorize("hasRole('USER') || hasAuthority('user:quota:delete')")
     public ResponseEntity<?> deleteQuota(@PathVariable Long id) {
-        boolean deleted = departmentQuotaService.deleteQuota(id);
-        if (deleted) {
-            return ResponseEntity.ok(Map.of(
-                    "code", 200,
-                    "message", "Quota deleted successfully",
-                    "data", ""));
-        } else {
-            return ResponseEntity.status(404).body(Map.of(
-                    "code", 404,
-                    "message", "Quota not found",
-                    "data", ""));
+        try {
+            return departmentQuotaService.deleteQuota(id) ?
+                    ResponseUtil.success(id) :
+                    ResponseUtil.error(500, "部门预算删除失败");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseUtil.error(500, e.getMessage());
         }
     }
 

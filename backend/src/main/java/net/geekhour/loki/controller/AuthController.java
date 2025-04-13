@@ -1,6 +1,7 @@
 package net.geekhour.loki.controller;
 
 import net.geekhour.loki.common.RedisCache;
+import net.geekhour.loki.common.ResponseUtil;
 import net.geekhour.loki.entity.User;
 import net.geekhour.loki.mapper.UserMapper;
 import net.geekhour.loki.mapper.UserRoleMapper;
@@ -62,17 +63,11 @@ public class AuthController {
     @PostMapping("/register")
     public ResponseEntity<?> register(@Valid @RequestBody RegisterRequest registerRequest) {
         if (userMapper.existsByUsername(registerRequest.getUsername())) {
-            System.out.println("username is already taken");
-            return ResponseEntity
-                    .badRequest()
-                    .body(new MessageResponse("Error: Username is already taken!"));
+            return ResponseUtil.error(400, "用户名已被使用");
         }
 
         if (userMapper.existsByEmail(registerRequest.getEmail())) {
-            System.out.println("email is already in use");
-            return ResponseEntity
-                    .badRequest()
-                    .body(new MessageResponse("Error: Email is already in use!"));
+            return ResponseUtil.error(400, "邮箱已被使用");
         }
 
         User user = authService.register(registerRequest);
@@ -101,18 +96,10 @@ public class AuthController {
             authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
         } catch (Exception e) {
             System.out.println("username or password is incorrect");
-            return ResponseEntity
-                    .badRequest()
-                    .body(Map.of(
-                            "code", 401,
-                            "message", "Error: Username or password is incorrect!"));
+            return ResponseUtil.error(401, e.getMessage());
         }
         if (authentication == null) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(Map.of(
-                            "code", 401,
-                            "message", "Error: Username or password is incorrect!"));
+            return ResponseUtil.error(401, "用户名或密码错误");
         }
 
         org.springframework.security.core.userdetails.User user = (org.springframework.security.core.userdetails.User) authentication.getPrincipal();
@@ -151,9 +138,7 @@ public class AuthController {
         SecurityContextHolder.getContext().setAuthentication(null);
         SecurityContextHolder.clearContext();
 
-        return ResponseEntity.ok(Map.of(
-                "code", 200,
-                "message", "Logout successfully!"));
+        return ResponseUtil.success("成功登出");
     }
 
     // GitHub OAuth2 Login
