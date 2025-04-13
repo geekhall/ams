@@ -1,6 +1,7 @@
 <template>
   <div id="budgetQuotaPage" class="content-container">
     <h1>{{ formatYear(selectedYear) }}年度 部门预算额度管理</h1>
+
     <div class="handle-box">
       <el-button type="danger" :icon="Select" @click="handleSelectYear" style="margin-right: 10px"
         >选择年度</el-button
@@ -63,17 +64,23 @@
 
     <!-- 选择年度弹出框 -->
     <el-dialog title="选择预算年度" v-model="yearVisible" width="30%">
-      <el-form>
-        <el-form-item label="年度">
-          <div class="year-picker">
-            <div class="container">
-              <div class="block">
-                <el-date-picker v-model="selectedYear" type="year" placeholder="选择年份" />
+      <el-row>
+        <el-col :span="8" style="margin-top: 10px"></el-col>
+        <el-col :span="8">
+          <el-form>
+            <el-form-item label="年度">
+              <div class="year-picker">
+                <div class="container">
+                  <div class="block">
+                    <el-date-picker v-model="selectedYear" type="year" placeholder="选择年份" />
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
-        </el-form-item>
-      </el-form>
+            </el-form-item>
+          </el-form>
+        </el-col>
+        <el-col :span="8"></el-col>
+      </el-row>
       <template #footer>
         <span class="dialog-footer">
           <el-button @click="yearVisible = false">取 消</el-button>
@@ -380,6 +387,7 @@ const handleDelete = (index: number) => {
 .footer-container {
   display: flex;
   padding: 0 20px;
+  max-width: 960px;
   justify-content: space-between;
   align-items: center;
   width: 100%;
@@ -388,6 +396,7 @@ const handleDelete = (index: number) => {
 .totalQuota {
   font-size: 20px;
   font-weight: bold;
+
   color: #f26c6f;
   text-align: right;
 }
@@ -396,6 +405,7 @@ const handleDelete = (index: number) => {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  max-width: 960px;
   width: 100%;
   border-radius: 4px;
   overflow: hidden;

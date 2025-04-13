@@ -89,17 +89,23 @@
     </div>
     <!-- 选择年度弹出框 -->
     <el-dialog title="选择预算年度" v-model="yearVisible" width="30%">
-      <el-form>
-        <el-form-item label="年度">
-          <div class="year-picker">
-            <div class="container">
-              <div class="block">
-                <el-date-picker v-model="selectedYear" type="year" placeholder="选择年份" />
+      <el-row>
+        <el-col :span="8" style="margin-top: 10px"></el-col>
+        <el-col :span="8">
+          <el-form>
+            <el-form-item label="年度">
+              <div class="year-picker">
+                <div class="container">
+                  <div class="block">
+                    <el-date-picker v-model="selectedYear" type="year" placeholder="选择年份" />
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
-        </el-form-item>
-      </el-form>
+            </el-form-item>
+          </el-form>
+        </el-col>
+        <el-col :span="8" style="margin-top: 10px"></el-col>
+      </el-row>
       <template #footer>
         <span class="dialog-footer">
           <el-button @click="yearVisible = false">取 消</el-button>
@@ -294,7 +300,7 @@ const saveYear = () => {
   // 关闭弹窗
   yearVisible.value = false
   // 添加至后台的逻辑
-  ElMessage.success(`已选择 ${selectedYear.value.getFullYear()} 年度的额度信息`)
+  ElMessage.success(`已选择 ${selectedYear.value.getFullYear()} 年度`)
   // 更新年度
   addForm.year = selectedYear.value.getFullYear()
   editForm.year = selectedYear.value.getFullYear()
@@ -324,6 +330,7 @@ const pageTotal = ref(0)
 // 表格编辑时弹窗和保存
 const addVisible = ref(false)
 let addForm = reactive({
+  year: selectedYear.value.getFullYear(),
   assetName: '测试资产1',
   assetCode: 'TEST-2025-1',
   assetType: '服务器',
@@ -336,6 +343,7 @@ let addForm = reactive({
 const editVisible = ref(false)
 let editForm = reactive({
   id: '',
+  year: selectedYear.value.getFullYear(),
   assetName: '',
   assetCode: '',
   assetType: '',
