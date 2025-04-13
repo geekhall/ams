@@ -1,6 +1,6 @@
 import { ApiResponse } from "."
 
-export interface Department {
+export interface Team {
   id: string
   name: string
   code: string
@@ -10,6 +10,6 @@ export interface Department {
   sort: number
   status: string
 }
-export type DepartmentListResponse = ApiResponse<{
-  items: Department[]
+export type TeamListResponse = ApiResponse<{
+  items: Team[]
 }>

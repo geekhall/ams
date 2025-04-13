@@ -10,7 +10,7 @@
           {{ buttonName }}
         </el-button>
         <el-input
-          v-model="query.assetName"
+          v-model="query.name"
           placeholder="输入预算名称"
           class="handle-input mr10"
           @keyup.enter.native="handleSearch"
@@ -35,26 +35,40 @@
       <el-table-column prop="projectInfo" label="项目概述" align="center">
         <el-table-column prop="budgetType" label="项目类型" align="center"></el-table-column>
         <el-table-column prop="budgetCategory" label="项目性质" align="center"></el-table-column>
-        <el-table-column prop="isApproved" label="是否信创" align="center" width="60px">
+        <el-table-column prop="inno" label="是否信创" align="center" width="60px">
         </el-table-column>
-        <el-table-column prop="budgetName" label="项目名称" align="center"> </el-table-column>
+        <el-table-column prop="name" label="项目名称" align="center"> </el-table-column>
         <el-table-column prop="description" label="项目概述" align="center"> </el-table-column>
       </el-table-column>
-      <el-table-column prop="" label="预算金额" align="center"> </el-table-column>
-      <el-table-column prop="" label="部门" align="center"> </el-table-column>
-
-      <el-table-column v-if="isTech" prop="" label="团队" align="center"> </el-table-column>
-
-      <el-table-column v-if="!isTech" prop="" label="优先级" align="center" width="60px">
+      <el-table-column prop="amount" label="预算金额" align="center"> </el-table-column>
+      <el-table-column prop="departmentName" label="部门" align="center"> </el-table-column>
+      <el-table-column v-if="isTech" prop="teamName" label="团队" align="center"> </el-table-column>
+      <el-table-column v-if="!isTech" prop="priority" label="优先级" align="center" width="60px">
       </el-table-column>
-      <el-table-column v-if="!isTech" prop="" label="业务优先级" align="center" width="90px">
+      <el-table-column
+        v-if="!isTech"
+        prop="businessPriority"
+        label="业务优先级"
+        align="center"
+        width="90px"
+      >
       </el-table-column>
-      <el-table-column v-if="!isTech" prop="" label="业务优先级情况说明" align="center">
+      <el-table-column
+        v-if="!isTech"
+        prop="businessDescription"
+        label="业务优先级情况说明"
+        align="center"
+      >
       </el-table-column>
-      <el-table-column v-if="!isTech" prop="" label="预计启动时间" align="center" width="90px">
+      <el-table-column
+        v-if="!isTech"
+        prop="plannedStartDate"
+        label="预计启动时间"
+        align="center"
+        width="90px"
+      >
       </el-table-column>
-      <el-table-column prop="" label="备注" align="center"> </el-table-column>
-
+      <el-table-column prop="remark" label="备注" align="center"> </el-table-column>
       <el-table-column label="操作" width="220" align="center">
         <template #default="scope">
           <el-button
@@ -115,58 +129,74 @@
     </el-dialog>
 
     <!-- 新增弹出框 -->
-    <el-dialog title="新增资产" v-model="addVisible" width="30%">
+    <el-dialog title="新增预算" v-model="addVisible" width="30%">
       <el-form label-width="70px">
-        <el-form-item label="资产名称">
-          <el-input v-model="addForm.assetName"></el-input>
-        </el-form-item>
-        <el-form-item label="资产编号">
-          <el-input v-model="addForm.assetCode"></el-input>
-        </el-form-item>
-        <el-form-item label="资产类型">
-          <el-select v-model="addForm.assetType" placeholder="请选择">
+        <el-form-item label="项目类型">
+          <el-select v-model="addForm.budgetType" placeholder="请选择">
             <el-option
-              v-for="item in assetTypes"
+              v-for="item in budgetTypes"
               :key="item.name"
               :label="item.name"
               :value="item.name"
             ></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="所属部门">
+        <el-form-item label="项目性质">
+          <el-select v-model="addForm.budgetCategory" placeholder="请选择">
+            <el-option
+              v-for="item in budgetCategorys"
+              :key="item.name"
+              :label="item.name"
+              :value="item.name"
+            ></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="是否信创">
+          <el-select v-model="addForm.inno">
+            <el-option label="是" value="是"></el-option>
+            <el-option label="否" value="否"></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="项目名称">
+          <el-input v-model="addForm.name"></el-input>
+        </el-form-item>
+        <el-form-item label="项目概述">
+          <el-input v-model="addForm.description"></el-input>
+        </el-form-item>
+        <el-form-item label="预算金额">
+          <el-input v-model="addForm.amount"></el-input>
+        </el-form-item>
+        <el-form-item label="部门">
           <el-select v-model="addForm.departmentName">
             <el-option
-              v-for="item in departments"
+              v-for="item in departmentNames"
               :key="item.name"
               :label="item.name"
               :value="item.name"
             ></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="状态">
-          <el-select v-model="addForm.status">
-            <el-option label="正常" value="正常"></el-option>
-            <el-option label="维修" value="维修"></el-option>
-            <el-option label="报废" value="报废"></el-option>
+        <el-form-item label="团队">
+          <el-select v-model="addForm.teamName">
+            <el-option
+              v-for="item in teamNames"
+              :key="item.name"
+              :label="item.name"
+              :value="item.name"
+            ></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="购入时间">
-          <span class="demonstration"></span>
-          <el-date-picker
-            class="date-picker"
-            v-model="addForm.purchaseDate"
-            type="date"
-            format="YYYY-MM-DD"
-            value-format="YYYY-MM-DD"
-            size="default"
-            placeholder="选择日期"
-          />
+        <el-form-item label="优先级">
+          <el-input v-model="addForm.priority"></el-input>
         </el-form-item>
-        <el-form-item label="购买价格">
-          <el-input v-model="addForm.purchasePrice"></el-input>
+        <el-form-item label="业务优先级">
+          <el-input v-model="addForm.businessPriority"></el-input>
         </el-form-item>
-        <el-form-item label="数量">
-          <el-input v-model="addForm.count"></el-input>
+        <el-form-item label="业务优先级情况说明">
+          <el-input v-model="addForm.businessDescription"></el-input>
+        </el-form-item>
+        <el-form-item label="备注">
+          <el-input v-model="addForm.remark"></el-input>
         </el-form-item>
       </el-form>
       <template #footer>
@@ -183,62 +213,78 @@
         <el-form-item label="ID">
           <el-input v-model="editForm.id" disabled></el-input>
         </el-form-item>
-        <el-form-item label="资产名称">
-          <el-input v-model="editForm.assetName"></el-input>
-        </el-form-item>
-        <el-form-item label="资产编号">
-          <el-input v-model="editForm.assetCode"></el-input>
-        </el-form-item>
-        <el-form-item label="资产类型">
-          <el-select v-model="addForm.assetType" placeholder="请选择">
+        <el-form-item label="项目类型">
+          <el-select v-model="editForm.budgetType" placeholder="请选择">
             <el-option
-              v-for="item in assetTypes"
+              v-for="item in budgetTypes"
               :key="item.name"
               :label="item.name"
               :value="item.name"
             ></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="所属部门">
+        <el-form-item label="项目性质">
+          <el-select v-model="editForm.budgetCategory" placeholder="请选择">
+            <el-option
+              v-for="item in budgetCategorys"
+              :key="item.name"
+              :label="item.name"
+              :value="item.name"
+            ></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="是否信创">
+          <el-select v-model="editForm.inno">
+            <el-option label="是" value="是"></el-option>
+            <el-option label="否" value="否"></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="项目名称">
+          <el-input v-model="editForm.name"></el-input>
+        </el-form-item>
+        <el-form-item label="项目概述">
+          <el-input v-model="editForm.description"></el-input>
+        </el-form-item>
+        <el-form-item label="预算金额">
+          <el-input v-model="editForm.amount"></el-input>
+        </el-form-item>
+        <el-form-item label="部门">
           <el-select v-model="editForm.departmentName">
             <el-option
-              v-for="item in departments"
+              v-for="item in departmentNames"
               :key="item.name"
               :label="item.name"
               :value="item.name"
             ></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="状态">
-          <el-select v-model="editForm.status">
-            <el-option label="正常" value="正常"></el-option>
-            <el-option label="维修" value="维修"></el-option>
-            <el-option label="报废" value="报废"></el-option>
+        <el-form-item label="团队">
+          <el-select v-model="editForm.teamName">
+            <el-option
+              v-for="item in teamNames"
+              :key="item.name"
+              :label="item.name"
+              :value="item.name"
+            ></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="购入时间">
-          <span class="demonstration"></span>
-          <el-date-picker
-            class="date-picker"
-            v-model="editForm.purchaseDate"
-            type="date"
-            format="YYYY-MM-DD"
-            value-format="YYYY-MM-DD"
-            size="default"
-            placeholder="选择日期"
-          />
+        <el-form-item label="优先级">
+          <el-input v-model="editForm.priority"></el-input>
         </el-form-item>
-        <el-form-item label="购买价格">
-          <el-input v-model="editForm.purchasePrice"></el-input>
+        <el-form-item label="业务优先级">
+          <el-input v-model="editForm.businessPriority"></el-input>
         </el-form-item>
-        <el-form-item label="数量">
-          <el-input v-model="editForm.count"></el-input>
+        <el-form-item label="业务优先级情况说明">
+          <el-input v-model="editForm.businessDescription"></el-input>
+        </el-form-item>
+        <el-form-item label="备注">
+          <el-input v-model="editForm.remark"></el-input>
         </el-form-item>
       </el-form>
       <template #footer>
         <span class="dialog-footer">
           <el-button @click="editVisible = false">取 消</el-button>
-          <el-button type="primary" @click="saveEdit">确 定</el-button>
+          <el-button type="primary" @click="saveAdd">确 定</el-button>
         </span>
       </template>
     </el-dialog>
@@ -258,12 +304,26 @@ import {
   Upload,
   Download
 } from '@element-plus/icons-vue'
-import { deleteAssetById, getAssetList, getAssetTypeList, addAsset, updateAsset } from '@/api/asset'
+import {
+  deleteBudgetById,
+  getBudgetList,
+  getBudgetTypeList,
+  getBudgetCategoryList,
+  addBudget,
+  updateBudget
+} from '@/api/budget'
 import { getDepartmentList } from '@/api/department'
-import { AssetTypeListResponse, type Asset, AssetType } from '@/types/asset'
+import {
+  BudgetTypeListResponse,
+  type Budget,
+  BudgetType,
+  BudgetCategory,
+  BudgetCategoryListResponse
+} from '@/types/budget'
 import { DepartmentListResponse } from '@/types/department'
 import dayjs from 'dayjs'
 import { Department } from '@/types/department'
+import { Team } from '@/types/team'
 
 const isTech = ref(true)
 const buttonName = ref('科技')
@@ -271,10 +331,8 @@ const toggleTech = () => {
   isTech.value = !isTech.value
   buttonName.value = isTech.value === true ? '科技' : '业务'
 }
-
 // 表格编辑时弹窗和保存
 const yearVisible = ref(false)
-
 // 格式化日期为年度
 const formatYear = (date: Date | string | null | undefined) => {
   if (!date) {
@@ -282,14 +340,12 @@ const formatYear = (date: Date | string | null | undefined) => {
   }
   return dayjs(date).format('YYYY')
 }
+
 const selectedYear = ref(new Date())
 // 选择年度操作
 const handleSelectYear = () => {
   yearVisible.value = true
-  // 这里可以添加新增逻辑
-  // selectedYear.value = new Date()
 }
-
 // 保存年度操作
 const saveYear = () => {
   // 检查selectedYear的值是否有效
@@ -309,57 +365,89 @@ const saveYear = () => {
   getData()
 }
 
-const assetTypes = ref<AssetType[]>([])
-const departments = ref<Department[]>([])
+const budgetTypes = ref<BudgetType[]>([])
+const budgetCategorys = ref<BudgetCategory[]>([])
+const departmentNames = ref<Department[]>([])
+const teamNames = ref<Team[]>([])
 const query = reactive({
   id: '',
-  assetName: '',
-  assetCode: '',
-  assetType: '',
+  name: '',
+  description: '',
+  budgetType: '',
+  budgetCategory: '',
+  inno: '',
+  amount: 0,
   departmentName: '',
+  teamName: '',
+  priority: 1,
+  businessPriority: '',
+  businessDescription: '',
+  plannedStartDate: dayjs().format('YYYY-MM-DD'),
+  remark: '',
   status: '',
-  purchaseDate: '',
-  purchasePrice: '',
-  count: 0,
   // 分页参数
   pageIndex: 1,
   pageSize: 10
 })
-const tableData = ref<Asset[]>([])
+const tableData = ref<Budget[]>([])
 const pageTotal = ref(0)
 // 表格编辑时弹窗和保存
 const addVisible = ref(false)
 let addForm = reactive({
   year: selectedYear.value.getFullYear(),
-  assetName: '测试资产1',
-  assetCode: 'TEST-2025-1',
-  assetType: '服务器',
+  name: '测试项目1',
+  description: '测试需求及目标',
+  budgetType: '软件',
+  budgetCategory: '监管要求落实',
+  inno: '是',
+  amount: 10000,
   departmentName: '信息科技部',
-  status: '正常',
-  purchaseDate: dayjs().format('YYYY-MM-DD'),
-  purchasePrice: 0,
-  count: 0
+  teamName: '核心开发',
+  priority: 1,
+  businessPriority: '已立项',
+  businessDescription: '测试业务优先级情况说明',
+  plannedStartDate: dayjs().format('YYYY-MM-DD'),
+  remark: '测试备注',
+  status: '正常'
 })
 const editVisible = ref(false)
 let editForm = reactive({
   id: '',
   year: selectedYear.value.getFullYear(),
-  assetName: '',
-  assetCode: '',
-  assetType: '',
+  name: '',
+  description: '',
+  budgetType: '',
+  budgetCategory: '',
+  inno: '',
+  amount: 0,
   departmentName: '',
-  status: '',
-  purchaseDate: '',
-  purchasePrice: 100,
-  count: 1
+  teamName: '',
+  priority: 1,
+  businessPriority: '',
+  businessDescription: '',
+  plannedStartDate: dayjs().format('YYYY-MM-DD'),
+  remark: '',
+  status: ''
 })
+
 let idx: number = -1
-// 获取资产类型列表
-const getAssetTypes = () => {
-  getAssetTypeList().then((res: AssetTypeListResponse) => {
+// 获取预算类型列表
+const getBudgetTypes = () => {
+  getBudgetTypeList().then((res: BudgetTypeListResponse) => {
     if (res.code === 200) {
-      console.log('getAssetTypes res.data:', res.data)
-      assetTypes.value = res.data
+      console.log('getBudgetTypes res.data:', res.data)
+      budgetTypes.value = res.data
+    } else {
+      ElMessage.error(res.message)
+    }
+  })
+}
+// 获取预算性质列表
+const getBudgetCategorys = () => {
+  getBudgetCategoryList().then((res: BudgetCategoryListResponse) => {
+    if (res.code === 200) {
+      console.log('getBudgetCategorys res.data:', res.data)
+      budgetCategorys.value = res.data
     } else {
       ElMessage.error(res.message)
     }
@@ -370,7 +458,7 @@ const getDepartments = () => {
   getDepartmentList().then((res: DepartmentListResponse) => {
     if (res.code === 200) {
       console.log('getDepartmentList res.data:', res.data)
-      departments.value = res.data
+      departmentNames.value = res.data
     } else {
       ElMessage.error(res.message)
     }
@@ -378,14 +466,15 @@ const getDepartments = () => {
 }
 // 获取表格数据
 const getData = () => {
-  getAssetList({
-    name: query.assetName,
+  getBudgetList({
+    year: selectedYear.value.getFullYear(),
+    name: query.name,
     pageIndex: query.pageIndex,
     pageSize: query.pageSize
   })
     .then((res) => {
       if (res.code === 200) {
-        console.log('getAssetList res.data:', res.data)
+        console.log('getBudgetList res.data:', res.data)
 
         tableData.value = res.data.items
         pageTotal.value = res.data.total
@@ -401,7 +490,7 @@ const getData = () => {
     })
 }
 onMounted(() => {
-  const savedPageIndex = localStorage.getItem('AMSCurrentAssetPageIndex')
+  const savedPageIndex = localStorage.getItem('AMSCurrentBudgetPageIndex')
   if (savedPageIndex) {
     query.pageIndex = parseInt(savedPageIndex, 10)
   }
@@ -412,7 +501,7 @@ onMounted(() => {
 const handleSearch = () => {
   query.pageIndex = 1
   // 获取输入框中的值
-  console.log('query.assetName', query.assetName)
+  console.log('query.name', query.name)
   // 这里可以添加搜索逻辑
   getData()
 }
@@ -420,14 +509,16 @@ const handleSearch = () => {
 // 分页导航
 const handlePageChange = (val: number) => {
   query.pageIndex = val
-  localStorage.setItem('AMSCurrentAssetPageIndex', val.toString())
+  localStorage.setItem('AMSCurrentBudgetPageIndex', val.toString())
   getData()
 }
 
 // 新增操作
 const handleAdd = () => {
-  getAssetTypes()
+  getBudgetTypes()
+  getBudgetCategorys()
   getDepartments()
+  getTeams()
   addVisible.value = true
   // 这里可以添加新增逻辑
 }
@@ -443,7 +534,7 @@ const getMaxPage = () => {
 const saveAdd = () => {
   addVisible.value = false
   // 添加至后台的逻辑
-  addAsset(addForm)
+  addBudget(addForm)
     .then((res) => {
       if (res.code === 200) {
         ElMessage.success('新增成功')
@@ -462,18 +553,27 @@ const saveAdd = () => {
 
 // 编辑操作
 const handleEdit = (index: number, row: any) => {
-  getAssetTypes()
+  getBudgetTypes()
+  getBudgetCategorys()
   getDepartments()
+  getTeams()
   idx = index
   editForm.id = row.id
-  editForm.assetName = row.assetName
-  editForm.assetCode = row.assetCode
-  editForm.assetType = row.assetType
+  editForm.year = row.year
+  editForm.name = row.name
+  editForm.description = row.description
+  editForm.budgetType = row.budgetType
+  editForm.budgetCategory = row.budgetCategory
+  editForm.inno = row.inno
+  editForm.amount = row.amount
   editForm.departmentName = row.departmentName
+  editForm.teamName = row.teamName
+  editForm.priority = row.priority
+  editForm.businessPriority = row.businessPriority
+  editForm.businessDescription = row.businessDescription
+  editForm.plannedStartDate = row.plannedStartDate
+  editForm.remark = row.remark
   editForm.status = row.status
-  editForm.purchaseDate = row.purchaseDate
-  editForm.purchasePrice = row.purchasePrice
-  editForm.count = row.count
   // 这里可以根据需要设置其他字段
   editVisible.value = true
   // 更新后台数据
@@ -484,7 +584,7 @@ const saveEdit = () => {
   editVisible.value = false
   let currentPage = query.pageIndex
   // 编辑至后台的逻辑
-  updateAsset(editForm)
+  updateBudget(editForm)
     .then((res) => {
       if (res.code === 200) {
         ElMessage.success(`修改第 ${idx + 1} 行成功`)
@@ -508,7 +608,7 @@ const handleDelete = (index: number) => {
   })
     .then(() => {
       // 删除操作
-      deleteAssetById(tableData.value[index].id)
+      deleteBudgetById(tableData.value[index].id)
         .then((res) => {
           if (res.code === 200) {
             ElMessage.success('删除成功')
