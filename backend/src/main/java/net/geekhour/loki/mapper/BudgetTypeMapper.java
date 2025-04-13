@@ -16,6 +16,6 @@ import org.apache.ibatis.annotations.Select;
 @Mapper
 public interface BudgetTypeMapper extends BaseMapper<BudgetType> {
 
-    @Select("SELECT COUNT(*) FROM h_budget_type WHERE name = #{name}")
+    @Select("SELECT COUNT(*) FROM h_budget_type WHERE name = #{name} and deleted=0")
     int existsByName(String name);
 }

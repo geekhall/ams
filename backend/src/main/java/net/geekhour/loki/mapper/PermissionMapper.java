@@ -17,6 +17,9 @@ import java.util.List;
  */
 @Mapper
 public interface PermissionMapper extends BaseMapper<Permission> {
-    @Select("select perms from h_permission where id in (select permission_id from h_role_permission where role_id in (select role_id from h_user_role where user_id = #{userId}))")
+    @Select("select perms from h_permission " +
+            "where id in " +
+            "(select permission_id from h_role_permission where role_id in " +
+            "(select role_id from h_user_role where user_id = #{userId}))")
     List<String> selectPermissionByUserId(Long userId);
 }

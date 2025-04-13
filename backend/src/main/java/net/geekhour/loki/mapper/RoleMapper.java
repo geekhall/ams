@@ -17,7 +17,7 @@ import java.util.List;
  */
 @Mapper
 public interface RoleMapper extends BaseMapper<Role> {
-    @Select("select * from h_role where id = #{role_id}")
+    @Select("select * from h_role where id = #{role_id} and deleted = 0")
     Role findByRoleId(Long role_id);
 
     Integer addRole(Long userId, Long roleId);

@@ -17,6 +17,6 @@ import java.util.Optional;
  */
 @Mapper
 public interface ImageMapper extends BaseMapper<Image> {
-    @Select("select * from h_image where name = #{name}")
+    @Select("select * from h_image where name = #{name} and deleted = 0")
     Optional<Image> findByName(String name);
 }
