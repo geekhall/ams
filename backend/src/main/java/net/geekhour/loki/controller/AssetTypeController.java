@@ -1,5 +1,6 @@
 package net.geekhour.loki.controller;
 
+import net.geekhour.loki.common.ResponseUtil;
 import net.geekhour.loki.entity.AssetType;
 import net.geekhour.loki.service.IAssetTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,11 +36,7 @@ public class AssetTypeController {
                 .map(AssetType::getName)
                 .toList();
 
-        return ResponseEntity.ok(Map.of(
-                "code", 200,
-                "message", "success!",
-                "data", assetTypes
-        ));
+        return ResponseUtil.success(assetTypes);
     }
 
     @RequestMapping("/list")
@@ -47,11 +44,7 @@ public class AssetTypeController {
     public ResponseEntity<?> list() {
         System.out.println("【AssetType】 controller 【list】 method called ...");
         List<AssetType> assetTypes = assetTypeService.list();
-        return ResponseEntity.ok(Map.of(
-                "code", 200,
-                "message", "success!",
-                "data", assetTypes
-        ));
+        return ResponseUtil.success(assetTypes);
     }
 
     // Create a new AssetType
@@ -61,33 +54,17 @@ public class AssetTypeController {
         boolean saved = false;
         try {
             if (assetType.getName() == null || assetType.getName().isEmpty()) {
-                return ResponseEntity.badRequest().body(Map.of(
-                        "code", 400,
-                        "message", "AssetType name cannot be empty",
-                        "data", ""
-                ));
+                return ResponseUtil.error(400, "资产类型名不能为空");
             }
             saved = assetTypeService.save(assetType);
         }catch (Exception e) {
             e.printStackTrace();
-            return ResponseEntity.status(500).body(Map.of(
-                    "code", 500,
-                    "message", "Failed to create AssetType",
-                    "data", ""
-            ));
+            return ResponseUtil.error(500, e.getMessage());
         }
         if (saved) {
-            return ResponseEntity.ok(Map.of(
-                    "code", 200,
-                    "message", "AssetType created successfully",
-                    "data", assetType
-            ));
+            return ResponseUtil.success(assetType);
         } else {
-            return ResponseEntity.status(500).body(Map.of(
-                    "code", 500,
-                    "message", "Failed to create AssetType",
-                    "data", ""
-            ));
+            return ResponseUtil.error(500, "创建资产类型失败");
         }
     }
 
@@ -96,36 +73,20 @@ public class AssetTypeController {
     @PreAuthorize("hasRole('ADMIN') || hasAuthority('system:asset:update')")
     public ResponseEntity<?> update(@RequestBody AssetType assetType) {
         if (assetType.getId() == null) {
-            return ResponseEntity.badRequest().body(Map.of(
-                    "code", 400,
-                    "message", "AssetType ID cannot be null",
-                    "data", ""
-            ));
+            return ResponseUtil.error(400, "资产类型ID不能为空");
         }
         boolean updated = false;
         try {
             updated = assetTypeService.updateById(assetType);
         } catch (Exception e) {
             e.printStackTrace();
-            return ResponseEntity.status(500).body(Map.of(
-                    "code", 500,
-                    "message", "Failed to update AssetType",
-                    "data", ""
-            ));
+            return ResponseUtil.error(500, e.getMessage());
         }
 
         if (updated) {
-            return ResponseEntity.ok(Map.of(
-                    "code", 200,
-                    "message", "AssetType updated successfully",
-                    "data", assetType
-            ));
+            return ResponseUtil.success(assetType);
         } else {
-            return ResponseEntity.status(404).body(Map.of(
-                    "code", 404,
-                    "message", "AssetType not found",
-                    "data", ""
-            ));
+            return ResponseUtil.error(404, "资产类型未找到");
         }
     }
 
@@ -135,17 +96,9 @@ public class AssetTypeController {
     public ResponseEntity<?> delete(@PathVariable Long id) {
         boolean deleted = assetTypeService.deleteAssetType(id);
         if (deleted) {
-            return ResponseEntity.ok(Map.of(
-                    "code", 200,
-                    "message", "AssetType deleted successfully",
-                    "data", ""
-            ));
+            return ResponseUtil.success(id);
         } else {
-            return ResponseEntity.status(404).body(Map.of(
-                    "code", 404,
-                    "message", "AssetType not found",
-                    "data", ""
-            ));
+            return ResponseUtil.error(404, "资产类型未找到");
         }
     }
     // check if AssetType is exists
@@ -153,35 +106,15 @@ public class AssetTypeController {
     @PreAuthorize("hasRole('USER') || hasAuthority('system:asset:exists')")
     public ResponseEntity<?> existsByName(@RequestBody AssetType assetType) {
         if (assetType.getName() == null || assetType.getName().isEmpty()) {
-            return ResponseEntity.badRequest().body(Map.of(
-                    "code", 400,
-                    "message", "AssetType name cannot be empty",
-                    "data", ""
-            ));
+            return ResponseUtil.error(400, "资产类型名不能为空");
         }
         boolean exists = false;
         try {
             exists = assetTypeService.existsByName(assetType.getName());
         }catch (Exception e) {
             e.printStackTrace();
-            return ResponseEntity.status(500).body(Map.of(
-                    "code", 500,
-                    "message", "Failed to check AssetType",
-                    "data", ""
-            ));
+            return ResponseUtil.error(500, e.getMessage());
         }
-        if (exists) {
-            return ResponseEntity.ok(Map.of(
-                    "code", 200,
-                    "message", "AssetType exists",
-                    "data", ""
-            ));
-        } else {
-            return ResponseEntity.status(404).body(Map.of(
-                    "code", 404,
-                    "message", "AssetType not found",
-                    "data", ""
-            ));
-        }
+        return ResponseUtil.success(exists);
     }
 }

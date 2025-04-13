@@ -33,7 +33,6 @@ public class LokiCodeGenerator {
         System.out.println("URL: " + url);
         List<String> includes = new ArrayList<String>();
         includes.add("h_budget");
-        includes.add("h_team");
 
         StrategyConfig strategyConfig = new StrategyConfig.Builder()
                 .entityBuilder()
