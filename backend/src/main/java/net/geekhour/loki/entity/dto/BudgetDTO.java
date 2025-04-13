@@ -22,8 +22,8 @@ public class BudgetDTO extends Model<AssetDTO> {
     private Integer year;
     private String name;
     private String description;
-    private String type;
-    private String category;
+    private String budgetType;
+    private String budgetCategory;
     private String inno;
     private BigDecimal amount;
     private String departmentName;

@@ -21,7 +21,7 @@ import java.util.List;
 public interface BudgetMapper extends BaseMapper<Budget> {
 
     @Select("<script>" +
-            "select a.id, a.year, c.`name` as type, d.`name` as category, " +
+            "select a.id, a.year, c.`name` as budgetType, d.`name` as budgetCategory, " +
             "case when a.is_inno=1 THEN '是' ELSE '否' END AS inno, " +
             "a.`name`, a.description, " +
             "a.amount, b.name as departmentName, e.name as teamName, " +
