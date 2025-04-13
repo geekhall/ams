@@ -13,4 +13,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface IBudgetTypeService extends IService<BudgetType> {
 
+    boolean existsByName(String name);
 }

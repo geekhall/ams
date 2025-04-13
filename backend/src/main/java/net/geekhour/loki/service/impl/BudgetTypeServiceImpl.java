@@ -4,6 +4,7 @@ import net.geekhour.loki.entity.BudgetType;
 import net.geekhour.loki.mapper.BudgetTypeMapper;
 import net.geekhour.loki.service.IBudgetTypeService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
@@ -17,4 +18,11 @@ import org.springframework.stereotype.Service;
 @Service
 public class BudgetTypeServiceImpl extends ServiceImpl<BudgetTypeMapper, BudgetType> implements IBudgetTypeService {
 
+    @Autowired
+    BudgetTypeMapper budgetTypeMapper;
+
+    @Override
+    public boolean existsByName(String name) {
+        return budgetTypeMapper.existsByName(name) > 0;
+    }
 }
