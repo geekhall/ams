@@ -22,7 +22,7 @@ import lombok.experimental.Accessors;
  * </p>
  *
  * @author Jasper Yang
- * @since 2025-04-12
+ * @since 2025-04-13
  */
 @Getter
 @Setter
@@ -32,9 +32,6 @@ import lombok.experimental.Accessors;
 public class Budget extends Model<Budget> {
 
     private static final long serialVersionUID = 1L;
-
-    @ApiModelProperty("主键ID")
-    private Long id;
 
     @ApiModelProperty("预算年度")
     @TableField("year")
@@ -57,8 +54,8 @@ public class Budget extends Model<Budget> {
     private String category;
 
     @ApiModelProperty("是否信创 0-是 1-否")
-    @TableField("is_approved")
-    private Boolean approved;
+    @TableField("is_inno")
+    private Boolean inno;
 
     @ApiModelProperty("预算金额")
     @TableField("amount")
@@ -67,6 +64,10 @@ public class Budget extends Model<Budget> {
     @ApiModelProperty("所属部门（外键关联h_department)")
     @TableField("department_id")
     private Long departmentId;
+
+    @ApiModelProperty("所属团队（外键关联h_team)")
+    @TableField("team_id")
+    private Long teamId;
 
     @ApiModelProperty("优先级 1-高 2-中 3-低")
     @TableField("priority")
@@ -83,6 +84,10 @@ public class Budget extends Model<Budget> {
     @ApiModelProperty("计划开始日期")
     @TableField("planned_start_date")
     private Long plannedStartDate;
+
+    @ApiModelProperty("备注")
+    @TableField("remark")
+    private String remark;
 
     @ApiModelProperty("状态 0-待审批 1-审批中 2-已审批 3-已拒绝")
     @TableField("status")

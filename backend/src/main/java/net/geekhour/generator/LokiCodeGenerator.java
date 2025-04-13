@@ -33,11 +33,7 @@ public class LokiCodeGenerator {
         System.out.println("URL: " + url);
         List<String> includes = new ArrayList<String>();
         includes.add("h_budget");
-        includes.add("h_budget_type");
-        includes.add("h_budget_category");
-        includes.add("h_department_quota");
-        includes.add("h_budget_adjustment");
-        includes.add("h_budget_execution");
+        includes.add("h_team");
 
         StrategyConfig strategyConfig = new StrategyConfig.Builder()
                 .entityBuilder()
