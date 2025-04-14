@@ -18,8 +18,8 @@ import java.util.Map;
  * @author Jasper Yang
  * @create 2024/11/04 00:07
  */
-@RestController
 @CrossOrigin()
+@RestController
 @RequestMapping("/api/upload")
 public class FileUploadController {
     @Autowired

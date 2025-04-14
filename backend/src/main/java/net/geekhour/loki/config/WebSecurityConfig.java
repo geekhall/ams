@@ -74,6 +74,7 @@ public class WebSecurityConfig {
             // 开放登录、注册、公共页面，不需要认证
             .requestMatchers("/api/auth/**").permitAll()
             .requestMatchers("/swagger-ui/**").permitAll()
+            .requestMatchers("/swagger-ui.html").permitAll()
             // 其他请求都需要认证，任何端点都需要至少经过 security context 的验证才能允许。
             .anyRequest().authenticated()
         );

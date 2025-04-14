@@ -1,5 +1,5 @@
 <template>
-  <div id="budgetOverviewPage" class="content-container">
+  <div id="budgetBoardPage" class="content-container">
     <h1>预算概览</h1>
     <div class="table-container">
       <el-table :data="tableData" :style="{ width: tableWidth + 'px' }" border>
@@ -13,7 +13,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, onMounted, onBeforeUnmount } from 'vue'
 
 const tableData = ref([

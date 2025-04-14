@@ -33,7 +33,7 @@ export default defineConfig({
   },
   plugins: [
     vue({
-      reactivityTransform: true,
+      // reactivityTransform: true,
     }),
     ElementPlus({
       // use `unplugin-auto-import` to automatically import components
@@ -122,7 +122,8 @@ export default defineConfig({
     port: 4000,
     // open: true, // 自动打开浏览器
     hmr: true,  // 热模块替换
-    base: './', // 生产环境下的公共路径
+    // base: './', // 生产环境下的公共路径
+    // 生产环境需注释掉下面这段，使用Nginx转发
     proxy: {
       // 选项写法
       // 本地开发环境通过代理实现跨域，生产环境使用后端CORS或者nginx 转发

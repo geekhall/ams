@@ -4,11 +4,13 @@
 import axios from 'axios';
 import { useAuthStore } from '~/store/auth';
 import router from '~/router';
-const API_URL = "http://localhost:4000/api"
+axios.defaults.baseURL = '/api'; // 设置默认请求地址
+// const API_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:4000/api"
+const API_URL = "/api"
 
 // 创建 axios 全局实例
 const loki = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL || API_URL,
+  baseURL: API_URL,
   timeout: 5000,
   withCredentials: true,
   headers: {
@@ -25,6 +27,7 @@ loki.interceptors.request.use(
 
     const authStore = useAuthStore();
     // console.log('authStore.token', authStore.token);
+    console.log("baseURL :::::: " + config.baseURL);
 
     if (authStore.token) {
       config.headers.Authorization = `Bearer ${authStore.token}`;

@@ -19,6 +19,7 @@ import java.util.Map;
  * @author Jasper Yang
  * @since 2024-11-03
  */
+@CrossOrigin
 @RestController
 @RequestMapping("/api/department")
 public class DepartmentController {

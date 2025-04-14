@@ -18,6 +18,7 @@ import java.util.List;
  * @author Jasper Yang
  * @since 2024-11-03
  */
+@CrossOrigin
 @RestController
 @RequestMapping("/api/environment")
 public class EnvironmentController {

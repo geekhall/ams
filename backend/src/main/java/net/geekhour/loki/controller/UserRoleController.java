@@ -1,5 +1,6 @@
 package net.geekhour.loki.controller;
 
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @author Jasper Yang
  * @since 2025-04-04
  */
+@CrossOrigin()
 @RestController
 @RequestMapping("/api/ur")
 public class UserRoleController {

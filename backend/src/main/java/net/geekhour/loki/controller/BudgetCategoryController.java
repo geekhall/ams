@@ -18,6 +18,7 @@ import java.util.List;
  * @author Jasper Yang
  * @since 2025-04-12
  */
+@CrossOrigin
 @RestController
 @RequestMapping("/api/bc")
 public class BudgetCategoryController {

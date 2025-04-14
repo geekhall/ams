@@ -22,6 +22,7 @@ import java.util.Map;
  * @author Jasper Yang
  * @since 2025-04-05
  */
+@CrossOrigin
 @RestController
 @RequestMapping("/api/asset")
 public class AssetController {
@@ -44,6 +45,7 @@ public class AssetController {
      * @param requestBody {name: "资产名称", pageIndex: 1, pageSize: 10}
      * @return AssetDTO
      */
+    @CrossOrigin
     @RequestMapping("/list")
     @PreAuthorize("hasRole('USER') || hasAuthority('user:asset:list')")
     public ResponseEntity<?> getAssetList(@RequestBody(required = false) String requestBody) {

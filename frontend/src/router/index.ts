@@ -7,7 +7,7 @@ import { useAuthStore } from '~/store/auth'
 const Dashboard = () => import('../views/Dashboard.vue')
 const Asset = () => import('../views/Asset.vue')
 const Budget = () => import('../views/Budget.vue')
-const BudgetOverview = () => import('../views/BudgetOverview.vue')
+const BudgetBoard = () => import('../views/BudgetBoard.vue')
 const BudgetDetail = () => import('../views/BudgetDetail.vue')
 const BudgetQuota = () => import('../views/BudgetQuota.vue')
 const Project = () => import('../views/Project.vue')
@@ -46,9 +46,9 @@ const routes: RouteRecordRaw[] = [
         component: Budget,
       },
       {
-        path: '/budget/overview', name: "budgetOverview",
+        path: '/budget/board', name: "budgetBoard",
         meta: { title: '预算概览', permission: 'budget' },
-        component: BudgetOverview,
+        component: BudgetBoard,
       },
       {
         path: '/budget/quota', name: "budgetQuota",
@@ -158,7 +158,7 @@ router.beforeEach((to, from, next) => {
 
   if (authRequired && !token) {
     console.log('no login, redirect to login page.')
-    next('/login?redirect=' + to.path)
+    next('/login')
     // TODO: Permission check
     // } else if (to.meta.permission && !permission.key.includes(to.meta.permission)) {
     //   // no permission, redirect to 403 page.

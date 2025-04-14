@@ -2,7 +2,7 @@
 # Server configuration
 ########################################################
 server:
-  port: 8888 # ???
+  port: 8888
 
 ########################################################
 # Spring Configuration
@@ -18,7 +18,7 @@ spring:
     driver-class-name: com.mysql.jdbc.Driver
     type: com.mysql.cj.jdbc.MysqlConnectionPoolDataSource
     username: loki
-    password: loki@123
+    password: Passwrod@123
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss
     time-zone: GMT+8
@@ -34,67 +34,47 @@ spring:
 mybatis-plus:
   global-config:
     db-config:
-      logic-delete-field: deleted # ?????????????since 3.3.0??????bean??????@TableLogic???
-      logic-delete-value: 1 # ??????????1?
-      logic-not-delete-value: 0 # ??????????0?
-#  configuration:
-#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl   # Mybatis??
+      logic-delete-field: deleted
+      logic-delete-value: 1
+      logic-not-delete-value: 0
 
-# ===== ???swagger?? ===== #
+# ===== Swagger===== #
 #swagger:
-#  enable: true     # ??????Swagger
+#  enable: true
 #  application-name: ${spring.application.name}
 #  application-version: 1.0
-#  application-description: springfox swagger 3.0??Demo
+#  application-description: springfox swagger
 #  try-host: http://localhost:${server.port}
 #  group-name: loki
 springdoc:
   api-docs:
-    enabled: true # ????swagger??
-    path: /api-docs # swagger????????/v3/api-docs
+    enabled: true
+    path: /api-docs
   swagger-ui:
-    enabled: true # ????swagger-ui???OpenApi???OpenApi????
+    enabled: true
     # http://localhost:8888/swagger-ui/index.html
-    path: /swagger-ui.html # swagger-ui??????/swagger-ui/index.html
+    path: /swagger-ui.html
 
 logging:
-  # ??????
   level:
-    root: INFO # ????????????INFO?  TRACE < DEBUG < INFO < WARN < ERROR? SpringBoot?????????FATAL?OFF
-    net.geekhour.controller: info # ?????????????
-  # ??????
+    root: INFO
+    net.geekhour.controller: info
   file:
-    path: ./log # ????????
-    name: ./log/loki_test.log # ???????????????????????? spring.log) ??path???????name??
-  # ??????
-  # %d ????????
-  # %thread ???????
-  # %-5level ???????5?????
-  # %logger{50} ???logger????50?????????????
-  # %msg ??????
-  # %n ?????
-  # 2022-03-28 16:34:30.871  WARN 2562 --- [           main] d.s.r.o.OperationImplicitParameterReader : Unable to interpret the implicit parameter configuration with dataType: Long, dataTypeClass: class java.lang.Void
-  # 2022-03-28 16:34:30.871  WARN 2562 --- [           main] d.s.r.o.OperationImplicitParameterReader : Unable to interpret the implicit parameter configuration with dataType: , dataTypeClass: class java.lang.Void
-  # 2022-03-28 16:34:30.897  INFO 2562 --- [           main] c.g.loki.server.ServerApplication        : Started ServerApplication in 4.125 seconds (JVM running for 4.667)
+    path: ./log
+    name: ./log/loki_test.log
   pattern:
-    console: "%d{yyyy-MM-dd HH:mm:ss.SSS} -- [%thread] -- %-5level -- %logger{50} -- %msg%n" # ???????
-    file: "%d{yyyy-MM-dd HH:mm:ss.SSS} == [%thread] == %-5level == %logger{50} == %msg%n" # ??????
+    console: "%d{yyyy-MM-dd HH:mm:ss.SSS} -- [%thread] -- %-5level -- %logger{50} -- %msg%n"
+    file: "%d{yyyy-MM-dd HH:mm:ss.SSS} == [%thread] == %-5level == %logger{50} == %msg%n"
 
-# ===== APP ????? ===== #
+# ===== App Config ===== #
 loki:
-  # ????
   server:
     port: 8888
-  # ???
   application:
     name: loki
-  # ????
   application-version: 1.0
-  # ????
   application-description: loki service
-  # ????
   try-host: http://localhost:${server.port}
-  # ????
   group-name: loki
   app:
     jwtCookieName: loki

@@ -35,7 +35,7 @@ import java.util.stream.Collectors;
  * @author Jasper Yang
  * @create 2024/11/03 22:58
  */
-@CrossOrigin(origins = "*", maxAge = 3600)
+@CrossOrigin
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
@@ -60,6 +60,7 @@ public class AuthController {
      * @param registerRequest 注册请求
      * @return 注册结果
      */
+    @CrossOrigin
     @PostMapping("/register")
     public ResponseEntity<?> register(@Valid @RequestBody RegisterRequest registerRequest) {
         if (userMapper.existsByUsername(registerRequest.getUsername())) {
@@ -82,6 +83,7 @@ public class AuthController {
      * @param loginUser 登录用户信息
      * @return 登录结果
      */
+    @CrossOrigin
     @PostMapping("/login")
     public ResponseEntity<?> login(@Valid @RequestBody User loginUser) {
         String username = loginUser.getUsername();

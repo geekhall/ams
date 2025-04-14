@@ -100,6 +100,7 @@ public class BudgetController {
      * @param budgetDTO Updated budget details
      * @return ResponseEntity
      */
+    @CrossOrigin
     @PostMapping("/update")
     @PreAuthorize("hasRole('USER') || hasAuthority('user:budget:update')")
     public ResponseEntity<?> updateBudget(@RequestBody BudgetDTO budgetDTO) {

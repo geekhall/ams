@@ -21,6 +21,7 @@ import java.util.List;
  * @author Jasper Yang
  * @since 2025-04-05
  */
+@CrossOrigin
 @RestController
 @RequestMapping("/api/at")
 public class AssetTypeController {

@@ -19,6 +19,7 @@ import java.util.Map;
  * @author Jasper Yang
  * @since 2025-04-13
  */
+@CrossOrigin()
 @RestController
 @RequestMapping("/api/team")
 public class TeamController {

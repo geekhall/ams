@@ -17,10 +17,10 @@ public class CORSConfig implements WebMvcConfigurer {
     public void addCorsMappings(CorsRegistry registry) {
         // 设置允许跨域的路径
         registry.addMapping("/**")
-                .allowedOriginPatterns("*") // 允许所有域名
+                .allowedOriginPatterns("http://localhost:4000","http://localhost","http://http://47.94.89.59") // 允许所有域名
                 .allowedHeaders("*") // 允许所有请求头
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS") // 允许所有方法
-//                .allowCredentials(true) // 允许携带凭证
+                .allowCredentials(true) // 允许携带凭证
                 .maxAge(3600); // 1小时内不需要再预检（发OPTIONS请求）
     }
 }

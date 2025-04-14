@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
  * @author Jasper Yang
  * @since 2024-11-03
  */
+@CrossOrigin()
 @RestController
 @RequestMapping("/api/user")
 public class UserController {

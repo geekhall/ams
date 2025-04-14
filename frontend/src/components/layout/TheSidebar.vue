@@ -84,7 +84,7 @@ const items: MenuItem[] = [
     subs: [
       {
         icon: 'DocumentCopy',
-        index: '/budget/overview',
+        index: '/budget/board',
         title: '预算概览',
         permission: 'budget'
       },

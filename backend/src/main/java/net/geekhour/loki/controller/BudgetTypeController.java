@@ -19,6 +19,7 @@ import java.util.Map;
  * @author Jasper Yang
  * @since 2025-04-12
  */
+@CrossOrigin
 @RestController
 @RequestMapping("/api/bt")
 public class BudgetTypeController {
