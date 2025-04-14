@@ -193,17 +193,15 @@
 
 <script lang="ts" setup>
 import { ref, reactive, onMounted } from 'vue'
+import { useAssetType } from '@/hooks/useAssetType'
 import { useDepartment } from '@/hooks/useDepartment'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { Delete, Edit, Search, Plus } from '@element-plus/icons-vue'
-import { deleteAssetById, getAssetList, getAssetTypeList, addAsset, updateAsset } from '@/api/asset'
-import { getDepartmentList } from '@/api/department'
-import { AssetTypeListResponse, type Asset, AssetType } from '@/types/asset'
-import { DepartmentListResponse } from '@/types/department'
+import { deleteAssetById, getAssetList, addAsset, updateAsset } from '@/api/asset'
+import { type Asset } from '@/types/asset'
 import dayjs from 'dayjs'
-import { Department } from '@/types/department'
 
-const assetTypes = ref<AssetType[]>([])
+const { assetTypes, fetchAssetTypes } = useAssetType()
 const { departments, fetchDepartments } = useDepartment()
 const query = reactive({
   id: '',
@@ -246,17 +244,6 @@ let editForm = reactive({
   count: 1
 })
 let idx: number = -1
-// 获取资产类型列表
-const getAssetTypes = () => {
-  getAssetTypeList().then((res: AssetTypeListResponse) => {
-    if (res.code === 200) {
-      console.log('getAssetTypes res.data:', res.data)
-      assetTypes.value = res.data
-    } else {
-      ElMessage.error(res.message)
-    }
-  })
-}
 
 // 获取表格数据
 const getData = () => {
@@ -309,7 +296,7 @@ const handlePageChange = (val: number) => {
 
 // 新增操作
 const handleAdd = () => {
-  getAssetTypes()
+  fetchAssetTypes()
   fetchDepartments()
   addVisible.value = true
   // 这里可以添加新增逻辑
@@ -345,7 +332,7 @@ const saveAdd = () => {
 
 // 编辑操作
 const handleEdit = (index: number, row: any) => {
-  getAssetTypes()
+  fetchAssetTypes()
   fetchDepartments()
   idx = index
   editForm.id = row.id
