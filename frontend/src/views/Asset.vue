@@ -193,6 +193,7 @@
 
 <script lang="ts" setup>
 import { ref, reactive, onMounted } from 'vue'
+import { useDepartment } from '@/hooks/useDepartment'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { Delete, Edit, Search, Plus } from '@element-plus/icons-vue'
 import { deleteAssetById, getAssetList, getAssetTypeList, addAsset, updateAsset } from '@/api/asset'
@@ -203,7 +204,7 @@ import dayjs from 'dayjs'
 import { Department } from '@/types/department'
 
 const assetTypes = ref<AssetType[]>([])
-const departments = ref<Department[]>([])
+const { departments, fetchDepartments } = useDepartment()
 const query = reactive({
   id: '',
   assetName: '',
@@ -256,17 +257,7 @@ const getAssetTypes = () => {
     }
   })
 }
-// 获取部门列表
-const getDepartments = () => {
-  getDepartmentList().then((res: DepartmentListResponse) => {
-    if (res.code === 200) {
-      console.log('getDepartmentList res.data:', res.data)
-      departments.value = res.data
-    } else {
-      ElMessage.error(res.message)
-    }
-  })
-}
+
 // 获取表格数据
 const getData = () => {
   getAssetList({
@@ -297,6 +288,7 @@ onMounted(() => {
     query.pageIndex = parseInt(savedPageIndex, 10)
   }
   getData()
+  fetchDepartments()
 })
 
 // 搜索操作
@@ -318,7 +310,7 @@ const handlePageChange = (val: number) => {
 // 新增操作
 const handleAdd = () => {
   getAssetTypes()
-  getDepartments()
+  fetchDepartments()
   addVisible.value = true
   // 这里可以添加新增逻辑
 }
@@ -354,7 +346,7 @@ const saveAdd = () => {
 // 编辑操作
 const handleEdit = (index: number, row: any) => {
   getAssetTypes()
-  getDepartments()
+  fetchDepartments()
   idx = index
   editForm.id = row.id
   editForm.assetName = row.assetName

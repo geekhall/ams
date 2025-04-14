@@ -449,7 +449,3 @@ const handleDelete = (index: number) => {
   width: 100%;
 }
 </style>
-
-function getMaxPage(): number {
-  throw new Error('Function not implemented.')
-}
