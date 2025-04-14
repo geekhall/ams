@@ -421,29 +421,25 @@ let editForm = reactive({
 let idx: number = -1
 
 // 获取表格数据
-const getData = () => {
-  getBudgetList({
-    year: selectedYear.value.getFullYear(),
-    name: query.name,
-    pageIndex: query.pageIndex,
-    pageSize: query.pageSize
-  })
-    .then((res) => {
-      if (res.code === 200) {
-        console.log('getBudgetList res.data:', res.data)
+const getData = async () => {
+  try {
+    const res = await getBudgetList({
+      year: selectedYear.value.getFullYear(),
+      name: query.name,
+      pageIndex: query.pageIndex,
+      pageSize: query.pageSize
+    })
 
-        tableData.value = res.data.items
-        pageTotal.value = res.data.total
-      } else {
-        ElMessage.error(res.message)
-      }
-    })
-    .catch((err) => {
-      ElMessage.error('获取数据失败')
-    })
-    .finally(() => {
-      // 这里可以添加一些清理操作
-    })
+    if (res.code === 200) {
+      console.log('getBudgetList res.data:', res.data)
+      tableData.value = res.data.items
+      pageTotal.value = res.data.total
+    } else {
+      ElMessage.error(res.message)
+    }
+  } catch (err) {
+    ElMessage.error('获取数据失败')
+  }
 }
 onMounted(() => {
   const savedPageIndex = localStorage.getItem('AMSCurrentBudgetPageIndex')
@@ -458,29 +454,40 @@ onMounted(() => {
 })
 
 // 搜索操作
-const handleSearch = () => {
+const handleSearch = async () => {
   query.pageIndex = 1
   // 获取输入框中的值
   console.log('query.name', query.name)
   // 这里可以添加搜索逻辑
-  getData()
+  try {
+    await getData()
+  } catch (err) {
+    ElMessage.error('获取数据失败')
+  }
 }
 
 // 分页导航
-const handlePageChange = (val: number) => {
+const handlePageChange = async (val: number) => {
   query.pageIndex = val
   localStorage.setItem('AMSCurrentBudgetPageIndex', val.toString())
-  getData()
+  try {
+    await getData()
+  } catch (err) {
+    ElMessage.error('获取数据失败')
+  }
 }
 
 // 新增操作
-const handleAdd = () => {
-  fetchBudgetTypes()
-  fetchBudgetCategories()
-  fetchDepartments()
-  fetchTeams()
-  addVisible.value = true
-  // 这里可以添加新增逻辑
+const handleAdd = async () => {
+  try {
+    await fetchBudgetTypes()
+    await fetchBudgetCategories()
+    await fetchDepartments()
+    await fetchTeams()
+    addVisible.value = true
+  } catch (err) {
+    ElMessage.error('获取数据失败')
+  }
 }
 const getMaxPage = () => {
   if (!pageTotal.value) {
@@ -491,98 +498,94 @@ const getMaxPage = () => {
   return maxPage
 }
 // 保存新增操作
-const saveAdd = () => {
+const saveAdd = async () => {
   addVisible.value = false
-  // 添加至后台的逻辑
-  addBudget(addForm)
-    .then((res) => {
-      if (res.code === 200) {
-        ElMessage.success('新增成功')
-        // 更新当前页码
-        query.pageIndex = getMaxPage()
-        // 更新表格数据
-        getData()
-      } else {
-        ElMessage.error(res.message)
-      }
-    })
-    .catch((err) => {
-      ElMessage.error('新增失败')
-    })
+  try {
+    const res = await addBudget(addForm)
+
+    if (res.code === 200) {
+      ElMessage.success('新增成功')
+      // 更新当前页码
+      query.pageIndex = getMaxPage()
+      // 更新表格数据
+      getData()
+    } else {
+      ElMessage.error(res.message)
+    }
+  } catch (err) {
+    ElMessage.error('新增失败')
+  }
 }
 
 // 编辑操作
-const handleEdit = (index: number, row: any) => {
-  fetchBudgetTypes()
-  fetchBudgetCategories()
-  fetchDepartments()
-  fetchTeams()
-  idx = index
-  editForm.id = row.id
-  editForm.year = row.year
-  editForm.name = row.name
-  editForm.description = row.description
-  editForm.budgetType = row.budgetType
-  editForm.budgetCategory = row.budgetCategory
-  editForm.inno = row.inno
-  editForm.amount = row.amount
-  editForm.departmentName = row.departmentName
-  editForm.teamName = row.teamName
-  editForm.priority = row.priority
-  editForm.businessPriority = row.businessPriority
-  editForm.businessDescription = row.businessDescription
-  editForm.plannedStartDate = row.plannedStartDate
-  editForm.remark = row.remark
-  editForm.status = row.status
-  // 这里可以根据需要设置其他字段
-  editVisible.value = true
-  // 更新后台数据
+const handleEdit = async (index: number, row: any) => {
+  try {
+    await fetchBudgetTypes()
+    await fetchBudgetCategories()
+    await fetchDepartments()
+    await fetchTeams()
+    idx = index
+    editForm.id = row.id
+    editForm.year = row.year
+    editForm.name = row.name
+    editForm.description = row.description
+    editForm.budgetType = row.budgetType
+    editForm.budgetCategory = row.budgetCategory
+    editForm.inno = row.inno
+    editForm.amount = row.amount
+    editForm.departmentName = row.departmentName
+    editForm.teamName = row.teamName
+    editForm.priority = row.priority
+    editForm.businessPriority = row.businessPriority
+    editForm.businessDescription = row.businessDescription
+    editForm.plannedStartDate = row.plannedStartDate
+    editForm.remark = row.remark
+    editForm.status = row.status
+    // 这里可以根据需要设置其他字段
+    editVisible.value = true
+    // 更新后台数据
+  } catch (err) {
+    ElMessage.error('获取数据失败')
+  }
 }
 
 // 保存编辑操作
-const saveEdit = () => {
+const saveEdit = async () => {
   editVisible.value = false
   let currentPage = query.pageIndex
-  // 编辑至后台的逻辑
-  updateBudget(editForm)
-    .then((res) => {
-      if (res.code === 200) {
-        ElMessage.success(`修改第 ${idx + 1} 行成功`)
-        // 更新表格数据
-        query.pageIndex = currentPage
-        getData()
-      } else {
-        ElMessage.error(res.message)
-      }
-    })
-    .catch((err) => {
-      ElMessage.error('修改失败')
-    })
+  try {
+    const res = await updateBudget(editForm)
+
+    if (res.code === 200) {
+      ElMessage.success(`修改第 ${idx + 1} 行成功`)
+      // 更新表格数据
+      query.pageIndex = currentPage
+      await getData()
+    } else {
+      ElMessage.error(res.message)
+    }
+  } catch (err) {
+    ElMessage.error('修改失败')
+  }
 }
 
 // 删除操作
-const handleDelete = (index: number) => {
+const handleDelete = async (index: number) => {
   // 二次确认删除
-  ElMessageBox.confirm('确定要删除吗？', '提示', {
-    type: 'warning'
-  })
-    .then(() => {
-      // 删除操作
-      deleteBudgetById(tableData.value[index].id)
-        .then((res) => {
-          if (res.code === 200) {
-            ElMessage.success('删除成功')
-            // 更新表格数据
-            getData()
-          } else {
-            ElMessage.error(res.message)
-          }
-        })
-        .catch((err) => {
-          ElMessage.error('删除失败')
-        })
+  try {
+    await ElMessageBox.confirm('确定要删除吗？', '提示', {
+      type: 'warning'
     })
-    .catch(() => {})
+    const res = await deleteBudgetById(tableData.value[index].id)
+    if (res.code === 200) {
+      ElMessage.success('删除成功')
+      await getData() // 更新表格数据
+    } else {
+      ElMessage.error(res.message)
+    }
+  } catch (err) {
+    ElMessage.error('删除失败')
+  }
 }
 // 双击行时的处理函数
 const handleRowDblClick = (row: any, column: any, event: Event) => {
