@@ -246,28 +246,25 @@ let editForm = reactive({
 let idx: number = -1
 
 // 获取表格数据
-const getData = () => {
-  getAssetList({
-    name: query.assetName,
-    pageIndex: query.pageIndex,
-    pageSize: query.pageSize
-  })
-    .then((res) => {
-      if (res.code === 200) {
-        console.log('getAssetList res.data:', res.data)
+const getData = async () => {
+  try {
+    const res = await getAssetList({
+      name: query.assetName,
+      pageIndex: query.pageIndex,
+      pageSize: query.pageSize
+    })
 
-        tableData.value = res.data.items
-        pageTotal.value = res.data.total
-      } else {
-        ElMessage.error(res.message)
-      }
-    })
-    .catch((err) => {
-      ElMessage.error('获取数据失败')
-    })
-    .finally(() => {
-      // 这里可以添加一些清理操作
-    })
+    if (res.code === 200) {
+      console.log('getAssetList res.data:', res.data)
+
+      tableData.value = res.data.items
+      pageTotal.value = res.data.total
+    } else {
+      ElMessage.error(res.message)
+    }
+  } catch (err) {
+    ElMessage.error('获取数据失败')
+  }
 }
 onMounted(() => {
   const savedPageIndex = localStorage.getItem('AMSCurrentAssetPageIndex')
@@ -279,25 +276,33 @@ onMounted(() => {
 })
 
 // 搜索操作
-const handleSearch = () => {
+const handleSearch = async () => {
   query.pageIndex = 1
   // 获取输入框中的值
   console.log('query.assetName', query.assetName)
   // 这里可以添加搜索逻辑
-  getData()
+  try {
+    await getData()
+  } catch (err) {
+    ElMessage.error('搜索失败')
+  }
 }
 
 // 分页导航
-const handlePageChange = (val: number) => {
+const handlePageChange = async (val: number) => {
   query.pageIndex = val
   localStorage.setItem('AMSCurrentAssetPageIndex', val.toString())
-  getData()
+  try {
+    await getData()
+  } catch (err) {
+    ElMessage.error('搜索失败')
+  }
 }
 
 // 新增操作
-const handleAdd = () => {
-  fetchAssetTypes()
-  fetchDepartments()
+const handleAdd = async () => {
+  await fetchAssetTypes()
+  await fetchDepartments()
   addVisible.value = true
   // 这里可以添加新增逻辑
 }
@@ -305,94 +310,92 @@ const getMaxPage = () => {
   if (!pageTotal.value) {
     return 1
   }
-
   let maxPage = Math.ceil((pageTotal.value + 1) / query.pageSize)
   return maxPage
 }
 // 保存新增操作
-const saveAdd = () => {
+const saveAdd = async () => {
   addVisible.value = false
-  // 添加至后台的逻辑
-  addAsset(addForm)
-    .then((res) => {
-      if (res.code === 200) {
-        ElMessage.success('新增成功')
-        // 更新当前页码
-        query.pageIndex = getMaxPage()
-        // 更新表格数据
-        getData()
-      } else {
-        ElMessage.error(res.message)
-      }
-    })
-    .catch((err) => {
-      ElMessage.error('新增失败')
-    })
+  try {
+    const res = await addAsset(addForm)
+
+    if (res.code === 200) {
+      ElMessage.success('新增成功')
+      // 更新当前页码
+      query.pageIndex = getMaxPage()
+      // 更新表格数据
+      await getData()
+    } else {
+      ElMessage.error(res.message)
+    }
+  } catch (err) {
+    ElMessage.error('新增失败')
+  }
 }
 
 // 编辑操作
-const handleEdit = (index: number, row: any) => {
-  fetchAssetTypes()
-  fetchDepartments()
-  idx = index
-  editForm.id = row.id
-  editForm.assetName = row.assetName
-  editForm.assetCode = row.assetCode
-  editForm.assetType = row.assetType
-  editForm.departmentName = row.departmentName
-  editForm.status = row.status
-  editForm.purchaseDate = row.purchaseDate
-  editForm.purchasePrice = row.purchasePrice
-  editForm.count = row.count
-  // 这里可以根据需要设置其他字段
-  editVisible.value = true
-  // 更新后台数据
+const handleEdit = async (index: number, row: any) => {
+  try {
+    await fetchAssetTypes()
+    await fetchDepartments()
+    idx = index
+    editForm.id = row.id
+    editForm.assetName = row.assetName
+    editForm.assetCode = row.assetCode
+    editForm.assetType = row.assetType
+    editForm.departmentName = row.departmentName
+    editForm.status = row.status
+    editForm.purchaseDate = row.purchaseDate
+    editForm.purchasePrice = row.purchasePrice
+    editForm.count = row.count
+    // 这里可以根据需要设置其他字段
+    editVisible.value = true
+    // 更新后台数据
+  } catch (err) {
+    ElMessage.error('编辑失败')
+  }
 }
 
 // 保存编辑操作
-const saveEdit = () => {
+const saveEdit = async () => {
   editVisible.value = false
   let currentPage = query.pageIndex
-  // 编辑至后台的逻辑
-  updateAsset(editForm)
-    .then((res) => {
-      if (res.code === 200) {
-        ElMessage.success(`修改第 ${idx + 1} 行成功`)
-        // 更新表格数据
-        query.pageIndex = currentPage
-        getData()
-      } else {
-        ElMessage.error(res.message)
-      }
-    })
-    .catch((err) => {
-      ElMessage.error('修改失败')
-    })
+  try {
+    const res = await updateAsset(editForm)
+
+    if (res.code === 200) {
+      ElMessage.success(`修改第 ${idx + 1} 行成功`)
+      // 更新表格数据
+      query.pageIndex = currentPage
+      await getData()
+    } else {
+      ElMessage.error(res.message)
+    }
+  } catch (err) {
+    ElMessage.error('修改失败')
+  }
 }
 
 // 删除操作
-const handleDelete = (index: number) => {
-  // 二次确认删除
-  ElMessageBox.confirm('确定要删除吗？', '提示', {
-    type: 'warning'
-  })
-    .then(() => {
-      // 删除操作
-      deleteAssetById(tableData.value[index].id)
-        .then((res) => {
-          if (res.code === 200) {
-            ElMessage.success('删除成功')
-            // 更新表格数据
-            getData()
-          } else {
-            ElMessage.error(res.message)
-          }
-        })
-        .catch((err) => {
-          ElMessage.error('删除失败')
-        })
+const handleDelete = async (index: number) => {
+  try {
+    await ElMessageBox.confirm('确定要删除吗？', '提示', {
+      type: 'warning'
     })
-    .catch(() => {})
+
+    // 删除操作
+    const res = await deleteAssetById(tableData.value[index].id)
+
+    if (res.code === 200) {
+      ElMessage.success('删除成功')
+      // 更新表格数据
+      await getData()
+    } else {
+      ElMessage.error(res.message)
+    }
+  } catch (err) {
+    ElMessage.error('删除失败')
+  }
 }
 </script>
 
