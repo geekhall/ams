@@ -144,7 +144,7 @@
         <el-form-item label="项目性质">
           <el-select v-model="addForm.budgetCategory" placeholder="请选择">
             <el-option
-              v-for="item in budgetCategorys"
+              v-for="item in budgetCategories"
               :key="item.name"
               :label="item.name"
               :value="item.name"
@@ -169,7 +169,7 @@
         <el-form-item label="部门">
           <el-select v-model="addForm.departmentName">
             <el-option
-              v-for="item in departmentNames"
+              v-for="item in departments"
               :key="item.name"
               :label="item.name"
               :value="item.name"
@@ -179,7 +179,7 @@
         <el-form-item label="团队">
           <el-select v-model="addForm.teamName">
             <el-option
-              v-for="item in teamNames"
+              v-for="item in teams"
               :key="item.name"
               :label="item.name"
               :value="item.name"
@@ -226,7 +226,7 @@
         <el-form-item label="项目性质">
           <el-select v-model="editForm.budgetCategory" placeholder="请选择">
             <el-option
-              v-for="item in budgetCategorys"
+              v-for="item in budgetCategories"
               :key="item.name"
               :label="item.name"
               :value="item.name"
@@ -251,7 +251,7 @@
         <el-form-item label="部门">
           <el-select v-model="editForm.departmentName">
             <el-option
-              v-for="item in departmentNames"
+              v-for="item in departments"
               :key="item.name"
               :label="item.name"
               :value="item.name"
@@ -261,7 +261,7 @@
         <el-form-item label="团队">
           <el-select v-model="editForm.teamName">
             <el-option
-              v-for="item in teamNames"
+              v-for="item in teams"
               :key="item.name"
               :label="item.name"
               :value="item.name"
@@ -293,6 +293,11 @@
 
 <script lang="ts" setup>
 import { ref, reactive, onMounted } from 'vue'
+import { useBudgetType } from '@/hooks/useBudgetType'
+import { useBudgetCategory } from '@/hooks/useBudgetCategory'
+import { useDepartment } from '@/hooks/useDepartment'
+import { useTeam } from '@/hooks/useTeam'
+
 import { ElMessage, ElMessageBox } from 'element-plus'
 import {
   Delete,
@@ -304,26 +309,14 @@ import {
   Upload,
   Download
 } from '@element-plus/icons-vue'
-import {
-  deleteBudgetById,
-  getBudgetList,
-  getBudgetTypeList,
-  getBudgetCategoryList,
-  addBudget,
-  updateBudget
-} from '@/api/budget'
-import { getDepartmentList } from '@/api/department'
-import { getTeamList } from '@/api/team'
-import {
-  type Budget,
-  BudgetType,
-  BudgetTypeListResponse,
-  BudgetCategory,
-  BudgetCategoryListResponse
-} from '@/types/budget'
-import { Department, DepartmentListResponse } from '@/types/department'
-import { Team, TeamListResponse } from '@/types/team'
+import { deleteBudgetById, getBudgetList, addBudget, updateBudget } from '@/api/budget'
+import { type Budget } from '@/types/budget'
 import dayjs from 'dayjs'
+
+const { departments, fetchDepartments } = useDepartment()
+const { budgetTypes, fetchBudgetTypes } = useBudgetType()
+const { budgetCategories, fetchBudgetCategories } = useBudgetCategory()
+const { teams, fetchTeams } = useTeam()
 
 const isTech = ref(true)
 const buttonName = ref('科技')
@@ -360,15 +353,10 @@ const saveYear = () => {
   // 更新年度
   addForm.year = selectedYear.value.getFullYear()
   editForm.year = selectedYear.value.getFullYear()
-
   // 更新表格数据
   getData()
 }
 
-const budgetTypes = ref<BudgetType[]>([])
-const budgetCategorys = ref<BudgetCategory[]>([])
-const departmentNames = ref<Department[]>([])
-const teamNames = ref<Team[]>([])
 const query = reactive({
   id: '',
   name: '',
@@ -431,50 +419,6 @@ let editForm = reactive({
 })
 
 let idx: number = -1
-// 获取预算类型列表
-const getBudgetTypes = () => {
-  getBudgetTypeList().then((res: BudgetTypeListResponse) => {
-    if (res.code === 200) {
-      console.log('getBudgetTypes res.data:', res.data)
-      budgetTypes.value = res.data
-    } else {
-      ElMessage.error(res.message)
-    }
-  })
-}
-// 获取预算性质列表
-const getBudgetCategorys = () => {
-  getBudgetCategoryList().then((res: BudgetCategoryListResponse) => {
-    if (res.code === 200) {
-      console.log('getBudgetCategorys res.data:', res.data)
-      budgetCategorys.value = res.data
-    } else {
-      ElMessage.error(res.message)
-    }
-  })
-}
-// 获取部门列表
-const getDepartments = () => {
-  getDepartmentList().then((res: DepartmentListResponse) => {
-    if (res.code === 200) {
-      console.log('getDepartmentList res.data:', res.data)
-      departmentNames.value = res.data
-    } else {
-      ElMessage.error(res.message)
-    }
-  })
-}
-
-const getTeams = () => {
-  getTeamList().then((res: TeamListResponse) => {
-    if (res.code === 200) {
-      console.log('getTeamList res.data:', res.data)
-      teamNames.value = res.data
-    } else {
-      ElMessage.error(res.message)
-    }
-  })
-}
 
 // 获取表格数据
 const getData = () => {
@@ -507,6 +451,10 @@ onMounted(() => {
     query.pageIndex = parseInt(savedPageIndex, 10)
   }
   getData()
+  fetchBudgetTypes()
+  fetchBudgetCategories()
+  fetchDepartments()
+  fetchTeams()
 })
 
 // 搜索操作
@@ -527,10 +475,10 @@ const handlePageChange = (val: number) => {
 
 // 新增操作
 const handleAdd = () => {
-  getBudgetTypes()
-  getBudgetCategorys()
-  getDepartments()
-  getTeams()
+  fetchBudgetTypes()
+  fetchBudgetCategories()
+  fetchDepartments()
+  fetchTeams()
   addVisible.value = true
   // 这里可以添加新增逻辑
 }
@@ -565,10 +513,10 @@ const saveAdd = () => {
 
 // 编辑操作
 const handleEdit = (index: number, row: any) => {
-  getBudgetTypes()
-  getBudgetCategorys()
-  getDepartments()
-  getTeams()
+  fetchBudgetTypes()
+  fetchBudgetCategories()
+  fetchDepartments()
+  fetchTeams()
   idx = index
   editForm.id = row.id
   editForm.year = row.year
