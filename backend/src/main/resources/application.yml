@@ -14,11 +14,11 @@ spring:
       active: dev
     # MySQL database connection
   datasource:
-    url: jdbc:mysql://localhost:3316/loki?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
-    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3326/loki?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&useSSL=false&allowPublicKeyRetrieval=true
+    driver-class-name: com.mysql.cj.jdbc.Driver
     type: com.mysql.cj.jdbc.MysqlConnectionPoolDataSource
     username: loki
-    password: Passwrod@123
+    password: Password@123
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss
     time-zone: GMT+8
@@ -81,3 +81,4 @@ loki:
     jwtSecret: lokiSecretKeyGeekHourlokiSecretKeyGeekHourlokiSecretKeyGeekHourlokiSecretKeyGeekHourlokiSecretKeyGeekHourlokiSecretKeyGeekHour
     jwtExpirationMs: 86400000
     baseDirectory: /Users/yiny/workspace/vite/perseus/loki/public
+
