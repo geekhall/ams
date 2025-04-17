@@ -23,7 +23,14 @@
       ref="multipleTable"
       header-cell-class-name="table-header"
     >
-      <el-table-column prop="id" label="ID" align="center"></el-table-column>
+      <el-table-column prop="id" label="ID" align="center" v-if="false"></el-table-column>
+      <el-table-column
+        type="index"
+        label="序号"
+        width="80"
+        align="center"
+        :index="(index:number) => index + 1 + (query.pageIndex - 1) * query.pageSize"
+      ></el-table-column>
       <el-table-column prop="departmentName" label="部门" align="center"></el-table-column>
       <el-table-column prop="quota" label="预算额度" align="right"> </el-table-column>
       <el-table-column label="操作" align="center">

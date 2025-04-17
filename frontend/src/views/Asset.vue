@@ -18,7 +18,20 @@
       ref="multipleTable"
       header-cell-class-name="table-header"
     >
-      <el-table-column prop="id" label="ID" width="180" align="center"></el-table-column>
+      <el-table-column
+        prop="id"
+        label="ID"
+        width="180"
+        align="center"
+        v-if="false"
+      ></el-table-column>
+      <el-table-column
+        type="index"
+        label="序号"
+        width="80"
+        align="center"
+        :index="(index:number) => index + 1 + (query.pageIndex - 1) * query.pageSize"
+      ></el-table-column>
       <el-table-column prop="assetName" label="资产名称" align="center"></el-table-column>
       <el-table-column prop="assetCode" label="资产编号" align="center"> </el-table-column>
       <el-table-column prop="assetType" label="资产类型" align="center"></el-table-column>
@@ -126,7 +139,7 @@
     <!-- 编辑弹出框 -->
     <el-dialog title="编辑" v-model="editVisible" width="30%">
       <el-form label-width="70px">
-        <el-form-item label="ID">
+        <el-form-item label="ID" v-if="false">
           <el-input v-model="editForm.id" disabled></el-input>
         </el-form-item>
         <el-form-item label="资产名称">
@@ -192,7 +205,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, reactive, onMounted } from 'vue'
+import { ref, reactive, onMounted, computed } from 'vue'
 import { useAssetType } from '@/hooks/useAssetType'
 import { useDepartment } from '@/hooks/useDepartment'
 import { ElMessage, ElMessageBox } from 'element-plus'
@@ -221,6 +234,7 @@ const tableData = ref<Asset[]>([])
 const pageTotal = ref(0)
 // 表格编辑时弹窗和保存
 const addVisible = ref(false)
+
 let addForm = reactive({
   assetName: '测试资产1',
   assetCode: 'TEST-2025-1',
@@ -364,7 +378,7 @@ const saveEdit = async () => {
     const res = await updateAsset(editForm)
 
     if (res.code === 200) {
-      ElMessage.success(`修改第 ${idx + 1} 行成功`)
+      ElMessage.success(`修改成功`)
       // 更新表格数据
       query.pageIndex = currentPage
       await getData()

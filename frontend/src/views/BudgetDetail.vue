@@ -31,7 +31,14 @@
       @row-dblclick="handleRowDblClick"
       header-cell-class-name="table-header"
     >
-      <!-- <el-table-column prop="id" label="ID" width="80" align="center"></el-table-column> -->
+      <el-table-column
+        prop="id"
+        label="ID"
+        width="80"
+        align="center"
+        v-if="false"
+      ></el-table-column>
+
       <el-table-column type="expand">
         <template #default="props">
           <div m="4">
@@ -198,7 +205,7 @@
     <!-- 编辑弹出框 -->
     <el-dialog title="编辑" v-model="editVisible" width="30%">
       <el-form label-width="70px">
-        <el-form-item label="ID">
+        <el-form-item label="ID" v-show="false">
           <el-input v-model="editForm.id" disabled></el-input>
         </el-form-item>
         <el-form-item label="项目类型">
@@ -311,6 +318,7 @@ const buttonName = ref('科技')
 const toggleTech = () => {
   isTech.value = !isTech.value
   buttonName.value = isTech.value === true ? '科技' : '业务'
+  // 切换时重新获取数据
 }
 // 表格编辑时弹窗和保存
 const yearVisible = ref(false)
@@ -545,7 +553,7 @@ const saveEdit = async () => {
     const res = await updateBudget(editForm)
 
     if (res.code === 200) {
-      ElMessage.success(`修改第 ${idx + 1} 行成功`)
+      ElMessage.success(`修改成功`)
       // 更新表格数据
       query.pageIndex = currentPage
       await getData()
