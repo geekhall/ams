@@ -10,19 +10,39 @@
           {{ buttonName }}
         </el-button>
         <el-input
-          v-model="query.name"
-          placeholder="输入预算名称"
+          v-model="query.budgetType"
+          placeholder="项目类型"
           class="handle-input mr10"
+          :prefix-icon="Search"
           @keyup.enter.native="handleSearch"
         ></el-input>
+        <el-input
+          v-model="query.budgetCategory"
+          placeholder="项目性质"
+          class="handle-input mr10"
+          :prefix-icon="Search"
+          @keyup.enter.native="handleSearch"
+        ></el-input>
+        <el-input
+          v-model="query.name"
+          placeholder="项目名称"
+          class="handle-input mr10"
+          :prefix-icon="Search"
+          @keyup.enter.native="handleSearch"
+        ></el-input>
+        <el-select style="width: 200px" placeholder="是否信创" class="mr10">
+          <el-option label="是" value="是"></el-option>
+          <el-option label="否" value="否"></el-option>
+        </el-select>
         <el-button type="primary" :icon="Search" @click="handleSearch">搜索</el-button>
-        <el-button type="primary" :icon="Plus" @click="handleAdd"> 新增 </el-button>
       </div>
       <div>
+        <el-button type="primary" :icon="Plus" @click="handleAdd"> 新增 </el-button>
         <el-button type="primary" :icon="Upload" @click="handleImport">导入</el-button>
         <el-button type="primary" :icon="Download" @click="handleExport">导出</el-button>
       </div>
     </div>
+    <div></div>
     <el-table
       :data="tableData"
       border
@@ -61,8 +81,8 @@
         </el-table-column>
         <el-table-column prop="name" label="项目名称" align="center"> </el-table-column>
       </el-table-column>
-      <el-table-column prop="amount" label="预算金额" align="center"> </el-table-column>
       <el-table-column prop="departmentName" label="部门" align="center"> </el-table-column>
+      <el-table-column prop="amount" label="预算金额" align="center"> </el-table-column>
 
       <el-table-column label="操作" width="220" align="center">
         <template #default="scope">
@@ -158,9 +178,6 @@
         <el-form-item label="项目概述">
           <el-input v-model="addForm.description"></el-input>
         </el-form-item>
-        <el-form-item label="预算金额">
-          <el-input v-model="addForm.amount"></el-input>
-        </el-form-item>
         <el-form-item label="部门">
           <el-select v-model="addForm.departmentName">
             <el-option
@@ -171,6 +188,10 @@
             ></el-option>
           </el-select>
         </el-form-item>
+        <el-form-item label="预算金额">
+          <el-input v-model="addForm.amount"></el-input>
+        </el-form-item>
+
         <el-form-item label="团队">
           <el-select v-model="addForm.teamName">
             <el-option
@@ -240,9 +261,6 @@
         <el-form-item label="项目概述">
           <el-input v-model="editForm.description"></el-input>
         </el-form-item>
-        <el-form-item label="预算金额">
-          <el-input v-model="editForm.amount"></el-input>
-        </el-form-item>
         <el-form-item label="部门">
           <el-select v-model="editForm.departmentName">
             <el-option
@@ -253,6 +271,10 @@
             ></el-option>
           </el-select>
         </el-form-item>
+        <el-form-item label="预算金额">
+          <el-input v-model="editForm.amount"></el-input>
+        </el-form-item>
+
         <el-form-item label="团队">
           <el-select v-model="editForm.teamName">
             <el-option
@@ -422,6 +444,9 @@ const getData = async () => {
   try {
     const res = await getBudgetList({
       year: selectedYear.value.getFullYear(),
+      budgetType: query.budgetType,
+      budgetCategory: query.budgetCategory,
+      inno: query.inno,
       name: query.name,
       tech: isTech.value,
       pageIndex: query.pageIndex,
@@ -618,7 +643,7 @@ const handleExport = () => {
 }
 
 .handle-input {
-  width: 300px;
+  width: 200px;
 }
 .table {
   display: flex;
@@ -653,8 +678,7 @@ const handleExport = () => {
 .date-picker {
   width: 100%;
 }
-</style>
-
-function getMaxPage(): number {
-  throw new Error('Function not implemented.')
+.search-select {
+  width: 120px;
 }
+</style>

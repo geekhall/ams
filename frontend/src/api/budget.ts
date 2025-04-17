@@ -12,7 +12,16 @@ import {
 
 // 获取预算列表（支持分页和按名称查询）
 export const getBudgetList = async (
-  params?: { year?: number; name?: string; tech: boolean; pageIndex?: number; pageSize?: number }
+  params?: {
+    year?: number;
+    budgetType?: string;
+    budgetCategory?: string;
+    inno: string;
+    name?: string;
+    tech: boolean;
+    pageIndex?: number;
+    pageSize?: number
+  }
 ): Promise<BudgetListResponse> => {
 
   return await loki.request({
