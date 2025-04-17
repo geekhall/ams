@@ -61,13 +61,20 @@ public interface BudgetMapper extends BaseMapper<Budget> {
             "<if test='name != null and name != \"\"'> " +
             "and a.name like CONCAT('%', #{name}, '%') " +
             "</if>" +
+            "<if test='tech != null'> " +
+            "and <choose> " +
+            "  <when test='tech'>b.name = '信息科技部'</when> " +
+            "  <otherwise>b.name != '信息科技部'</otherwise> " +
+            "</choose> " +
+            "</if>" +
             "order by a.id " +
             "limit #{offset}, #{pageSize}" +
             "</script>")
     List<BudgetDTO> getBudgetList(@Param("year") Integer year,
+                                  @Param("name") String name,
+                                  @Param("tech") Boolean tech,
                                   @Param("offset") Integer offset,
-                                  @Param("pageSize") Integer pageSize,
-                                  @Param("name") String name);
+                                  @Param("pageSize") Integer pageSize);
 
 
     @Select("<script>" +
@@ -84,8 +91,16 @@ public interface BudgetMapper extends BaseMapper<Budget> {
             "<if test='name != null and name != \"\"'> " +
             "and a.name like CONCAT('%', #{name}, '%') " +
             "</if>" +
+            "<if test='tech != null'> " +
+            "and <choose> " +
+            "  <when test='tech'>b.name = '信息科技部'</when> " +
+            "  <otherwise>b.name != '信息科技部'</otherwise> " +
+            "</choose> " +
+            "</if>" +
             "</script>")
-    Long countBudgets(@Param("year") Integer year, @Param("name") String name);
+    Long countBudgets(@Param("year") Integer year,
+                      @Param("name") String name,
+                      @Param("tech") Boolean tech);
 
     @Select("select count(*) from h_budget where name = #{name} and deleted = 0")
     boolean checkBudgetNameExists(@Param("name")  String name);

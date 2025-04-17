@@ -14,7 +14,7 @@ import java.util.Map;
 
 /**
  * <p>
- *  前端控制器
+ * 前端控制器
  * </p>
  *
  * @author Jasper Yang
@@ -53,17 +53,17 @@ public class BudgetController {
             Map<String, Object> requestMap = new ObjectMapper().readValue(requestBody, Map.class);
             String name = (String) requestMap.get("name");
             Integer year = (Integer) requestMap.get("year");
-            Integer pageIndex = requestMap.get("pageIndex") == null ? 1 :
-                    Integer.parseInt(requestMap.get("pageIndex").toString());
-            Integer pageSize = requestMap.get("pageSize") == null ? 10 :
-                    Integer.parseInt(requestMap.get("pageSize").toString());
+            Boolean tech = (Boolean) requestMap.get("tech");
+            Integer pageIndex = requestMap.get("pageIndex") == null ? 1
+                    : Integer.parseInt(requestMap.get("pageIndex").toString());
+            Integer pageSize = requestMap.get("pageSize") == null ? 10
+                    : Integer.parseInt(requestMap.get("pageSize").toString());
             Integer offset = (pageIndex - 1) * pageSize;
-            List<BudgetDTO> budgetList = budgetService.getBudgetList(year, offset, pageSize, name);
-            Long total = budgetService.countBudgets(year, name);
+            List<BudgetDTO> budgetList = budgetService.getBudgetList(year, name, tech, offset, pageSize);
+            Long total = budgetService.countBudgets(year, name, tech);
             return ResponseUtil.success(Map.of(
                     "items", budgetList,
-                    "total", total
-            ));
+                    "total", total));
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseUtil.error(500, e.getMessage());
@@ -72,6 +72,7 @@ public class BudgetController {
 
     /**
      * Create a new budget
+     * 
      * @param budgetDTO Budget details
      * @return ResponseEntity
      */
@@ -97,6 +98,7 @@ public class BudgetController {
 
     /**
      * Update an existing budget
+     * 
      * @param budgetDTO Updated budget details
      * @return ResponseEntity
      */
@@ -119,6 +121,7 @@ public class BudgetController {
 
     /**
      * Delete a budget by ID
+     * 
      * @param id Budget ID
      * @return ResponseEntity
      */

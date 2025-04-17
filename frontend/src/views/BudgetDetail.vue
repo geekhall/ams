@@ -319,6 +319,7 @@ const toggleTech = () => {
   isTech.value = !isTech.value
   buttonName.value = isTech.value === true ? '科技' : '业务'
   // 切换时重新获取数据
+  getData()
 }
 // 表格编辑时弹窗和保存
 const yearVisible = ref(false)
@@ -422,6 +423,7 @@ const getData = async () => {
     const res = await getBudgetList({
       year: selectedYear.value.getFullYear(),
       name: query.name,
+      tech: isTech.value,
       pageIndex: query.pageIndex,
       pageSize: query.pageSize
     })
