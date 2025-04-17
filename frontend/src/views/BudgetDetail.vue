@@ -31,44 +31,32 @@
       @row-dblclick="handleRowDblClick"
       header-cell-class-name="table-header"
     >
-      <el-table-column prop="id" label="ID" width="80" align="center"></el-table-column>
+      <!-- <el-table-column prop="id" label="ID" width="80" align="center"></el-table-column> -->
+      <el-table-column type="expand">
+        <template #default="props">
+          <div m="4">
+            <p m="t-0 b-2">项目概述: {{ props.row.description }}</p>
+            <p m="t-0 b-2">备注: {{ props.row.remark }}</p>
+            <p m="t-0 b-2" v-if="isTech">团队: {{ props.row.teamName }}</p>
+            <p m="t-0 b-2" v-if="!isTech">优先级: {{ props.row.priority }}</p>
+            <p m="t-0 b-2" v-if="!isTech">业务优先级: {{ props.row.businessPriority }}</p>
+            <p m="t-0 b-2" v-if="!isTech">
+              业务优先级情况说明: {{ props.row.businessDescription }}
+            </p>
+            <p m="t-0 b-2" v-if="!isTech">预计启动时间: {{ props.row.plannedStartDate }}</p>
+          </div>
+        </template>
+      </el-table-column>
       <el-table-column prop="projectInfo" label="项目概述" align="center">
         <el-table-column prop="budgetType" label="项目类型" align="center"></el-table-column>
         <el-table-column prop="budgetCategory" label="项目性质" align="center"></el-table-column>
         <el-table-column prop="inno" label="是否信创" align="center" width="60px">
         </el-table-column>
         <el-table-column prop="name" label="项目名称" align="center"> </el-table-column>
-        <el-table-column prop="description" label="项目概述" align="center"> </el-table-column>
       </el-table-column>
       <el-table-column prop="amount" label="预算金额" align="center"> </el-table-column>
       <el-table-column prop="departmentName" label="部门" align="center"> </el-table-column>
-      <el-table-column v-if="isTech" prop="teamName" label="团队" align="center"> </el-table-column>
-      <el-table-column v-if="!isTech" prop="priority" label="优先级" align="center" width="60px">
-      </el-table-column>
-      <el-table-column
-        v-if="!isTech"
-        prop="businessPriority"
-        label="业务优先级"
-        align="center"
-        width="90px"
-      >
-      </el-table-column>
-      <el-table-column
-        v-if="!isTech"
-        prop="businessDescription"
-        label="业务优先级情况说明"
-        align="center"
-      >
-      </el-table-column>
-      <el-table-column
-        v-if="!isTech"
-        prop="plannedStartDate"
-        label="预计启动时间"
-        align="center"
-        width="90px"
-      >
-      </el-table-column>
-      <el-table-column prop="remark" label="备注" align="center"> </el-table-column>
+
       <el-table-column label="操作" width="220" align="center">
         <template #default="scope">
           <el-button
