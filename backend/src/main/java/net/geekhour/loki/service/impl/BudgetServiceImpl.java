@@ -48,13 +48,25 @@ public class BudgetServiceImpl extends ServiceImpl<BudgetMapper, Budget> impleme
     }
 
     @Override
-    public List<BudgetDTO> getBudgetList(Integer year, String name,Boolean tech, Integer offset, Integer pageSize) {
-        return budgetMapper.getBudgetList(year, name, tech, offset, pageSize);
+    public List<BudgetDTO> getBudgetList(Integer year,
+                                         String budgetType,
+                                         String budgetCategory,
+                                         Boolean inno,
+                                         String name,
+                                         Boolean tech,
+                                         Integer offset,
+                                         Integer pageSize) {
+        return budgetMapper.getBudgetList(year, budgetType, budgetCategory, inno, name, tech, offset, pageSize);
     }
 
     @Override
-    public Long countBudgets(Integer year, String name, Boolean tech) {
-        return budgetMapper.countBudgets(year, name, tech);
+    public Long countBudgets(Integer year,
+                             String budgetType,
+                             String budgetCategory,
+                             Boolean inno,
+                             String name,
+                             Boolean tech) {
+        return budgetMapper.countBudgets(year, budgetType, budgetCategory, inno, name, tech);
     }
 
     @Override

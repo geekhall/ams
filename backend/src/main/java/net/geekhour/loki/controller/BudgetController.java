@@ -51,6 +51,14 @@ public class BudgetController {
         }
         try {
             Map<String, Object> requestMap = new ObjectMapper().readValue(requestBody, Map.class);
+            String budgetType = (String) requestMap.get("budgetType");
+            String budgetCategory = (String) requestMap.get("budgetCategory");
+            Boolean inno;
+            if (requestMap.get("inno") != null ) {
+                inno = requestMap.get("inno").equals("是") ? true : false;
+            } else {
+                inno = null;
+            }
             String name = (String) requestMap.get("name");
             Integer year = (Integer) requestMap.get("year");
             Boolean tech = (Boolean) requestMap.get("tech");
@@ -59,8 +67,8 @@ public class BudgetController {
             Integer pageSize = requestMap.get("pageSize") == null ? 10
                     : Integer.parseInt(requestMap.get("pageSize").toString());
             Integer offset = (pageIndex - 1) * pageSize;
-            List<BudgetDTO> budgetList = budgetService.getBudgetList(year, name, tech, offset, pageSize);
-            Long total = budgetService.countBudgets(year, name, tech);
+            List<BudgetDTO> budgetList = budgetService.getBudgetList(year, budgetType, budgetCategory, inno, name, tech, offset, pageSize);
+            Long total = budgetService.countBudgets(year,budgetType, budgetCategory, inno, name, tech);
             return ResponseUtil.success(Map.of(
                     "items", budgetList,
                     "total", total));

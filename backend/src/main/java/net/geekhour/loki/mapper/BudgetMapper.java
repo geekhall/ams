@@ -58,19 +58,34 @@ public interface BudgetMapper extends BaseMapper<Budget> {
             "<if test='year != null and year != \"\"'> " +
             "and a.year = #{year} " +
             "</if>" +
+            "<if test='budgetType != null and budgetType != \"\"'> " +
+            "and c.name = #{budgetType} " +
+            "</if>" +
+            "<if test='budgetCategory != null and budgetCategory != \"\"'> " +
+            "and d.name = #{budgetCategory} " +
+            "</if>" +
+            "<if test='inno != null'> " +
+            "and <choose> " +
+            "  <when test='inno'>a.is_inno = 1 </when> " +
+            "  <otherwise>a.is_inno = 0 </otherwise> " +
+            "</choose> " +
+            "</if>" +
             "<if test='name != null and name != \"\"'> " +
             "and a.name like CONCAT('%', #{name}, '%') " +
             "</if>" +
             "<if test='tech != null'> " +
             "and <choose> " +
-            "  <when test='tech'>b.name = '信息科技部'</when> " +
-            "  <otherwise>b.name != '信息科技部'</otherwise> " +
+            "  <when test='tech'>b.name = '信息科技部' </when> " +
+            "  <otherwise>b.name != '信息科技部' </otherwise> " +
             "</choose> " +
             "</if>" +
             "order by a.id " +
             "limit #{offset}, #{pageSize}" +
             "</script>")
     List<BudgetDTO> getBudgetList(@Param("year") Integer year,
+                                  @Param("budgetType") String budgetType,
+                                  @Param("budgetCategory") String budgetCategory,
+                                  @Param("inno") Boolean inno,
                                   @Param("name") String name,
                                   @Param("tech") Boolean tech,
                                   @Param("offset") Integer offset,
@@ -88,17 +103,32 @@ public interface BudgetMapper extends BaseMapper<Budget> {
             "<if test='year != null and year != \"\"'> " +
             "and a.year = #{year} " +
             "</if>" +
+            "<if test='budgetType != null and budgetType != \"\"'> " +
+            "and c.name = #{budgetType} " +
+            "</if>" +
+            "<if test='budgetCategory != null and budgetCategory != \"\"'> " +
+            "and d.name = #{budgetCategory} " +
+            "</if>" +
+            "<if test='inno != null'> " +
+            "and <choose> " +
+            "  <when test='inno'>a.is_inno = 1 </when> " +
+            "  <otherwise>a.is_inno = 0 </otherwise> " +
+            "</choose> " +
+            "</if>" +
             "<if test='name != null and name != \"\"'> " +
             "and a.name like CONCAT('%', #{name}, '%') " +
             "</if>" +
             "<if test='tech != null'> " +
             "and <choose> " +
-            "  <when test='tech'>b.name = '信息科技部'</when> " +
-            "  <otherwise>b.name != '信息科技部'</otherwise> " +
+            "  <when test='tech'>b.name = '信息科技部' </when> " +
+            "  <otherwise>b.name != '信息科技部' </otherwise> " +
             "</choose> " +
             "</if>" +
             "</script>")
     Long countBudgets(@Param("year") Integer year,
+                      @Param("budgetType") String budgetType,
+                      @Param("budgetCategory") String budgetCategory,
+                      @Param("inno") Boolean inno,
                       @Param("name") String name,
                       @Param("tech") Boolean tech);
 
