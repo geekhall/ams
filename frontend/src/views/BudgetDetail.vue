@@ -1,40 +1,52 @@
 <template>
   <div id="budgetDetailPage" class="content-container">
-    <h1>{{ formatYear(selectedYear) }}年度 预算明细</h1>
+    <h1 style="display: flex">
+      <div @click="handleSelectYear" class="switch-button">
+        {{ formatYear(selectedYear) }}
+      </div>
+      年度
+      <div type="warning" :icon="Switch" @click="toggleTech" class="switch-button">
+        {{ buttonName }}
+      </div>
+      预算明细
+    </h1>
     <div class="table-title">
       <div class="handle-box">
-        <el-button type="danger" :icon="Select" @click="handleSelectYear" style="margin-right: 10px"
-          >选择年度</el-button
-        >
-        <el-button type="warning" :icon="Switch" @click="toggleTech" style="margin-right: 20px">
-          {{ buttonName }}
-        </el-button>
-        <el-input
-          v-model="query.budgetType"
-          placeholder="项目类型"
-          class="handle-input mr10"
-          :prefix-icon="Search"
-          @keyup.enter.native="handleSearch"
-        ></el-input>
-        <el-input
-          v-model="query.budgetCategory"
-          placeholder="项目性质"
-          class="handle-input mr10"
-          :prefix-icon="Search"
-          @keyup.enter.native="handleSearch"
-        ></el-input>
-        <el-input
-          v-model="query.name"
-          placeholder="项目名称"
-          class="handle-input mr10"
-          :prefix-icon="Search"
-          @keyup.enter.native="handleSearch"
-        ></el-input>
-        <el-select style="width: 200px" placeholder="是否信创" class="mr10">
-          <el-option label="是" value="是"></el-option>
-          <el-option label="否" value="否"></el-option>
-        </el-select>
-        <el-button type="primary" :icon="Search" @click="handleSearch">搜索</el-button>
+        <div class="filter-bar">
+          <el-form inline class="filter-form">
+            <el-form-item label="项目类型" style="width: 240px">
+              <el-select v-model="query.budgetType" placeholder="请选择" @change="handleSearch">
+                <el-option
+                  v-for="item in budgetTypes"
+                  :key="item.name"
+                  :label="item.name"
+                  :value="item.name"
+                ></el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item label="项目性质" style="width: 360px">
+              <el-select v-model="query.budgetCategory" placeholder="请选择" @change="handleSearch">
+                <el-option
+                  v-for="item in budgetCategories"
+                  :key="item.name"
+                  :label="item.name"
+                  :value="item.name"
+                ></el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item label="是否信创" style="width: 150px">
+              <el-select v-model="query.inno" @change="handleSearch">
+                <el-option label="是" value="是"></el-option>
+                <el-option label="否" value="否"></el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item label="项目名称">
+              <el-input v-model="query.name" @keyup.enter="handleSearch"></el-input>
+            </el-form-item>
+            <el-button type="primary" :icon="Search" @click="handleSearch">搜索</el-button>
+            <el-button type="primary" :icon="Refresh" @click="handleClear">清空</el-button>
+          </el-form>
+        </div>
       </div>
       <div>
         <el-button type="primary" :icon="Plus" @click="handleAdd"> 新增 </el-button>
@@ -324,7 +336,8 @@ import {
   Switch,
   Select,
   Upload,
-  Download
+  Download,
+  Refresh
 } from '@element-plus/icons-vue'
 import { deleteBudgetById, getBudgetList, addBudget, updateBudget } from '@/api/budget'
 import { type Budget } from '@/types/budget'
@@ -488,7 +501,22 @@ const handleSearch = async () => {
     ElMessage.error('获取数据失败')
   }
 }
-
+const handleClear = () => {
+  query.name = ''
+  query.budgetType = ''
+  query.budgetCategory = ''
+  query.inno = ''
+  query.amount = 0
+  query.departmentName = ''
+  query.teamName = ''
+  query.priority = 1
+  query.businessPriority = ''
+  query.businessDescription = ''
+  query.plannedStartDate = dayjs().format('YYYY-MM-DD')
+  query.remark = ''
+  // 清空搜索条件后重新获取数据
+  getData()
+}
 // 分页导航
 const handlePageChange = async (val: number) => {
   query.pageIndex = val
@@ -633,9 +661,10 @@ const handleExport = () => {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  background: #fafafa;
 }
 .handle-box {
-  margin-bottom: 20px;
+  /* margin-bottom: 20px; */
 }
 
 .handle-select {
@@ -680,5 +709,30 @@ const handleExport = () => {
 }
 .search-select {
   width: 120px;
+}
+/* 新增 begin */
+.filter-bar {
+  padding: 16px;
+  background: #fafafa;
+}
+.filter-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+}
+.filter-form .el-form-item {
+  margin: 0;
+}
+
+.switch-button {
+  margin-right: 10px;
+  background-color: #fafafa;
+  padding: 0 10px;
+  border-radius: 5px;
+}
+.switch-button:hover {
+  cursor: pointer; /* 仅在鼠标悬停时显示手形指针 */
+  background-color: #e4e7ed;
 }
 </style>

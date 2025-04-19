@@ -54,7 +54,7 @@ public class UserDetailsImpl implements UserDetails {
         }
 
         authorities = permissions.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
-        System.out.println("UserDetailsImpl.getAuthorities 002  authorities: " + authorities);
+//        System.out.println("UserDetailsImpl.getAuthorities 002  authorities: " + authorities);
         return authorities;
 
     }
