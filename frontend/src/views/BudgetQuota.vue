@@ -1,11 +1,13 @@
 <template>
   <div id="budgetQuotaPage" class="content-container">
-    <h1>{{ formatYear(selectedYear) }}年度 部门预算额度管理</h1>
+    <h1 style="display: flex">
+      <div @click="handleSelectYear" class="switch-button">
+        {{ formatYear(selectedYear) }}
+      </div>
+      年度 部门预算额度管理
+    </h1>
 
     <div class="handle-box">
-      <el-button type="danger" :icon="Select" @click="handleSelectYear" style="margin-right: 10px"
-        >选择年度</el-button
-      >
       <el-input
         v-model="query.departmentName"
         placeholder="输入部门名称"
@@ -471,5 +473,16 @@ const handleDelete = (index: number) => {
 
 .year-picker .container:last-child {
   border-right: none;
+}
+
+.switch-button {
+  margin-right: 10px;
+  background-color: #fafafa;
+  padding: 0 10px;
+  border-radius: 5px;
+}
+.switch-button:hover {
+  cursor: pointer; /* 仅在鼠标悬停时显示手形指针 */
+  background-color: #e4e7ed;
 }
 </style>

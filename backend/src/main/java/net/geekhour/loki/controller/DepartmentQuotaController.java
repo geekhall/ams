@@ -75,7 +75,8 @@ public class DepartmentQuotaController {
         Integer offset = (pageIndex - 1) * pageSize;
         List<DepartmentQuotaDTO> quotaList = departmentQuotaService.getQuotaList(year, offset, pageSize, name);
         Long count = departmentQuotaService.countQuotas(year, name);
-        BigDecimal total = departmentQuotaService.totalQuotas(year, name);
+        BigDecimal total = departmentQuotaService.totalQuotas(year, name) == null ?
+                BigDecimal.ZERO : departmentQuotaService.totalQuotas(year, name);
         return ResponseUtil.success(Map.of(
                         "items", quotaList,
                         "count", count,
