@@ -14,8 +14,8 @@
       <div class="handle-box">
         <div class="filter-bar">
           <el-form inline class="filter-form">
-            <el-form-item label="项目类型" style="width: 240px">
-              <el-select v-model="query.budgetType" placeholder="请选择" @change="handleSearch">
+            <el-form-item style="width: 150px">
+              <el-select v-model="query.budgetType" placeholder="项目类型" @change="handleSearch">
                 <el-option
                   v-for="item in budgetTypes"
                   :key="item.name"
@@ -24,8 +24,12 @@
                 ></el-option>
               </el-select>
             </el-form-item>
-            <el-form-item label="项目性质" style="width: 360px">
-              <el-select v-model="query.budgetCategory" placeholder="请选择" @change="handleSearch">
+            <el-form-item style="width: 280px">
+              <el-select
+                v-model="query.budgetCategory"
+                placeholder="项目性质"
+                @change="handleSearch"
+              >
                 <el-option
                   v-for="item in budgetCategories"
                   :key="item.name"
@@ -34,16 +38,19 @@
                 ></el-option>
               </el-select>
             </el-form-item>
-            <el-form-item label="是否信创" style="width: 150px">
-              <el-select v-model="query.inno" @change="handleSearch">
+            <el-form-item style="width: 120px">
+              <el-select v-model="query.inno" @change="handleSearch" placeholder="是否信创">
                 <el-option label="是" value="是"></el-option>
                 <el-option label="否" value="否"></el-option>
               </el-select>
             </el-form-item>
-            <el-form-item label="项目名称">
-              <el-input v-model="query.name" @keyup.enter="handleSearch"></el-input>
+            <el-form-item>
+              <el-input
+                v-model="query.name"
+                @keyup.enter="handleSearch"
+                placeholder="项目名称"
+              ></el-input>
             </el-form-item>
-            <el-button type="primary" :icon="Search" @click="handleSearch">搜索</el-button>
             <el-button type="primary" :icon="Refresh" @click="handleClear">清空</el-button>
           </el-form>
         </div>
