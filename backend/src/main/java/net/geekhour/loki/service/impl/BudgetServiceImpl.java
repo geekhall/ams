@@ -8,13 +8,18 @@ import net.geekhour.loki.entity.dto.BudgetDTO;
 import net.geekhour.loki.mapper.*;
 import net.geekhour.loki.service.IBudgetService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.OutputStream;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -108,6 +113,62 @@ public class BudgetServiceImpl extends ServiceImpl<BudgetMapper, Budget> impleme
             return false;
         }
         return budgetMapper.updateById(budget) > 0;
+    }
+
+    @Override
+    public void exportToExcel(Map<String, Object> requestMap, HttpServletResponse response) {
+        try {
+            // 获取查询条件
+            String budgetType = (String) requestMap.get("budgetType");
+            String budgetCategory = (String) requestMap.get("budgetCategory");
+            Integer innovation = requestMap.get("innovation") != null ? Integer.valueOf(requestMap.get("innovation").toString()) : null;
+            String name = (String) requestMap.get("name");
+            Integer year = (Integer) requestMap.get("year");
+            Integer tech = requestMap.get("tech") != null ? Integer.valueOf(requestMap.get("tech").toString()) : null;
+
+            // 查询数据
+            List<BudgetDTO> budgetList = budgetMapper.getBudgetList(year, budgetType, budgetCategory, innovation, name, tech, null, null);
+
+            // 创建 Excel 文件
+            Workbook workbook = new XSSFWorkbook();
+            Sheet sheet = workbook.createSheet("Budgets");
+            Row headerRow = sheet.createRow(0);
+
+            // 设置表头
+            String[] headers = {"ID", "Year", "Budget Type", "Budget Category", "Innovation", "Name", "Amount", "Department Name"};
+            for (int i = 0; i < headers.length; i++) {
+                Cell cell = headerRow.createCell(i);
+                cell.setCellValue(headers[i]);
+            }
+
+            // 填充数据
+            for (int i = 0; i < budgetList.size(); i++) {
+                BudgetDTO budget = budgetList.get(i);
+                Row row = sheet.createRow(i + 1);
+                row.createCell(0).setCellValue(budget.getId());
+                row.createCell(1).setCellValue(budget.getYear());
+                row.createCell(2).setCellValue(budget.getBudgetType());
+                row.createCell(3).setCellValue(budget.getBudgetCategory());
+                row.createCell(4).setCellValue(budget.getInnovation());
+                row.createCell(5).setCellValue(budget.getName());
+                row.createCell(6).setCellValue((RichTextString) budget.getAmount());
+                row.createCell(7).setCellValue(budget.getDepartmentName());
+            }
+
+            // 设置响应头
+            response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+            response.setHeader("Content-Disposition", "attachment; filename=budgets.xlsx");
+
+            // 写入到输出流
+            OutputStream outputStream = response.getOutputStream();
+            workbook.write(outputStream);
+            workbook.close();
+            outputStream.flush();
+            outputStream.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("导出 Excel 失败: " + e.getMessage());
+        }
     }
 
     private Budget mapToBudget(BudgetDTO budgetDTO) {

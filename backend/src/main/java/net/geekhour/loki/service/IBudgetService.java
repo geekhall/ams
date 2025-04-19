@@ -4,7 +4,9 @@ import net.geekhour.loki.entity.Budget;
 import com.baomidou.mybatisplus.extension.service.IService;
 import net.geekhour.loki.entity.dto.BudgetDTO;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -25,4 +27,6 @@ public interface IBudgetService extends IService<Budget> {
     boolean createBudget(BudgetDTO budgetDTO);
 
     boolean updateBudget(BudgetDTO budgetDTO);
+
+    void exportToExcel(Map<String, Object> requestMap, HttpServletResponse response);
 }

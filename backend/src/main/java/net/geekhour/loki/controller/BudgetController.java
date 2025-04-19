@@ -8,7 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.OutputStream;
 import java.util.List;
 import java.util.Map;
 
@@ -140,5 +144,19 @@ public class BudgetController {
         return budgetService.removeById(id)
                 ? ResponseUtil.success(id)
                 : ResponseUtil.error(404, "Budget not found");
+    }
+
+    @RequestMapping("/export")
+    @PreAuthorize("hasRole('USER') || hasAuthority('user:budget:export')")
+    public void exportToExcel(@RequestBody(required = false) String requestBody, HttpServletResponse response) {
+        try {
+            // 解析查询条件
+            Map<String, Object> requestMap = new ObjectMapper().readValue(requestBody, Map.class);
+            // 调用服务层生成并导出 Excel
+            budgetService.exportToExcel(requestMap, response);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("导出 Excel 失败: " + e.getMessage());
+        }
     }
 }
