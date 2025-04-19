@@ -58,7 +58,7 @@ public class Budget extends Model<Budget> {
 
     @ApiModelProperty("是否信创 0-是 1-否")
     @TableField("is_inno")
-    private Boolean inno;
+    private Boolean innovation;
 
     @ApiModelProperty("预算金额")
     @TableField("amount")

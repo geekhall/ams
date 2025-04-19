@@ -6,7 +6,7 @@ export interface BudgetDTO {
   description: string,
   budgetType: string,
   budgetCategory: string,
-  inno: string,
+  innovation: string,
   amount: number,
   departmentName: string,
   teamName: string,

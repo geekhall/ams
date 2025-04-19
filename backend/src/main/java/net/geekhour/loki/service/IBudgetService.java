@@ -18,9 +18,9 @@ public interface IBudgetService extends IService<Budget> {
 
     List<Budget>  all();
 
-    List<BudgetDTO> getBudgetList(Integer year, String budgetType, String budgetCategory, Boolean inno, String name, Boolean tech, Integer offset, Integer pageSize);
+    List<BudgetDTO> getBudgetList(Integer year, String budgetType, String budgetCategory, Integer innovation, String name, Integer tech, Integer offset, Integer pageSize);
 
-    Long countBudgets(Integer year, String budgetType, String budgetCategory, Boolean inno,String name, Boolean tech);
+    Long countBudgets(Integer year, String budgetType, String budgetCategory, Integer innovation, String name, Integer tech);
 
     boolean createBudget(BudgetDTO budgetDTO);
 

@@ -22,7 +22,7 @@ public interface BudgetMapper extends BaseMapper<Budget> {
 
     /*
     select a.id, a.year, c.`name` as budgetType, d.`name` as budgetCategory,
-        case when a.is_inno=1 THEN '是' ELSE '否' END AS inno,
+        case when a.is_inno=1 THEN '是' ELSE '否' END AS innovation,
         a.`name`, a.description,
         a.amount, b.name as departmentName, e.name as teamName,
         a.priority, a.business_priority, a.business_description,
@@ -42,7 +42,7 @@ public interface BudgetMapper extends BaseMapper<Budget> {
      */
     @Select("<script>" +
             "select a.id, a.year, c.`name` as budgetType, d.`name` as budgetCategory, " +
-            "case when a.is_inno=1 THEN '是' ELSE '否' END AS inno, " +
+            "case when a.is_inno=1 THEN '是' ELSE '否' END AS innovation, " +
             "a.`name`, a.description, " +
             "a.amount, b.name as departmentName, e.name as teamName, " +
             "a.priority, a.business_priority, a.business_description, " +
@@ -64,19 +64,16 @@ public interface BudgetMapper extends BaseMapper<Budget> {
             "<if test='budgetCategory != null and budgetCategory != \"\"'> " +
             "and d.name = #{budgetCategory} " +
             "</if>" +
-            "<if test='inno != null'> " +
-            "and <choose> " +
-            "  <when test='inno'>a.is_inno = 1 </when> " +
-            "  <otherwise>a.is_inno = 0 </otherwise> " +
-            "</choose> " +
+            "<if test='innovation != null'> " +
+            "and a.is_inno = #{innovation} " +
             "</if>" +
             "<if test='name != null and name != \"\"'> " +
             "and a.name like CONCAT('%', #{name}, '%') " +
             "</if>" +
             "<if test='tech != null'> " +
             "and <choose> " +
-            "  <when test='tech'>b.name = '信息科技部' </when> " +
-            "  <otherwise>b.name != '信息科技部' </otherwise> " +
+            "  <when test='tech == 1'>b.name = '信息科技部' </when> " +
+            "  <when test='tech == 0'>b.name != '信息科技部' </when> " +
             "</choose> " +
             "</if>" +
             "order by a.id " +
@@ -85,9 +82,9 @@ public interface BudgetMapper extends BaseMapper<Budget> {
     List<BudgetDTO> getBudgetList(@Param("year") Integer year,
                                   @Param("budgetType") String budgetType,
                                   @Param("budgetCategory") String budgetCategory,
-                                  @Param("inno") Boolean inno,
+                                  @Param("innovation") Integer innovation,
                                   @Param("name") String name,
-                                  @Param("tech") Boolean tech,
+                                  @Param("tech") Integer tech,
                                   @Param("offset") Integer offset,
                                   @Param("pageSize") Integer pageSize);
 
@@ -109,28 +106,25 @@ public interface BudgetMapper extends BaseMapper<Budget> {
             "<if test='budgetCategory != null and budgetCategory != \"\"'> " +
             "and d.name = #{budgetCategory} " +
             "</if>" +
-            "<if test='inno != null'> " +
-            "and <choose> " +
-            "  <when test='inno'>a.is_inno = 1 </when> " +
-            "  <otherwise>a.is_inno = 0 </otherwise> " +
-            "</choose> " +
+            "<if test='innovation != null'> " +
+            "and a.is_inno = #{innovation} " +
             "</if>" +
             "<if test='name != null and name != \"\"'> " +
             "and a.name like CONCAT('%', #{name}, '%') " +
             "</if>" +
             "<if test='tech != null'> " +
             "and <choose> " +
-            "  <when test='tech'>b.name = '信息科技部' </when> " +
-            "  <otherwise>b.name != '信息科技部' </otherwise> " +
+            "  <when test='tech == 1'>b.name = '信息科技部' </when> " +
+            "  <when test='tech == 0'>b.name != '信息科技部' </when> " +
             "</choose> " +
             "</if>" +
             "</script>")
     Long countBudgets(@Param("year") Integer year,
                       @Param("budgetType") String budgetType,
                       @Param("budgetCategory") String budgetCategory,
-                      @Param("inno") Boolean inno,
+                      @Param("innovation") Integer innovation,
                       @Param("name") String name,
-                      @Param("tech") Boolean tech);
+                      @Param("tech") Integer tech);
 
     @Select("select count(*) from h_budget where name = #{name} and deleted = 0")
     boolean checkBudgetNameExists(@Param("name")  String name);

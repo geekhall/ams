@@ -26,7 +26,7 @@ public class LokiCodeGenerator {
         System.out.println("Loki Code Generator is running...");
         String username = System.getenv("LOKI_USERNAME");
         String password = System.getenv("LOKI_PASSWORD");
-        String url = "jdbc:mysql://localhost:3316/loki?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai";
+        String url = "jdbc:mysql://localhost:3326/loki?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai";
 
         System.out.println("Username: " + username);
         System.out.println("Password: " + password);

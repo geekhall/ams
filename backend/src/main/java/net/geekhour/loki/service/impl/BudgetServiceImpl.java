@@ -51,22 +51,22 @@ public class BudgetServiceImpl extends ServiceImpl<BudgetMapper, Budget> impleme
     public List<BudgetDTO> getBudgetList(Integer year,
                                          String budgetType,
                                          String budgetCategory,
-                                         Boolean inno,
+                                         Integer innovation,
                                          String name,
-                                         Boolean tech,
+                                         Integer tech,
                                          Integer offset,
                                          Integer pageSize) {
-        return budgetMapper.getBudgetList(year, budgetType, budgetCategory, inno, name, tech, offset, pageSize);
+        return budgetMapper.getBudgetList(year, budgetType, budgetCategory, innovation, name, tech, offset, pageSize);
     }
 
     @Override
     public Long countBudgets(Integer year,
                              String budgetType,
                              String budgetCategory,
-                             Boolean inno,
+                             Integer innovation,
                              String name,
-                             Boolean tech) {
-        return budgetMapper.countBudgets(year, budgetType, budgetCategory, inno, name, tech);
+                             Integer tech) {
+        return budgetMapper.countBudgets(year, budgetType, budgetCategory, innovation, name, tech);
     }
 
     @Override
@@ -141,7 +141,7 @@ public class BudgetServiceImpl extends ServiceImpl<BudgetMapper, Budget> impleme
         budget.setDescription(budgetDTO.getDescription());
         budget.setType(budgetTypeId);
         budget.setCategory(budgetCategoryId);
-        budget.setInno(budgetDTO.getInno().equals("是") ? true : false);
+        budget.setInnovation(budgetDTO.getInnovation().equals("是") ? true : false);
         budget.setAmount(budgetDTO.getAmount());
         budget.setDepartmentId(departmentId);
         budget.setTeamId(teamId);

@@ -15,7 +15,7 @@ import java.math.BigDecimal;
 @Getter
 @Setter
 @Accessors(chain = true)
-public class BudgetDTO extends Model<AssetDTO> {
+public class BudgetDTO extends Model<BudgetDTO> {
 
     private static final long serialVersionUID = 1L;
     private String id;
@@ -24,7 +24,7 @@ public class BudgetDTO extends Model<AssetDTO> {
     private String description;
     private String budgetType;
     private String budgetCategory;
-    private String inno;
+    private String innovation;
     private BigDecimal amount;
     private String departmentName;
     private String teamName;

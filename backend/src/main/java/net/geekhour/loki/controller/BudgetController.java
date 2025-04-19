@@ -53,22 +53,23 @@ public class BudgetController {
             Map<String, Object> requestMap = new ObjectMapper().readValue(requestBody, Map.class);
             String budgetType = (String) requestMap.get("budgetType");
             String budgetCategory = (String) requestMap.get("budgetCategory");
-            Boolean inno;
-            if (requestMap.get("inno") != null ) {
-                inno = requestMap.get("inno").equals("是") ? true : false;
-            } else {
-                inno = null;
+            Integer innovation = null;
+            if (requestMap.get("innovation") != null && !requestMap.get("innovation").toString().isEmpty()) {
+                innovation = Integer.valueOf(requestMap.get("innovation").toString());
             }
             String name = (String) requestMap.get("name");
             Integer year = (Integer) requestMap.get("year");
-            Boolean tech = (Boolean) requestMap.get("tech");
+            Integer tech = null;
+            if (requestMap.get("tech") != null && !requestMap.get("tech").toString().isEmpty()) {
+                tech = Integer.valueOf(requestMap.get("tech").toString());
+            }
             Integer pageIndex = requestMap.get("pageIndex") == null ? 1
                     : Integer.parseInt(requestMap.get("pageIndex").toString());
             Integer pageSize = requestMap.get("pageSize") == null ? 10
                     : Integer.parseInt(requestMap.get("pageSize").toString());
             Integer offset = (pageIndex - 1) * pageSize;
-            List<BudgetDTO> budgetList = budgetService.getBudgetList(year, budgetType, budgetCategory, inno, name, tech, offset, pageSize);
-            Long total = budgetService.countBudgets(year,budgetType, budgetCategory, inno, name, tech);
+            List<BudgetDTO> budgetList = budgetService.getBudgetList(year, budgetType, budgetCategory, innovation, name, tech, offset, pageSize);
+            Long total = budgetService.countBudgets(year,budgetType, budgetCategory, innovation, name, tech);
             return ResponseUtil.success(Map.of(
                     "items", budgetList,
                     "total", total));

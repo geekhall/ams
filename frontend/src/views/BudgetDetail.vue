@@ -39,9 +39,9 @@
               </el-select>
             </el-form-item>
             <el-form-item style="width: 120px">
-              <el-select v-model="query.inno" @change="handleSearch" placeholder="是否信创">
-                <el-option label="是" value="是"></el-option>
-                <el-option label="否" value="否"></el-option>
+              <el-select v-model="query.innovation" @change="handleSearch" placeholder="是否信创">
+                <el-option label="是" value="1"></el-option>
+                <el-option label="否" value="0"></el-option>
               </el-select>
             </el-form-item>
             <el-form-item>
@@ -51,11 +51,14 @@
                 placeholder="项目名称"
               ></el-input>
             </el-form-item>
+            <el-button type="primary" :icon="Search" @click="handleSearch" v-if="false"
+              >搜索</el-button
+            >
             <el-button type="primary" :icon="Refresh" @click="handleClear">清空</el-button>
           </el-form>
         </div>
       </div>
-      <div>
+      <div class="handle-box">
         <el-button type="primary" :icon="Plus" @click="handleAdd"> 新增 </el-button>
         <el-button type="primary" :icon="Upload" @click="handleImport">导入</el-button>
         <el-button type="primary" :icon="Download" @click="handleExport">导出</el-button>
@@ -96,7 +99,7 @@
       <el-table-column prop="projectInfo" label="项目概述" align="center">
         <el-table-column prop="budgetType" label="项目类型" align="center"></el-table-column>
         <el-table-column prop="budgetCategory" label="项目性质" align="center"></el-table-column>
-        <el-table-column prop="inno" label="是否信创" align="center" width="60px">
+        <el-table-column prop="innovation" label="是否信创" align="center" width="60px">
         </el-table-column>
         <el-table-column prop="name" label="项目名称" align="center"> </el-table-column>
       </el-table-column>
@@ -164,7 +167,7 @@
 
     <!-- 新增弹出框 -->
     <el-dialog title="新增预算" v-model="addVisible" width="30%">
-      <el-form label-width="70px">
+      <el-form label-width="140px">
         <el-form-item label="项目类型">
           <el-select v-model="addForm.budgetType" placeholder="请选择">
             <el-option
@@ -186,9 +189,9 @@
           </el-select>
         </el-form-item>
         <el-form-item label="是否信创">
-          <el-select v-model="addForm.inno">
-            <el-option label="是" value="是"></el-option>
-            <el-option label="否" value="否"></el-option>
+          <el-select v-model="addForm.innovation">
+            <el-option label="是" value="1"></el-option>
+            <el-option label="否" value="0"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="项目名称">
@@ -222,10 +225,20 @@
           </el-select>
         </el-form-item>
         <el-form-item label="优先级" v-if="!isTech">
-          <el-input v-model="addForm.priority"></el-input>
+          <el-select v-model="editForm.priority">
+            <el-option label="0-默认" value="0"></el-option>
+            <el-option label="1-优先" value="1"></el-option>
+          </el-select>
         </el-form-item>
         <el-form-item label="业务优先级" v-if="!isTech">
-          <el-input v-model="addForm.businessPriority"></el-input>
+          <el-select v-model="addForm.businessPriority">
+            <el-option label="0-默认" value="0"></el-option>
+            <el-option label="1-A" value="1"></el-option>
+            <el-option label="2-B" value="2"></el-option>
+            <el-option label="3-C" value="3"></el-option>
+            <el-option label="4-D" value="4"></el-option>
+            <el-option label="5-已立项" value="5"></el-option>
+          </el-select>
         </el-form-item>
         <el-form-item label="业务优先级情况说明" v-if="!isTech">
           <el-input v-model="addForm.businessDescription"></el-input>
@@ -244,7 +257,7 @@
 
     <!-- 编辑弹出框 -->
     <el-dialog title="编辑" v-model="editVisible" width="30%">
-      <el-form label-width="70px">
+      <el-form label-width="140px">
         <el-form-item label="ID" v-show="false">
           <el-input v-model="editForm.id" disabled></el-input>
         </el-form-item>
@@ -269,9 +282,9 @@
           </el-select>
         </el-form-item>
         <el-form-item label="是否信创">
-          <el-select v-model="editForm.inno">
-            <el-option label="是" value="是"></el-option>
-            <el-option label="否" value="否"></el-option>
+          <el-select v-model="editForm.innovation">
+            <el-option label="是" value="1"></el-option>
+            <el-option label="否" value="0"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="项目名称">
@@ -305,10 +318,20 @@
           </el-select>
         </el-form-item>
         <el-form-item label="优先级" v-if="!isTech">
-          <el-input v-model="editForm.priority"></el-input>
+          <el-select v-model="editForm.priority">
+            <el-option label="0-默认" value="0"></el-option>
+            <el-option label="1-优先" value="1"></el-option>
+          </el-select>
         </el-form-item>
         <el-form-item label="业务优先级" v-if="!isTech">
-          <el-input v-model="editForm.businessPriority"></el-input>
+          <el-select v-model="editForm.businessPriority">
+            <el-option label="0-默认" value="0"></el-option>
+            <el-option label="1-A" value="1"></el-option>
+            <el-option label="2-B" value="2"></el-option>
+            <el-option label="3-C" value="3"></el-option>
+            <el-option label="4-D" value="4"></el-option>
+            <el-option label="5-已立项" value="5"></el-option>
+          </el-select>
         </el-form-item>
         <el-form-item label="业务优先级情况说明" v-if="!isTech">
           <el-input v-model="editForm.businessDescription"></el-input>
@@ -402,11 +425,11 @@ const query = reactive({
   description: '',
   budgetType: '',
   budgetCategory: '',
-  inno: '',
+  innovation: '',
   amount: 0,
   departmentName: '',
   teamName: '',
-  priority: 1,
+  priority: '',
   businessPriority: '',
   businessDescription: '',
   plannedStartDate: dayjs().format('YYYY-MM-DD'),
@@ -426,12 +449,12 @@ let addForm = reactive({
   description: '测试需求及目标',
   budgetType: '软件',
   budgetCategory: '监管要求落实',
-  inno: '是',
+  innovation: 1,
   amount: 10000,
   departmentName: '信息科技部',
   teamName: '核心开发',
   priority: 1,
-  businessPriority: '已立项',
+  businessPriority: 5,
   businessDescription: '测试业务优先级情况说明',
   plannedStartDate: dayjs().format('YYYY-MM-DD'),
   remark: '测试备注',
@@ -445,19 +468,17 @@ let editForm = reactive({
   description: '',
   budgetType: '',
   budgetCategory: '',
-  inno: '',
+  innovation: 1,
   amount: 0,
   departmentName: '',
   teamName: '',
   priority: 1,
-  businessPriority: '',
+  businessPriority: 5,
   businessDescription: '',
   plannedStartDate: dayjs().format('YYYY-MM-DD'),
   remark: '',
   status: ''
 })
-
-let idx: number = -1
 
 // 获取表格数据
 const getData = async () => {
@@ -466,9 +487,9 @@ const getData = async () => {
       year: selectedYear.value.getFullYear(),
       budgetType: query.budgetType,
       budgetCategory: query.budgetCategory,
-      inno: query.inno,
+      innovation: query.innovation,
       name: query.name,
-      tech: isTech.value,
+      tech: isTech.value ? '1' : '0',
       pageIndex: query.pageIndex,
       pageSize: query.pageSize
     })
@@ -499,9 +520,6 @@ onMounted(() => {
 // 搜索操作
 const handleSearch = async () => {
   query.pageIndex = 1
-  // 获取输入框中的值
-  console.log('query.name', query.name)
-  // 这里可以添加搜索逻辑
   try {
     await getData()
   } catch (err) {
@@ -512,16 +530,15 @@ const handleClear = () => {
   query.name = ''
   query.budgetType = ''
   query.budgetCategory = ''
-  query.inno = ''
+  query.innovation = ''
   query.amount = 0
   query.departmentName = ''
   query.teamName = ''
-  query.priority = 1
+  query.priority = ''
   query.businessPriority = ''
   query.businessDescription = ''
   query.plannedStartDate = dayjs().format('YYYY-MM-DD')
   query.remark = ''
-  // 清空搜索条件后重新获取数据
   getData()
 }
 // 分页导航
@@ -563,9 +580,7 @@ const saveAdd = async () => {
 
     if (res.code === 200) {
       ElMessage.success('新增成功')
-      // 更新当前页码
       query.pageIndex = getMaxPage()
-      // 更新表格数据
       getData()
     } else {
       ElMessage.error(res.message)
@@ -582,14 +597,13 @@ const handleEdit = async (index: number, row: any) => {
     await fetchBudgetCategories()
     await fetchDepartments()
     await fetchTeams()
-    idx = index
     editForm.id = row.id
     editForm.year = row.year
     editForm.name = row.name
     editForm.description = row.description
     editForm.budgetType = row.budgetType
     editForm.budgetCategory = row.budgetCategory
-    editForm.inno = row.inno
+    editForm.innovation = row.innovation
     editForm.amount = row.amount
     editForm.departmentName = row.departmentName
     editForm.teamName = row.teamName
@@ -599,9 +613,7 @@ const handleEdit = async (index: number, row: any) => {
     editForm.plannedStartDate = row.plannedStartDate
     editForm.remark = row.remark
     editForm.status = row.status
-    // 这里可以根据需要设置其他字段
     editVisible.value = true
-    // 更新后台数据
   } catch (err) {
     ElMessage.error('获取数据失败')
   }
@@ -616,7 +628,6 @@ const saveEdit = async () => {
 
     if (res.code === 200) {
       ElMessage.success(`修改成功`)
-      // 更新表格数据
       query.pageIndex = currentPage
       await getData()
     } else {
@@ -637,7 +648,7 @@ const handleDelete = async (index: number) => {
     const res = await deleteBudgetById(tableData.value[index].id)
     if (res.code === 200) {
       ElMessage.success('删除成功')
-      await getData() // 更新表格数据
+      await getData()
     } else {
       ElMessage.error(res.message)
     }
@@ -650,7 +661,6 @@ const handleRowDblClick = (row: any, column: any, event: Event) => {
   console.log('双击行数据:', row)
   console.log('双击的列:', column)
   console.log('事件对象:', event)
-  // 执行更多操作
 }
 
 const handleImport = () => {
@@ -669,9 +679,11 @@ const handleExport = () => {
   justify-content: space-between;
   align-items: center;
   background: #fafafa;
+  overflow: hidden;
 }
 .handle-box {
   /* margin-bottom: 20px; */
+  min-width: max-content;
 }
 
 .handle-select {
@@ -697,19 +709,13 @@ const handleExport = () => {
   font-size: 14px;
 }
 .el-table {
-  width: 100%; /* 设置表格宽度为100% */
+  width: 100%;
 }
 .red {
   color: #f56c6c;
 }
 .mr10 {
   margin-right: 10px;
-}
-.table-td-avatar {
-  display: block;
-  margin: auto;
-  width: 40px;
-  height: 40px;
 }
 .date-picker {
   width: 100%;

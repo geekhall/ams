@@ -16,9 +16,9 @@ export const getBudgetList = async (
     year?: number;
     budgetType?: string;
     budgetCategory?: string;
-    inno: string;
+    innovation: string;
     name?: string;
-    tech: boolean;
+    tech: string;
     pageIndex?: number;
     pageSize?: number
   }
