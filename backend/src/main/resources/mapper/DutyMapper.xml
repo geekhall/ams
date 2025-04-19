@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="net.geekhour.loki.mapper.DutyMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="net.geekhour.loki.entity.Duty">
+        <result column="id" property="id" />
+        <result column="date" property="date" />
+        <result column="day" property="day" />
+        <result column="night" property="night" />
+        <result column="adjust" property="adjust" />
+        <result column="core" property="core" />
+        <result column="core_phone" property="corePhone" />
+        <result column="version" property="version" />
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime" />
+        <result column="deleted" property="deleted" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id,
+        date, day, night, adjust, core, core_phone, version, create_time, update_time, deleted
+    </sql>
+
+</mapper>
