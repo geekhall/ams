@@ -37,11 +37,4 @@
         name, username, password, salt, sex, token, token_expire_time, id_card, phone, avatar, age, email, department_id, role_id, status, is_lock, is_active, last_login_time, last_login_ip, address, version, create_time, update_time, deleted
     </sql>
 
-    <select id="getById" resultMap="BaseResultMap">
-        select
-        <include refid="Base_Column_List" />
-        from h_user
-        where id = #{id}
-
-    </select>
 </mapper>

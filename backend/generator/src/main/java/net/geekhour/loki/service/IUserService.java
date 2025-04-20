@@ -1,7 +1,7 @@
 package net.geekhour.loki.service;
 
-import com.baomidou.mybatisplus.extension.service.IService;
 import net.geekhour.loki.entity.User;
+import com.baomidou.mybatisplus.extension.service.IService;
 
 /**
  * <p>
@@ -9,13 +9,8 @@ import net.geekhour.loki.entity.User;
  * </p>
  *
  * @author Jasper Yang
- * @since 2024-11-03
+ * @since 2025-04-20
  */
 public interface IUserService extends IService<User> {
 
-    void saveUserDetails(User user);
-
-    Object all();
-
-    Object getUserList(String name, Integer offset, Integer pageSize);
 }

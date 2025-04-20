@@ -3,7 +3,9 @@ package net.geekhour.loki.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import jakarta.validation.constraints.NotBlank;
 import net.geekhour.loki.entity.User;
+import net.geekhour.loki.entity.dto.UserDTO;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
@@ -56,4 +58,16 @@ public interface UserMapper extends BaseMapper<User> {
             "where a.username=#{username} and e.permission is not NULL " +
             "and a.status=0 and a.deleted=0 and b.deleted = 0 and c.deleted=0 and d.deleted=0 and e.deleted=0")
     List<String> getPermissionsByUsername(@NotBlank String username);
+
+    @Select("<script>" +
+            "SELECT * FROM h_user " +
+            "WHERE deleted = 0 " +
+            "<if test='name != null and name != \"\"'> " +
+            "AND username LIKE CONCAT('%', #{name}, '%') " +
+            "</if> " +
+            "LIMIT #{offset}, #{pageSize}" +
+            "</script>")
+    List<UserDTO> getUserList(@Param("name") String name,
+                              @Param("offset") Integer offset,
+                              @Param("pageSize") Integer pageSize);
 }
