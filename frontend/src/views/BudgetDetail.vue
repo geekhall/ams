@@ -495,7 +495,7 @@ const getData = async () => {
     })
 
     if (res.code === 200) {
-      console.log('getBudgetList res.data:', res.data)
+      // console.log('getBudgetList res.data:', res.data)
       tableData.value = res.data.items
       pageTotal.value = res.data.total
     } else {

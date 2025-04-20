@@ -27,7 +27,7 @@ loki.interceptors.request.use(
 
     const authStore = useAuthStore();
     // console.log('authStore.token', authStore.token);
-    console.log("baseURL :::::: " + config.baseURL);
+    // console.log("baseURL :::::: " + config.baseURL);
 
     if (authStore.token) {
       config.headers.Authorization = `Bearer ${authStore.token}`;

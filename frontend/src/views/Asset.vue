@@ -269,7 +269,7 @@ const getData = async () => {
     })
 
     if (res.code === 200) {
-      console.log('getAssetList res.data:', res.data)
+      // console.log('getAssetList res.data:', res.data)
 
       tableData.value = res.data.items
       pageTotal.value = res.data.total
