@@ -58,7 +58,7 @@ public class UserController {
                         Integer.parseInt(requestMap.get("pageSize").toString());
             } catch (Exception e) {
                 e.printStackTrace();
-                return ResponseUtil.error(400, e.getMessage());
+                return ResponseUtil.error(500, e.getMessage());
             }
         }
         Integer offset = (pageIndex - 1) * pageSize;
