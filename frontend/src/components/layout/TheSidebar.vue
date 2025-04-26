@@ -74,7 +74,27 @@ const items: MenuItem[] = [
     icon: 'DocumentCopy',
     index: '/asset',
     title: '资产管理',
-    permission: 'asset'
+    permission: 'asset',
+    subs: [
+      {
+        icon: 'DocumentCopy',
+        index: '/asset',
+        title: '固定资产',
+        permission: 'asset'
+      },
+      {
+        icon: 'List',
+        index: '/project',
+        title: '项目清单',
+        permission: 'project'
+      },
+      {
+        icon: 'Platform',
+        index: '/system',
+        title: '系统清单',
+        permission: 'system'
+      }
+    ]
   },
   {
     icon: 'Money',
@@ -101,18 +121,6 @@ const items: MenuItem[] = [
         permission: 'budget'
       }
     ]
-  },
-  {
-    icon: 'List',
-    index: '/project',
-    title: '项目清单',
-    permission: 'project'
-  },
-  {
-    icon: 'Platform',
-    index: '/system',
-    title: '系统清单',
-    permission: 'system'
   },
   {
     icon: 'Calendar',
