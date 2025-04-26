@@ -71,9 +71,33 @@ public class User extends Model<User> {
     @TableField("email")
     private String email;
 
+    @ApiModelProperty("部门ID")
+    @TableField("department_id")
+    private Long departmentId;
+
+    @ApiModelProperty("是否锁定 0-否 1-是")
+    @TableField("is_lock")
+    private Integer isLock;
+
+    @ApiModelProperty("是否激活 0-否 1-是")
+    @TableField("is_active")
+    private Integer isActive;
+
+    @ApiModelProperty("最后登录时间")
+    @TableField("last_login_time")
+    private Long lastLoginTime;
+
+    @ApiModelProperty("最后登录IP")
+    @TableField("last_login_ip")
+    private String lastLoginIp;
+
     @ApiModelProperty("状态 0-正常 1-禁用")
     @TableField("status")
     private Integer status;
+
+    @ApiModelProperty("地址")
+    @TableField("address")
+    private String address;
 
     @ApiModelProperty("版本号")
     @TableField("version")
