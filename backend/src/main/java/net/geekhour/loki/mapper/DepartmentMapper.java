@@ -19,4 +19,7 @@ public interface DepartmentMapper extends BaseMapper<Department> {
 
     @Select("SELECT id FROM h_department WHERE name = #{name} AND deleted = 0")
     Long selectIdByName(@Param("name") String name);
+
+    @Select("SELECT name FROM h_department WHERE id = #{departmentId} AND deleted = 0")
+    String getDepartmentNameById(Long departmentId);
 }

@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import jakarta.annotation.Resource;
 import net.geekhour.loki.entity.User;
 import net.geekhour.loki.entity.dto.UserDTO;
+import net.geekhour.loki.mapper.DepartmentMapper;
 import net.geekhour.loki.mapper.UserMapper;
 import net.geekhour.loki.security.UserDetailsServiceImpl;
 import net.geekhour.loki.service.IUserService;
@@ -30,6 +31,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
 
     @Autowired
     UserMapper userMapper;
+
+    @Autowired
+    DepartmentMapper departmentMapper;
 
     @Resource
     private UserDetailsServiceImpl userDetailsService;
@@ -63,7 +67,12 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
             userDTO.setGender((String) data.get("gender"));
             userDTO.setAddress( (String) data.get("address"));
             userDTO.setAvatar((String) data.get("avatar"));
-            userDTO.setDepartment((String) data.get("department_id"));
+            Long departmentId = (Long) data.get("department_id");
+            if (departmentId != null) {
+                String departmentName = departmentMapper.getDepartmentNameById(departmentId);
+                userDTO.setDepartment(departmentName);
+            }
+//            userDTO.setDepartment((String) data.get("department_id"));
             userDTO.setIsActive(data.get("is_active") != null ? ((Integer)data.get("is_active") == 1) : false);
             userDTO.setIsLocked(data.get("is_lock") != null ? ((Integer)data.get("is_active") == 1) : false);
             userDTO.setLastLoginTime(data.get("last_login_time") != null ? LocalDateTime.parse((String) data.get("last_login_time")) : null);
@@ -75,5 +84,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
             userList.add(userDTO);
         }
         return userList;
+    }
+
+    @Override
+    public Long countUser(String name, Integer offset, Integer pageSize) {
+        return userMapper.countUser(name, offset, pageSize);
     }
 }

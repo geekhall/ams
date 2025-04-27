@@ -69,7 +69,7 @@ public interface UserMapper extends BaseMapper<User> {
             "LEFT JOIN h_role c ON b.role_id = c.id " +
             "LEFT JOIN h_role_permission d ON c.id = d.role_id " +
             "LEFT JOIN h_permission e ON d.permission_id = e.id " +
-            "WHERE a.deleted = 0 " +
+            "WHERE a.deleted = 0 and b.deleted = 0 and c.deleted=0 and d.deleted=0 and e.deleted=0 " +
             "<if test='name != null and name != \"\"'> " +
             "AND a.username LIKE CONCAT('%', #{name}, '%') " +
             "</if> " +
@@ -79,4 +79,14 @@ public interface UserMapper extends BaseMapper<User> {
     List<Map<String, Object>> getUserList(@Param("name") String name,
                                           @Param("offset") Integer offset,
                                           @Param("pageSize") Integer pageSize);
+
+    @Select("<script>" +
+            "SELECT COUNT(*) " +
+            "FROM h_user a " +
+            "WHERE a.deleted = 0 " +
+            "<if test='name != null and name != \"\"'> " +
+            "AND a.username LIKE CONCAT('%', #{name}, '%') " +
+            "</if> " +
+            "</script>")
+    Long countUser(String name, Integer offset, Integer pageSize);
 }

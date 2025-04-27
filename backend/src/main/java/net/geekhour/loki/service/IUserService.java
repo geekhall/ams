@@ -2,6 +2,9 @@ package net.geekhour.loki.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import net.geekhour.loki.entity.User;
+import net.geekhour.loki.entity.dto.UserDTO;
+
+import java.util.List;
 
 /**
  * <p>
@@ -17,5 +20,7 @@ public interface IUserService extends IService<User> {
 
     Object all();
 
-    Object getUserList(String name, Integer offset, Integer pageSize);
+    List<UserDTO> getUserList(String name, Integer offset, Integer pageSize);
+
+    Long countUser(String name, Integer offset, Integer pageSize);
 }

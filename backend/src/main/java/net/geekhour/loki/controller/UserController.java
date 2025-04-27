@@ -2,6 +2,7 @@ package net.geekhour.loki.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import net.geekhour.loki.common.ResponseUtil;
+import net.geekhour.loki.entity.dto.UserDTO;
 import net.geekhour.loki.mapper.UserMapper;
 import net.geekhour.loki.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -45,24 +47,27 @@ public class UserController {
     @RequestMapping("/list")
     @PreAuthorize("hasRole('ADMIN') || hasAuthority('system:user:list')")
     public ResponseEntity<?> getUserList(@RequestBody(required = false) String requestBody) {
-        String name = null;
-        Integer pageIndex = 1;
-        Integer pageSize = 10;
-        if (requestBody != null && !requestBody.isEmpty()) {
-            try {
-                Map<String, Object> requestMap = new ObjectMapper().readValue(requestBody, Map.class);
-                name = (String) requestMap.get("name");
-                pageIndex = requestMap.get("pageIndex") == null ? 1 :
-                        Integer.parseInt(requestMap.get("pageIndex").toString());
-                pageSize = requestMap.get("pageSize") == null ? 10 :
-                        Integer.parseInt(requestMap.get("pageSize").toString());
-            } catch (Exception e) {
-                e.printStackTrace();
-                return ResponseUtil.error(500, e.getMessage());
-            }
+        if (requestBody == null || requestBody.isEmpty()) {
+            return ResponseUtil.error(400, "参数不能为空");
         }
-        Integer offset = (pageIndex - 1) * pageSize;
-        return ResponseUtil.success(userService.getUserList(name, offset, pageSize));
+        try {
+            Map<String, Object> requestMap = new ObjectMapper().readValue(requestBody, Map.class);
+            String name = (String) requestMap.get("name");
+            Integer pageIndex = requestMap.get("pageIndex") == null ? 1 :
+                    Integer.parseInt(requestMap.get("pageIndex").toString());
+            Integer pageSize = requestMap.get("pageSize") == null ? 10 :
+                    Integer.parseInt(requestMap.get("pageSize").toString());
+            Integer offset = (pageIndex - 1) * pageSize;
+            List<UserDTO> userList = userService.getUserList(name, offset, pageSize);
+            Long total = userService.countUser(name, offset, pageSize);
+            return ResponseUtil.success(Map.of(
+                    "items", userList,
+                    "total", total
+            ));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseUtil.error(500, e.getMessage());
+        }
     }
 
     /**
