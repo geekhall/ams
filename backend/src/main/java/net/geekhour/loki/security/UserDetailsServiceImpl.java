@@ -31,9 +31,6 @@ public class UserDetailsServiceImpl implements UserDetailsService , UserDetailsP
     @Autowired
     UserMapper userMapper;
 
-    @Autowired
-    UserRoleMapper userRoleMapper;
-
     /**
      * 根据用户名查询用户的信息以及对应的权限信息，并封装成UserDetails对象返回。
      * 如果用户不存在，则抛出UsernameNotFoundException异常。

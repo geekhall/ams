@@ -52,9 +52,7 @@ public class UserDetailsImpl implements UserDetails {
         if ( authorities != null ) {
             return authorities;
         }
-
         authorities = permissions.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
-//        System.out.println("UserDetailsImpl.getAuthorities 002  authorities: " + authorities);
         return authorities;
 
     }
@@ -92,7 +90,9 @@ public class UserDetailsImpl implements UserDetails {
      */
     @Override
     public boolean isAccountNonLocked() {
-        return true;
+
+        return user.getIsLock() == 0;
+
     }
 
     /**

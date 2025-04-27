@@ -21,7 +21,6 @@ public class UserDTO {
     private String gender;
     private String address;
     private String avatar;
-    private String role;
     private String department;
     private Boolean isActive;
     private Boolean isLocked;

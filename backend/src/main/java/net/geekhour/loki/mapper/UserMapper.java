@@ -9,6 +9,7 @@ import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -60,14 +61,22 @@ public interface UserMapper extends BaseMapper<User> {
     List<String> getPermissionsByUsername(@NotBlank String username);
 
     @Select("<script>" +
-            "SELECT * FROM h_user " +
-            "WHERE deleted = 0 " +
+            "SELECT a.*, " +
+            "GROUP_CONCAT(DISTINCT c.name) AS roles, " +
+            "GROUP_CONCAT(DISTINCT e.permission) AS permissions " +
+            "FROM h_user a " +
+            "LEFT JOIN h_user_role b ON a.id = b.user_id " +
+            "LEFT JOIN h_role c ON b.role_id = c.id " +
+            "LEFT JOIN h_role_permission d ON c.id = d.role_id " +
+            "LEFT JOIN h_permission e ON d.permission_id = e.id " +
+            "WHERE a.deleted = 0 " +
             "<if test='name != null and name != \"\"'> " +
-            "AND username LIKE CONCAT('%', #{name}, '%') " +
+            "AND a.username LIKE CONCAT('%', #{name}, '%') " +
             "</if> " +
+            "GROUP BY a.id " +
             "LIMIT #{offset}, #{pageSize}" +
             "</script>")
-    List<UserDTO> getUserList(@Param("name") String name,
-                              @Param("offset") Integer offset,
-                              @Param("pageSize") Integer pageSize);
+    List<Map<String, Object>> getUserList(@Param("name") String name,
+                                          @Param("offset") Integer offset,
+                                          @Param("pageSize") Integer pageSize);
 }
