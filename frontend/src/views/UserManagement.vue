@@ -13,11 +13,36 @@
       ref="multipleTable"
       header-cell-class-name="table-header"
     >
-      <el-table-column prop="id" label="ID" width="55" align="center"></el-table-column>
-      <el-table-column prop="username" label="用户名"></el-table-column>
-      <el-table-column prop="name" label="昵称">
-        <template #default="scope">{{ scope.row.intro }}</template>
+      <el-table-column
+        prop="id"
+        label="ID"
+        width="55"
+        align="center"
+        v-if="false"
+      ></el-table-column>
+      <el-table-column type="expand">
+        <template #default="props">
+          <div m="4">
+            <p m="t-0 b-2">角色: {{ props.row.roles }}</p>
+            <p m="t-0 b-2">权限: {{ props.row.permissions }}</p>
+            <p m="t-0 b-2">团队: {{ props.row.teamName }}</p>
+            <p m="t-0 b-2">年龄: {{ props.row.age }}</p>
+            <p m="t-0 b-2">地址: {{ props.row.address }}</p>
+            <p m="t-0 b-2">性别: {{ props.row.gender }}</p>
+            <p m="t-0 b-2">上次登录时间: {{ props.row.lastLoginTime }}</p>
+            <p m="t-0 b-2">上次登录IP: {{ props.row.lastLoginIp }}</p>
+            <p m="t-0 b-2">注册时间: {{ props.row.createTime }}</p>
+            <p m="t-0 b-2">更新时间: {{ props.row.updateTime }}</p>
+            <p m="t-0 b-2">状态: {{ props.row.status }}</p>
+            <p m="t-0 b-2">是否启用: {{ props.row.isActive }}</p>
+            <p m="t-0 b-2">是否锁定: {{ props.row.isLocked }}</p>
+          </div>
+        </template>
       </el-table-column>
+      <el-table-column prop="username" label="用户名"></el-table-column>
+      <el-table-column prop="name" label="昵称"></el-table-column>
+      <el-table-column prop="phone" label="手机号"></el-table-column>
+      <el-table-column prop="email" label="邮箱"></el-table-column>
       <el-table-column label="头像(查看大图)" align="center">
         <template #default="scope">
           <el-image
@@ -30,16 +55,8 @@
           </el-image>
         </template>
       </el-table-column>
-      <el-table-column prop="type" label="等级"></el-table-column>
-      <el-table-column prop="status" label="状态" align="center">
-        <template #default="scope">
-          <el-tag :type="scope.row.level === 1 ? 'success' : scope.row.level === 2 ? 'danger' : ''">
-            {{ scope.row.level === 1 ? '正常' : scope.row.level === 2 ? '禁用' : '' }}
-          </el-tag>
-        </template>
-      </el-table-column>
+      <el-table-column prop="department" label="部门"></el-table-column>
 
-      <el-table-column prop="createTime" label="注册时间"></el-table-column>
       <el-table-column label="操作" width="220" align="center">
         <template #default="scope">
           <el-button
@@ -72,20 +89,113 @@
         @current-change="handlePageChange"
       ></el-pagination>
     </div>
-    <!-- 编辑弹出框 -->
-    <el-dialog title="编辑" v-model="editVisible" width="30%">
-      <el-form label-width="70px">
+
+    <!-- 新增弹出框 -->
+    <el-dialog title="新增用户" v-model="addVisible" width="40%">
+      <el-form label-width="100px">
         <el-form-item label="用户名">
-          <el-input v-model="form.name"></el-input>
+          <el-input v-model="addForm.username"></el-input>
         </el-form-item>
-        <el-form-item label="职业">
-          <el-input v-model="form.career"></el-input>
+        <el-form-item label="昵称">
+          <el-input v-model="addForm.name"></el-input>
+        </el-form-item>
+        <el-form-item label="手机号">
+          <el-input v-model="addForm.phone"></el-input>
+        </el-form-item>
+        <el-form-item label="邮箱">
+          <el-input v-model="addForm.email"></el-input>
+        </el-form-item>
+        <el-form-item label="头像">
+          <el-upload
+            action="/upload"
+            list-type="picture-card"
+            :on-success="handleAvatarSuccess"
+            :file-list="addForm.avatar ? [{ url: addForm.avatar }] : []"
+          >
+            <i class="el-icon-plus"></i>
+          </el-upload>
+        </el-form-item>
+        <el-form-item label="部门">
+          <el-input v-model="addForm.department"></el-input>
+        </el-form-item>
+        <el-form-item label="角色">
+          <el-input v-model="addForm.roles"></el-input>
+        </el-form-item>
+        <el-form-item label="权限">
+          <el-input v-model="addForm.permissions"></el-input>
+        </el-form-item>
+        <el-form-item label="状态">
+          <el-select v-model="addForm.status">
+            <el-option label="正常" value="1"></el-option>
+            <el-option label="禁用" value="0"></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="是否启用">
+          <el-switch v-model="addForm.isActive"></el-switch>
+        </el-form-item>
+        <el-form-item label="是否锁定">
+          <el-switch v-model="addForm.isLocked"></el-switch>
         </el-form-item>
       </el-form>
       <template #footer>
         <span class="dialog-footer">
-          <el-button @click="editVisible = false">取 消</el-button>
-          <el-button type="primary" @click="saveEdit">确 定</el-button>
+          <el-button @click="addVisible = false">取消</el-button>
+          <el-button type="primary" @click="saveAdd">确定</el-button>
+        </span>
+      </template>
+    </el-dialog>
+
+    <!-- 编辑弹出框 -->
+    <el-dialog title="编辑用户" v-model="editVisible" width="40%">
+      <el-form label-width="100px">
+        <el-form-item label="用户名">
+          <el-input v-model="editForm.username" disabled></el-input>
+        </el-form-item>
+        <el-form-item label="昵称">
+          <el-input v-model="editForm.name"></el-input>
+        </el-form-item>
+        <el-form-item label="手机号">
+          <el-input v-model="editForm.phone"></el-input>
+        </el-form-item>
+        <el-form-item label="邮箱">
+          <el-input v-model="editForm.email"></el-input>
+        </el-form-item>
+        <el-form-item label="头像">
+          <el-upload
+            action="/upload"
+            list-type="picture-card"
+            :on-success="handleAvatarSuccess"
+            :file-list="editForm.avatar ? [{ url: editForm.avatar }] : []"
+          >
+            <i class="el-icon-plus"></i>
+          </el-upload>
+        </el-form-item>
+        <el-form-item label="部门">
+          <el-input v-model="editForm.department"></el-input>
+        </el-form-item>
+        <el-form-item label="角色">
+          <el-input v-model="editForm.roles"></el-input>
+        </el-form-item>
+        <el-form-item label="权限">
+          <el-input v-model="editForm.permissions"></el-input>
+        </el-form-item>
+        <el-form-item label="状态">
+          <el-select v-model="editForm.status">
+            <el-option label="正常" value="1"></el-option>
+            <el-option label="禁用" value="0"></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="是否启用">
+          <el-switch v-model="editForm.isActive"></el-switch>
+        </el-form-item>
+        <el-form-item label="是否锁定">
+          <el-switch v-model="editForm.isLocked"></el-switch>
+        </el-form-item>
+      </el-form>
+      <template #footer>
+        <span class="dialog-footer">
+          <el-button @click="editVisible = false">取消</el-button>
+          <el-button type="primary" @click="saveEdit">确定</el-button>
         </span>
       </template>
     </el-dialog>
@@ -97,28 +207,105 @@ import { ref, reactive, onMounted } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { Delete, Edit, Search, Plus } from '@element-plus/icons-vue'
 import { useUserStore } from '~/store/user'
-
-interface TableItem {
-  id: number
-  name: string
-  intro: string
-  level: number
-  createTime: string
-  career: string
-}
+import { getUserList, addUser, updateUser } from '~/api/user'
+import { UserDTO } from '~/types/user'
 
 const query = reactive({
-  career: '',
   name: '',
   pageIndex: 1,
   pageSize: 10
 })
-const tableData = ref<TableItem[]>([])
+const tableData = ref<UserDTO[]>([])
 const pageTotal = ref(0)
 const userStore = useUserStore()
+const addVisible = ref(false)
+let addForm: UserDTO = {
+  username: '',
+  name: '',
+  phone: '',
+  email: '',
+  avatar: '',
+  department: '',
+  roles: [],
+  permissions: [],
+  status: 1,
+  isActive: true,
+  isLocked: false
+}
+
+const saveAdd = async () => {
+  addVisible.value = false
+  try {
+    const res = await addUser(addForm)
+    if (res.code === 200) {
+      ElMessage.success('新增成功')
+      getData()
+    } else {
+      ElMessage.error(res.message)
+    }
+  } catch (err) {
+    ElMessage.error('新增失败')
+  }
+}
+
+const editVisible = ref(false)
+let editForm: UserDTO = reactive({
+  username: '',
+  name: '',
+  phone: '',
+  email: '',
+  avatar: '',
+  department: '',
+  roles: [],
+  permissions: [],
+  status: 1,
+  isActive: true,
+  isLocked: false
+})
+
+let idx: number = -1
+const handleEdit = (index: number, row: any) => {
+  idx = index
+  Object.assign(editForm, row) // 将选中行的数据赋值到编辑表单
+  editVisible.value = true
+}
+
+const saveEdit = async () => {
+  editVisible.value = false
+  try {
+    const res = await updateUser(editForm)
+    if (res.code === 200) {
+      ElMessage.success('修改成功')
+      getData()
+    } else {
+      ElMessage.error(res.message)
+    }
+  } catch (err) {
+    ElMessage.error('修改失败')
+  }
+}
 
 // 获取表格数据
-const getData = () => {}
+const getData = async () => {
+  try {
+    const res = await getUserList({
+      username: query.name,
+      pageIndex: query.pageIndex,
+      pageSize: query.pageSize
+    })
+
+    if (res.code === 200) {
+      console.log('#### res.data.items', res.data.items)
+
+      tableData.value = res.data.items
+      pageTotal.value = res.data.total
+    } else {
+      ElMessage.error(res.message)
+    }
+  } catch (error) {
+    ElMessage.error('获取数据失败')
+  }
+}
 onMounted(() => {
   getData()
 })
@@ -147,24 +334,13 @@ const handleDelete = (index: number) => {
     .catch(() => {})
 }
 
-// 表格编辑时弹窗和保存
-const editVisible = ref(false)
-let form = reactive({
-  name: '',
-  career: ''
-})
-let idx: number = -1
-const handleEdit = (index: number, row: any) => {
-  idx = index
-  form.name = row.name
-  form.career = row.career
-  editVisible.value = true
-}
-const saveEdit = () => {
-  editVisible.value = false
-  ElMessage.success(`修改第 ${idx + 1} 行成功`)
-  tableData.value[idx].name = form.name
-  tableData.value[idx].career = form.career
+const handleAvatarSuccess = (response: any, file: any) => {
+  if (response.code === 200) {
+    addForm.avatar = response.data.url
+    ElMessage.success('上传成功')
+  } else {
+    ElMessage.error('上传失败')
+  }
 }
 </script>
 
