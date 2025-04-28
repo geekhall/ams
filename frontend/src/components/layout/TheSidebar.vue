@@ -82,12 +82,12 @@ const items: MenuItem[] = [
         title: '固定资产',
         permission: 'asset'
       },
-      {
-        icon: 'List',
-        index: '/project',
-        title: '项目清单',
-        permission: 'project'
-      },
+      // {
+      //   icon: 'List',
+      //   index: '/project',
+      //   title: '项目清单',
+      //   permission: 'project'
+      // },
       {
         icon: 'Platform',
         index: '/system',
@@ -122,12 +122,12 @@ const items: MenuItem[] = [
       }
     ]
   },
-  {
-    icon: 'Calendar',
-    index: '/duty',
-    title: '值班管理',
-    permission: 'duty'
-  },
+  // {
+  //   icon: 'Calendar',
+  //   index: '/duty',
+  //   title: '值班管理',
+  //   permission: 'duty'
+  // },
   {
     icon: 'User',
     index: '/user',

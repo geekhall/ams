@@ -4,7 +4,7 @@
     <div class="handle-box">
       <el-input v-model="query.name" placeholder="用户名" class="handle-input mr10"></el-input>
       <el-button type="primary" :icon="Search" @click="handleSearch">搜索</el-button>
-      <el-button type="primary" :icon="Plus">新增</el-button>
+      <el-button type="primary" :icon="Plus" @click="handleAdd">新增</el-button>
     </div>
     <el-table
       :data="tableData"
@@ -116,7 +116,14 @@
           </el-upload>
         </el-form-item>
         <el-form-item label="部门">
-          <el-input v-model="addForm.department"></el-input>
+          <el-select v-model="addForm.department">
+            <el-option
+              v-for="item in departments"
+              :key="item.name"
+              :label="item.name"
+              :value="item.name"
+            ></el-option>
+          </el-select>
         </el-form-item>
         <el-form-item label="角色">
           <el-input v-model="addForm.roles"></el-input>
@@ -209,6 +216,11 @@ import { Delete, Edit, Search, Plus } from '@element-plus/icons-vue'
 import { useUserStore } from '~/store/user'
 import { getUserList, addUser, updateUser } from '~/api/user'
 import { UserDTO } from '~/types/user'
+import { useDepartment } from '@/hooks/useDepartment'
+import { useTeam } from '@/hooks/useTeam'
+
+const { departments, fetchDepartments } = useDepartment()
+const { teams, fetchTeams } = useTeam()
 
 const query = reactive({
   name: '',
@@ -232,13 +244,33 @@ let addForm: UserDTO = {
   isActive: true,
   isLocked: false
 }
+// 新增用户
+const handleAdd = async () => {
+  try {
+    await fetchDepartments()
+    await fetchTeams()
+    addVisible.value = true
+  } catch (error) {
+    ElMessage.error('获取数据失败')
+  }
+}
+const getMaxPageIndex = () => {
+  if (pageTotal.value === 0) {
+    return 1
+  }
 
+  const maxPageIndex = Math.ceil((pageTotal.value + 1) / query.pageSize)
+  return maxPageIndex > 0 ? maxPageIndex : 1
+}
+
+// 保存新增
 const saveAdd = async () => {
   addVisible.value = false
   try {
     const res = await addUser(addForm)
     if (res.code === 200) {
       ElMessage.success('新增成功')
+      query.pageIndex = getMaxPageIndex()
       getData()
     } else {
       ElMessage.error(res.message)
@@ -264,10 +296,16 @@ let editForm: UserDTO = reactive({
 })
 
 let idx: number = -1
-const handleEdit = (index: number, row: any) => {
+const handleEdit = async (index: number, row: any) => {
   idx = index
-  Object.assign(editForm, row) // 将选中行的数据赋值到编辑表单
-  editVisible.value = true
+  try {
+    await fetchDepartments()
+    await fetchTeams()
+    Object.assign(editForm, row) // 将选中行的数据赋值到编辑表单
+    editVisible.value = true
+  } catch (error) {
+    ElMessage.error('获取数据失败')
+  }
 }
 
 const saveEdit = async () => {
@@ -307,18 +345,38 @@ const getData = async () => {
   }
 }
 onMounted(() => {
+  const pageIndex = localStorage.getItem('AMSCurentUserManagementPageIndex')
+  if (pageIndex) {
+    query.pageIndex = Number(pageIndex)
+  }
   getData()
+  fetchDepartments()
+  fetchTeams()
 })
-
-// 查询操作
-const handleSearch = () => {
+const handleClear = () => {
+  query.name = ''
   query.pageIndex = 1
   getData()
 }
+
+// 搜索操作
+const handleSearch = async () => {
+  query.pageIndex = 1
+  try {
+    await getData()
+  } catch (error) {
+    ElMessage.error('获取数据失败')
+  }
+}
 // 分页导航
-const handlePageChange = (val: number) => {
+const handlePageChange = async (val: number) => {
   query.pageIndex = val
-  getData()
+  localStorage.setItem('AMSCurentUserManagementPageIndex', val.toString())
+  try {
+    await getData()
+  } catch (error) {
+    ElMessage.error('获取数据失败')
+  }
 }
 
 // 删除操作
