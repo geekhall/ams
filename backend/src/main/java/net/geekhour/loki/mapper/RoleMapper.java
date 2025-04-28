@@ -22,4 +22,7 @@ public interface RoleMapper extends BaseMapper<Role> {
 
     Integer addRole(Long userId, Long roleId);
     List<Role> getRolesByUserId(Long userId);
+
+    @Select("select count(*) > 0 from h_role where name = #{name} and deleted = 0")
+    boolean existsByName(String name);
 }

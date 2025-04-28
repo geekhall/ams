@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import net.geekhour.loki.entity.Role;
 import net.geekhour.loki.mapper.RoleMapper;
 import net.geekhour.loki.service.IRoleService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
@@ -17,4 +18,11 @@ import org.springframework.stereotype.Service;
 @Service
 public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements IRoleService {
 
+    @Autowired
+    RoleMapper roleMapper;
+
+    @Override
+    public boolean existsByName(String name) {
+        return roleMapper.existsByName(name);
+    }
 }

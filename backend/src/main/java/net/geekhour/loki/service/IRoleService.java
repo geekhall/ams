@@ -13,4 +13,5 @@ import net.geekhour.loki.entity.Role;
  */
 public interface IRoleService extends IService<Role> {
 
+    boolean existsByName(String name);
 }
