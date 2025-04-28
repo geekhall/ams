@@ -75,8 +75,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
                 String departmentName = departmentMapper.getDepartmentNameById(departmentId);
                 userDTO.setDepartment(departmentName);
             }
-            userDTO.setIsActive(data.get("is_active") != null ? ((Integer)data.get("is_active") == 1) : false);
-            userDTO.setIsLocked(data.get("is_lock") != null ? ((Integer)data.get("is_active") == 1) : false);
+            userDTO.setIsActive(data.get("is_active") != null && ((Integer) data.get("is_active") == 1));
+            userDTO.setIsLocked(data.get("is_lock") != null && ((Integer) data.get("is_active") == 1));
             userDTO.setLastLoginTime(data.get("last_login_time") != null ? LocalDateTime.parse((String) data.get("last_login_time")) : null);
             userDTO.setLastLoginIp((String) data.get("last_login_ip"));
             userDTO.setCreateTime(data.get("create_time") != null ? LocalDateTime.parse((String) data.get("create_time")) : null);

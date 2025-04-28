@@ -3,7 +3,6 @@ package net.geekhour.loki.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import net.geekhour.loki.common.ResponseUtil;
 import net.geekhour.loki.entity.dto.UserDTO;
-import net.geekhour.loki.mapper.UserMapper;
 import net.geekhour.loki.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

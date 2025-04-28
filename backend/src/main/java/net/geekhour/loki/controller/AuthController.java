@@ -5,7 +5,6 @@ import net.geekhour.loki.common.ResponseUtil;
 import net.geekhour.loki.entity.User;
 import net.geekhour.loki.mapper.UserMapper;
 import net.geekhour.loki.mapper.UserRoleMapper;
-import net.geekhour.loki.payload.MessageResponse;
 import net.geekhour.loki.payload.RegisterRequest;
 import net.geekhour.loki.security.SecurityConstants;
 import net.geekhour.loki.security.UserDetailsImpl;
