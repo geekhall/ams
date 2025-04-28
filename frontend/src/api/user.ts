@@ -12,13 +12,43 @@ export const userRegister = async (params: any) => {
 };
 
 
+// // 用户登录
+// export const userLogin = async (params: any) => {
+//   return await loki.request({
+//     url: "/api/auth/login",
+//     method: "POST",
+//     data: params,
+//   });
+//
+// };
 // 用户登录
 export const userLogin = async (params: any) => {
-  return await loki.request({
-    url: "/auth/login",
-    method: "POST",
-    data: params,
-  });
+  try {
+    // 不指定响应类型，axios 会自动推断
+    const response = await loki.request({
+      url: "/api/auth/login",
+      method: "POST",
+      data: params,
+    });
+
+    // 假设返回的数据包含 token
+    const token = response?.data?.token;  // 获取返回的 token
+
+    // 判断是否有 token
+    if (token) {
+      // 存储 token 到 localStorage
+      localStorage.setItem('ams_token', token);
+      console.log("Token 已存储");
+    } else {
+      console.error("登录成功，但没有返回 token");
+    }
+
+    // 返回响应
+    return response;
+  } catch (error) {
+    console.error("登录失败", error);
+    throw error;  // 将错误抛出，交由调用者处理
+  }
 };
 
 // 用户退出登录

@@ -34,7 +34,7 @@ export const useAuthStore = defineStore('auth', () => {
 
   const setAuthData = (data: AuthResponse) => {
     console.log('data in setAuthData ::::: ', data)
-    if (data.code === 200) {
+    if (data.code === 200 && data.token) {
       token.value = data.token
       if (token.value) {
         localStorage.setItem('token', token.value)
@@ -42,6 +42,8 @@ export const useAuthStore = defineStore('auth', () => {
       user.value = { username: data.user.username }
       return { success: true, message: data.message }
     } else {
+      // 处理无效 token 情况
+      localStorage.removeItem('token')
       return { success: false, message: data.message }
     }
   }

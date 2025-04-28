@@ -20,6 +20,7 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * <p>
@@ -59,9 +60,10 @@ public class BudgetServiceImpl extends ServiceImpl<BudgetMapper, Budget> impleme
                                          Integer innovation,
                                          String name,
                                          Integer tech,
+                                         String departmentName,
                                          Integer offset,
-                                         Integer pageSize) {
-        return budgetMapper.getBudgetList(year, budgetType, budgetCategory, innovation, name, tech, offset, pageSize);
+                                         Integer pageSize) { // 新增的季度参数
+        return budgetMapper.getBudgetList(year, budgetType, budgetCategory, innovation, name, tech, departmentName,offset, pageSize);
     }
 
     @Override
@@ -70,8 +72,9 @@ public class BudgetServiceImpl extends ServiceImpl<BudgetMapper, Budget> impleme
                              String budgetCategory,
                              Integer innovation,
                              String name,
-                             Integer tech) {
-        return budgetMapper.countBudgets(year, budgetType, budgetCategory, innovation, name, tech);
+                             Integer tech,
+                             String departmentName) {
+        return budgetMapper.countBudgets(year, budgetType, budgetCategory, innovation, name, tech,  departmentName);
     }
 
     @Override
@@ -118,58 +121,100 @@ public class BudgetServiceImpl extends ServiceImpl<BudgetMapper, Budget> impleme
     @Override
     public void exportToExcel(Map<String, Object> requestMap, HttpServletResponse response) {
         try {
-            // 获取查询条件
-            String budgetType = (String) requestMap.get("budgetType");
-            String budgetCategory = (String) requestMap.get("budgetCategory");
-            Integer innovation = requestMap.get("innovation") != null ? Integer.valueOf(requestMap.get("innovation").toString()) : null;
-            String name = (String) requestMap.get("name");
-            Integer year = (Integer) requestMap.get("year");
-            Integer tech = requestMap.get("tech") != null ? Integer.valueOf(requestMap.get("tech").toString()) : null;
+            // 1. 解析通用查询条件
+            String budgetType    = (String) requestMap.get("budgetType");
+            String budgetCategory= (String) requestMap.get("budgetCategory");
+            Integer innovation   = requestMap.get("innovation") != null
+                    ? Integer.valueOf(requestMap.get("innovation").toString())
+                    : null;
+            String name          = (String) requestMap.get("name");
+            Integer year         = (Integer) requestMap.get("year");
+            Integer tech         = requestMap.get("tech") != null
+                    ? Integer.valueOf(requestMap.get("tech").toString())
+                    : null;
 
-            // 查询数据
-            List<BudgetDTO> budgetList = budgetMapper.getBudgetList(year, budgetType, budgetCategory, innovation, name, tech, null, null);
+            // 2. **解析 quarter**（从 requestMap 中获取）
+            Integer quarter      = requestMap.get("quarter") != null
+                    ? Integer.valueOf(requestMap.get("quarter").toString())
+                    : null;
 
-            // 创建 Excel 文件
+            // 3. 查询数据，注意传入 8 个参数（不再传递 quarter 给 Mapper）
+            List<BudgetDTO> budgetList = budgetMapper.getBudgetList(
+                    year,
+                    budgetType,
+                    budgetCategory,
+                    innovation,
+                    name,
+                    tech,
+                    null,    // departmentName：导出时不分页，可传 null
+                    null,    // offset：导出时不分页，可传 null
+                    null     // pageSize：同上
+            );
+
+            // 4. 如果需要按季度筛选数据（按月进行过滤）
+            if (quarter != null) {
+                // 按季度过滤：根据计划启动时间来判断属于哪个季度
+                budgetList = budgetList.stream()
+                        .filter(budget -> {
+                            int month = Integer.parseInt(budget.getPlannedStartDate().substring(5, 7));
+                            return isInQuarter(month, quarter);
+                        })
+                        .collect(Collectors.toList());
+            }
+
+            // 5. 创建 Excel 并写入
             Workbook workbook = new XSSFWorkbook();
             Sheet sheet = workbook.createSheet("Budgets");
             Row headerRow = sheet.createRow(0);
-
-            // 设置表头
-            String[] headers = {"ID", "Year", "Budget Type", "Budget Category", "Innovation", "Name", "Amount", "Department Name"};
+            String[] headers = {"ID", "Year", "Budget Type", "Budget Category", "Innovation", "Name", "Amount", "Department Name", "Team Name"};
             for (int i = 0; i < headers.length; i++) {
-                Cell cell = headerRow.createCell(i);
-                cell.setCellValue(headers[i]);
+                headerRow.createCell(i).setCellValue(headers[i]);
             }
 
             // 填充数据
             for (int i = 0; i < budgetList.size(); i++) {
-                BudgetDTO budget = budgetList.get(i);
+                BudgetDTO b = budgetList.get(i);
                 Row row = sheet.createRow(i + 1);
-                row.createCell(0).setCellValue(budget.getId());
-                row.createCell(1).setCellValue(budget.getYear());
-                row.createCell(2).setCellValue(budget.getBudgetType());
-                row.createCell(3).setCellValue(budget.getBudgetCategory());
-                row.createCell(4).setCellValue(budget.getInnovation());
-                row.createCell(5).setCellValue(budget.getName());
-                row.createCell(6).setCellValue((RichTextString) budget.getAmount());
-                row.createCell(7).setCellValue(budget.getDepartmentName());
+                row.createCell(0).setCellValue(b.getId());
+                row.createCell(1).setCellValue(b.getYear());
+                row.createCell(2).setCellValue(b.getBudgetType());
+                row.createCell(3).setCellValue(b.getBudgetCategory());
+                row.createCell(4).setCellValue(b.getInnovation());
+                row.createCell(5).setCellValue(b.getName());
+                row.createCell(6).setCellValue(b.getAmount().doubleValue());
+                row.createCell(7).setCellValue(b.getDepartmentName());
+                row.createCell(8).setCellValue(b.getTeamName());
             }
 
-            // 设置响应头
+            // 6. 设置响应头并写出
             response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
             response.setHeader("Content-Disposition", "attachment; filename=budgets.xlsx");
 
-            // 写入到输出流
-            OutputStream outputStream = response.getOutputStream();
-            workbook.write(outputStream);
+            // 输出 Excel 文件
+            try (OutputStream os = response.getOutputStream()) {
+                workbook.write(os);
+            }
             workbook.close();
-            outputStream.flush();
-            outputStream.close();
         } catch (Exception e) {
             e.printStackTrace();
             throw new RuntimeException("导出 Excel 失败: " + e.getMessage());
         }
     }
+
+    /**
+     * 根据月份判断是否属于指定的季度
+     */
+    private boolean isInQuarter(int month, int quarter) {
+        switch (quarter) {
+            case 1: return month >= 1 && month <= 3; // 第一季度
+            case 2: return month >= 4 && month <= 6; // 第二季度
+            case 3: return month >= 7 && month <= 9; // 第三季度
+            case 4: return month >= 10 && month <= 12; // 第四季度
+            default: return false;
+        }
+    }
+
+
 
     private Budget mapToBudget(BudgetDTO budgetDTO) {
         Long budgetTypeId = budgetTypeMapper.selectIdByName(budgetDTO.getBudgetType());

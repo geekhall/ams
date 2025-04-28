@@ -38,6 +38,22 @@
                 ></el-option>
               </el-select>
             </el-form-item>
+            <!-- 部门（新加） -->
+            <el-form-item style="width: 200px">
+              <el-select
+                  v-model="query.departmentName"
+                  placeholder="部门"
+                  @change="handleSearch"
+                  clearable
+              >
+                <el-option
+                    v-for="dept in departments"
+                    :key="dept.name"
+                    :label="dept.name"
+                    :value="dept.name"
+                />
+              </el-select>
+            </el-form-item>
             <el-form-item style="width: 120px">
               <el-select v-model="query.innovation" @change="handleSearch" placeholder="是否信创">
                 <el-option label="是" value="1"></el-option>
@@ -128,16 +144,58 @@
         </template>
       </el-table-column>
     </el-table>
-    <div class="pagination">
-      <el-pagination
-        background
-        layout="total, prev, pager, next"
-        :current-page="query.pageIndex"
-        :page-size="query.pageSize"
-        :total="pageTotal"
-        @current-change="handlePageChange"
-      ></el-pagination>
-    </div>
+
+<!--    <div class="pagination">-->
+<!--      <el-pagination-->
+<!--        background-->
+<!--        layout="total, prev, pager, next"-->
+<!--        :current-page="query.pageIndex"-->
+<!--        :page-size="query.pageSize"-->
+<!--        :total="pageTotal"-->
+<!--        @current-change="handlePageChange"-->
+<!--      ></el-pagination>-->
+<!--    </div>-->
+     <div class="pagination-and-actions">
+       <!-- 左：分页 -->
+       <el-pagination
+           background
+           layout="total, prev, pager, next"
+           :current-page="query.pageIndex"
+           :page-size="query.pageSize"
+           :total="pageTotal"
+           @current-change="handlePageChange"
+         ></el-pagination>
+
+       <!-- 右：季度选择 + 报告按钮 -->
+       <div class="report-actions">
+         <el-select
+             v-model="selectedQuarter"
+             placeholder="选择季度"
+             style="width: 120px;"
+           >
+           <el-option
+               v-for="n in [1,2,3,4]"
+               :key="n"
+               :label="`第${n}季度`"
+               :value="n"
+             />
+         </el-select>
+         <el-button
+             type="primary"
+             class="ml-10"
+             @click="handleGenerateReport('year')"
+           >
+           生成年度报告
+         </el-button>
+         <el-button
+             type="primary"
+             class="ml-10"
+             @click="handleGenerateReport('quarter')"
+           >
+           生成季度报告
+         </el-button>
+       </div>
+     </div>
     <!-- 选择年度弹出框 -->
     <el-dialog title="选择预算年度" v-model="yearVisible" width="30%">
       <el-row>
@@ -356,7 +414,7 @@ import { useBudgetType } from '@/hooks/useBudgetType'
 import { useBudgetCategory } from '@/hooks/useBudgetCategory'
 import { useDepartment } from '@/hooks/useDepartment'
 import { useTeam } from '@/hooks/useTeam'
-
+import {generateReport, ReportRequest} from '@/api/report'       // ← 新增
 import { ElMessage, ElMessageBox } from 'element-plus'
 import {
   Delete,
@@ -490,6 +548,7 @@ const getData = async () => {
       innovation: query.innovation,
       name: query.name,
       tech: isTech.value ? '1' : '0',
+      departmentName: query.departmentName,
       pageIndex: query.pageIndex,
       pageSize: query.pageSize
     })
@@ -671,6 +730,34 @@ const handleExport = () => {
   // 这里可以添加导出逻辑
   ElMessage.success('导出成功')
 }
+// 生成报告
+const selectedQuarter = ref<number | null>(null); // 存储选择的季度
+
+function handleGenerateReport(command: 'year' | 'quarter') {
+  const base = {
+    year: selectedYear.value.getFullYear(),
+    type: command,
+  }
+
+  // 如果是季度报告，就加上一个 number 类型的 quarter
+  const payload: ReportRequest = command === 'quarter'
+      ? { ...base, quarter: selectedQuarter.value! }
+      : base
+
+  generateReport(payload)
+      .then(res => {
+        const blob = res.data
+        const url = window.URL.createObjectURL(blob)
+        const a = document.createElement('a')
+        a.href = url
+        a.download = `预算执行报告_${payload.year}_${payload.type}.xlsx`
+        a.click()
+        window.URL.revokeObjectURL(url)
+      })
+      .catch(() => {
+        ElMessage.error('报告生成失败')
+      })
+}
 </script>
 
 <style scoped>
@@ -747,5 +834,27 @@ const handleExport = () => {
 .switch-button:hover {
   cursor: pointer; /* 仅在鼠标悬停时显示手形指针 */
   background-color: #e4e7ed;
+}
+.action-bar {
+  display: flex;
+  justify-content: flex-end;    /* 靠右对齐 */
+  gap: 10px;                     /* 按钮间距 */
+  margin-bottom: 16px;           /* 与筛选栏保持距离 */
+}
+.ml-10 { margin-left: 10px; }
+.pagination-and-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 20px; /* 或者你想要的间距 */
+}
+
+.report-actions {
+  display: flex;
+  align-items: center;
+}
+
+.report-actions > * + * {
+  margin-left: 10px;
 }
 </style>

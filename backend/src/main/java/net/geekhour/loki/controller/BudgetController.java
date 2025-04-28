@@ -67,13 +67,15 @@ public class BudgetController {
             if (requestMap.get("tech") != null && !requestMap.get("tech").toString().isEmpty()) {
                 tech = Integer.valueOf(requestMap.get("tech").toString());
             }
+            // ← 新增：从请求中取 departmentName
+            String departmentName = (String) requestMap.get("departmentName");
             Integer pageIndex = requestMap.get("pageIndex") == null ? 1
                     : Integer.parseInt(requestMap.get("pageIndex").toString());
             Integer pageSize = requestMap.get("pageSize") == null ? 10
                     : Integer.parseInt(requestMap.get("pageSize").toString());
             Integer offset = (pageIndex - 1) * pageSize;
-            List<BudgetDTO> budgetList = budgetService.getBudgetList(year, budgetType, budgetCategory, innovation, name, tech, offset, pageSize);
-            Long total = budgetService.countBudgets(year,budgetType, budgetCategory, innovation, name, tech);
+            List<BudgetDTO> budgetList = budgetService.getBudgetList(year, budgetType, budgetCategory, innovation, name, tech, departmentName, offset, pageSize);
+            Long total = budgetService.countBudgets(year,budgetType, budgetCategory, innovation, name, tech, departmentName);
             return ResponseUtil.success(Map.of(
                     "items", budgetList,
                     "total", total));

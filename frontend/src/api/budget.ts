@@ -19,6 +19,7 @@ export const getBudgetList = async (
     innovation: string;
     name?: string;
     tech: string;
+    departmentName?: string   // ← 新增按部门查询
     pageIndex?: number;
     pageSize?: number
   }
