@@ -18,5 +18,5 @@ import org.apache.ibatis.annotations.Select;
 public interface AssetTypeMapper extends BaseMapper<AssetType> {
 
     @Select("SELECT id FROM h_asset_type WHERE name = #{name} AND deleted = 0")
-    Long selectIdByName(@Param("name") String name);
+    Long getIdByName(@Param("name") String name);
 }

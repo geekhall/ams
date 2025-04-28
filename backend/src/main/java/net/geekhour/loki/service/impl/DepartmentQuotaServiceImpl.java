@@ -65,7 +65,7 @@ public class DepartmentQuotaServiceImpl extends ServiceImpl<DepartmentQuotaMappe
         if (quotaDTO == null) {
             return null;
         }
-        Long departmentId = departmentMapper.selectIdByName(quotaDTO.getDepartmentName());
+        Long departmentId = departmentMapper.getDepartmentIdByName(quotaDTO.getDepartmentName());
         if ( departmentId == null) {
             return null;
         }
@@ -100,7 +100,7 @@ public class DepartmentQuotaServiceImpl extends ServiceImpl<DepartmentQuotaMappe
         }
         System.out.println("updateQuota ###### step 002");
         // 不能修改部门
-        if (existingQuota.getDepartmentId() != departmentMapper.selectIdByName(quotaDTO.getDepartmentName())) {
+        if (existingQuota.getDepartmentId() != departmentMapper.getDepartmentIdByName(quotaDTO.getDepartmentName())) {
             log.error("updateQuota ###### 不能修改部门");
             System.out.println("updateQuota ###### 不能修改部门");
             return false;

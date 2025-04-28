@@ -126,11 +126,18 @@
           </el-select>
         </el-form-item>
         <el-form-item label="角色">
-          <el-input v-model="addForm.roles"></el-input>
+          <el-select v-model="addForm.roles" multiple placeholder="请选择角色">
+            <el-option
+              v-for="role in roleOptions"
+              :key="role.value"
+              :label="role.label"
+              :value="role.value"
+            ></el-option>
+          </el-select>
         </el-form-item>
-        <el-form-item label="权限">
+        <!-- <el-form-item label="权限">
           <el-input v-model="addForm.permissions"></el-input>
-        </el-form-item>
+        </el-form-item> -->
         <el-form-item label="状态">
           <el-select v-model="addForm.status">
             <el-option label="正常" value="1"></el-option>
@@ -178,14 +185,28 @@
           </el-upload>
         </el-form-item>
         <el-form-item label="部门">
-          <el-input v-model="editForm.department"></el-input>
+          <el-select v-model="editForm.department">
+            <el-option
+              v-for="item in departments"
+              :key="item.name"
+              :label="item.name"
+              :value="item.name"
+            ></el-option>
+          </el-select>
         </el-form-item>
         <el-form-item label="角色">
-          <el-input v-model="editForm.roles"></el-input>
+          <el-select v-model="editForm.roles" multiple placeholder="请选择角色">
+            <el-option
+              v-for="role in roleOptions"
+              :key="role.value"
+              :label="role.label"
+              :value="role.value"
+            ></el-option>
+          </el-select>
         </el-form-item>
-        <el-form-item label="权限">
+        <!-- <el-form-item label="权限">
           <el-input v-model="editForm.permissions"></el-input>
-        </el-form-item>
+        </el-form-item> -->
         <el-form-item label="状态">
           <el-select v-model="editForm.status">
             <el-option label="正常" value="1"></el-option>
@@ -221,7 +242,15 @@ import { useTeam } from '@/hooks/useTeam'
 
 const { departments, fetchDepartments } = useDepartment()
 const { teams, fetchTeams } = useTeam()
-
+const roleOptions = [
+  { value: 'ROLE_ADMIN', label: '超级管理员' },
+  { value: 'ROLE_MANAGER', label: '管理员' },
+  { value: 'ROLE_VIP', label: 'VIP' },
+  { value: 'ROLE_USER', label: '普通用户' },
+  { value: 'ROLE_DEV', label: '开发用户' },
+  { value: 'ROLE_TEST', label: '测试用户' },
+  { value: 'ROLE_GUEST', label: '游客' }
+]
 const query = reactive({
   name: '',
   pageIndex: 1,
@@ -231,11 +260,11 @@ const tableData = ref<UserDTO[]>([])
 const pageTotal = ref(0)
 const userStore = useUserStore()
 const addVisible = ref(false)
-let addForm: UserDTO = {
-  username: '',
-  name: '',
-  phone: '',
-  email: '',
+let addForm: UserDTO = reactive({
+  username: '测试用户1',
+  name: '测试昵称1',
+  phone: '13911113333',
+  email: 'test1@gmail.com',
   avatar: '',
   department: '',
   roles: [],
@@ -243,7 +272,7 @@ let addForm: UserDTO = {
   status: 1,
   isActive: true,
   isLocked: false
-}
+})
 // 新增用户
 const handleAdd = async () => {
   try {

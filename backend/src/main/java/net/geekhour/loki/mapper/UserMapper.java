@@ -89,4 +89,16 @@ public interface UserMapper extends BaseMapper<User> {
             "</if> " +
             "</script>")
     Long countUser(String name, Integer offset, Integer pageSize);
+
+
+    int updateUser(UserDTO userDTO);
+
+    @Select("SELECT EXISTS (SELECT 1 FROM h_user WHERE username = #{username} AND deleted = 0)")
+    boolean checkUsernameExists(String username);
+
+    @Select("SELECT EXISTS (SELECT 1 FROM h_user WHERE phone = #{phone} AND deleted = 0)")
+    boolean checkPhoneExists(String phone);
+
+    @Select("SELECT EXISTS (SELECT 1 FROM h_user WHERE email = #{email} AND deleted = 0)")
+    boolean checkEmailExists(String email);
 }

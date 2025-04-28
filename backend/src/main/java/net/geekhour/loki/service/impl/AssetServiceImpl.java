@@ -121,11 +121,11 @@ public class AssetServiceImpl extends ServiceImpl<AssetMapper, Asset> implements
     }
 
     private Asset mapToAsset(AssetDTO assetDTO) {
-        Long assetTypeId = assetTypeMapper.selectIdByName(assetDTO.getAssetType());
+        Long assetTypeId = assetTypeMapper.getIdByName(assetDTO.getAssetType());
         if (assetTypeId == null) {
             return null;
         }
-        Long departmentId = departmentMapper.selectIdByName(assetDTO.getDepartmentName());
+        Long departmentId = departmentMapper.getDepartmentIdByName(assetDTO.getDepartmentName());
         if (departmentId == null) {
             return null;
         }

@@ -48,8 +48,8 @@ public class User extends Model<User> {
     private String salt;
 
     @ApiModelProperty("性别 1-男 2-女")
-    @TableField("sex")
-    private Boolean sex;
+    @TableField("gender")
+    private Boolean gender;
 
     @ApiModelProperty("身份证号")
     @TableField("id_card")

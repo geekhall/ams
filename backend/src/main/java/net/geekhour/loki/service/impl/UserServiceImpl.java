@@ -10,6 +10,7 @@ import net.geekhour.loki.security.UserDetailsServiceImpl;
 import net.geekhour.loki.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -64,7 +65,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
             userDTO.setEmail((String) data.get("email"));
             userDTO.setAge((Integer) data.get("age"));
             userDTO.setStatus((Integer) data.get("status"));
-            userDTO.setGender((String) data.get("gender"));
+            if (data.get("gender") != null ) {
+                userDTO.setGender((Boolean) data.get("gender") ? "男" : "女");
+            }
             userDTO.setAddress( (String) data.get("address"));
             userDTO.setAvatar((String) data.get("avatar"));
             Long departmentId = (Long) data.get("department_id");
@@ -88,5 +91,56 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     @Override
     public Long countUser(String name, Integer offset, Integer pageSize) {
         return userMapper.countUser(name, offset, pageSize);
+    }
+
+    @Override
+    @Transactional
+    public boolean updateUser(UserDTO userDTO) {
+        User selectedUser = userMapper.selectById(userDTO.getId());
+        if (selectedUser == null) {
+            return false;
+        }
+        if (!selectedUser.getUsername().equals(userDTO.getUsername()) &&
+            userMapper.checkUsernameExists(userDTO.getUsername())) {
+            return false; // Username already exists
+        }
+        if (!selectedUser.getPhone().equals(userDTO.getPhone()) &&
+            userMapper.checkPhoneExists(userDTO.getPhone())) {
+            return false; // Phone number already exists
+        }
+        if (!selectedUser.getEmail().equals(userDTO.getEmail()) &&
+            userMapper.checkEmailExists(userDTO.getEmail())) {
+            return false; // Email already exists
+        }
+        User user = mapToUser(userDTO);
+        user.setUpdateTime(LocalDateTime.ofInstant(Instant.ofEpochMilli(System.currentTimeMillis()), ZoneId.systemDefault()));
+        if (user == null) {
+            return false; // Mapping failed
+        }
+        int rowsAffected = userMapper.updateById(user);
+        return rowsAffected > 0;
+    }
+
+    private User mapToUser(UserDTO userDTO) {
+        User user = new User();
+        user.setId(userDTO.getId());
+        user.setName(userDTO.getName());
+        user.setUsername(userDTO.getUsername());
+        user.setPhone(userDTO.getPhone());
+        user.setEmail(userDTO.getEmail());
+        user.setAge(userDTO.getAge());
+        user.setStatus(userDTO.getStatus());
+        user.setGender(userDTO.getGender().equals('男') ? true : false);
+        user.setAddress(userDTO.getAddress());
+        user.setAvatar(userDTO.getAvatar());
+        Long departmentId = departmentMapper.getDepartmentIdByName(userDTO.getDepartment());
+        if (departmentId != null) {
+            user.setDepartmentId(departmentId);
+        }
+        user.setIsLock(userDTO.getIsLocked() ? 1 : 0);
+        user.setIsActive(userDTO.getIsActive() ? 1 : 0);
+        user.setLastLoginTime(userDTO.getLastLoginTime() != null ? userDTO.getLastLoginTime().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli() : null);
+        user.setLastLoginIp(userDTO.getLastLoginIp());
+        return user;
     }
 }

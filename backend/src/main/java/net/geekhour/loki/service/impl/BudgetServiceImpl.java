@@ -225,7 +225,7 @@ public class BudgetServiceImpl extends ServiceImpl<BudgetMapper, Budget> impleme
         if (budgetCategoryId == null) {
             return null;
         }
-        Long departmentId = departmentMapper.selectIdByName(budgetDTO.getDepartmentName());
+        Long departmentId = departmentMapper.getDepartmentIdByName(budgetDTO.getDepartmentName());
         if (departmentId == null) {
             return null;
         }

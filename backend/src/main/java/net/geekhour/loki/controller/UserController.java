@@ -70,6 +70,22 @@ public class UserController {
         }
     }
 
+    @PostMapping("/update")
+    @PreAuthorize("hasRole('ADMIN') || hasAuthority('system:user:update')")
+    public ResponseEntity<?> updateUser(@RequestBody UserDTO userDTO) {
+        if (userDTO.getId() == null) {
+            return ResponseUtil.error(400, "用户ID不能为空");
+        }
+        try {
+            return userService.updateUser(userDTO)
+                    ? ResponseUtil.success(userDTO)
+                    : ResponseUtil.error(500, "更新用户失败");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseUtil.error(500, e.getMessage());
+        }
+    }
+
     /**
      * 删除用户
      * @param id 用户ID

@@ -639,23 +639,7 @@ const handleEdit = async (index: number, row: any) => {
     await fetchBudgetCategories()
     await fetchDepartments()
     await fetchTeams()
-    // Object.assign(editForm, row)
-    editForm.id = row.id
-    editForm.year = row.year
-    editForm.name = row.name
-    editForm.description = row.description
-    editForm.budgetType = row.budgetType
-    editForm.budgetCategory = row.budgetCategory
-    editForm.innovation = row.innovation
-    editForm.amount = row.amount
-    editForm.departmentName = row.departmentName
-    editForm.teamName = row.teamName
-    editForm.priority = row.priority
-    editForm.businessPriority = row.businessPriority
-    editForm.businessDescription = row.businessDescription
-    editForm.plannedStartDate = row.plannedStartDate
-    editForm.remark = row.remark
-    editForm.status = row.status
+    Object.assign(editForm, row)
     editVisible.value = true
   } catch (err) {
     ElMessage.error('获取数据失败')

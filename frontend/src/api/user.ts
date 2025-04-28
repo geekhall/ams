@@ -103,13 +103,15 @@ export const addUser = async (user: UserDTO): Promise<ApiResponse<UserDTO>> => {
 };
 
 // 更新用户
-export const updateUser = async (user: UserDTO): Promise<ApiResponse> => {
-  try {
-    const response = await axios.put(`/api/users/${user.id}`, user);
-    return response.data;
-  } catch (error) {
-    throw new Error(error.response?.data?.message || '更新用户失败');
-  }
+export const updateUser = async (user: UserDTO) => {
+  return await loki.request({
+    url: `/user/update`,
+    method: "POST",
+    data: user,
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
 };
 
 
