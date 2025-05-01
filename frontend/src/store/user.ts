@@ -9,7 +9,7 @@ export const useUserStore = defineStore('user', () => {
   const username = ref<string>('')
   const email = ref<string>('')
   const password = ref<string>('')
-  const sex = ref<number>(0)
+  const gender = ref<number>(0)
   const idCard = ref<string>('')
   const phone = ref<string>('')
   const avatar = ref<string>('')
@@ -22,7 +22,7 @@ export const useUserStore = defineStore('user', () => {
   const getUsername = computed(() => username.value)
   const getEmail = computed(() => email.value || null)
   const getPassword = computed(() => password.value || null)
-  const getSex = computed(() => sex.value || null)
+  const getGender = computed(() => gender.value || null)
   const getIdCard = computed(() => idCard.value || null)
   const getPhone = computed(() => phone.value || null)
   const getAvatar = computed(() => avatar.value || null)
@@ -46,7 +46,7 @@ export const useUserStore = defineStore('user', () => {
     username,
     email,
     password,
-    sex,
+    gender,
     idCard,
     phone,
     avatar,
@@ -59,7 +59,7 @@ export const useUserStore = defineStore('user', () => {
     getUsername,
     getEmail,
     getPassword,
-    getSex,
+    getGender,
     getIdCard,
     getPhone,
     getAvatar,

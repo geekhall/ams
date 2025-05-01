@@ -11,7 +11,7 @@ import java.util.List;
  */
 @Data
 public class UserDTO {
-    private Long id;
+    private String id; // 这里不能使用Long类型，否则前端会发生精度丢失
     private String name;
     private String username;
     private String phone;

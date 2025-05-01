@@ -20,7 +20,7 @@
         <el-table-column prop="intro" label="简介"></el-table-column>
         <el-table-column prop="career" label="职业"></el-table-column>
         <el-table-column prop="age" label="年龄"></el-table-column>
-        <el-table-column prop="sex" label="性别"></el-table-column>
+        <el-table-column prop="gender" label="性别"></el-table-column>
       </el-table>
     </div>
   </div>
@@ -37,7 +37,7 @@ interface TableItem {
   intro: string
   career: string
   age: string
-  sex: string
+  gender: string
 }
 
 const tableData = ref<TableItem[]>([])
@@ -50,7 +50,7 @@ const getData = () => {
       intro: '金牌讲师',
       career: '前端',
       age: '30',
-      sex: '男'
+      gender: '男'
     },
     {
       id: 2,
@@ -58,7 +58,7 @@ const getData = () => {
       intro: '白金讲师',
       career: '后端',
       age: '29',
-      sex: '女'
+      gender: '女'
     },
     {
       id: 3,
@@ -66,7 +66,7 @@ const getData = () => {
       intro: '砖石讲师',
       career: '人工智能',
       age: '29',
-      sex: '男'
+      gender: '男'
     }
   ]
 }
@@ -103,7 +103,7 @@ const handleImport = async () => {
       intro: item['简介'],
       career: item['职业'],
       age: item['年龄'],
-      sex: item['性别']
+      gender: item['性别']
     }
   })
   tableData.value.push(...list)

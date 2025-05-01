@@ -9,7 +9,7 @@ export interface BaseUser {
 export interface User extends BaseUser {
   name: string;
   email?: string;
-  sex?: number;
+  gender?: number;
   idCard?: string;
   phone?: string;
   avatar?: string;
