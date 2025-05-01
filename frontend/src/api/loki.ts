@@ -4,7 +4,7 @@
 import axios from 'axios';
 import { useAuthStore } from '~/store/auth';
 import router from '~/router';
-axios.defaults.baseURL = '/api'; // 设置默认请求地址
+// axios.defaults.baseURL = '/api'; // 设置默认请求地址
 // const API_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:4000/api"
 const API_URL = "/api"
 

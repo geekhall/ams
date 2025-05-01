@@ -148,7 +148,7 @@ export default defineConfig({
         target: 'http://localhost:8888', // 后端服务实际地址
         changeOrigin: true, // 开启代理换源功能，服务器端接收到的请求源为localhost:8888
         // ws: true,        // 支持websocket
-        // rewrite: (path) => path.replace(/^\/api/, '')
+        // rewrite: (path) => path.replace(/^\/api/, '') // 去掉网址中的'/api'
       }
     }
   }
