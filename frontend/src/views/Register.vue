@@ -96,8 +96,8 @@ const validateConfirmPassword = (rule: any, value: string, callback: any) => {
 }
 
 const param = reactive<RegisterInfo>({
-  username: 'user6',
-  email: 'user6@gmail.com',
+  username: 'user10',
+  email: 'user10@gmail.com',
   password: 'password',
   confirm: 'password',
   phone: '13900010001',

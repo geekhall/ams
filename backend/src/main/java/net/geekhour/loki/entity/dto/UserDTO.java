@@ -24,10 +24,10 @@ public class UserDTO {
     private String department;
     private Boolean isActive;
     private Boolean isLocked;
-    private LocalDateTime lastLoginTime;
+    private Long lastLoginTime;
     private String lastLoginIp;
-    private LocalDateTime createTime;
-    private LocalDateTime updateTime;
+    private Long createTime;
+    private Long updateTime;
     private List<String> roles;
     private List<String> permissions;
 }

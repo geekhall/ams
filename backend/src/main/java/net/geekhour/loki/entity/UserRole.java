@@ -46,11 +46,11 @@ public class UserRole extends Model<UserRole> {
 
     @ApiModelProperty("创建时间")
     @TableField(value = "create_time", fill = FieldFill.INSERT)
-    private Date createTime;
+    private Long createTime;
 
     @ApiModelProperty("修改时间")
     @TableField(value = "update_time", fill = FieldFill.INSERT_UPDATE)
-    private Date updateTime;
+    private Long updateTime;
 
     @ApiModelProperty("逻辑删除")
     @TableField("deleted")

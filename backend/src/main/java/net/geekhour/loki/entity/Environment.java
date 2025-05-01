@@ -77,11 +77,11 @@ public class Environment extends Model<Environment> {
 
     @ApiModelProperty("使用开始时间")
     @TableField("use_from")
-    private Date useFrom;
+    private Long useFrom;
 
     @ApiModelProperty("使用结束时间")
     @TableField("use_to")
-    private Date useTo;
+    private Long useTo;
 
     @ApiModelProperty("版本号")
     @TableField("version")
@@ -90,11 +90,11 @@ public class Environment extends Model<Environment> {
 
     @ApiModelProperty("创建时间")
     @TableField(value = "create_time", fill = FieldFill.INSERT)
-    private Date createTime;
+    private Long createTime;
 
     @ApiModelProperty("修改时间")
     @TableField(value = "update_time", fill = FieldFill.INSERT_UPDATE)
-    private Date updateTime;
+    private Long updateTime;
 
     @ApiModelProperty("逻辑删除")
     @TableField("deleted")

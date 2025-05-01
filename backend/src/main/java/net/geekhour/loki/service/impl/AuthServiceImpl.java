@@ -57,8 +57,6 @@ public class AuthServiceImpl implements IAuthService {
         String salt = String.valueOf(random.nextInt(1000000));
         user.setSalt(salt);
         user.setStatus(0);
-//        user.setVersion(1);
-//        user.setCreateTime(LocalDateTime.now());
 
         // 保存用户信息
         userMapper.insert(user);

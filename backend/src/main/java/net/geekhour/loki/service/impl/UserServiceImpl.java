@@ -42,7 +42,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
 
     @Override
     public void saveUserDetails(User user) {
-//        user.setCreateTime(LocalDateTime.ofInstant(Instant.ofEpochMilli(System.currentTimeMillis()), ZoneId.systemDefault()));
         userDetailsService.save(user);
     }
 
@@ -77,10 +76,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
             }
             userDTO.setIsActive(data.get("is_active") != null && ((Integer) data.get("is_active") == 1));
             userDTO.setIsLocked(data.get("is_lock") != null && ((Integer) data.get("is_active") == 1));
-            userDTO.setLastLoginTime(data.get("last_login_time") != null ? LocalDateTime.parse((String) data.get("last_login_time")) : null);
+            userDTO.setLastLoginTime(data.get("last_login_time") != null ? (Long) data.get("last_login_time") : null);
             userDTO.setLastLoginIp((String) data.get("last_login_ip"));
-            userDTO.setCreateTime(data.get("create_time") != null ? LocalDateTime.parse((String) data.get("create_time")) : null);
-            userDTO.setUpdateTime(data.get("update_time") != null ? LocalDateTime.parse((String) data.get("update_time")) : null);
+            userDTO.setCreateTime(data.get("create_time") != null ? (Long) data.get("create_time") : null);
+            userDTO.setUpdateTime(data.get("update_time") != null ? (Long) data.get("update_time") : null);
             userDTO.setRoles(data.get("roles") != null ? List.of(((String) data.get("roles")).split(",")) : null);
             userDTO.setPermissions(data.get("permissions") != null ? List.of(((String) data.get("permissions")).split(",")) : null);
             userList.add(userDTO);
@@ -139,7 +138,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         }
         user.setIsLock(userDTO.getIsLocked() ? 1 : 0);
         user.setIsActive(userDTO.getIsActive() ? 1 : 0);
-        user.setLastLoginTime(userDTO.getLastLoginTime() != null ? userDTO.getLastLoginTime().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli() : null);
+        user.setLastLoginTime(userDTO.getLastLoginTime());
         user.setLastLoginIp(userDTO.getLastLoginIp());
         return user;
     }
