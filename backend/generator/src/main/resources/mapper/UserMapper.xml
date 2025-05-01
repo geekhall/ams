@@ -9,7 +9,7 @@
         <result column="username" property="username" />
         <result column="password" property="password" />
         <result column="salt" property="salt" />
-        <result column="sex" property="sex" />
+        <result column="gender" property="gender" />
         <result column="token" property="token" />
         <result column="token_expire_time" property="tokenExpireTime" />
         <result column="id_card" property="idCard" />
@@ -34,7 +34,9 @@
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
         id,
-        name, username, password, salt, sex, token, token_expire_time, id_card, phone, avatar, age, email, department_id, role_id, status, is_lock, is_active, last_login_time, last_login_ip, address, version, create_time, update_time, deleted
+        name, username, password, salt, gender, token, token_expire_time, id_card, phone, avatar,
+        age, email, department_id, role_id, status, is_lock, is_active, last_login_time,
+        last_login_ip, address, version, create_time, update_time, deleted
     </sql>
 
 </mapper>

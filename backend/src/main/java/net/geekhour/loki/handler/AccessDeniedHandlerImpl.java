@@ -33,6 +33,5 @@ public class AccessDeniedHandlerImpl implements AccessDeniedHandler {
             e.printStackTrace();
             response.getWriter().write(e.getMessage());
         }
-
     }
 }

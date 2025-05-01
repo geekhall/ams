@@ -72,10 +72,13 @@ public class UserController {
     @PostMapping("/update")
     @PreAuthorize("hasRole('ADMIN') || hasAuthority('system:user:update')")
     public ResponseEntity<?> updateUser(@RequestBody UserDTO userDTO) {
+        System.out.println("updateUser: " + userDTO);
         if (userDTO.getId() == null) {
+            System.out.println("用户ID不能为空");
             return ResponseUtil.error(400, "用户ID不能为空");
         }
         try {
+            System.out.println("updateUser: " + userDTO);
             return userService.updateUser(userDTO)
                     ? ResponseUtil.success(userDTO)
                     : ResponseUtil.error(500, "更新用户失败");

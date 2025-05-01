@@ -57,7 +57,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         for (Map<String, Object> data : rawData) {
             System.out.println(data);
             UserDTO userDTO = new UserDTO();
-            userDTO.setId((Long) data.get("id"));
+            userDTO.setId( String.valueOf(data.get("id")));
             userDTO.setName((String) data.get("name"));
             userDTO.setUsername((String) data.get("username"));
             userDTO.setPhone((String) data.get("phone"));
@@ -95,25 +95,33 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     @Override
     @Transactional
     public boolean updateUser(UserDTO userDTO) {
+        System.out.println("### UserServiceImpl.updateUser: " + userDTO);
         User selectedUser = userMapper.selectById(userDTO.getId());
+        System.out.println("### UserServiceImpl.updateUser userDTO.getId(): " + userDTO.getId());
+        System.out.println("### UserServiceImpl.updateUser selectedUser: " + selectedUser);
         if (selectedUser == null) {
+            System.out.println("### UserServiceImpl.updateUser: User not found");
             return false;
         }
         if (!selectedUser.getUsername().equals(userDTO.getUsername()) &&
             userMapper.checkUsernameExists(userDTO.getUsername())) {
+            System.out.println("### UserServiceImpl.updateUser: Username already exists");
             return false; // Username already exists
         }
         if (!selectedUser.getPhone().equals(userDTO.getPhone()) &&
             userMapper.checkPhoneExists(userDTO.getPhone())) {
+            System.out.println("### UserServiceImpl.updateUser: Phone number already exists");
             return false; // Phone number already exists
         }
         if (!selectedUser.getEmail().equals(userDTO.getEmail()) &&
             userMapper.checkEmailExists(userDTO.getEmail())) {
+            System.out.println("### UserServiceImpl.updateUser: Email already exists");
             return false; // Email already exists
         }
         User user = mapToUser(userDTO);
 //        user.setUpdateTime(LocalDateTime.ofInstant(Instant.ofEpochMilli(System.currentTimeMillis()), ZoneId.systemDefault()));
         if (user == null) {
+            System.out.println("### UserServiceImpl.updateUser: Mapping failed");
             return false; // Mapping failed
         }
         int rowsAffected = userMapper.updateById(user);
@@ -122,7 +130,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
 
     private User mapToUser(UserDTO userDTO) {
         User user = new User();
-        user.setId(userDTO.getId());
+        user.setId(Long.valueOf(userDTO.getId()));
         user.setName(userDTO.getName());
         user.setUsername(userDTO.getUsername());
         user.setPhone(userDTO.getPhone());

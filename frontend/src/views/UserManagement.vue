@@ -168,6 +168,9 @@
     <!-- 编辑弹出框 -->
     <el-dialog title="编辑用户" v-model="editVisible" width="40%">
       <el-form label-width="100px">
+        <el-form-item label="ID">
+          <el-input v-model="editForm.id" disabled></el-input>
+        </el-form-item>
         <el-form-item label="用户名">
           <el-input v-model="editForm.username" disabled></el-input>
         </el-form-item>
@@ -251,6 +254,7 @@ import { getUserList, addUser, updateUser } from '~/api/user'
 import { UserDTO } from '~/types/user'
 import { useDepartment } from '@/hooks/useDepartment'
 import { useTeam } from '@/hooks/useTeam'
+import { table } from 'console'
 
 const { departments, fetchDepartments } = useDepartment()
 const { teams, fetchTeams } = useTeam()
@@ -332,6 +336,7 @@ const saveAdd = async () => {
 
 const editVisible = ref(false)
 let editForm: UserDTO = reactive({
+  id: '',
   username: '',
   name: '',
   phone: '',
@@ -390,7 +395,6 @@ const getData = async () => {
 
     if (res.code === 200) {
       console.log('#### res.data.items', res.data.items)
-
       tableData.value = res.data.items
       pageTotal.value = res.data.total
     } else {

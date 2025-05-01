@@ -1,15 +1,15 @@
 package net.geekhour.loki.entity;
 
+import java.io.Serializable;
+import java.util.Date;
+
 import com.baomidou.mybatisplus.annotation.FieldFill;
-import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.Version;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
-import java.io.Serializable;
-import java.util.Date;
+
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
@@ -50,8 +50,8 @@ public class User extends Model<User> {
     private String salt;
 
     @ApiModelProperty("性别 1-男 2-女")
-    @TableField("sex")
-    private Boolean sex;
+    @TableField("gender")
+    private Boolean gender;
 
     @ApiModelProperty("token")
     @TableField("token")
