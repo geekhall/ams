@@ -1,5 +1,6 @@
 package net.geekhour.loki.controller;
 
+import lombok.extern.slf4j.Slf4j;
 import net.geekhour.loki.common.RedisCache;
 import net.geekhour.loki.common.ResponseUtil;
 import net.geekhour.loki.entity.User;
@@ -34,6 +35,7 @@ import java.util.stream.Collectors;
  * @author Jasper Yang
  * @create 2024/11/03 22:58
  */
+@Slf4j
 @CrossOrigin
 @RestController
 @RequestMapping("/api/auth")
@@ -63,10 +65,14 @@ public class AuthController {
     @PostMapping("/register")
     public ResponseEntity<?> register(@Valid @RequestBody RegisterRequest registerRequest) {
         if (userMapper.existsByUsername(registerRequest.getUsername())) {
+            System.out.println("Username {} already exists: " + registerRequest.getUsername());
+            log.error("Username {} already exists", registerRequest.getUsername());
             return ResponseUtil.error(400, "用户名已被使用");
         }
 
         if (userMapper.existsByEmail(registerRequest.getEmail())) {
+            System.out.println("Email {} already exists: " + registerRequest.getEmail());
+            log.error("Email {} already exists", registerRequest.getEmail());
             return ResponseUtil.error(400, "邮箱已被使用");
         }
 

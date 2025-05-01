@@ -20,13 +20,19 @@ import java.util.Map;
 @Component
 public class AccessDeniedHandlerImpl implements AccessDeniedHandler {
     @Override
-    public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException, ServletException {
-        ResponseEntity responseEntity = ResponseEntity.status(HttpStatus.FORBIDDEN).body(
-                Map.of("code", HttpStatus.FORBIDDEN.value(),
-                        "message", "无权限访问",
-                        "data", Map.of("path", request.getRequestURI()))
-        );
-        System.out.println("########## 403  responseEntity: " + responseEntity);
-        response.getWriter().write(responseEntity.toString());
+    public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException {
+        try {
+            ResponseEntity responseEntity = ResponseEntity.status(HttpStatus.FORBIDDEN).body(
+                    Map.of("code", HttpStatus.FORBIDDEN.value(),
+                            "message", "无权限访问",
+                            "data", Map.of("path", request.getRequestURI()))
+            );
+            System.out.println("########## 403  responseEntity: " + responseEntity);
+            response.getWriter().write(responseEntity.toString());
+        } catch (Exception e) {
+            e.printStackTrace();
+            response.getWriter().write(e.getMessage());
+        }
+
     }
 }

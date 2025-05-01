@@ -33,12 +33,19 @@ public class AuthenticationEntryPointImpl implements AuthenticationEntryPoint {
                          HttpServletResponse response,
                          AuthenticationException authException)
             throws IOException, ServletException {
-        String localizedMessage = "AuthenticationEntryPointImpl.commence 001 未认证，请先登录";
-        ResponseEntity responseEntity = ResponseEntity.status(HttpStatus.UNAUTHORIZED.value()).body(
-                Map.of("code", HttpStatus.UNAUTHORIZED.value(), "message", localizedMessage,
-                        "data", Map.of("path", request.getRequestURI()))
-        );
-        System.out.println("########## 401  responseEntity: " + responseEntity);
-        response.getWriter().write(responseEntity.toString());
+        try {
+            String localizedMessage = "AuthenticationEntryPointImpl.commence 001 未认证，请先登录";
+            ResponseEntity responseEntity = ResponseEntity.status(HttpStatus.UNAUTHORIZED.value()).body(
+                    Map.of("code", HttpStatus.UNAUTHORIZED.value(), "message", localizedMessage,
+                            "data", Map.of("path", request.getRequestURI()))
+            );
+            System.out.println("########## 401  responseEntity: " + responseEntity);
+            response.getWriter().write(responseEntity.toString());
+        } catch (Exception e) {
+            e.printStackTrace();
+            response.setStatus(HttpStatus.UNAUTHORIZED.value());
+            response.getWriter().write(e.getMessage());
+        }
+
     }
 }
