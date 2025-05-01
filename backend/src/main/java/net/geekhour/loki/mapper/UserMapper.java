@@ -22,9 +22,6 @@ import java.util.Map;
 @Mapper
 public interface UserMapper extends BaseMapper<User> {
 
-    @Select("select * from h_user where id = #{id}")
-    User selectById(Long id);
-
     @Select("select * from h_user where username = #{username}")
     User selectByUsername(String username);
 

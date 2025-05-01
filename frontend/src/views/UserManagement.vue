@@ -92,7 +92,7 @@
 
     <!-- 新增弹出框 -->
     <el-dialog title="新增用户" v-model="addVisible" width="40%">
-      <el-form label-width="100px">
+      <el-form ref="addFormRef" :model="addForm" :rules="rules" label-width="100px">
         <el-form-item label="用户名">
           <el-input v-model="addForm.username"></el-input>
         </el-form-item>
@@ -167,7 +167,7 @@
 
     <!-- 编辑弹出框 -->
     <el-dialog title="编辑用户" v-model="editVisible" width="40%">
-      <el-form label-width="100px">
+      <el-form ref="editFormRef" :model="editForm" :rules="rules" label-width="100px">
         <el-form-item label="ID">
           <el-input v-model="editForm.id" disabled></el-input>
         </el-form-item>
@@ -247,14 +247,13 @@
 
 <script lang="ts" setup>
 import { ref, reactive, onMounted } from 'vue'
-import { ElMessage, ElMessageBox } from 'element-plus'
+import { ElMessage, ElMessageBox, FormInstance, FormRules } from 'element-plus'
 import { Delete, Edit, Search, Plus } from '@element-plus/icons-vue'
 import { useUserStore } from '~/store/user'
 import { getUserList, addUser, updateUser } from '~/api/user'
 import { UserDTO } from '~/types/user'
 import { useDepartment } from '@/hooks/useDepartment'
 import { useTeam } from '@/hooks/useTeam'
-import { table } from 'console'
 
 const { departments, fetchDepartments } = useDepartment()
 const { teams, fetchTeams } = useTeam()
@@ -267,6 +266,64 @@ const roleOptions = [
   { value: 'ROLE_TEST', label: '测试用户' },
   { value: 'ROLE_GUEST', label: '游客' }
 ]
+
+const validatePassword = (rule: any, value: string, callback: any) => {
+  if (value === '') {
+    ElMessage.error('请输入密码')
+  } else if (value.length < 6) {
+    ElMessage.error('密码长度不能小于6位')
+  } else {
+    callback()
+  }
+}
+
+const validateAddConfirmPassword = (rule: any, value: string, callback: any) => {
+  if (value === '') {
+    ElMessage.error('请再次输入密码')
+  } else if (value !== addForm.password) {
+    ElMessage.error('两次输入密码不一致!')
+  } else {
+    callback()
+  }
+}
+
+const validateEditConfirmPassword = (rule: any, value: string, callback: any) => {
+  if (value === '') {
+    ElMessage.error('请再次输入密码')
+  } else if (value !== editForm.password) {
+    ElMessage.error('两次输入密码不一致!')
+  } else {
+    callback()
+  }
+}
+
+const rules: FormRules = {
+  username: [{ required: true, message: '请输入用户名', trigger: 'blur' }],
+  password: [
+    { required: true, message: '请输入密码', trigger: 'blur' },
+    { validator: validatePassword, trigger: 'blur' }
+  ],
+  confirmPassword: [
+    { required: true, message: '请再次确认密码', trigger: 'blur' },
+    { validator: validateAddConfirmPassword, trigger: 'blur' }
+  ],
+  name: [{ required: true, message: '请输入昵称', trigger: 'blur' }],
+  phone: [
+    { required: true, message: '请输入手机号', trigger: 'blur' },
+    {
+      pattern: /^1[3456789]\d{9}$/,
+      message: '请输入正确的电话号码',
+      trigger: ['blur', 'change']
+    }
+  ],
+  email: [{ required: true, message: '请输入邮箱', trigger: ['blur', 'change'] }],
+  department: [{ required: true, message: '请选择部门', trigger: 'change' }],
+  roles: [{ required: true, message: '请选择角色', trigger: 'change' }]
+}
+// 表单定义
+const addFormRef = ref<FormInstance>()
+const editFormRef = ref<FormInstance>()
+
 const query = reactive({
   name: '',
   pageIndex: 1,
@@ -276,7 +333,7 @@ const tableData = ref<UserDTO[]>([])
 const pageTotal = ref(0)
 const userStore = useUserStore()
 const addVisible = ref(false)
-let addForm: UserDTO = reactive({
+let addForm = reactive<UserDTO>({
   username: 'testuser1',
   password: 'password',
   confirmPassword: 'password',
@@ -312,30 +369,32 @@ const getMaxPageIndex = () => {
 
 // 保存新增
 const saveAdd = async () => {
-  // comfirm password
-  if (addForm.password !== addForm.confirmPassword) {
-    ElMessage.error('密码不一致')
-    return
-  }
+  if (!addFormRef.value) return
 
   addVisible.value = false
-  let errorMessage = ''
-  try {
-    const res = await addUser(addForm)
-    if (res.code === 200) {
-      ElMessage.success('新增成功')
-      query.pageIndex = getMaxPageIndex()
-      getData()
+
+  await addFormRef.value.validate(async (valid: boolean) => {
+    if (valid) {
+      try {
+        const res = await addUser(addForm)
+        if (res.code === 200) {
+          ElMessage.success('新增成功')
+          query.pageIndex = getMaxPageIndex()
+          getData()
+        } else {
+          ElMessage.error(res.message)
+        }
+      } catch (error) {
+        ElMessage.error(error instanceof Error ? error.message : '新增失败')
+      }
     } else {
-      ElMessage.error(res.message)
+      ElMessage.error('新增失败，验证未通过')
     }
-  } catch (error) {
-    ElMessage.error(error instanceof Error ? error.message : '新增失败')
-  }
+  })
 }
 
 const editVisible = ref(false)
-let editForm: UserDTO = reactive({
+let editForm = reactive<UserDTO>({
   id: '',
   username: '',
   name: '',
@@ -364,24 +423,27 @@ const handleEdit = async (index: number, row: any) => {
 }
 
 const saveEdit = async () => {
-  // comfirm password
-  if (editForm.password !== editForm.confirmPassword) {
-    ElMessage.error('密码不一致')
-    return
-  }
-
+  if (!editFormRef.value) return
   editVisible.value = false
-  try {
-    const res = await updateUser(editForm)
-    if (res.code === 200) {
-      ElMessage.success('修改成功')
-      getData()
+
+  await editFormRef.value.validate(async (valid: boolean) => {
+    if (valid) {
+      try {
+        const res = await updateUser(editForm)
+        if (res.code === 200) {
+          ElMessage.success('修改成功')
+          getData()
+        } else {
+          ElMessage.error(res.message)
+        }
+      } catch (error) {
+        ElMessage.error(error instanceof Error ? error.message : '修改失败')
+      }
     } else {
-      ElMessage.error(res.message)
+      console.log('#### editFormRef.value', editFormRef.value)
+      ElMessage.error('修改失败，验证未通过')
     }
-  } catch (error) {
-    ElMessage.error(error instanceof Error ? error.message : '修改失败')
-  }
+  })
 }
 
 // 获取表格数据

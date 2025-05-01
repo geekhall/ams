@@ -108,15 +108,19 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
             System.out.println("### UserServiceImpl.updateUser: Username already exists");
             return false; // Username already exists
         }
-        if (!selectedUser.getPhone().equals(userDTO.getPhone()) &&
-            userMapper.checkPhoneExists(userDTO.getPhone())) {
-            System.out.println("### UserServiceImpl.updateUser: Phone number already exists");
-            return false; // Phone number already exists
+        if (selectedUser.getPhone() != null) {
+            if (!selectedUser.getPhone().equals(userDTO.getPhone()) &&
+                    userMapper.checkPhoneExists(userDTO.getPhone())) {
+                System.out.println("### UserServiceImpl.updateUser: Phone number already exists");
+                return false; // Phone number already exists
+            }
         }
-        if (!selectedUser.getEmail().equals(userDTO.getEmail()) &&
-            userMapper.checkEmailExists(userDTO.getEmail())) {
-            System.out.println("### UserServiceImpl.updateUser: Email already exists");
-            return false; // Email already exists
+        if (selectedUser.getEmail() != null) {
+            if (!selectedUser.getEmail().equals(userDTO.getEmail()) &&
+                    userMapper.checkEmailExists(userDTO.getEmail())) {
+                System.out.println("### UserServiceImpl.updateUser: Email already exists");
+                return false; // Email already exists
+            }
         }
         User user = mapToUser(userDTO);
 //        user.setUpdateTime(LocalDateTime.ofInstant(Instant.ofEpochMilli(System.currentTimeMillis()), ZoneId.systemDefault()));

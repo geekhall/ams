@@ -181,17 +181,10 @@ const handleRegister = async () => {
         }
 
         ElMessage.success('注册成功')
-        console.log('register success ')
         loading.value = false
         router.push('/login')
       } catch (error) {
-        console.log('register error 001')
-        console.log(error)
-        if (error instanceof Error) {
-          ElMessage.error(error.message)
-        } else {
-          ElMessage.error('注册失败')
-        }
+        ElMessage.error(error instanceof Error ? error.message : '注册失败')
         loading.value = false
       }
     } else {

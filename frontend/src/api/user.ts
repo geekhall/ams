@@ -1,6 +1,7 @@
 import loki from "./loki";
 import { UserListResponse, UserDTO } from "@/types/user";
 import { ApiResponse } from "@/types/index";
+import { AxiosRequestConfig } from "axios";
 
 // 用户注册
 export const userRegister = async (params: any) => {
@@ -87,7 +88,7 @@ export const getUserList = async (
     url: "/user/list",
     method: "POST",
     data: params || {}, // 如果没有参数，传递空对象
-  });
+  } as AxiosRequestConfig);
   console.log("res", res);
 
   return res;
@@ -104,15 +105,16 @@ export const addUser = async (user: UserDTO): Promise<ApiResponse<UserDTO>> => {
 };
 
 // 更新用户
-export const updateUser = async (user: UserDTO): Promise<ApiResponse<UserDTO>> => {
+export const updateUser = async (
+  user: UserDTO
+): Promise<ApiResponse<UserDTO>> => {
   return await loki.request({
     url: `/user/update`,
     method: "POST",
-    data: user,
-    headers: {
-      "Content-Type": "application/json",
+    data: {
+      ...user,
     },
-  });
+  } as AxiosRequestConfig);
 };
 
 
