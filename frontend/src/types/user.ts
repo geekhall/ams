@@ -3,6 +3,7 @@ import { ApiResponse } from '.';
 export interface BaseUser {
   username: string;
   password?: string;
+  confirmPassword?: string;
 }
 
 export interface User extends BaseUser {

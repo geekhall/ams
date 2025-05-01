@@ -96,6 +96,12 @@
         <el-form-item label="用户名">
           <el-input v-model="addForm.username"></el-input>
         </el-form-item>
+        <el-form-item label="密码">
+          <el-input v-model="addForm.password" type="password"></el-input>
+        </el-form-item>
+        <el-form-item label="确认密码">
+          <el-input v-model="addForm.confirmPassword" type="password"></el-input>
+        </el-form-item>
         <el-form-item label="昵称">
           <el-input v-model="addForm.name"></el-input>
         </el-form-item>
@@ -164,6 +170,12 @@
       <el-form label-width="100px">
         <el-form-item label="用户名">
           <el-input v-model="editForm.username" disabled></el-input>
+        </el-form-item>
+        <el-form-item label="密码">
+          <el-input v-model="editForm.password" type="password"></el-input>
+        </el-form-item>
+        <el-form-item label="确认密码">
+          <el-input v-model="editForm.confirmPassword" type="password"></el-input>
         </el-form-item>
         <el-form-item label="昵称">
           <el-input v-model="editForm.name"></el-input>
@@ -261,7 +273,9 @@ const pageTotal = ref(0)
 const userStore = useUserStore()
 const addVisible = ref(false)
 let addForm: UserDTO = reactive({
-  username: '测试用户1',
+  username: 'testuser1',
+  password: 'password',
+  confirmPassword: 'password',
   name: '测试昵称1',
   phone: '13911113333',
   email: 'test1@gmail.com',
@@ -280,7 +294,7 @@ const handleAdd = async () => {
     await fetchTeams()
     addVisible.value = true
   } catch (error) {
-    ElMessage.error('获取数据失败')
+    ElMessage.error(error instanceof Error ? error.message : '获取数据失败')
   }
 }
 const getMaxPageIndex = () => {
@@ -294,7 +308,14 @@ const getMaxPageIndex = () => {
 
 // 保存新增
 const saveAdd = async () => {
+  // comfirm password
+  if (addForm.password !== addForm.confirmPassword) {
+    ElMessage.error('密码不一致')
+    return
+  }
+
   addVisible.value = false
+  let errorMessage = ''
   try {
     const res = await addUser(addForm)
     if (res.code === 200) {
@@ -304,8 +325,8 @@ const saveAdd = async () => {
     } else {
       ElMessage.error(res.message)
     }
-  } catch (err) {
-    ElMessage.error('新增失败')
+  } catch (error) {
+    ElMessage.error(error instanceof Error ? error.message : '新增失败')
   }
 }
 
@@ -333,11 +354,17 @@ const handleEdit = async (index: number, row: any) => {
     Object.assign(editForm, row) // 将选中行的数据赋值到编辑表单
     editVisible.value = true
   } catch (error) {
-    ElMessage.error('获取数据失败')
+    ElMessage.error(error instanceof Error ? error.message : '获取数据失败')
   }
 }
 
 const saveEdit = async () => {
+  // comfirm password
+  if (editForm.password !== editForm.confirmPassword) {
+    ElMessage.error('密码不一致')
+    return
+  }
+
   editVisible.value = false
   try {
     const res = await updateUser(editForm)
@@ -347,8 +374,8 @@ const saveEdit = async () => {
     } else {
       ElMessage.error(res.message)
     }
-  } catch (err) {
-    ElMessage.error('修改失败')
+  } catch (error) {
+    ElMessage.error(error instanceof Error ? error.message : '修改失败')
   }
 }
 
@@ -367,10 +394,13 @@ const getData = async () => {
       tableData.value = res.data.items
       pageTotal.value = res.data.total
     } else {
+      console.log('#### res.code', res.code)
+      console.log('#### res.message', res.message)
+      console.log('#### res.data', res.data)
       ElMessage.error(res.message)
     }
   } catch (error) {
-    ElMessage.error('获取数据失败')
+    ElMessage.error(error instanceof Error ? error.message : '获取数据失败')
   }
 }
 onMounted(() => {
@@ -394,7 +424,7 @@ const handleSearch = async () => {
   try {
     await getData()
   } catch (error) {
-    ElMessage.error('获取数据失败')
+    ElMessage.error(error instanceof Error ? error.message : '获取数据失败')
   }
 }
 // 分页导航
@@ -404,7 +434,7 @@ const handlePageChange = async (val: number) => {
   try {
     await getData()
   } catch (error) {
-    ElMessage.error('获取数据失败')
+    ElMessage.error(error instanceof Error ? error.message : '获取数据失败')
   }
 }
 

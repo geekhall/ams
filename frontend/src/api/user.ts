@@ -83,11 +83,15 @@ export const getUserList = async (
     pageSize: number;
   }
 ): Promise<UserListResponse> => {
-  return await loki.request({
+  const res: UserListResponse = await loki.request({
     url: "/user/list",
     method: "POST",
     data: params || {}, // 如果没有参数，传递空对象
   });
+  console.log("res", res);
+
+  return res;
+
 };
 
 // 添加用户
@@ -95,15 +99,12 @@ export const addUser = async (user: UserDTO): Promise<ApiResponse<UserDTO>> => {
   return await loki.request({
     url: "/auth/register",
     method: "POST",
-    data: user,
-    headers: {
-      "Content-Type": "application/json",
-    },
+    data: user
   });
 };
 
 // 更新用户
-export const updateUser = async (user: UserDTO) => {
+export const updateUser = async (user: UserDTO): Promise<ApiResponse<UserDTO>> => {
   return await loki.request({
     url: `/user/update`,
     method: "POST",
