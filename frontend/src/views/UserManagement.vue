@@ -102,7 +102,7 @@
 
 <script lang="ts" setup>
 import { ref, reactive, onMounted } from 'vue'
-import { ElMessage, ElMessageBox, FormInstance, FormRules } from 'element-plus'
+import { ElMessage, ElMessageBox, FormInstance } from 'element-plus'
 import { Delete, Edit, Search, Plus } from '@element-plus/icons-vue'
 import { useUserStore } from '~/store/user'
 import { getUserList, addUser, updateUser } from '~/api/user'
@@ -171,7 +171,6 @@ const openEditDialog = (idx: number, row: UserDTO) => {
 }
 
 // 表单定义
-const addFormRef = ref<FormInstance>()
 const editFormRef = ref<FormInstance>()
 
 const query = reactive({
@@ -181,32 +180,6 @@ const query = reactive({
 })
 const tableData = ref<UserDTO[]>([])
 const pageTotal = ref(0)
-const userStore = useUserStore()
-const addVisible = ref(false)
-let addForm = reactive<UserDTO>({
-  username: 'testuser1',
-  password: 'password',
-  confirmPassword: 'password',
-  name: '测试昵称1',
-  phone: '13911113333',
-  email: 'test1@gmail.com',
-  avatar: '',
-  department: '',
-  roles: [],
-  permissions: [],
-  status: 1,
-  isActive: true,
-  isLocked: false
-})
-
-const getMaxPageIndex = () => {
-  if (pageTotal.value === 0) {
-    return 1
-  }
-
-  const maxPageIndex = Math.ceil((pageTotal.value + 1) / query.pageSize)
-  return maxPageIndex > 0 ? maxPageIndex : 1
-}
 
 const editVisible = ref(false)
 let editForm = reactive<UserDTO>({
@@ -223,30 +196,6 @@ let editForm = reactive<UserDTO>({
   isActive: true,
   isLocked: false
 })
-
-const saveEdit = async () => {
-  if (!editFormRef.value) return
-  editVisible.value = false
-
-  await editFormRef.value.validate(async (valid: boolean) => {
-    if (valid) {
-      try {
-        const res = await updateUser(editForm)
-        if (res.code === 200) {
-          ElMessage.success('修改成功')
-          getData()
-        } else {
-          ElMessage.error(res.message)
-        }
-      } catch (error) {
-        ElMessage.error(error instanceof Error ? error.message : '修改失败')
-      }
-    } else {
-      console.log('#### editFormRef.value', editFormRef.value)
-      ElMessage.error('修改失败，验证未通过')
-    }
-  })
-}
 
 // 获取表格数据
 const getData = async () => {
@@ -279,12 +228,6 @@ onMounted(() => {
   }
   getData()
 })
-
-const handleClear = () => {
-  query.name = ''
-  query.pageIndex = 1
-  getData()
-}
 
 // 搜索操作
 const handleSearch = async () => {
