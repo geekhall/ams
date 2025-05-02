@@ -196,7 +196,11 @@ watch(
 watch(
   () => props.formData,
   (newVal) => {
-    Object.assign(formData, newVal)
+    if (newVal) {
+      Object.keys(newVal).forEach((key) => {
+        ;(formData as any)[key] = (newVal as any)[key]
+      })
+    }
   },
   { deep: true }
 )
