@@ -72,11 +72,12 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, watch, defineProps, defineEmits, onMounted } from 'vue'
+import { ref, watch, defineProps, defineEmits, onMounted, reactive } from 'vue'
 import { ElMessage, FormInstance, FormRules } from 'element-plus'
 import { useDepartment } from '@/hooks/useDepartment'
 import { useTeam } from '@/hooks/useTeam'
 import { UserDTO } from '@/types/user'
+import { PropType } from 'vue'
 
 const { departments, fetchDepartments } = useDepartment()
 const { teams, fetchTeams } = useTeam()
@@ -94,14 +95,17 @@ const roleOptions = [
 const props = defineProps({
   visible: Boolean,
   isEdit: Boolean,
-  formData: ref<UserDTO>
+  formData: {
+    type: Object as PropType<UserDTO>,
+    required: true
+  }
 })
 const emit = defineEmits(['update:visible', 'save'])
 
 const dialogVisible = ref(props.visible) // 本地管理 visible 的状态
 
 const formRef = ref<FormInstance>()
-let formData = ref({ ...props.formData })
+const formData = reactive<UserDTO>({ ...props.formData })
 const validatePassword = (rule: any, value: string, callback: any) => {
   if (value === '') {
     ElMessage.error('请输入密码')
@@ -140,47 +144,23 @@ const rules: FormRules = {
 
 const handleSave = async () => {
   if (props.isEdit) {
-    formData.value.password = ''
-    formData.value.confirmPassword = ''
+    formData.password = ''
+    formData.confirmPassword = ''
   }
-  if (!formData.value) return
+  if (!formData) return
 
-  if (formData.value.roles.length === 0) {
+  if (formData.roles.length === 0) {
     ElMessage.error('请至少选择一个角色')
     return
   }
 
+  if (!formRef.value) return
   await formRef.value.validate(async (valid: boolean) => {
     if (valid) {
-      emit('save', formData.value)
+      emit('save', formData)
       emit('update:visible', false)
     } else {
       ElMessage.error('表单验证失败')
-    }
-  })
-}
-
-// 保存新增
-const saveAdd = async () => {
-  if (!formData.value) return
-
-  dialogVisible.value = false
-
-  await formData.value.validate(async (valid: boolean) => {
-    if (valid) {
-      try {
-        const res = await addUser(addForm)
-        if (res.code === 200) {
-          ElMessage.success('新增成功')
-          // query.pageIndex = getMaxPageIndex()
-        } else {
-          ElMessage.error(res.message)
-        }
-      } catch (error) {
-        ElMessage.error(error instanceof Error ? error.message : '新增失败')
-      }
-    } else {
-      ElMessage.error('新增失败，验证未通过')
     }
   })
 }
@@ -216,7 +196,7 @@ watch(
 watch(
   () => props.formData,
   (newVal) => {
-    formData.value = { ...newVal }
+    Object.assign(formData, newVal)
   },
   { deep: true }
 )
