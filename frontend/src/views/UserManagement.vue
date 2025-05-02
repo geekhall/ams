@@ -4,7 +4,7 @@
     <div class="handle-box">
       <el-input v-model="query.name" placeholder="用户名" class="handle-input mr10"></el-input>
       <el-button type="primary" :icon="Search" @click="handleSearch">搜索</el-button>
-      <el-button type="primary" :icon="Plus" @click="handleAdd">新增</el-button>
+      <el-button type="primary" :icon="Plus" @click="openAddDialog">新增</el-button>
     </div>
     <el-table
       :data="tableData"
@@ -62,7 +62,7 @@
           <el-button
             text
             :icon="Edit"
-            @click="handleEdit(scope.$index, scope.row)"
+            @click="openEditDialog(scope.$index, scope.row)"
             v-permission="15"
           >
             编辑
@@ -90,158 +90,13 @@
       ></el-pagination>
     </div>
 
-    <!-- 新增弹出框 -->
-    <el-dialog title="新增用户" v-model="addVisible" width="40%">
-      <el-form ref="addFormRef" :model="addForm" :rules="rules" label-width="100px">
-        <el-form-item label="用户名">
-          <el-input v-model="addForm.username"></el-input>
-        </el-form-item>
-        <el-form-item label="密码">
-          <el-input v-model="addForm.password" type="password"></el-input>
-        </el-form-item>
-        <el-form-item label="确认密码">
-          <el-input v-model="addForm.confirmPassword" type="password"></el-input>
-        </el-form-item>
-        <el-form-item label="昵称">
-          <el-input v-model="addForm.name"></el-input>
-        </el-form-item>
-        <el-form-item label="手机号">
-          <el-input v-model="addForm.phone"></el-input>
-        </el-form-item>
-        <el-form-item label="邮箱">
-          <el-input v-model="addForm.email"></el-input>
-        </el-form-item>
-        <el-form-item label="头像">
-          <el-upload
-            action="/upload"
-            list-type="picture-card"
-            :on-success="handleAvatarSuccess"
-            :file-list="addForm.avatar ? [{ url: addForm.avatar }] : []"
-          >
-            <i class="el-icon-plus"></i>
-          </el-upload>
-        </el-form-item>
-        <el-form-item label="部门">
-          <el-select v-model="addForm.department">
-            <el-option
-              v-for="item in departments"
-              :key="item.name"
-              :label="item.name"
-              :value="item.name"
-            ></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="角色">
-          <el-select v-model="addForm.roles" multiple placeholder="请选择角色">
-            <el-option
-              v-for="role in roleOptions"
-              :key="role.value"
-              :label="role.label"
-              :value="role.value"
-            ></el-option>
-          </el-select>
-        </el-form-item>
-        <!-- <el-form-item label="权限">
-          <el-input v-model="addForm.permissions"></el-input>
-        </el-form-item> -->
-        <el-form-item label="状态">
-          <el-select v-model="addForm.status">
-            <el-option label="正常" value="1"></el-option>
-            <el-option label="禁用" value="0"></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="是否启用">
-          <el-switch v-model="addForm.isActive"></el-switch>
-        </el-form-item>
-        <el-form-item label="是否锁定">
-          <el-switch v-model="addForm.isLocked"></el-switch>
-        </el-form-item>
-      </el-form>
-      <template #footer>
-        <span class="dialog-footer">
-          <el-button @click="addVisible = false">取消</el-button>
-          <el-button type="primary" @click="saveAdd">确定</el-button>
-        </span>
-      </template>
-    </el-dialog>
-
-    <!-- 编辑弹出框 -->
-    <el-dialog title="编辑用户" v-model="editVisible" width="40%">
-      <el-form ref="editFormRef" :model="editForm" :rules="rules" label-width="100px">
-        <el-form-item label="ID">
-          <el-input v-model="editForm.id" disabled></el-input>
-        </el-form-item>
-        <el-form-item label="用户名">
-          <el-input v-model="editForm.username" disabled></el-input>
-        </el-form-item>
-        <el-form-item label="密码">
-          <el-input v-model="editForm.password" type="password"></el-input>
-        </el-form-item>
-        <el-form-item label="确认密码">
-          <el-input v-model="editForm.confirmPassword" type="password"></el-input>
-        </el-form-item>
-        <el-form-item label="昵称">
-          <el-input v-model="editForm.name"></el-input>
-        </el-form-item>
-        <el-form-item label="手机号">
-          <el-input v-model="editForm.phone"></el-input>
-        </el-form-item>
-        <el-form-item label="邮箱">
-          <el-input v-model="editForm.email"></el-input>
-        </el-form-item>
-        <el-form-item label="头像">
-          <el-upload
-            action="/upload"
-            list-type="picture-card"
-            :on-success="handleAvatarSuccess"
-            :file-list="editForm.avatar ? [{ url: editForm.avatar }] : []"
-          >
-            <i class="el-icon-plus"></i>
-          </el-upload>
-        </el-form-item>
-        <el-form-item label="部门">
-          <el-select v-model="editForm.department">
-            <el-option
-              v-for="item in departments"
-              :key="item.name"
-              :label="item.name"
-              :value="item.name"
-            ></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="角色">
-          <el-select v-model="editForm.roles" multiple placeholder="请选择角色">
-            <el-option
-              v-for="role in roleOptions"
-              :key="role.value"
-              :label="role.label"
-              :value="role.value"
-            ></el-option>
-          </el-select>
-        </el-form-item>
-        <!-- <el-form-item label="权限">
-          <el-input v-model="editForm.permissions"></el-input>
-        </el-form-item> -->
-        <el-form-item label="状态">
-          <el-select v-model="editForm.status">
-            <el-option label="正常" value="1"></el-option>
-            <el-option label="禁用" value="0"></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="是否启用">
-          <el-switch v-model="editForm.isActive"></el-switch>
-        </el-form-item>
-        <el-form-item label="是否锁定">
-          <el-switch v-model="editForm.isLocked"></el-switch>
-        </el-form-item>
-      </el-form>
-      <template #footer>
-        <span class="dialog-footer">
-          <el-button @click="editVisible = false">取消</el-button>
-          <el-button type="primary" @click="saveEdit">确定</el-button>
-        </span>
-      </template>
-    </el-dialog>
+    <!-- 新增和编辑弹窗 -->
+    <UserDialog
+      v-model:visible="dialogVisible"
+      :is-edit="isEdit"
+      :form-data="currentFormData"
+      @save="handleSave"
+    />
   </div>
 </template>
 
@@ -252,74 +107,69 @@ import { Delete, Edit, Search, Plus } from '@element-plus/icons-vue'
 import { useUserStore } from '~/store/user'
 import { getUserList, addUser, updateUser } from '~/api/user'
 import { UserDTO } from '~/types/user'
-import { useDepartment } from '@/hooks/useDepartment'
-import { useTeam } from '@/hooks/useTeam'
+import UserDialog from './UserDialog.vue'
 
-const { departments, fetchDepartments } = useDepartment()
-const { teams, fetchTeams } = useTeam()
-const roleOptions = [
-  { value: 'ROLE_ADMIN', label: '超级管理员' },
-  { value: 'ROLE_MANAGER', label: '管理员' },
-  { value: 'ROLE_VIP', label: 'VIP' },
-  { value: 'ROLE_USER', label: '普通用户' },
-  { value: 'ROLE_DEV', label: '开发用户' },
-  { value: 'ROLE_TEST', label: '测试用户' },
-  { value: 'ROLE_GUEST', label: '游客' }
-]
+const dialogVisible = ref(false)
+const isEdit = ref(false)
+const currentFormData = ref<UserDTO>({
+  id: '',
+  username: '',
+  password: '',
+  confirmPassword: '',
+  name: '',
+  phone: '',
+  email: '',
+  avatar: '',
+  department: '',
+  roles: [],
+  permissions: [],
+  status: 1,
+  isActive: true,
+  isLocked: false
+})
+const handleSave = async (formData: UserDTO) => {
+  try {
+    const res = isEdit.value ? await updateUser(formData) : await addUser(formData)
 
-const validatePassword = (rule: any, value: string, callback: any) => {
-  if (value === '') {
-    ElMessage.error('请输入密码')
-  } else if (value.length < 6) {
-    ElMessage.error('密码长度不能小于6位')
-  } else {
-    callback()
-  }
-}
-
-const validateAddConfirmPassword = (rule: any, value: string, callback: any) => {
-  if (value === '') {
-    ElMessage.error('请再次输入密码')
-  } else if (value !== addForm.password) {
-    ElMessage.error('两次输入密码不一致!')
-  } else {
-    callback()
-  }
-}
-
-const validateEditConfirmPassword = (rule: any, value: string, callback: any) => {
-  if (value === '') {
-    ElMessage.error('请再次输入密码')
-  } else if (value !== editForm.password) {
-    ElMessage.error('两次输入密码不一致!')
-  } else {
-    callback()
-  }
-}
-
-const rules: FormRules = {
-  username: [{ required: true, message: '请输入用户名', trigger: 'blur' }],
-  password: [
-    { required: true, message: '请输入密码', trigger: 'blur' },
-    { validator: validatePassword, trigger: 'blur' }
-  ],
-  confirmPassword: [
-    { required: true, message: '请再次确认密码', trigger: 'blur' },
-    { validator: validateAddConfirmPassword, trigger: 'blur' }
-  ],
-  name: [{ required: true, message: '请输入昵称', trigger: 'blur' }],
-  phone: [
-    { required: true, message: '请输入手机号', trigger: 'blur' },
-    {
-      pattern: /^1[3456789]\d{9}$/,
-      message: '请输入正确的电话号码',
-      trigger: ['blur', 'change']
+    if (res.code === 200) {
+      ElMessage.success(isEdit.value ? '修改成功' : '新增成功')
+      // 重新获取数据
+      getData()
+    } else {
+      ElMessage.error(res.message)
     }
-  ],
-  email: [{ required: true, message: '请输入邮箱', trigger: ['blur', 'change'] }],
-  department: [{ required: true, message: '请选择部门', trigger: 'change' }],
-  roles: [{ required: true, message: '请选择角色', trigger: 'change' }]
+    dialogVisible.value = false
+  } catch (error) {
+    ElMessage.error(error instanceof Error ? error.message : '操作失败')
+  }
 }
+
+const openAddDialog = () => {
+  isEdit.value = false
+  currentFormData.value = {
+    id: '',
+    username: '',
+    password: '',
+    confirmPassword: '',
+    name: '',
+    phone: '',
+    email: '',
+    avatar: '',
+    department: '',
+    roles: [],
+    permissions: [],
+    status: 1,
+    isActive: true,
+    isLocked: false
+  }
+  dialogVisible.value = true
+}
+const openEditDialog = (idx: number, row: UserDTO) => {
+  isEdit.value = true
+  currentFormData.value = { ...row }
+  dialogVisible.value = true
+}
+
 // 表单定义
 const addFormRef = ref<FormInstance>()
 const editFormRef = ref<FormInstance>()
@@ -348,16 +198,7 @@ let addForm = reactive<UserDTO>({
   isActive: true,
   isLocked: false
 })
-// 新增用户
-const handleAdd = async () => {
-  try {
-    await fetchDepartments()
-    await fetchTeams()
-    addVisible.value = true
-  } catch (error) {
-    ElMessage.error(error instanceof Error ? error.message : '获取数据失败')
-  }
-}
+
 const getMaxPageIndex = () => {
   if (pageTotal.value === 0) {
     return 1
@@ -365,32 +206,6 @@ const getMaxPageIndex = () => {
 
   const maxPageIndex = Math.ceil((pageTotal.value + 1) / query.pageSize)
   return maxPageIndex > 0 ? maxPageIndex : 1
-}
-
-// 保存新增
-const saveAdd = async () => {
-  if (!addFormRef.value) return
-
-  addVisible.value = false
-
-  await addFormRef.value.validate(async (valid: boolean) => {
-    if (valid) {
-      try {
-        const res = await addUser(addForm)
-        if (res.code === 200) {
-          ElMessage.success('新增成功')
-          query.pageIndex = getMaxPageIndex()
-          getData()
-        } else {
-          ElMessage.error(res.message)
-        }
-      } catch (error) {
-        ElMessage.error(error instanceof Error ? error.message : '新增失败')
-      }
-    } else {
-      ElMessage.error('新增失败，验证未通过')
-    }
-  })
 }
 
 const editVisible = ref(false)
@@ -408,19 +223,6 @@ let editForm = reactive<UserDTO>({
   isActive: true,
   isLocked: false
 })
-
-let idx: number = -1
-const handleEdit = async (index: number, row: any) => {
-  idx = index
-  try {
-    await fetchDepartments()
-    await fetchTeams()
-    Object.assign(editForm, row) // 将选中行的数据赋值到编辑表单
-    editVisible.value = true
-  } catch (error) {
-    ElMessage.error(error instanceof Error ? error.message : '获取数据失败')
-  }
-}
 
 const saveEdit = async () => {
   if (!editFormRef.value) return
@@ -469,15 +271,15 @@ const getData = async () => {
     ElMessage.error(error instanceof Error ? error.message : '获取数据失败')
   }
 }
+
 onMounted(() => {
   const pageIndex = localStorage.getItem('AMSCurentUserManagementPageIndex')
   if (pageIndex) {
     query.pageIndex = Number(pageIndex)
   }
   getData()
-  fetchDepartments()
-  fetchTeams()
 })
+
 const handleClear = () => {
   query.name = ''
   query.pageIndex = 1
@@ -493,10 +295,12 @@ const handleSearch = async () => {
     ElMessage.error(error instanceof Error ? error.message : '获取数据失败')
   }
 }
+
 // 分页导航
 const handlePageChange = async (val: number) => {
   query.pageIndex = val
   localStorage.setItem('AMSCurentUserManagementPageIndex', val.toString())
+
   try {
     await getData()
   } catch (error) {
@@ -515,15 +319,6 @@ const handleDelete = (index: number) => {
       tableData.value.splice(index, 1)
     })
     .catch(() => {})
-}
-
-const handleAvatarSuccess = (response: any, file: any) => {
-  if (response.code === 200) {
-    addForm.avatar = response.data.url
-    ElMessage.success('上传成功')
-  } else {
-    ElMessage.error('上传失败')
-  }
 }
 </script>
 

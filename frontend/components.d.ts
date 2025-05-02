@@ -20,6 +20,8 @@ declare module 'vue' {
     BudgetDetail: typeof import('./src/views/BudgetDetail.vue')['default']
     BudgetQuota: typeof import('./src/views/BudgetQuota.vue')['default']
     Charts: typeof import('./src/views/Charts.vue')['default']
+    Child: typeof import('./src/views/demo/01-prop/Child.vue')['default']
+    copy: typeof import('./src/views/demo/02-custom/Father copy.vue')['default']
     Dashboard: typeof import('./src/views/Dashboard.vue')['default']
     DoughnutChart: typeof import('./src/components/charts/DoughnutChart.vue')['default']
     Duty: typeof import('./src/views/Duty.vue')['default']
@@ -56,6 +58,7 @@ declare module 'vue' {
     ElTag: typeof import('element-plus/es')['ElTag']
     ElTooltip: typeof import('element-plus/es')['ElTooltip']
     ElUpload: typeof import('element-plus/es')['ElUpload']
+    Father: typeof import('./src/views/demo/01-prop/Father.vue')['default']
     Home: typeof import('./src/views/Home.vue')['default']
     Icon: typeof import('./src/components/icon.vue')['default']
     IconSample: typeof import('./src/views/IconSample.vue')['default']
@@ -76,9 +79,11 @@ declare module 'vue' {
     System: typeof import('./src/views/System.vue')['default']
     Tabs: typeof import('./src/views/Tabs.vue')['default']
     Tags: typeof import('./src/components/Tags.vue')['default']
+    TestDemo: typeof import('./src/views/comp/01-prop/TestDemo.vue')['default']
     TheFooter: typeof import('./src/components/layout/TheFooter.vue')['default']
     TheHeader: typeof import('./src/components/layout/TheHeader.vue')['default']
     TheSidebar: typeof import('./src/components/layout/TheSidebar.vue')['default']
+    UserDialog: typeof import('./src/views/UserDialog.vue')['default']
     UserManagement: typeof import('./src/views/UserManagement.vue')['default']
   }
 }
