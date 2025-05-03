@@ -57,16 +57,16 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     }
 
     @Override
-    public List<UserDTO> getUserList(String name, Integer offset, Integer pageSize) {
-        List<Map<String, Object>> rawData = userMapper.getUserList(name, offset, pageSize);
+    public List<UserDTO> getUserList(String username, Integer offset, Integer pageSize) {
+        List<Map<String, Object>> rawData = userMapper.getUserList(username, offset, pageSize);
         List<UserDTO> userList = new ArrayList<>();
         rawData.forEach(data -> userList.add(mapToUserDTO(data)));
         return userList;
     }
 
     @Override
-    public Long countUser(String name, Integer offset, Integer pageSize) {
-        return userMapper.countUser(name, offset, pageSize);
+    public Long countUser(String username, Integer offset, Integer pageSize) {
+        return userMapper.countUser(username, offset, pageSize);
     }
 
     @Override

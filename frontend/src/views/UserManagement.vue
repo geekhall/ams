@@ -2,7 +2,12 @@
   <div id="userManagementPage" class="content-container">
     <h1>用户管理</h1>
     <div class="handle-box">
-      <el-input v-model="query.name" placeholder="用户名" class="handle-input mr10"></el-input>
+      <el-input
+        v-model="query.name"
+        placeholder="用户名"
+        @keyup.enter="handleSearch"
+        class="handle-input mr10"
+      ></el-input>
       <el-button type="primary" :icon="Search" @click="handleSearch">搜索</el-button>
       <el-button type="primary" :icon="Plus" @click="openAddDialog">新增</el-button>
     </div>

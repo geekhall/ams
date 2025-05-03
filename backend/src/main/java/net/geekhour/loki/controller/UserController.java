@@ -51,14 +51,14 @@ public class UserController {
         }
         try {
             Map<String, Object> requestMap = new ObjectMapper().readValue(requestBody, Map.class);
-            String name = (String) requestMap.get("name");
+            String username = (String) requestMap.get("username");
             Integer pageIndex = requestMap.get("pageIndex") == null ? 1 :
                     Integer.parseInt(requestMap.get("pageIndex").toString());
             Integer pageSize = requestMap.get("pageSize") == null ? 10 :
                     Integer.parseInt(requestMap.get("pageSize").toString());
             Integer offset = (pageIndex - 1) * pageSize;
-            List<UserDTO> userList = userService.getUserList(name, offset, pageSize);
-            Long total = userService.countUser(name, offset, pageSize);
+            List<UserDTO> userList = userService.getUserList(username, offset, pageSize);
+            Long total = userService.countUser(username, offset, pageSize);
             return ResponseUtil.success(Map.of(
                     "items", userList,
                     "total", total

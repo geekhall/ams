@@ -20,9 +20,9 @@ public interface IUserService extends IService<User> {
 
     Object all();
 
-    List<UserDTO> getUserList(String name, Integer offset, Integer pageSize);
+    List<UserDTO> getUserList(String username, Integer offset, Integer pageSize);
 
-    Long countUser(String name, Integer offset, Integer pageSize);
+    Long countUser(String username, Integer offset, Integer pageSize);
 
     boolean updateUser(UserDTO userDTO);
 

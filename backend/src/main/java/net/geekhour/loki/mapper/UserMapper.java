@@ -67,13 +67,13 @@ public interface UserMapper extends BaseMapper<User> {
             "LEFT JOIN h_role_permission d ON c.id = d.role_id " +
             "LEFT JOIN h_permission e ON d.permission_id = e.id " +
             "WHERE a.deleted = 0 and b.deleted = 0 and c.deleted=0 and d.deleted=0 and e.deleted=0 " +
-            "<if test='name != null and name != \"\"'> " +
-            "AND a.username LIKE CONCAT('%', #{name}, '%') " +
+            "<if test='username != null and username != \"\"'> " +
+            "AND a.username LIKE CONCAT('%', #{username}, '%') " +
             "</if> " +
             "GROUP BY a.id " +
             "LIMIT #{offset}, #{pageSize}" +
             "</script>")
-    List<Map<String, Object>> getUserList(@Param("name") String name,
+    List<Map<String, Object>> getUserList(@Param("username") String username,
                                           @Param("offset") Integer offset,
                                           @Param("pageSize") Integer pageSize);
 
@@ -81,22 +81,20 @@ public interface UserMapper extends BaseMapper<User> {
             "SELECT COUNT(*) " +
             "FROM h_user a " +
             "WHERE a.deleted = 0 " +
-            "<if test='name != null and name != \"\"'> " +
-            "AND a.username LIKE CONCAT('%', #{name}, '%') " +
+            "<if test='username != null and username != \"\"'> " +
+            "AND a.username LIKE CONCAT('%', #{username}, '%') " +
             "</if> " +
             "</script>")
-    Long countUser(String name, Integer offset, Integer pageSize);
-
-
-
-//    int updateUser(UserDTO userDTO);
+    Long countUser(@Param("username") String username,
+                   @Param("offset") Integer offset,
+                   @Param("pageSize") Integer pageSize);
 
     @Select("SELECT EXISTS (SELECT 1 FROM h_user WHERE username = #{username} AND deleted = 0)")
-    boolean checkUsernameExists(String username);
+    boolean checkUsernameExists(@Param("username") String username);
 
     @Select("SELECT EXISTS (SELECT 1 FROM h_user WHERE phone = #{phone} AND deleted = 0)")
-    boolean checkPhoneExists(String phone);
+    boolean checkPhoneExists(@Param("phone") String phone);
 
     @Select("SELECT EXISTS (SELECT 1 FROM h_user WHERE email = #{email} AND deleted = 0)")
-    boolean checkEmailExists(String email);
+    boolean checkEmailExists(@Param("email") String email);
 }
