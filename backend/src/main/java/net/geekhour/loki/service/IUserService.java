@@ -25,4 +25,6 @@ public interface IUserService extends IService<User> {
     Long countUser(String name, Integer offset, Integer pageSize);
 
     boolean updateUser(UserDTO userDTO);
+
+    boolean addUser(UserDTO userDTO);
 }

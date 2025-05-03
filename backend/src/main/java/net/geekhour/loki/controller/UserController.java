@@ -88,6 +88,20 @@ public class UserController {
         }
     }
 
+    @PostMapping("/add")
+    @PreAuthorize("hasRole('ADMIN') || hasAuthority('system:user:add')")
+    public ResponseEntity<?> addUser(@RequestBody UserDTO userDTO) {
+        System.out.println("addUser: " + userDTO);
+        try {
+            return userService.addUser(userDTO)
+                    ? ResponseUtil.success(userDTO)
+                    : ResponseUtil.error(500, "添加用户失败");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseUtil.error(500, e.getMessage());
+        }
+    }
+
     /**
      * 删除用户
      * @param id 用户ID

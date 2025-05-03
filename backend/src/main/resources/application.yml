@@ -81,4 +81,6 @@ loki:
     jwtSecret: lokiSecretKeyGeekHourlokiSecretKeyGeekHourlokiSecretKeyGeekHourlokiSecretKeyGeekHourlokiSecretKeyGeekHourlokiSecretKeyGeekHour
     jwtExpirationMs: 86400000
     baseDirectory: /Users/yiny/workspace/vite/perseus/loki/public
+  user:
+    default-password: password
 
