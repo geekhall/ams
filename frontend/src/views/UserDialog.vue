@@ -100,7 +100,11 @@ const props = defineProps({
     required: true
   }
 })
-const emit = defineEmits(['update:visible', 'save'])
+
+const emit = defineEmits<{
+  (e: 'update:visible', value: boolean): void
+  (e: 'save', formData: UserDTO): void
+}>()
 
 const dialogVisible = ref(props.visible) // 本地管理 visible 的状态
 
@@ -167,7 +171,6 @@ const handleSave = async () => {
 
 const handleAvatarSuccess = (response: any, file: any) => {
   if (response.code === 200) {
-    // formData.avatar = response.data.url
     ElMessage.success('上传成功')
   } else {
     ElMessage.error('上传失败')

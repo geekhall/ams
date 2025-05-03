@@ -103,16 +103,40 @@ import { ElMessage } from 'element-plus'
 import { Budget } from '@/types/budget'
 import { addBudget, updateBudget } from '@/api/budget'
 
-const props = defineProps<{
-  visible: boolean
-  isEdit: boolean
-  isTech: boolean
-  formData: Budget
-  budgetTypes: Array<{ name: string }>
-  budgetCategories: Array<{ name: string }>
-  departments: Array<{ name: string }>
-  teams: Array<{ name: string }>
-}>()
+const props = defineProps({
+  visible: {
+    type: Boolean,
+    required: true
+  },
+  isEdit: {
+    type: Boolean,
+    required: true
+  },
+  isTech: {
+    type: Boolean,
+    required: true
+  },
+  formData: {
+    type: Object as () => Budget,
+    required: true
+  },
+  budgetTypes: {
+    type: Array as () => Array<{ name: string }>,
+    required: true
+  },
+  budgetCategories: {
+    type: Array as () => Array<{ name: string }>,
+    required: true
+  },
+  departments: {
+    type: Array as () => Array<{ name: string }>,
+    required: true
+  },
+  teams: {
+    type: Array as () => Array<{ name: string }>,
+    required: true
+  }
+})
 
 const emit = defineEmits<{
   (e: 'update:visible', value: boolean): void

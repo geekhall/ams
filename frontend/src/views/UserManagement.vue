@@ -168,9 +168,6 @@ const openEditDialog = (idx: number, row: UserDTO) => {
   dialogVisible.value = true
 }
 
-// 表单定义
-const editFormRef = ref<FormInstance>()
-
 const query = reactive({
   name: '',
   pageIndex: 1,
@@ -178,22 +175,6 @@ const query = reactive({
 })
 const tableData = ref<UserDTO[]>([])
 const pageTotal = ref(0)
-
-const editVisible = ref(false)
-let editForm = reactive<UserDTO>({
-  id: '',
-  username: '',
-  name: '',
-  phone: '',
-  email: '',
-  avatar: '',
-  department: '',
-  roles: [],
-  permissions: [],
-  status: 1,
-  isActive: true,
-  isLocked: false
-})
 
 // 获取表格数据
 const getData = async () => {
