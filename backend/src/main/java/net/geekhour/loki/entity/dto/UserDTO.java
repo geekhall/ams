@@ -2,7 +2,6 @@ package net.geekhour.loki.entity.dto;
 
 import lombok.Data;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 /**

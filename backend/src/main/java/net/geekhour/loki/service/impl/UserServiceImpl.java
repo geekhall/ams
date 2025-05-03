@@ -12,9 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -39,7 +36,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     @Resource
     private UserDetailsServiceImpl userDetailsService;
 
-
     @Override
     public void saveUserDetails(User user) {
         userDetailsService.save(user);
@@ -57,17 +53,19 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         for (Map<String, Object> data : rawData) {
             System.out.println(data);
             UserDTO userDTO = new UserDTO();
-            userDTO.setId( String.valueOf(data.get("id")));
+            userDTO.setId(String.valueOf(data.get("id")));
             userDTO.setName((String) data.get("name"));
             userDTO.setUsername((String) data.get("username"));
             userDTO.setPhone((String) data.get("phone"));
             userDTO.setEmail((String) data.get("email"));
             userDTO.setAge((Integer) data.get("age"));
             userDTO.setStatus((Integer) data.get("status"));
-            if (data.get("gender") != null ) {
-                userDTO.setGender((Boolean) data.get("gender") ? "男" : "女");
+            Object genderObj = data.get("gender");
+            if (genderObj instanceof Boolean) {
+                userDTO.setGender((Boolean) genderObj ? "男" : "女");
             }
-            userDTO.setAddress( (String) data.get("address"));
+
+            userDTO.setAddress((String) data.get("address"));
             userDTO.setAvatar((String) data.get("avatar"));
             Long departmentId = (Long) data.get("department_id");
             if (departmentId != null) {
@@ -75,13 +73,14 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
                 userDTO.setDepartment(departmentName);
             }
             userDTO.setIsActive(data.get("is_active") != null && ((Integer) data.get("is_active") == 1));
-            userDTO.setIsLocked(data.get("is_lock") != null && ((Integer) data.get("is_active") == 1));
+            userDTO.setIsLocked(data.get("is_lock") != null && ((Integer) data.get("is_lock") == 1));
             userDTO.setLastLoginTime(data.get("last_login_time") != null ? (Long) data.get("last_login_time") : null);
             userDTO.setLastLoginIp((String) data.get("last_login_ip"));
             userDTO.setCreateTime(data.get("create_time") != null ? (Long) data.get("create_time") : null);
             userDTO.setUpdateTime(data.get("update_time") != null ? (Long) data.get("update_time") : null);
             userDTO.setRoles(data.get("roles") != null ? List.of(((String) data.get("roles")).split(",")) : null);
-            userDTO.setPermissions(data.get("permissions") != null ? List.of(((String) data.get("permissions")).split(",")) : null);
+            userDTO.setPermissions(
+                    data.get("permissions") != null ? List.of(((String) data.get("permissions")).split(",")) : null);
             userList.add(userDTO);
         }
         return userList;
@@ -104,7 +103,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
             return false;
         }
         if (!selectedUser.getUsername().equals(userDTO.getUsername()) &&
-            userMapper.checkUsernameExists(userDTO.getUsername())) {
+                userMapper.checkUsernameExists(userDTO.getUsername())) {
             System.out.println("### UserServiceImpl.updateUser: Username already exists");
             return false; // Username already exists
         }
@@ -123,7 +122,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
             }
         }
         User user = mapToUser(userDTO);
-//        user.setUpdateTime(LocalDateTime.ofInstant(Instant.ofEpochMilli(System.currentTimeMillis()), ZoneId.systemDefault()));
+        // user.setUpdateTime(LocalDateTime.ofInstant(Instant.ofEpochMilli(System.currentTimeMillis()),
+        // ZoneId.systemDefault()));
         if (user == null) {
             System.out.println("### UserServiceImpl.updateUser: Mapping failed");
             return false; // Mapping failed
@@ -141,7 +141,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         user.setEmail(userDTO.getEmail());
         user.setAge(userDTO.getAge());
         user.setStatus(userDTO.getStatus());
-        user.setGender(userDTO.getGender().equals('男') ? true : false);
+        String gender = userDTO.getGender();
+        if (gender != null) {
+            user.setGender(gender.equals("男"));
+        }
         user.setAddress(userDTO.getAddress());
         user.setAvatar(userDTO.getAvatar());
         Long departmentId = departmentMapper.getDepartmentIdByName(userDTO.getDepartment());

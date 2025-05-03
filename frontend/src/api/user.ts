@@ -96,7 +96,7 @@ export const getUserList = async (
 // 添加用户
 export const addUser = async (user: UserDTO): Promise<ApiResponse<UserDTO>> => {
   return await loki.request({
-    url: "/auth/register",
+    url: "/user/add",
     method: "POST",
     data: user
   });
