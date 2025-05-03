@@ -4,12 +4,12 @@
       <el-form-item label="用户名" prop="username">
         <el-input v-model="formData.username" :disabled="isEdit" />
       </el-form-item>
-      <el-form-item label="密码" prop="password">
+      <!-- <el-form-item label="密码" prop="password">
         <el-input v-model="formData.password" type="password" />
       </el-form-item>
       <el-form-item label="确认密码" prop="confirmPassword">
         <el-input v-model="formData.confirmPassword" type="password" />
-      </el-form-item>
+      </el-form-item> -->
       <el-form-item label="昵称" prop="name">
         <el-input v-model="formData.name" />
       </el-form-item>
@@ -19,7 +19,7 @@
       <el-form-item label="邮箱" prop="email">
         <el-input v-model="formData.email" />
       </el-form-item>
-      <el-form-item label="头像">
+      <!-- <el-form-item label="头像">
         <el-upload
           class="avatar-uploader"
           action="/upload"
@@ -30,7 +30,7 @@
           <img v-if="formData.avatar" :src="formData.avatar" class="avatar" />
           <el-button size="small" type="primary">上传头像</el-button>
         </el-upload>
-      </el-form-item>
+      </el-form-item> -->
       <el-form-item label="部门" prop="department">
         <el-select v-model="formData.department">
           <el-option
@@ -110,35 +110,35 @@ const dialogVisible = ref(props.visible) // 本地管理 visible 的状态
 
 const formRef = ref<FormInstance>()
 const formData = reactive<UserDTO>({ ...props.formData })
-const validatePassword = (rule: any, value: string, callback: any) => {
-  if (value === '') {
-    ElMessage.error('请输入密码')
-  } else if (value.length < 6) {
-    ElMessage.error('密码长度不能小于6位')
-  } else {
-    callback()
-  }
-}
+// const validatePassword = (rule: any, value: string, callback: any) => {
+//   if (value === '') {
+//     ElMessage.error('请输入密码')
+//   } else if (value.length < 6) {
+//     ElMessage.error('密码长度不能小于6位')
+//   } else {
+//     callback()
+//   }
+// }
 
-const validateConfirmPassword = (rule: any, value: string, callback: any) => {
-  if (value === '') {
-    ElMessage.error('请再次输入密码')
-  } else if (value !== formData.password) {
-    ElMessage.error('两次输入密码不一致!')
-  } else {
-    callback()
-  }
-}
+// const validateConfirmPassword = (rule: any, value: string, callback: any) => {
+//   if (value === '') {
+//     ElMessage.error('请再次输入密码')
+//   } else if (value !== formData.password) {
+//     ElMessage.error('两次输入密码不一致!')
+//   } else {
+//     callback()
+//   }
+// }
 const rules: FormRules = {
   username: [{ required: true, message: '请输入用户名', trigger: 'blur' }],
-  password: [
-    { required: true, message: '请输入密码', trigger: 'blur' },
-    { validator: validatePassword, trigger: 'blur' }
-  ],
-  confirmPassword: [
-    { required: true, message: '请再次确认密码', trigger: 'blur' },
-    { validator: validateConfirmPassword, trigger: 'blur' }
-  ],
+  // password: [
+  //   { required: true, message: '请输入密码', trigger: 'blur' },
+  //   { validator: validatePassword, trigger: 'blur' }
+  // ],
+  // confirmPassword: [
+  //   { required: true, message: '请再次确认密码', trigger: 'blur' },
+  //   { validator: validateConfirmPassword, trigger: 'blur' }
+  // ],
   name: [{ required: true, message: '请输入昵称', trigger: 'blur' }],
   phone: [{ required: true, message: '请输入手机号', trigger: 'blur' }],
   email: [{ required: true, message: '请输入邮箱', trigger: 'blur' }],
@@ -147,10 +147,10 @@ const rules: FormRules = {
 }
 
 const handleSave = async () => {
-  if (props.isEdit) {
-    formData.password = ''
-    formData.confirmPassword = ''
-  }
+  // if (props.isEdit) {
+  //   formData.password = ''
+  //   formData.confirmPassword = ''
+  // }
   if (!formData) return
 
   if (formData.roles.length === 0) {
@@ -169,13 +169,13 @@ const handleSave = async () => {
   })
 }
 
-const handleAvatarSuccess = (response: any, file: any) => {
-  if (response.code === 200) {
-    ElMessage.success('上传成功')
-  } else {
-    ElMessage.error('上传失败')
-  }
-}
+// const handleAvatarSuccess = (response: any, file: any) => {
+//   if (response.code === 200) {
+//     ElMessage.success('上传成功')
+//   } else {
+//     ElMessage.error('上传失败')
+//   }
+// }
 
 onMounted(() => {
   fetchDepartments()

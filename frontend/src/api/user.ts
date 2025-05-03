@@ -89,10 +89,8 @@ export const getUserList = async (
     method: "POST",
     data: params || {}, // 如果没有参数，传递空对象
   } as AxiosRequestConfig);
-  console.log("res", res);
-
+  // console.log("res", res);
   return res;
-
 };
 
 // 添加用户

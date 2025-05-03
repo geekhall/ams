@@ -43,7 +43,7 @@
       <el-table-column prop="name" label="昵称"></el-table-column>
       <el-table-column prop="phone" label="手机号"></el-table-column>
       <el-table-column prop="email" label="邮箱"></el-table-column>
-      <el-table-column label="头像(查看大图)" align="center">
+      <!-- <el-table-column label="头像(查看大图)" align="center">
         <template #default="scope">
           <el-image
             class="table-td-avatar"
@@ -54,7 +54,7 @@
           >
           </el-image>
         </template>
-      </el-table-column>
+      </el-table-column> -->
       <el-table-column prop="department" label="部门"></el-table-column>
 
       <el-table-column label="操作" width="220" align="center">
@@ -164,7 +164,10 @@ const openAddDialog = () => {
 }
 const openEditDialog = (idx: number, row: UserDTO) => {
   isEdit.value = true
+  // console.log('currentFormData', currentFormData)
+  // console.log('row', row)
   currentFormData.value = { ...row }
+
   dialogVisible.value = true
 }
 
@@ -186,7 +189,7 @@ const getData = async () => {
     })
 
     if (res.code === 200) {
-      console.log('#### res.data.items', res.data.items)
+      // console.log('#### res.data.items', res.data.items)
       tableData.value = res.data.items
       pageTotal.value = res.data.total
     } else {
