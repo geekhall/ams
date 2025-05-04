@@ -2,10 +2,13 @@ package net.geekhour.loki.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import jakarta.annotation.Resource;
+import net.geekhour.loki.common.IDUtil;
 import net.geekhour.loki.entity.User;
 import net.geekhour.loki.entity.dto.UserDTO;
 import net.geekhour.loki.mapper.DepartmentMapper;
+import net.geekhour.loki.mapper.RoleMapper;
 import net.geekhour.loki.mapper.UserMapper;
+import net.geekhour.loki.mapper.UserRoleMapper;
 import net.geekhour.loki.security.Encryption;
 import net.geekhour.loki.security.UserDetailsServiceImpl;
 import net.geekhour.loki.service.IUserService;
@@ -15,10 +18,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * <p>
@@ -45,6 +45,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
 
     @Value("${loki.user.default-password}")
     private String defaultPassword;
+    @Autowired
+    private UserRoleMapper userRoleMapper;
+    @Autowired
+    private RoleMapper roleMapper;
 
     @Override
     public void saveUserDetails(User user) {
@@ -137,7 +141,16 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         if (user.getSalt() == null || user.getSalt().isEmpty()) {
             user.setSalt(Encryption.generateSalt(6)); // 设置默认盐
         }
-        
+        Long id = IDUtil.getRandomId();
+        System.out.println("### UserServiceImpl.addUser: Generated ID: " + id);
+        user.setId(id);
+        userDTO.getRoles().forEach(role -> {
+            System.out.println("### UserServiceImpl.addUser: Role: " + role);
+            Long roleId = roleMapper.getIdByName(role);
+            if (roleId != null) {
+                userRoleMapper.insertUserRole(id, roleId);
+            }
+        });
         int rowsAffected = userMapper.insert(user);
         return rowsAffected > 0;
     }
