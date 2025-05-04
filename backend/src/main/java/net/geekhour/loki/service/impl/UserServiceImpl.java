@@ -104,15 +104,27 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
             }
         }
         User user = mapToUser(userDTO);
-        // user.setUpdateTime(LocalDateTime.ofInstant(Instant.ofEpochMilli(System.currentTimeMillis()),
-        // ZoneId.systemDefault()));
         if (user == null) {
             System.out.println("### UserServiceImpl.updateUser: Mapping failed");
             return false; // Mapping failed
         }
 
         int rowsAffected = userMapper.updateById(user);
-        return rowsAffected > 0;
+        if ( rowsAffected <= 0 )
+            return false; // Update failed
+
+        // 删除用户原有角色
+        userRoleMapper.deleteByUserId(user.getId());
+
+        // 添加新的角色关联
+        userDTO.getRoles().forEach(role -> {
+            Long roleId = roleMapper.getIdByName(role);
+            if (roleId != null) {
+                userRoleMapper.insertUserRole(user.getId(), roleId);
+            }
+        });
+
+        return true;
     }
 
     @Override
