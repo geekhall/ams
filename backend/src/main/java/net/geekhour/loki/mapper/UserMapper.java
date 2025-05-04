@@ -23,30 +23,30 @@ import java.util.Map;
 public interface UserMapper extends BaseMapper<User> {
 
     @Select("select * from h_user where username = #{username}")
-    User selectByUsername(String username);
+    User selectByUsername(@Param("username") String username);
 
-    @Select("select EXISTS (SELECT 1 FROM h_user where username = #{role_name})")
-    boolean existsByUsername(String username);
+    @Select("select EXISTS (SELECT 1 FROM h_user where username = #{username})")
+    boolean existsByUsername(@Param("username") String username);
 
     // TODO: remove password from select
     @Select("select * from h_user where email = #{email}")
-    User selectByEmail(String email);
+    User selectByEmail(@Param("email") String email);
 
     @Select("select EXISTS (SELECT 1 FROM h_user where email = #{email})")
-    boolean existsByEmail(String email);
+    boolean existsByEmail(@Param("email") String email);
 
     @Select("select * from h_user where username = #{username}")
-    Long getIdByUsername(String username);
+    Long getIdByUsername(@Param("username") String username);
 
     @Select("select password from h_user where username = #{username}")
-    String getEncryptedPasswordByUsername(@NotBlank String username);
+    String getEncryptedPasswordByUsername(@NotBlank @Param("username") String username);
 
     @Select("select distinct c.name from h_user a " +
             "left join h_user_role b on a.id = b.user_id " +
             "left join h_role c on b.role_id = c.id " +
             "where a.username=#{username} " +
             "and a.status=0 and a.deleted=0 and b.deleted = 0 and c.deleted=0")
-    List<String> getRolesByUsername(@NotBlank String username);
+    List<String> getRolesByUsername(@NotBlank @Param("username") String username);
 
     @Select("select distinct e.permission from h_user a " +
             "left join h_user_role b on a.id = b.user_id " +
@@ -55,7 +55,7 @@ public interface UserMapper extends BaseMapper<User> {
             "left join h_permission e on d.permission_id = e.id " +
             "where a.username=#{username} and e.permission is not NULL " +
             "and a.status=0 and a.deleted=0 and b.deleted = 0 and c.deleted=0 and d.deleted=0 and e.deleted=0")
-    List<String> getPermissionsByUsername(@NotBlank String username);
+    List<String> getPermissionsByUsername(@NotBlank @Param("username") String username);
 
     @Select("<script>" +
             "SELECT a.*, " +
@@ -97,4 +97,14 @@ public interface UserMapper extends BaseMapper<User> {
 
     @Select("SELECT EXISTS (SELECT 1 FROM h_user WHERE email = #{email} AND deleted = 0)")
     boolean checkEmailExists(@Param("email") String email);
+
+    @Select("SELECT EXISTS (SELECT 1 FROM h_user WHERE id = #{id} AND deleted = 0 AND is_lock = 1)")
+    boolean isLocked(@Param("id") Long id);
+
+    @Select("SELECT EXISTS (SELECT 1 FROM h_user WHERE id = #{id} AND deleted = 0 AND is_active = 1)")
+    boolean isActive(@Param("id") Long id);
+
+    @Select("SELECT EXISTS (SELECT 1 FROM h_user WHERE id = #{id} AND deleted = 0)")
+    boolean isEnabled(@Param("id") Long id);
+
 }
