@@ -60,8 +60,7 @@ public class UserDetailsServiceImpl implements UserDetailsService , UserDetailsP
             authorities.add(new SimpleGrantedAuthority(permission));
         }
         boolean isNonLocked = !userMapper.isLocked(user.getId());
-        boolean isEnabled = !userMapper.isEnabled(user.getId());
-
+        boolean isEnabled = userMapper.isEnabled(user.getId());
 
         return new org.springframework.security.core.userdetails.User(user.getUsername(),
                 user.getPassword(),

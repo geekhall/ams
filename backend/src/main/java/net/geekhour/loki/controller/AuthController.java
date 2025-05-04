@@ -103,6 +103,7 @@ public class AuthController {
             authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
         } catch (Exception e) {
             System.out.println("username or password is incorrect");
+            e.printStackTrace();
             return ResponseUtil.error(401, e.getMessage());
         }
         if (authentication == null) {

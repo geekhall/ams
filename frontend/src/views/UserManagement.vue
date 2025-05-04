@@ -126,7 +126,7 @@ const currentFormData = ref<UserDTO>({
   department: '',
   roles: [],
   permissions: [],
-  status: 1,
+  status: 0,
   isActive: true,
   isLocked: false
 })

@@ -45,8 +45,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
 
     @Value("${loki.user.default-password}")
     private String defaultPassword;
+
     @Autowired
     private UserRoleMapper userRoleMapper;
+
     @Autowired
     private RoleMapper roleMapper;
 

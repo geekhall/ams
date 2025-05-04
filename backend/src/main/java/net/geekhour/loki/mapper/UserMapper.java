@@ -105,7 +105,7 @@ public interface UserMapper extends BaseMapper<User> {
     @Select("SELECT EXISTS (SELECT 1 FROM h_user WHERE id = #{id} AND deleted = 0 AND is_active = 1)")
     boolean isActive(@Param("id") Long id);
 
-    @Select("SELECT EXISTS (SELECT 1 FROM h_user WHERE id = #{id} AND deleted = 0)")
+    @Select("SELECT EXISTS (SELECT 1 FROM h_user WHERE id = #{id} AND status= 0 AND deleted = 0)")
     boolean isEnabled(@Param("id") Long id);
 
 }
