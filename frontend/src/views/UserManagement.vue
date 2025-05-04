@@ -109,7 +109,7 @@
 import { ref, reactive, onMounted } from 'vue'
 import { ElMessage, ElMessageBox, FormInstance } from 'element-plus'
 import { Delete, Edit, Search, Plus } from '@element-plus/icons-vue'
-import { getUserList, addUser, updateUser } from '~/api/user'
+import { getUserList, addUser, updateUser, deleteUser } from '~/api/user'
 import { UserDTO } from '~/types/user'
 import UserDialog from './UserDialog.vue'
 const dialogVisible = ref(false)
@@ -239,16 +239,33 @@ const handlePageChange = async (val: number) => {
 }
 
 // 删除操作
-const handleDelete = (index: number) => {
-  // 二次确认删除
-  ElMessageBox.confirm('确定要删除吗？', '提示', {
-    type: 'warning'
-  })
-    .then(() => {
-      ElMessage.success('删除成功')
-      tableData.value.splice(index, 1)
+const handleDelete = async (index: number) => {
+  const row = tableData.value[index]
+  if (!row.id) {
+    ElMessage.error('用户ID不存在')
+    return
+  }
+
+  try {
+    await ElMessageBox.confirm('确定要删除该用户吗？', '提示', {
+      confirmButtonText: '确定',
+      cancelButtonText: '取消',
+      type: 'warning'
     })
-    .catch(() => {})
+
+    const res = await deleteUser(row.id)
+    if (res.code === 200) {
+      ElMessage.success('删除成功')
+      // 重新获取数据
+      getData()
+    } else {
+      ElMessage.error(res.message)
+    }
+  } catch (error) {
+    if (error !== 'cancel') {
+      ElMessage.error(error instanceof Error ? error.message : '删除失败')
+    }
+  }
 }
 </script>
 

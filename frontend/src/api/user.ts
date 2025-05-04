@@ -117,9 +117,9 @@ export const updateUser = async (
 
 
 // 删除用户
-export const deleteUser = async (id: string) => {
+export const deleteUser = async (id: string): Promise<ApiResponse<any>> => {
   return await loki.request({
-    url: `/user/${id}`,
+    url: `/user/delete/${id}`,
     method: "DELETE",
     data: id,
     headers: {
