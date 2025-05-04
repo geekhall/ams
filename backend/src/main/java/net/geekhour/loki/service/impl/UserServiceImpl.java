@@ -137,7 +137,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         if (user.getSalt() == null || user.getSalt().isEmpty()) {
             user.setSalt(Encryption.generateSalt(6)); // 设置默认盐
         }
-
+        
         int rowsAffected = userMapper.insert(user);
         return rowsAffected > 0;
     }
