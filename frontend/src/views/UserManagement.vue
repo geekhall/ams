@@ -38,7 +38,7 @@
             <p m="t-0 b-2">上次登录IP: {{ props.row.lastLoginIp }}</p>
             <p m="t-0 b-2">注册时间: {{ props.row.createTime }}</p>
             <p m="t-0 b-2">更新时间: {{ props.row.updateTime }}</p>
-            <p m="t-0 b-2">状态: {{ props.row.status }}</p>
+            <p m="t-0 b-2">状态: {{ props.row.status === 0 ? '正常' : '禁用' }}</p>
             <p m="t-0 b-2">是否启用: {{ props.row.isActive }}</p>
             <p m="t-0 b-2">是否锁定: {{ props.row.isLocked }}</p>
           </div>
@@ -161,7 +161,7 @@ const openAddDialog = () => {
     department: '信息科技部',
     roles: [],
     permissions: [],
-    status: 1,
+    status: 0,
     isActive: true,
     isLocked: false
   }
