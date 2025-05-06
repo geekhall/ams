@@ -120,46 +120,6 @@ const routes: RouteRecordRaw[] = [
         meta: { title: 'icon', permission: 'icon' },
         component: IconSample
       },
-      {
-        path: '/01-props', name: "PropsDemo",
-        meta: { title: 'PropsDemo', permission: 'TestDemo' },
-        component: PropsDemo
-      },
-      {
-        path: '/02-custom', name: "CustomDemo",
-        meta: { title: 'CustomDemo', permission: 'CustomDemo' },
-        component: CustomDemo
-      },
-      {
-        path: '/03-mitt', name: "MittDemo",
-        meta: { title: 'MittDemo', permission: 'MittDemo' },
-        component: MittDemo
-      },
-      {
-        path: '/04-model', name: "VModelDemo",
-        meta: { title: 'VModelDemo', permission: 'VModelDemo' },
-        component: VModelDemo
-      },
-      {
-        path: '/05-attrs', name: "AttrsDemo",
-        meta: { title: 'AttrsDemo', permission: 'AttrsDemo' },
-        component: AttrsDemo
-      },
-      {
-        path: '/06-refs', name: "RefsParentDemo",
-        meta: { title: 'RefsParentDemo', permission: 'RefsParentDemo' },
-        component: RefsParentDemo
-      },
-      {
-        path: '/07-provide', name: "ProvideInjectDemo",
-        meta: { title: 'ProvideInjectDemo', permission: 'ProvideInjectDemo' },
-        component: ProvideInjectDemo
-      },
-      {
-        path: '/08-pinia', name: "PiniaDemo",
-        meta: { title: 'PiniaDemo', permission: 'PiniaDemo' },
-        component: PiniaDemo
-      },
     ]
   },
   {
