@@ -14,6 +14,7 @@ declare module 'vue' {
     About: typeof import('./src/views/About.vue')['default']
     Asset: typeof import('./src/views/asset/Asset.vue')['default']
     BarChart: typeof import('./src/components/charts/BarChart.vue')['default']
+    BorrowRecords: typeof import('./src/views/asset/BorrowRecords.vue')['default']
     Breadcrumb: typeof import('./src/components/layout/Breadcrumb.vue')['default']
     BubbleChart: typeof import('./src/components/charts/BubbleChart.vue')['default']
     Budget: typeof import('./src/views/budget/Budget.vue')['default']
