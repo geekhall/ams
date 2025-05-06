@@ -2,7 +2,9 @@ import { defineStore } from 'pinia'
 
 export const useUserStore = defineStore('user', {
   state: () => ({
-    permissions: [] as number[]
+    permissions: [] as number[],
+    name: '',
+    avatar: ''
   }),
 
   actions: {
@@ -12,6 +14,13 @@ export const useUserStore = defineStore('user', {
 
     clearPermissions() {
       this.permissions = []
+    },
+
+    async logout() {
+      // TODO: 调用登出 API
+      this.permissions = []
+      this.name = ''
+      this.avatar = ''
     }
   }
 })
