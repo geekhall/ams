@@ -129,6 +129,12 @@ const items: MenuItem[] = [
   //   permission: 'duty'
   // },
   {
+    icon: 'Message',
+    index: '/message',
+    title: '消息管理',
+    permission: 'message'
+  },
+  {
     icon: 'User',
     index: '/user',
     title: '用户管理',
