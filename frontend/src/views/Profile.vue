@@ -50,6 +50,24 @@
                 <el-form-item label="用户名" prop="username">
                   <el-input v-model="basicForm.username" disabled />
                 </el-form-item>
+                <el-form-item label="姓名" prop="name">
+                  <el-input v-model="basicForm.name" />
+                </el-form-item>
+                <el-form-item label="角色" prop="role">
+                  <el-select v-model="basicForm.role" placeholder="请选择角色">
+                    <el-option label="管理员" value="admin" />
+                    <el-option label="普通用户" value="user" />
+                    <el-option label="访客" value="guest" />
+                  </el-select>
+                </el-form-item>
+                <el-form-item label="部门" prop="department">
+                  <el-select v-model="basicForm.department" placeholder="请选择部门">
+                    <el-option label="技术部" value="tech" />
+                    <el-option label="市场部" value="marketing" />
+                    <el-option label="人事部" value="hr" />
+                    <el-option label="财务部" value="finance" />
+                  </el-select>
+                </el-form-item>
                 <el-form-item label="昵称" prop="nickname">
                   <el-input v-model="basicForm.nickname" />
                 </el-form-item>
@@ -176,6 +194,9 @@ const activeTab = ref('basic')
 // 基本信息表单
 const basicForm = reactive({
   username: userInfo.username,
+  name: '',
+  role: '',
+  department: '',
   nickname: '',
   email: '',
   phone: '',
@@ -198,6 +219,12 @@ const notificationSettings = reactive({
 
 // 表单验证规则
 const basicRules = {
+  name: [
+    { required: true, message: '请输入姓名', trigger: 'blur' },
+    { min: 2, max: 20, message: '长度在 2 到 20 个字符', trigger: 'blur' }
+  ],
+  role: [{ required: true, message: '请选择角色', trigger: 'change' }],
+  department: [{ required: true, message: '请选择部门', trigger: 'change' }],
   nickname: [
     { required: true, message: '请输入昵称', trigger: 'blur' },
     { min: 2, max: 20, message: '长度在 2 到 20 个字符', trigger: 'blur' }
@@ -320,6 +347,9 @@ onMounted(() => {
   userInfo.followers = 128
   userInfo.following = 256
 
+  basicForm.name = '张三'
+  basicForm.role = 'user'
+  basicForm.department = 'tech'
   basicForm.nickname = '测试用户'
   basicForm.email = 'test@example.com'
   basicForm.phone = '13800138000'
