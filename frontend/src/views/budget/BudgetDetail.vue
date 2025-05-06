@@ -388,11 +388,86 @@
         </span>
       </template>
     </el-dialog>
+
+    <!-- 审批流程抽屉 -->
+    <el-drawer
+      v-model="approvalDrawerVisible"
+      title="预算修改审批"
+      size="800px"
+      :destroy-on-close="true"
+    >
+      <div class="approval-container">
+        <el-form :model="approvalForm" label-width="120px" class="approval-form">
+          <el-form-item label="项目名称">
+            <span>{{ approvalForm.projectName }}</span>
+          </el-form-item>
+          <el-form-item label="修改原因">
+            <el-input
+              v-model="approvalForm.reason"
+              type="textarea"
+              :rows="4"
+              placeholder="请输入修改原因"
+            />
+          </el-form-item>
+          <el-form-item label="修改内容">
+            <div class="changes-table">
+              <el-table :data="changesData" border style="width: 100%">
+                <el-table-column prop="field" label="字段" width="150" />
+                <el-table-column prop="oldValue" label="原值" width="200">
+                  <template #default="scope">
+                    <span :class="{ 'highlight-deleted': scope.row.changed }">
+                      {{ scope.row.oldValue }}
+                    </span>
+                  </template>
+                </el-table-column>
+                <el-table-column prop="newValue" label="新值" width="200">
+                  <template #default="scope">
+                    <span :class="{ 'highlight-added': scope.row.changed }">
+                      {{ scope.row.newValue }}
+                    </span>
+                  </template>
+                </el-table-column>
+                <el-table-column prop="description" label="说明" />
+              </el-table>
+            </div>
+          </el-form-item>
+          <el-form-item label="审批人">
+            <el-select v-model="approvalForm.approver" placeholder="请选择审批人">
+              <el-option
+                v-for="item in approvers"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              />
+            </el-select>
+          </el-form-item>
+        </el-form>
+
+        <div class="approval-history" v-if="approvalHistory.length > 0">
+          <h3>审批历史</h3>
+          <el-timeline>
+            <el-timeline-item
+              v-for="(activity, index) in approvalHistory"
+              :key="index"
+              :timestamp="activity.timestamp"
+              :type="activity.type"
+            >
+              {{ activity.content }}
+            </el-timeline-item>
+          </el-timeline>
+        </div>
+
+        <div class="drawer-footer">
+          <el-button @click="approvalDrawerVisible = false">取 消</el-button>
+          <el-button type="primary" @click="submitApproval">提 交</el-button>
+        </div>
+      </div>
+    </el-drawer>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { ref, reactive, onMounted } from 'vue'
+import { ref, reactive, onMounted, computed } from 'vue'
 import { useBudgetType } from '@/hooks/useBudgetType'
 import { useBudgetCategory } from '@/hooks/useBudgetCategory'
 import { useDepartment } from '@/hooks/useDepartment'
@@ -413,6 +488,7 @@ import {
 import { deleteBudgetById, getBudgetList, addBudget, updateBudget } from '@/api/budget'
 import { type Budget } from '@/types/budget'
 import dayjs from 'dayjs'
+import { hasPermission } from '@/utils/permission'
 
 const { departments, fetchDepartments } = useDepartment()
 const { budgetTypes, fetchBudgetTypes } = useBudgetType()
@@ -646,8 +722,81 @@ const handleEdit = async (index: number, row: any) => {
   }
 }
 
-// 保存编辑操作
+// 修改内容数据结构
+interface ChangeItem {
+  field: string
+  oldValue: string | number
+  newValue: string | number
+  description: string
+  changed: boolean
+}
+
+// 字段映射
+const fieldMap = {
+  name: '项目名称',
+  description: '项目概述',
+  budgetType: '项目类型',
+  budgetCategory: '项目性质',
+  innovation: '是否信创',
+  amount: '预算金额',
+  departmentName: '部门',
+  teamName: '团队',
+  priority: '优先级',
+  businessPriority: '业务优先级',
+  businessDescription: '业务优先级说明',
+  plannedStartDate: '预计启动时间',
+  remark: '备注'
+}
+
+// 计算修改内容数据
+const changesData = computed(() => {
+  const changes: ChangeItem[] = []
+  const originalData = tableData.value.find((item) => item.id === approvalForm.projectId)
+
+  if (!originalData) return changes
+
+  Object.entries(editForm).forEach(([key, value]) => {
+    if (key === 'id') return // 跳过ID字段
+
+    const oldValue = originalData[key as keyof Budget]
+    const newValue = value
+
+    // 检查值是否发生变化
+    const changed = oldValue !== newValue
+
+    // 格式化显示值
+    const formatValue = (val: any) => {
+      if (key === 'innovation') return val === '1' ? '是' : '否'
+      if (key === 'priority') return val === 1 ? '优先' : '默认'
+      if (key === 'amount') return `¥${val.toLocaleString()}`
+      return val
+    }
+
+    changes.push({
+      field: fieldMap[key as keyof typeof fieldMap] || key,
+      oldValue: formatValue(oldValue),
+      newValue: formatValue(newValue),
+      description: changed ? '已修改' : '未修改',
+      changed
+    })
+  })
+
+  return changes
+})
+
+// 修改保存编辑操作
 const saveEdit = async () => {
+  if (!hasPermission(15)) {
+    // 如果没有编辑权限，打开审批抽屉
+    approvalForm.projectName = editForm.name
+    approvalForm.projectId = editForm.id
+    approvalForm.reason = ''
+    approvalForm.approver = ''
+    editVisible.value = false
+    approvalDrawerVisible.value = true
+    return
+  }
+
   editVisible.value = false
   let currentPage = query.pageIndex
   try {
@@ -724,6 +873,50 @@ function handleGenerateReport(command: 'year' | 'quarter') {
     .catch(() => {
       ElMessage.error('报告生成失败')
     })
+}
+
+// 审批流程相关
+const approvalDrawerVisible = ref(false)
+const approvalForm = reactive({
+  projectName: '',
+  reason: '',
+  changes: '',
+  approver: '',
+  projectId: ''
+})
+
+const approvers = [
+  { value: '1', label: '部门经理' },
+  { value: '2', label: '财务总监' },
+  { value: '3', label: '总经理' }
+]
+
+const approvalHistory = ref([
+  {
+    content: '张三提交了修改申请',
+    timestamp: '2024-03-20 10:00:00',
+    type: 'primary'
+  },
+  {
+    content: '李四审批通过',
+    timestamp: '2024-03-20 11:00:00',
+    type: 'success'
+  }
+])
+
+const submitApproval = async () => {
+  if (!approvalForm.reason || !approvalForm.changes || !approvalForm.approver) {
+    ElMessage.warning('请填写完整的审批信息')
+    return
+  }
+
+  try {
+    // TODO: 调用后端API提交审批
+    ElMessage.success('审批申请已提交')
+    approvalDrawerVisible.value = false
+  } catch (error) {
+    ElMessage.error('提交失败')
+  }
 }
 </script>
 
@@ -825,5 +1018,46 @@ function handleGenerateReport(command: 'year' | 'quarter') {
 
 .report-actions > * + * {
   margin-left: 10px;
+}
+
+.changes-table {
+  margin: 10px 0;
+}
+
+.highlight-deleted {
+  color: #f56c6c;
+  text-decoration: line-through;
+}
+
+.highlight-added {
+  color: #67c23a;
+  font-weight: bold;
+}
+
+.approval-container {
+  padding: 20px;
+  height: calc(100% - 60px);
+  overflow-y: auto;
+}
+
+.approval-form {
+  margin-bottom: 20px;
+}
+
+.approval-history {
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid #eee;
+}
+
+.drawer-footer {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 20px;
+  background: #fff;
+  border-top: 1px solid #eee;
+  text-align: right;
 }
 </style>
