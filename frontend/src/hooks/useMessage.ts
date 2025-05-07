@@ -7,9 +7,9 @@ import dayjs from 'dayjs'
 
 export const useMessage = () => {
   const messages = ref<MessageDTO[]>([])
-  const totalMessages = ref(0)
+  const total = ref(0)
   const loading = ref(false)
-  const currentPage = ref(1)
+  const pageNum = ref(1)
   const pageSize = ref(10)
   const searchQuery = ref('')
   const editingMessage = ref<MessageDTO | null>(null)
@@ -19,15 +19,14 @@ export const useMessage = () => {
     loading.value = true
     try {
       const response = await getMessageList({
-        page: currentPage.value,
+        page: pageNum.value,
         pageSize: pageSize.value,
         search: searchQuery.value
       })
       if (response.code === 200) {
         console.log("response.data.list", response.data.list);
-
         messages.value = response.data.list
-        totalMessages.value = response.data.total
+        total.value = response.data.total
       }
     } catch (error) {
       console.error('获取消息列表失败:', error)
@@ -94,27 +93,27 @@ export const useMessage = () => {
 
   // 搜索处理
   const handleSearch = () => {
-    currentPage.value = 1
+    pageNum.value = 1
     fetchMessages()
   }
 
   // 分页处理
   const handleSizeChange = (val: number) => {
     pageSize.value = val
-    currentPage.value = 1
+    pageNum.value = 1
     fetchMessages()
   }
 
   const handleCurrentChange = (val: number) => {
-    currentPage.value = val
+    pageNum.value = val
     fetchMessages()
   }
 
   return {
     messages,
-    totalMessages,
+    total,
     loading,
-    currentPage,
+    pageNum,
     pageSize,
     searchQuery,
     editingMessage,

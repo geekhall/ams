@@ -66,10 +66,10 @@
 
       <div class="pagination-container">
         <el-pagination
-          v-model:current-page="currentPage"
+          v-model:current-page="pageNum"
           v-model:page-size="pageSize"
           :page-sizes="[10, 20, 50, 100]"
-          :total="totalMessages"
+          :total="total"
           layout="total, sizes, prev, pager, next"
           @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
@@ -96,8 +96,8 @@ import dayjs from 'dayjs'
 const messageDialogVisible = ref(false)
 const {
   messages,
-  totalMessages,
-  currentPage,
+  total,
+  pageNum,
   pageSize,
   searchQuery,
   editingMessage,
