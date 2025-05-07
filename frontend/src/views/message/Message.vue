@@ -33,7 +33,11 @@
           </template>
         </el-table-column>
         <el-table-column prop="sender" label="发送者" width="120" />
-        <el-table-column prop="send_time" label="发送时间" width="180" />
+        <el-table-column prop="send_time" label="发送时间" width="180">
+          <template #default="{ row }">
+            {{ dayjs(row.send_time).format('YYYY-MM-DD HH:mm:ss') }}
+          </template>
+        </el-table-column>
 
         <el-table-column label="操作" width="200" fixed="right">
           <template #default="{ row }">
@@ -87,13 +91,12 @@ import { Delete, Edit, Search } from '@element-plus/icons-vue'
 import MessageDialog from '@/views/message/MessageDialog.vue'
 import { type MessageDTO } from '@/types/message'
 import { useMessage } from '@/hooks/useMessage'
-
+import dayjs from 'dayjs'
 // 状态管理
 const messageDialogVisible = ref(false)
 const {
   messages,
   totalMessages,
-  loading,
   currentPage,
   pageSize,
   searchQuery,
@@ -103,10 +106,7 @@ const {
   handleDelete,
   handleSearch,
   handleSizeChange,
-  handleCurrentChange,
-  getStatusType,
-  getStatusText,
-  formatDate
+  handleCurrentChange
 } = useMessage()
 
 // 计算属性

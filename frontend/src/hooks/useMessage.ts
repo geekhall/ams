@@ -24,6 +24,8 @@ export const useMessage = () => {
         search: searchQuery.value
       })
       if (response.code === 200) {
+        console.log("response.data.list", response.data.list);
+
         messages.value = response.data.list
         totalMessages.value = response.data.total
       }
@@ -108,35 +110,6 @@ export const useMessage = () => {
     fetchMessages()
   }
 
-  // 状态处理
-  const getStatusType = (status: string) => {
-    switch (status) {
-      case 'active':
-        return 'success'
-      case 'deleted':
-        return 'danger'
-      default:
-        return 'info'
-    }
-  }
-
-  const getStatusText = (status: string) => {
-    switch (status) {
-      case 'active':
-        return '已发送'
-      case 'deleted':
-        return '已删除'
-      default:
-        return '未知'
-    }
-  }
-
-  // 日期格式化
-  const formatDate = (date: string) => {
-    if (!date) return '-'
-    return dayjs(date).format('YYYY-MM-DD HH:mm:ss')
-  }
-
   return {
     messages,
     totalMessages,
@@ -151,8 +124,5 @@ export const useMessage = () => {
     handleSearch,
     handleSizeChange,
     handleCurrentChange,
-    getStatusType,
-    getStatusText,
-    formatDate
   }
 }
