@@ -99,32 +99,24 @@ import { ref, computed, onMounted } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { Search } from '@element-plus/icons-vue'
 import MessageDialog from '@/views/message/MessageDialog.vue'
+import { type MessageDTO, type CreateMessageDTO } from '@/types/message'
 import {
   getMessageList,
   sendMessage,
   updateMessage,
   deleteMessage,
-  getRoleList,
-  type MessageDTO,
-  type CreateMessageDTO
+  getRoleList
 } from '@/api/message'
 import { useAuthStore } from '@/store/auth'
-
-interface Role {
-  id: number
-  name: string
-}
-
-// 使用 MessageDTO 替代 Message 接口
-type Message = MessageDTO
+import { Role } from '@/types/role'
 
 // 状态管理
 const messageDialogVisible = ref(false)
 const searchQuery = ref('')
 const currentPage = ref(1)
 const pageSize = ref(10)
-const editingMessage = ref<Message | null>(null)
-const messages = ref<Message[]>([])
+const editingMessage = ref<MessageDTO | null>(null)
+const messages = ref<MessageDTO[]>([])
 const totalMessages = ref(0)
 const loading = ref(false)
 
@@ -210,12 +202,12 @@ const handleSendMessage = async (form: any) => {
   }
 }
 
-const handleEdit = (message: Message) => {
+const handleEdit = (message: MessageDTO) => {
   editingMessage.value = { ...message }
   messageDialogVisible.value = true
 }
 
-const handleDelete = async (message: Message) => {
+const handleDelete = async (message: MessageDTO) => {
   try {
     await ElMessageBox.confirm('确定要删除这条消息吗？', '警告', {
       confirmButtonText: '确定',

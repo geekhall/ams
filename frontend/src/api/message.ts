@@ -1,24 +1,7 @@
 import loki from "./loki";
 import { AxiosRequestConfig } from "axios";
 import { ApiResponse } from "@/types/index";
-
-export interface MessageDTO {
-  id: number;
-  title: string;
-  content: string;
-  sender: string;
-  date: string;
-  receiverType: 'all' | 'specific';
-  receivers: number[];
-  status: 'active' | 'deleted';
-}
-
-export interface CreateMessageDTO extends Omit<MessageDTO, 'id'> { }
-
-export interface MessageListResponse extends ApiResponse<{
-  total: number;
-  list: MessageDTO[];
-}> { }
+import { MessageDTO, CreateMessageDTO, MessageListResponse } from "@/types/message";
 
 // 获取消息列表
 export const getMessageList = async (params: {
