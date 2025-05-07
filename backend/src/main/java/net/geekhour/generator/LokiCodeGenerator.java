@@ -32,7 +32,8 @@ public class LokiCodeGenerator {
         System.out.println("Password: " + password);
         System.out.println("URL: " + url);
         List<String> includes = new ArrayList<String>();
-        includes.add("h_user");
+        includes.add("h_message");
+        includes.add("h_message_receiver");
 
         StrategyConfig strategyConfig = new StrategyConfig.Builder()
                 .entityBuilder()

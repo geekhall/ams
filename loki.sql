@@ -4846,4 +4846,30 @@ INSERT INTO `h_user_role` (`id`, `user_id`, `role_id`, `version`, `create_time`,
 INSERT INTO `h_user_role` (`id`, `user_id`, `role_id`, `version`, `create_time`, `update_time`, `deleted`) VALUES (8990838681356496544, 6119170176878989095, 8, 1, NULL, NULL, 0);
 COMMIT;
 
+CREATE TABLE h_message (
+  `id` BIGINT PRIMARY KEY AUTO_INCREMENT COMMENT '消息ID',
+  `title` VARCHAR(255) NOT NULL COMMENT '消息标题',
+  `content` TEXT NOT NULL COMMENT '消息内容',
+  `sender` VARCHAR(50) NOT NULL COMMENT '发送者',
+  `send_time` BIGINT DEFAULT NULL COMMENT '发送时间',
+  `version` int DEFAULT '1' COMMENT '版本号',
+  `create_date` bigint DEFAULT NULL COMMENT '创建日期',
+  `update_date` bigint DEFAULT NULL COMMENT '更新日期',
+  `deleted` tinyint unsigned NOT NULL DEFAULT '0' COMMENT '逻辑删除'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='消息表';
+
+CREATE TABLE h_message_receiver (
+  `id` BIGINT PRIMARY KEY AUTO_INCREMENT COMMENT '记录ID',
+  `message_id` BIGINT NOT NULL COMMENT '消息ID',
+  `user_id` BIGINT NOT NULL COMMENT '接收用户ID',
+  `is_read` TINYINT(1) NOT NULL DEFAULT 0 COMMENT '是否已读：0-未读，1-已读',
+  `status` TINYINT(1) NOT NULL DEFAULT 0 COMMENT '状态：0-正常，1-已删除',
+  `read_time` bigint COMMENT '阅读时间',
+  `version` int DEFAULT '1' COMMENT '版本号',
+  `create_date` bigint DEFAULT NULL COMMENT '创建日期',
+  `update_date` bigint DEFAULT NULL COMMENT '更新日期',
+  `deleted` tinyint unsigned NOT NULL DEFAULT '0' COMMENT '逻辑删除'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='消息接收记录表';
+
+
 SET FOREIGN_KEY_CHECKS = 1;

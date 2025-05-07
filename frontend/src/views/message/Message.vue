@@ -102,7 +102,6 @@ import MessageDialog from '@/views/message/MessageDialog.vue'
 import { type MessageDTO, type CreateMessageDTO } from '@/types/message'
 import { getMessageList, sendMessage, updateMessage, deleteMessage } from '@/api/message'
 import { useAuthStore } from '@/store/auth'
-import { Role } from '@/types/role'
 import { useRole } from '@/hooks/useRole'
 
 // 状态管理
