@@ -227,7 +227,7 @@ const handleCurrentChange = (val: number) => {
 // 生命周期钩子
 onMounted(async () => {
   await Promise.all([fetchRoles(), fetchMessages()])
-  console.log(Roles)
+  console.log('roles = ', roles)
 })
 
 const getStatusType = (status: string) => {
