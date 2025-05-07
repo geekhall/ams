@@ -66,8 +66,6 @@ const resetForm = () => {
   form.content = ''
 }
 const rules = reactive<FormRules>({
-  receiverType: [{ required: true, message: '请选择接收者类型', trigger: 'change' }],
-  receivers: [{ required: true, message: '请选择接收角色', trigger: 'change' }],
   title: [{ required: true, message: '请输入消息标题', trigger: 'blur' }],
   content: [{ required: true, message: '请输入消息内容', trigger: 'blur' }]
 })

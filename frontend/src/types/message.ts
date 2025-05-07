@@ -5,10 +5,7 @@ export interface MessageDTO {
   title: string;
   content: string;
   sender: string;
-  date: string;
-  receiverType: 'all' | 'specific';
-  receivers: number[];
-  status: 'active' | 'deleted';
+  send_time: string;
 }
 
 export interface CreateMessageDTO extends Omit<MessageDTO, 'id'> { }

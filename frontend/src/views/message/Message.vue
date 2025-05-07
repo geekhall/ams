@@ -1,14 +1,14 @@
 <template>
   <div id="messagePage" class="content-container">
     <div class="page-header">
-      <h2>消息管理</h2>
+      <h1>消息管理</h1>
       <el-button type="primary" @click="handleOpenMessageDialog">发送新消息</el-button>
     </div>
 
     <el-card class="message-list">
       <template #header>
         <div class="card-header">
-          <h1>消息列表</h1>
+          <span>消息列表</span>
           <el-input
             v-model="searchQuery"
             placeholder="搜索消息"
@@ -33,35 +33,23 @@
           </template>
         </el-table-column>
         <el-table-column prop="sender" label="发送者" width="120" />
-        <el-table-column prop="date" label="发送时间" width="180" />
-        <el-table-column prop="receiverType" label="接收类型" width="100">
-          <template #default="{ row }">
-            <el-tag :type="row.receiverType === 'all' ? 'success' : 'info'">
-              {{ row.receiverType === 'all' ? '全体用户' : '指定角色' }}
-            </el-tag>
-          </template>
-        </el-table-column>
-        <el-table-column prop="status" label="状态" width="100">
-          <template #default="{ row }">
-            <el-tag :type="getStatusType(row.status)">
-              {{ getStatusText(row.status) }}
-            </el-tag>
-          </template>
-        </el-table-column>
+        <el-table-column prop="send_time" label="发送时间" width="180" />
+
         <el-table-column label="操作" width="200" fixed="right">
           <template #default="{ row }">
             <el-button-group>
               <el-button
-                size="small"
-                type="primary"
+                text
+                :icon="Edit"
                 @click="handleEdit(row)"
                 :disabled="row.status === 'deleted'"
               >
                 编辑
               </el-button>
               <el-button
-                size="small"
-                type="danger"
+                text
+                :icon="Delete"
+                class="red"
                 @click="handleDelete(row)"
                 :disabled="row.status === 'deleted'"
               >
@@ -87,7 +75,6 @@
 
     <MessageDialog
       v-model:visible="messageDialogVisible"
-      :role-list="roles"
       :edit-message="editingMessage"
       @submit="handleSendMessage"
     />
@@ -97,13 +84,11 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
-import { Search } from '@element-plus/icons-vue'
+import { Delete, Edit, Search } from '@element-plus/icons-vue'
 import MessageDialog from '@/views/message/MessageDialog.vue'
 import { type MessageDTO, type CreateMessageDTO } from '@/types/message'
 import { getMessageList, sendMessage, updateMessage, deleteMessage } from '@/api/message'
 import { useAuthStore } from '@/store/auth'
-import { Role } from '@/types/role'
-import { useRole } from '@/hooks/useRole'
 
 // 状态管理
 const messageDialogVisible = ref(false)
@@ -114,7 +99,6 @@ const editingMessage = ref<MessageDTO | null>(null)
 const messages = ref<MessageDTO[]>([])
 const totalMessages = ref(0)
 const loading = ref(false)
-const { roles, fetchRoles } = useRole()
 
 // 获取消息列表
 const fetchMessages = async () => {
@@ -153,10 +137,7 @@ const handleSendMessage = async (form: any) => {
       title: form.title,
       content: form.content,
       sender: authStore.$state.user?.username || '系统管理员',
-      date: new Date().toLocaleString(),
-      receiverType: form.receiverType,
-      receivers: form.receiverType === 'all' ? [] : form.receivers,
-      status: 'active'
+      send_time: new Date().toLocaleString()
     }
 
     if (editingMessage.value) {
@@ -226,8 +207,7 @@ const handleCurrentChange = (val: number) => {
 
 // 生命周期钩子
 onMounted(async () => {
-  await Promise.all([fetchRoles(), fetchMessages()])
-  // console.log('roles = ', roles)
+  await fetchMessages()
 })
 
 const getStatusType = (status: string) => {
@@ -284,5 +264,8 @@ const getStatusText = (status: string) => {
   margin-top: 20px;
   display: flex;
   justify-content: flex-end;
+}
+.red {
+  color: #f56c6c;
 }
 </style>
