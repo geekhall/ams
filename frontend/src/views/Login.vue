@@ -111,10 +111,13 @@ tags.clearTags()
 .login-container {
   position: relative;
   width: 100%;
-  height: 100%;
+  height: 100vh;
   background: linear-gradient(270deg, #0788f1, #6b56f9);
   background-size: 400% 400%;
   animation: gradientAnimation 15s ease infinite;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 @keyframes gradientAnimation {
@@ -129,46 +132,51 @@ tags.clearTags()
   }
 }
 
-.login-title {
-  width: 100%;
-  line-height: 50px;
-  text-align: center;
-  font-size: 20px;
-  color: #fff;
-  border-bottom: 1px solid #ddd;
-}
 .login-form {
-  position: absolute;
-  left: 50%;
-  top: 50%;
   width: 350px;
-  margin: -190px 0 0 -175px;
   border-radius: 5px;
   background: rgba(255, 255, 255, 0.3);
   overflow: hidden;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
 }
+
 .ms-title {
   width: 100%;
   line-height: 50px;
   text-align: center;
   font-size: 20px;
   color: #fff;
-  border-bottom: 1px solid #ddd;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
 }
+
 .ms-content {
-  padding: 30px 30px;
+  padding: 30px;
 }
+
 .login-btn {
   text-align: center;
 }
+
 .login-btn button {
   width: 100%;
   height: 36px;
   margin-bottom: 10px;
 }
+
 .login-tips {
   font-size: 14px;
   line-height: 30px;
   color: #fff;
+  text-align: center;
+}
+
+.login-tips a {
+  color: #fff;
+  text-decoration: underline;
+}
+
+.login-tips a:hover {
+  color: #e6e6e6;
 }
 </style>
