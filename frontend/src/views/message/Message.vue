@@ -8,7 +8,7 @@
     <el-card class="message-list">
       <template #header>
         <div class="card-header">
-          <span>消息列表</span>
+          <h1>消息列表</h1>
           <el-input
             v-model="searchQuery"
             placeholder="搜索消息"

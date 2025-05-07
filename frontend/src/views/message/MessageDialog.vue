@@ -6,25 +6,6 @@
     :before-close="handleClose"
   >
     <el-form ref="formRef" :model="form" :rules="rules" label-width="100px" class="message-form">
-      <el-form-item label="接收者" prop="receiverType">
-        <el-radio-group v-model="form.receiverType">
-          <el-radio label="all">全体用户</el-radio>
-          <el-radio label="specific">指定角色</el-radio>
-        </el-radio-group>
-      </el-form-item>
-
-      <el-form-item v-if="form.receiverType === 'specific'" label="选择角色" prop="receivers">
-        <el-select
-          v-model="form.receivers"
-          multiple
-          filterable
-          placeholder="请选择角色"
-          style="width: 100%"
-        >
-          <el-option v-for="role in roleList" :key="role.id" :label="role.name" :value="role.id" />
-        </el-select>
-      </el-form-item>
-
       <el-form-item label="消息标题" prop="title">
         <el-input v-model="form.title" placeholder="请输入消息标题" />
       </el-form-item>
@@ -49,32 +30,21 @@
 import { ref, reactive, watch } from 'vue'
 import type { FormInstance, FormRules } from 'element-plus'
 
-interface Role {
-  id: number
-  name: string
-}
-
 interface Message {
   id: number
   title: string
   content: string
   sender: string
-  date: string
-  receiverType: 'all' | 'specific'
-  receivers: number[]
-  status: 'active' | 'deleted'
+  send_time: string
 }
 
 interface MessageForm {
-  receiverType: 'all' | 'specific'
-  receivers: number[]
   title: string
   content: string
 }
 
 const props = defineProps<{
   visible: boolean
-  roleList: Role[]
   editMessage: Message | null
 }>()
 
@@ -87,15 +57,11 @@ const dialogVisible = ref(props.visible)
 const formRef = ref<FormInstance>()
 
 const form = reactive<MessageForm>({
-  receiverType: 'all',
-  receivers: [],
   title: '',
   content: ''
 })
 
 const resetForm = () => {
-  form.receiverType = 'all'
-  form.receivers = []
   form.title = ''
   form.content = ''
 }
@@ -111,8 +77,6 @@ watch(
   () => props.editMessage,
   (newMessage) => {
     if (newMessage) {
-      form.receiverType = newMessage.receiverType
-      form.receivers = newMessage.receivers
       form.title = newMessage.title
       form.content = newMessage.content
     } else {
