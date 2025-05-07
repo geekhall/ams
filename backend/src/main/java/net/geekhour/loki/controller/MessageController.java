@@ -10,6 +10,7 @@ import net.geekhour.loki.service.IMessageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -33,7 +34,7 @@ public class MessageController {
 
   @PostMapping("/list")
   @ApiOperation("获取消息列表")
-  @PreAuthorize("hasRole('ROLE_USER') || hasAuthority('user:message:list')")
+  @PreAuthorize("hasRole('USER') || hasAuthority('user:message:list')")
   public ResponseEntity<?> getMessageList(@RequestBody Map<String, Object> params) {
     if (params == null || params.isEmpty()) {
       return ResponseUtil.error(400, "参数不能为空");
@@ -53,7 +54,7 @@ public class MessageController {
 
   @PostMapping("/send")
   @ApiOperation("发送消息")
-  @PreAuthorize("hasRole('ROLE_ADMIN') || hasAuthority('admin:message:send')")
+  @PreAuthorize("hasRole('ADMIN') || hasAuthority('admin:message:send')")
   public ResponseEntity<?> sendMessage(@RequestBody MessageDTO messageDTO) {
     try {
       boolean success = messageService.sendMessage(messageDTO);
@@ -65,7 +66,7 @@ public class MessageController {
 
   @PostMapping("/update")
   @ApiOperation("更新消息")
-  @PreAuthorize("hasRole('ROLE_USER') || hasAuthority('user:message:send')")
+  @PreAuthorize("hasRole('USER') || hasAuthority('user:message:send')")
   public ResponseEntity<?> updateMessage(@RequestBody MessageDTO messageDTO) {
     try {
       boolean success = messageService.updateMessage(messageDTO);
@@ -77,12 +78,15 @@ public class MessageController {
 
   @DeleteMapping("/delete/{id}")
   @ApiOperation("删除消息")
-  @PreAuthorize("hasRole('ROLE_USER') || hasAuthority('user:message:send')")
+  @PreAuthorize("hasRole('USER') || hasAuthority('user:message:delete')")
+  @Transactional
   public ResponseEntity<?> deleteMessage(@PathVariable Long id) {
     try {
       boolean success = messageService.deleteMessage(id);
-      return success ? ResponseUtil.success(null) : ResponseUtil.error(500, "消息删除失败");
+      return success ? ResponseUtil.success(id) : ResponseUtil.error(500, "消息删除失败");
     } catch (Exception e) {
+      e.printStackTrace();
+      System.out.println("MessageController deleteMessage error: " + e.getMessage());
       return ResponseUtil.error(500, "消息删除失败: " + e.getMessage());
     }
   }
