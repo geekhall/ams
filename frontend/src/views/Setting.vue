@@ -72,9 +72,9 @@
             v-model="settings.notifications.methods"
             @change="handleNotificationChange"
           >
-            <el-checkbox label="browser">浏览器通知</el-checkbox>
-            <el-checkbox label="email">邮件通知</el-checkbox>
-            <el-checkbox label="sms">短信通知</el-checkbox>
+            <el-checkbox :value="'browser'">浏览器通知</el-checkbox>
+            <el-checkbox :value="'email'">邮件通知</el-checkbox>
+            <el-checkbox :value="'sms'">短信通知</el-checkbox>
           </el-checkbox-group>
         </div>
       </div>

@@ -24,7 +24,6 @@ export const useMessage = () => {
         search: searchQuery.value
       })
       if (response.code === 200) {
-        console.log("response.data.list", response.data.list);
         messages.value = response.data.list
         total.value = response.data.total
       }
