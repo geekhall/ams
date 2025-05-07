@@ -5,13 +5,13 @@ import { useAuthStore } from '~/store/auth'
 
 // 1. Define route components.
 const Dashboard = () => import('../views/Dashboard.vue')
-const Asset = () => import('../views/Asset.vue')
-const Budget = () => import('../views/Budget.vue')
-const BudgetBoard = () => import('../views/BudgetBoard.vue')
-const BudgetDetail = () => import('../views/BudgetDetail.vue')
-const BudgetQuota = () => import('../views/BudgetQuota.vue')
+const Asset = () => import('../views/asset/Asset.vue')
+const Budget = () => import('../views/budget/Budget.vue')
+const BudgetBoard = () => import('../views/budget/BudgetBoard.vue')
+const BudgetDetail = () => import('../views/budget/BudgetDetail.vue')
+const BudgetQuota = () => import('../views/budget/BudgetQuota.vue')
 const Project = () => import('../views/Project.vue')
-const System = () => import('../views/System.vue')
+const System = () => import('../views/asset/System.vue')
 const Duty = () => import('../views/Duty.vue')
 const UserManagement = () => import('../views/UserManagement.vue')
 
@@ -23,6 +23,7 @@ const NotFound = () => import('../views/404.vue')
 const Profile = () => import('../views/Profile.vue')
 const Setting = () => import('../views/Setting.vue')
 const Tabs = () => import('../views/Tabs.vue')
+const Message = () => import('../views/message/Message.vue')
 const IconSample = () => import('../views/IconSample.vue')
 
 // 2. Define some routes
@@ -105,7 +106,11 @@ const routes: RouteRecordRaw[] = [
         meta: { title: '消息', permission: 'tabs' },
         component: Tabs
       },
-
+      {
+        path: '/message', name: "message",
+        meta: { title: '消息管理', permission: 'message' },
+        component: Message
+      },
       {
         path: '/icon', name: "iconSample",
         meta: { title: 'icon', permission: 'icon' },

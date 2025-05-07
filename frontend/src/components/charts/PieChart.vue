@@ -1,5 +1,5 @@
 <template>
-  <Pie :data="data" :options="options" />
+  <Pie :data="chartData" :options="chartOptions" />
 </template>
 
 <script lang="ts" setup>
@@ -8,7 +8,22 @@ import { Pie } from 'vue-chartjs'
 
 ChartJS.register(ArcElement, Tooltip, Legend)
 
-const data = {
+const props = defineProps<{
+  data?: {
+    title?: string
+    labels: string[]
+    datasets: {
+      backgroundColor: string[]
+      data: number[]
+    }[]
+  }
+  options?: {
+    responsive?: boolean
+    [key: string]: any
+  }
+}>()
+
+const chartData = props.data || {
   title: 'Pie Chart',
   labels: ['VueJs', 'EmberJs', 'ReactJs', 'AngularJs'],
   datasets: [
@@ -19,7 +34,7 @@ const data = {
   ]
 }
 
-const options = {
+const chartOptions = props.options || {
   responsive: true
 }
 </script>

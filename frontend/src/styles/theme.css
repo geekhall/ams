@@ -1,0 +1,131 @@
+:root {
+  --el-color-primary: #409EFF;
+  --el-bg-color: #ffffff;
+  --el-text-color-primary: #303133;
+  --el-text-color-regular: #606266;
+  --el-text-color-secondary: #909399;
+  --el-border-color: #dcdfe6;
+  --el-border-color-light: #e4e7ed;
+  --el-border-color-lighter: #ebeef5;
+  --el-border-color-extra-light: #f2f6fc;
+}
+
+.dark {
+  --el-bg-color: #1a1a1a;
+  --el-text-color-primary: #ffffff;
+  --el-text-color-regular: #e0e0e0;
+  --el-text-color-secondary: #a0a0a0;
+  --el-border-color: #4c4c4c;
+  --el-border-color-light: #3c3c3c;
+  --el-border-color-lighter: #2c2c2c;
+  --el-border-color-extra-light: #1c1c1c;
+}
+
+/* 应用主题变量 */
+body {
+  background-color: var(--el-bg-color);
+  color: var(--el-text-color-primary);
+  transition: background-color 0.3s, color 0.3s;
+}
+
+/* 卡片样式 */
+.el-card {
+  background-color: var(--el-bg-color);
+  border-color: var(--el-border-color);
+  transition: background-color 0.3s, border-color 0.3s;
+}
+
+/* 输入框样式 */
+.el-input__inner {
+  background-color: var(--el-bg-color);
+  border-color: var(--el-border-color);
+  color: var(--el-text-color-primary);
+  transition: background-color 0.3s, border-color 0.3s, color 0.3s;
+}
+
+/* 下拉菜单样式 */
+.el-dropdown-menu {
+  background-color: var(--el-bg-color);
+  border-color: var(--el-border-color);
+  transition: background-color 0.3s, border-color 0.3s;
+}
+
+.el-dropdown-menu__item {
+  color: var(--el-text-color-primary);
+  transition: color 0.3s;
+}
+
+/* 表格样式 */
+.el-table {
+  background-color: var(--el-bg-color);
+  color: var(--el-text-color-primary);
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.el-table th {
+  background-color: var(--el-bg-color);
+  border-bottom-color: var(--el-border-color);
+  transition: background-color 0.3s, border-color 0.3s;
+}
+
+.el-table td {
+  border-bottom-color: var(--el-border-color);
+  transition: border-color 0.3s;
+}
+
+/* 分页样式 */
+.el-pagination {
+  background-color: var(--el-bg-color);
+  color: var(--el-text-color-primary);
+  transition: background-color 0.3s, color 0.3s;
+}
+
+/* 按钮样式 */
+.el-button {
+  background-color: var(--el-bg-color);
+  border-color: var(--el-border-color);
+  color: var(--el-text-color-primary);
+  transition: background-color 0.3s, border-color 0.3s, color 0.3s;
+}
+
+/* 对话框样式 */
+.el-dialog {
+  background-color: var(--el-bg-color);
+  transition: background-color 0.3s;
+}
+
+.el-dialog__title {
+  color: var(--el-text-color-primary);
+  transition: color 0.3s;
+}
+
+/* 菜单样式 */
+.el-menu {
+  background-color: var(--el-bg-color);
+  border-color: var(--el-border-color);
+  transition: background-color 0.3s, border-color 0.3s;
+}
+
+.el-menu-item {
+  color: var(--el-text-color-primary);
+  transition: color 0.3s;
+}
+
+/* 滚动条样式 */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: var(--el-bg-color);
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--el-border-color);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: var(--el-text-color-secondary);
+}

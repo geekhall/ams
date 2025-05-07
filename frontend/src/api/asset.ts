@@ -1,6 +1,7 @@
 import { AxiosRequestConfig } from "axios";
 import loki from "./loki";
 import { Asset, AssetDTO, AssetListResponse, AssetNamesResponse, AssetTypeListResponse } from "~/types/asset";
+import request from '@/utils/request'
 
 
 // 获取资产列表（支持分页和按名称查询）
@@ -104,3 +105,71 @@ export const getAssetTypeList = async (): Promise<AssetTypeListResponse> => {
     method: "POST",
   } as AxiosRequestConfig);
 };
+
+// 资产领用
+export interface BorrowAssetParams {
+  assetId: string
+  borrowCount: number
+  borrowDepartment: string
+  borrower: string
+  borrowDate: string
+  expectedReturnDate: string
+  reason: string
+}
+
+export const borrowAsset = (data: BorrowAssetParams) => {
+  return request({
+    url: '/asset/borrow',
+    method: 'post',
+    data
+  })
+}
+
+// 资产领用记录
+export interface AssetBorrowRecord {
+  id: string
+  assetId: string
+  assetName: string
+  assetCode: string
+  borrowDepartment: string
+  borrower: string
+  borrowCount: number
+  borrowDate: string
+  expectedReturnDate: string
+  actualReturnDate?: string
+  status: 'using' | 'returned' | 'overdue'
+  reason: string
+  returnNote?: string
+}
+
+export interface AssetBorrowListResponse {
+  items: AssetBorrowRecord[]
+  total: number
+}
+
+// 获取资产领用记录
+export const getAssetBorrowRecords = (params: {
+  assetName?: string
+  status?: string
+  pageIndex: number
+  pageSize: number
+}) => {
+  return request<AssetBorrowListResponse>({
+    url: '/asset/borrow/records',
+    method: 'get',
+    params
+  })
+}
+
+// 归还资产
+export const returnAsset = (data: {
+  borrowId: string
+  returnDate: string
+  returnNote?: string
+}) => {
+  return request<{ code: number; message: string }>({
+    url: '/asset/return',
+    method: 'post',
+    data
+  })
+}

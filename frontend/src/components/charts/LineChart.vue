@@ -1,5 +1,5 @@
 <template>
-  <Line :data="data" :options="options" />
+  <Line :data="chartData" :options="chartOptions" />
 </template>
 
 <script lang="ts" setup>
@@ -17,7 +17,22 @@ import { Line } from 'vue-chartjs'
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend)
 
-const data = {
+const props = defineProps<{
+  data?: {
+    labels: string[]
+    datasets: {
+      label: string
+      backgroundColor: string
+      data: number[]
+    }[]
+  }
+  options?: {
+    responsive?: boolean
+    [key: string]: any
+  }
+}>()
+
+const chartData = props.data || {
   labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August'],
   datasets: [
     {
@@ -33,7 +48,7 @@ const data = {
   ]
 }
 
-const options = {
+const chartOptions = props.options || {
   responsive: true
 }
 </script>

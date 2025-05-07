@@ -7,6 +7,7 @@ import 'normalize.css/normalize.css'  // 重置样式 这里引入自定义的�
 import './style.css'                  // 项目内的样式，最好放在重置样式后，uno.css前
 import './tailwind.css'               // TailwindCSS
 import 'uno.css'                      // UnoCSS
+import './styles/theme.css'           // 主题样式
 import router from './router'  // 引入路由
 // import store from './store'           // 引入Pinia
 import { createPinia } from 'pinia'

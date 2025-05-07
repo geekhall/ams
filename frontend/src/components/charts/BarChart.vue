@@ -1,5 +1,5 @@
 <template>
-  <Bar :data="data" :options="options" />
+  <Bar :data="chartData" :options="chartOptions" />
 </template>
 
 <script lang="ts" setup>
@@ -16,7 +16,23 @@ import {
 
 import { Bar } from 'vue-chartjs'
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, PointElement, Legend)
-const data = {
+
+const props = defineProps<{
+  data?: {
+    labels: string[]
+    datasets: {
+      label: string
+      backgroundColor: string
+      data: number[]
+    }[]
+  }
+  options?: {
+    responsive?: boolean
+    [key: string]: any
+  }
+}>()
+
+const chartData = props.data || {
   labels: [
     'January',
     'February',
@@ -40,7 +56,7 @@ const data = {
   ]
 }
 
-const options = {
+const chartOptions = props.options || {
   responsive: true
 }
 </script>
