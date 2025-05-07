@@ -553,27 +553,27 @@ const disabledDate = (time: Date) => {
 const submitBorrow = async () => {
   if (!borrowFormRef.value) return
 
-  await borrowFormRef.value.validate(async (valid) => {
-    if (valid) {
-      try {
-        // TODO: 调用领用API
-        const res = await borrowAsset({
-          ...borrowForm,
-          assetId: borrowForm.assetId
-        })
+  // await borrowFormRef.value.validate(async (valid) => {
+  //   if (valid) {
+  //     try {
+  //       // TODO: 调用领用API
+  //       const res = await borrowAsset({
+  //         ...borrowForm,
+  //         assetId: borrowForm.assetId
+  //       })
 
-        if (res.code === 200) {
-          ElMessage.success('领用申请已提交')
-          borrowVisible.value = false
-          await getData() // 刷新资产列表
-        } else {
-          ElMessage.error(res.message)
-        }
-      } catch (err) {
-        ElMessage.error('领用失败')
-      }
-    }
-  })
+  //       if (res.code === 200) {
+  //         ElMessage.success('领用申请已提交')
+  //         borrowVisible.value = false
+  //         await getData() // 刷新资产列表
+  //       } else {
+  //         ElMessage.error(res.message)
+  //       }
+  //     } catch (err) {
+  //       ElMessage.error('领用失败')
+  //     }
+  //   }
+  // })
 }
 </script>
 
