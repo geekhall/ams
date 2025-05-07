@@ -87,7 +87,7 @@
 
     <MessageDialog
       v-model:visible="messageDialogVisible"
-      :role-list="roleList"
+      :role-list="roles"
       :edit-message="editingMessage"
       @submit="handleSendMessage"
     />
@@ -100,15 +100,10 @@ import { ElMessage, ElMessageBox } from 'element-plus'
 import { Search } from '@element-plus/icons-vue'
 import MessageDialog from '@/views/message/MessageDialog.vue'
 import { type MessageDTO, type CreateMessageDTO } from '@/types/message'
-import {
-  getMessageList,
-  sendMessage,
-  updateMessage,
-  deleteMessage,
-  getRoleList
-} from '@/api/message'
+import { getMessageList, sendMessage, updateMessage, deleteMessage } from '@/api/message'
 import { useAuthStore } from '@/store/auth'
 import { Role } from '@/types/role'
+import { useRole } from '@/hooks/useRole'
 
 // 状态管理
 const messageDialogVisible = ref(false)
@@ -119,22 +114,7 @@ const editingMessage = ref<MessageDTO | null>(null)
 const messages = ref<MessageDTO[]>([])
 const totalMessages = ref(0)
 const loading = ref(false)
-
-// 角色列表数据
-const roleList = ref<Role[]>([])
-
-// 获取角色列表
-const fetchRoleList = async () => {
-  try {
-    const response = await getRoleList()
-    if (response.code === 200) {
-      roleList.value = response.data
-    }
-  } catch (error) {
-    console.error('获取角色列表失败:', error)
-    ElMessage.error('获取角色列表失败')
-  }
-}
+const { roles, fetchRoles } = useRole()
 
 // 获取消息列表
 const fetchMessages = async () => {
@@ -246,7 +226,8 @@ const handleCurrentChange = (val: number) => {
 
 // 生命周期钩子
 onMounted(async () => {
-  await Promise.all([fetchRoleList(), fetchMessages()])
+  await Promise.all([fetchRoles(), fetchMessages()])
+  console.log(Roles)
 })
 
 const getStatusType = (status: string) => {
