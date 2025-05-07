@@ -4872,4 +4872,27 @@ CREATE TABLE h_message_receiver (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='消息接收记录表';
 
 
+insert into h_message (id, title, content, sender, send_time, version, create_date, update_date, deleted) values
+(1, '【系统消息】欢迎使用AMS系统', '欢迎使用本系统！', '系统管理员', unix_timestamp() * 1000, 1, unix_timestamp() * 1000, unix_timestamp() * 1000, 0),
+(2, '【系统通知】系统将于今晚凌晨1点到3点进行升级维护', '【系统通知】系统将于今晚凌晨1点到3点进行升级维护', '系统管理员', unix_timestamp() * 1000, 1, unix_timestamp() * 1000, unix_timestamp() * 1000, 0),
+(3, '【系统公告】AMS系统已上线', 'AMS系统已上线，欢迎使用！', '系统管理员', unix_timestamp() * 1000, 1, unix_timestamp() * 1000, unix_timestamp() * 1000, 0),
+(4, '【系统消息】请及时更新您的个人信息', '请及时更新您的个人信息，以便我们更好地为您服务。', '系统管理员', unix_timestamp() * 1000, 1, unix_timestamp() * 1000, unix_timestamp() * 1000, 0),
+(5, '【系统通知】系统将于下周一进行例行维护', '系统将于下周一进行例行维护，请提前做好准备。', '系统管理员', unix_timestamp() * 1000, 1, unix_timestamp() * 1000, unix_timestamp() * 1000, 0),
+(6, '【系统公告】AMS系统已完成升级', 'AMS系统已完成升级，感谢您的耐心等待！', '系统管理员', unix_timestamp() * 1000, 1, unix_timestamp() * 1000, unix_timestamp() * 1000, 0),
+(7, '【系统消息】今晚零点整发跨年红包，各位小伙伴兔年大吉，先到先得', '今晚零点整发跨年红包，各位小伙伴兔年大吉，先到先得。', '系统管理员', unix_timestamp() * 1000, 1, unix_timestamp() * 1000, unix_timestamp() * 1000, 0),
+(8, '【系统通知】系统将于本周五进行数据备份', '系统将于本周五进行数据备份，请提前做好准备。', '系统管理员', unix_timestamp() * 1000, 1, unix_timestamp() * 1000, unix_timestamp() * 1000, 0),
+(9, '【系统公告】新年红包已发放完毕，感谢各位小伙伴的参与', '新年红包已发放完毕，感谢各位小伙伴的参与！', '系统管理员', unix_timestamp() * 1000, 1, unix_timestamp() * 1000, unix_timestamp() * 1000, 0),
+(10, '【系统消息】预祝各位小伙伴新年快乐', '预祝各位小伙伴新年快乐', '系统管理员', unix_timestamp() * 1000, 1, unix_timestamp() * 1000, unix_timestamp() * 1000, 0),
+(11, '【系统通知】系统将于下周一进行例行维护', '系统将于下周一进行例行维护，请提前做好准备。', '系统管理员', unix_timestamp() * 1000, 1, unix_timestamp() * 1000, unix_timestamp() * 1000, 0),
+(12, '【系统公告】AMS系统已完成升级', 'AMS系统已完成升级，感谢您的耐心等待！', '系统管理员', unix_timestamp() * 1000, 1, unix_timestamp() * 1000, unix_timestamp() * 1000, 0),
+(13, '【系统消息】请及时更新您的个人信息', '请及时更新您的个人信息，以便我们更好地为您服务。', '系统管理员', unix_timestamp() * 1000, 1, unix_timestamp() * 1000, unix_timestamp() * 1000, 0),
+(14, '【系统通知】系统将于今晚凌晨1点到3点进行升级维护', '系统将于今晚凌晨1点到3点进行升级维护，请提前做好准备。', '系统管理员', unix_timestamp() * 1000, 1, unix_timestamp() * 1000, unix_timestamp() * 1000, 0),
+(15, '【系统公告】AMS系统更新完成，新增预算管理功能！', 'AMS系统更新完成，新增预算管理功能！', '系统管理员', unix_timestamp() * 1000, 1, unix_timestamp() * 1000, unix_timestamp() * 1000, 0);
+
+
+insert into h_message_receiver (id, message_id, user_id, is_read, status, read_time, version, create_date, update_date, deleted) values
+(1, 1, 1897630015512547329, 0, 0, null, 1, unix_timestamp() * 1000, unix_timestamp() * 1000, 0),
+(2, 1, 1898257421470494721, 0, 0, null, 1, unix_timestamp() * 1000, unix_timestamp() * 1000, 0),
+
+
 SET FOREIGN_KEY_CHECKS = 1;

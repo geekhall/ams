@@ -32,6 +32,7 @@ public class Message extends Model<Message> {
     private static final long serialVersionUID = 1L;
 
     @ApiModelProperty("主键ID")
+    @TableId(type = IdType.AUTO)
     private Long id;
 
     @ApiModelProperty("消息标题")
@@ -70,6 +71,6 @@ public class Message extends Model<Message> {
 
     @Override
     public Serializable pkVal() {
-        return null;
+        return this.id;
     }
 }
