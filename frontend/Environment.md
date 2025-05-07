@@ -9,7 +9,7 @@ vue: 3.2.45
 vite: 4.0.0
 vue-router: 4.0.13
 element-plus: 2.2.28
-vuex: 4.0.2
+pinia: 4.0.2
 axios: 1.2.3
 ```
 ## 1. 初始化Vite工程

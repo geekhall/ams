@@ -24,15 +24,6 @@ const Profile = () => import('../views/Profile.vue')
 const Setting = () => import('../views/Setting.vue')
 const Tabs = () => import('../views/Tabs.vue')
 const IconSample = () => import('../views/IconSample.vue')
-const PropsDemo = () => import('../views/demo/01-prop/Father.vue')
-const CustomDemo = () => import('../views/demo/02-custom/Father.vue')
-const MittDemo = () => import('../views/demo/03-mitt/Father.vue')
-const VModelDemo = () => import('../views/demo/04-model/Father.vue')
-const AttrsDemo = () => import('../views/demo/05-attrs/Father.vue')
-const RefsParentDemo = () => import('../views/demo/06-refs-parent/Father.vue')
-const ProvideInjectDemo = () => import('../views/demo/07-provide-inject/Father.vue')
-const PiniaDemo = () => import('../views/demo/08-pinia/Father.vue')
-
 
 // 2. Define some routes
 const routes: RouteRecordRaw[] = [
