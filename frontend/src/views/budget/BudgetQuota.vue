@@ -279,23 +279,30 @@ const handleSearch = () => {
 }
 
 // 分页导航
-const handleSizeChange = (val: number) => {
+const handleSizeChange = async (val: number) => {
   query.pageSize = val
   query.pageIndex = 1
-  getData()
+  try {
+    await getData()
+  } catch (err) {
+    ElMessage.error('搜索失败')
+  }
 }
 
-const handleCurrentChange = (val: number) => {
+const handleCurrentChange = async (val: number) => {
   query.pageIndex = val
   localStorage.setItem('AMSCurrentQuotaPageIndex', val.toString())
-  getData()
+  try {
+    await getData()
+  } catch (err) {
+    ElMessage.error('搜索失败')
+  }
 }
 
 // 新增操作
-const handleAdd = () => {
-  getDepartments()
+const handleAdd = async () => {
+  await getDepartments()
   addVisible.value = true
-  // 这里可以添加新增逻辑
 }
 const getMaxPage = () => {
   if (!pageTotal.value) {
@@ -306,24 +313,23 @@ const getMaxPage = () => {
   return maxPage
 }
 // 保存新增操作
-const saveAdd = () => {
+const saveAdd = async () => {
   addVisible.value = false
-  // 添加至后台的逻辑
-  addQuota(addForm)
-    .then((res) => {
-      if (res.code === 200) {
-        ElMessage.success('新增成功')
-        // 更新当前页码
-        query.pageIndex = getMaxPage()
-        // 更新表格数据
-        getData()
-      } else {
-        ElMessage.error(res.message)
-      }
-    })
-    .catch((err) => {
-      ElMessage.error('新增失败: ' + err.message)
-    })
+  try {
+    const res = await addQuota(addForm)
+
+    if (res.code === 200) {
+      ElMessage.success('新增成功')
+      // 更新当前页码
+      query.pageIndex = getMaxPage()
+      // 更新表格数据
+      await getData()
+    } else {
+      ElMessage.error(res.message)
+    }
+  } catch (error) {
+    ElMessage.error('新增失败: ' + error)
+  }
 }
 
 // 编辑操作
@@ -339,49 +345,43 @@ const handleEdit = (index: number, row: any) => {
 }
 
 // 保存编辑操作
-const saveEdit = () => {
+const saveEdit = async () => {
   editVisible.value = false
   let currentPage = query.pageIndex
-  // 编辑至后台的逻辑
-  updateQuota(editForm)
-    .then((res) => {
-      if (res.code === 200) {
-        ElMessage.success(`修改第 ${idx + 1} 行成功`)
-        // 更新表格数据
-        query.pageIndex = currentPage
-        getData()
-      } else {
-        ElMessage.error(res.message)
-      }
-    })
-    .catch((err) => {
-      ElMessage.error('修改失败')
-    })
+  try {
+    const res = await updateQuota(editForm)
+
+    if (res.code === 200) {
+      ElMessage.success(`修改第 ${idx + 1} 行成功`)
+      // 更新表格数据
+      query.pageIndex = currentPage
+      getData()
+    } else {
+      ElMessage.error(res.message)
+    }
+  } catch (error) {
+    ElMessage.error('修改失败: ' + error)
+  }
 }
 
 // 删除操作
-const handleDelete = (index: number) => {
-  // 二次确认删除
-  ElMessageBox.confirm('确定要删除吗？', '提示', {
-    type: 'warning'
-  })
-    .then(() => {
-      // 删除操作
-      deleteQuotaById(tableData.value[index].id)
-        .then((res) => {
-          if (res.code === 200) {
-            ElMessage.success('删除成功')
-            // 更新表格数据
-            getData()
-          } else {
-            ElMessage.error(res.message)
-          }
-        })
-        .catch((err) => {
-          ElMessage.error('删除失败')
-        })
+const handleDelete = async (index: number) => {
+  try {
+    await ElMessageBox.confirm('确定要删除吗？', '提示', {
+      type: 'warning'
     })
-    .catch(() => {})
+    const res = await deleteQuotaById(tableData.value[index].id)
+
+    if (res.code === 200) {
+      ElMessage.success('删除成功')
+      // 更新表格数据
+      getData()
+    } else {
+      ElMessage.error(res.message)
+    }
+  } catch (err) {
+    ElMessage.error('删除失败')
+  }
 }
 </script>
 

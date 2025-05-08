@@ -78,11 +78,13 @@
     <div class="pagination">
       <el-pagination
         background
-        layout="total, prev, pager, next"
+        layout="total, sizes, prev, pager, next"
         :current-page="query.pageIndex"
         :page-size="query.pageSize"
         :total="pageTotal"
-        @current-change="handlePageChange"
+        :page-sizes="[10, 20, 50, 100]"
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
       ></el-pagination>
     </div>
 
@@ -416,7 +418,16 @@ const handleSearch = async () => {
 }
 
 // 分页导航
-const handlePageChange = async (val: number) => {
+const handleSizeChange = async (val: number) => {
+  query.pageSize = val
+  query.pageIndex = 1
+  try {
+    await getData()
+  } catch (err) {
+    ElMessage.error('搜索失败')
+  }
+}
+const handleCurrentChange = async (val: number) => {
   query.pageIndex = val
   localStorage.setItem('AMSCurrentAssetPageIndex', val.toString())
   try {
@@ -431,8 +442,8 @@ const handleAdd = async () => {
   await fetchAssetTypes()
   await fetchDepartments()
   addVisible.value = true
-  // 这里可以添加新增逻辑
 }
+
 const getMaxPage = () => {
   if (!pageTotal.value) {
     return 1
@@ -455,8 +466,8 @@ const saveAdd = async () => {
     } else {
       ElMessage.error(res.message)
     }
-  } catch (err) {
-    ElMessage.error('新增失败')
+  } catch (error) {
+    ElMessage.error('新增失败: ' + error)
   }
 }
 
@@ -478,8 +489,8 @@ const handleEdit = async (index: number, row: any) => {
     // 这里可以根据需要设置其他字段
     editVisible.value = true
     // 更新后台数据
-  } catch (err) {
-    ElMessage.error('编辑失败')
+  } catch (error) {
+    ElMessage.error('编辑失败: ' + error)
   }
 }
 
@@ -498,8 +509,8 @@ const saveEdit = async () => {
     } else {
       ElMessage.error(res.message)
     }
-  } catch (err) {
-    ElMessage.error('修改失败')
+  } catch (error) {
+    ElMessage.error('修改失败:' + error)
   }
 }
 
@@ -520,8 +531,8 @@ const handleDelete = async (index: number) => {
     } else {
       ElMessage.error(res.message)
     }
-  } catch (err) {
-    ElMessage.error('删除失败')
+  } catch (error) {
+    ElMessage.error('删除失败: ' + error)
   }
 }
 
