@@ -108,6 +108,11 @@ export const useMessage = () => {
     fetchMessages()
   }
 
+  const getMessageCount = async () => {
+    await fetchMessages()
+    return total.value
+  }
+
   return {
     messages,
     total,
@@ -122,5 +127,6 @@ export const useMessage = () => {
     handleSearch,
     handleSizeChange,
     handleCurrentChange,
+    getMessageCount,
   }
 }

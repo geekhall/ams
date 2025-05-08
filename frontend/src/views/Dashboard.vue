@@ -49,7 +49,7 @@
               <div class="grid-content grid-content-2">
                 <el-icon class="grid-content-icon"><ChatDotRound /></el-icon>
                 <div class="grid-content-right">
-                  <div class="grid-number">321</div>
+                  <div class="grid-number">{{ totalMessage }}</div>
                   <div>系统消息</div>
                 </div>
               </div>
@@ -107,11 +107,15 @@
 </template>
 
 <script lang="ts" setup>
-import { reactive } from 'vue'
+import { ref, reactive, onMounted } from 'vue'
 import imgurl from '~/assets/img/avatar.png'
+import { useMessage } from '@/hooks/useMessage'
 
 const name = localStorage.getItem('ms_username')
 const role: string = name === 'admin' ? '超级管理员' : '普通用户'
+
+const { getMessageCount } = useMessage()
+let totalMessage = ref(0)
 
 const todoList = reactive([
   {
@@ -149,6 +153,10 @@ const year = date.getFullYear()
 const month = (date.getMonth() + 1).toString().padStart(2, '0')
 const day = date.getDate().toString().padStart(2, '0')
 const formattedDate = `${year}-${month}-${day}`
+
+onMounted(async () => {
+  totalMessage.value = await getMessageCount()
+})
 </script>
 
 <style lang="less" scoped>
