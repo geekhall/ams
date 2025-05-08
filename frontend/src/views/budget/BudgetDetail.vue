@@ -199,187 +199,19 @@
     </el-dialog>
 
     <!-- 新增弹出框 -->
-    <el-dialog title="新增预算" v-model="addVisible" width="30%">
-      <el-form label-width="140px">
-        <el-form-item label="项目类型">
-          <el-select v-model="addForm.budgetType" placeholder="请选择">
-            <el-option
-              v-for="item in budgetTypes"
-              :key="item.name"
-              :label="item.name"
-              :value="item.name"
-            ></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="项目性质">
-          <el-select v-model="addForm.budgetCategory" placeholder="请选择">
-            <el-option
-              v-for="item in budgetCategories"
-              :key="item.name"
-              :label="item.name"
-              :value="item.name"
-            ></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="是否信创">
-          <el-select v-model="addForm.innovation">
-            <el-option label="是" value="1"></el-option>
-            <el-option label="否" value="0"></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="项目名称">
-          <el-input v-model="addForm.name"></el-input>
-        </el-form-item>
-        <el-form-item label="项目概述">
-          <el-input v-model="addForm.description"></el-input>
-        </el-form-item>
-        <el-form-item label="部门">
-          <el-select v-model="addForm.departmentName">
-            <el-option
-              v-for="item in departments"
-              :key="item.name"
-              :label="item.name"
-              :value="item.name"
-            ></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="预算金额">
-          <el-input v-model="addForm.amount"></el-input>
-        </el-form-item>
-
-        <el-form-item label="团队">
-          <el-select v-model="addForm.teamName">
-            <el-option
-              v-for="item in teams"
-              :key="item.name"
-              :label="item.name"
-              :value="item.name"
-            ></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="优先级" v-if="!isTech">
-          <el-select v-model="editForm.priority">
-            <el-option label="0-默认" value="0"></el-option>
-            <el-option label="1-优先" value="1"></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="业务优先级" v-if="!isTech">
-          <el-select v-model="addForm.businessPriority">
-            <el-option label="0-默认" value="0"></el-option>
-            <el-option label="1-A" value="1"></el-option>
-            <el-option label="2-B" value="2"></el-option>
-            <el-option label="3-C" value="3"></el-option>
-            <el-option label="4-D" value="4"></el-option>
-            <el-option label="5-已立项" value="5"></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="业务优先级情况说明" v-if="!isTech">
-          <el-input v-model="addForm.businessDescription"></el-input>
-        </el-form-item>
-        <el-form-item label="备注">
-          <el-input v-model="addForm.remark"></el-input>
-        </el-form-item>
-      </el-form>
-      <template #footer>
-        <span class="dialog-footer">
-          <el-button @click="addVisible = false">取 消</el-button>
-          <el-button type="primary" @click="saveAdd">确 定</el-button>
-        </span>
-      </template>
-    </el-dialog>
-
-    <!-- 编辑弹出框 -->
-    <el-dialog title="编辑" v-model="editVisible" width="30%">
-      <el-form label-width="140px">
-        <el-form-item label="ID" v-show="false">
-          <el-input v-model="editForm.id" disabled></el-input>
-        </el-form-item>
-        <el-form-item label="项目类型">
-          <el-select v-model="editForm.budgetType" placeholder="请选择">
-            <el-option
-              v-for="item in budgetTypes"
-              :key="item.name"
-              :label="item.name"
-              :value="item.name"
-            ></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="项目性质">
-          <el-select v-model="editForm.budgetCategory" placeholder="请选择">
-            <el-option
-              v-for="item in budgetCategories"
-              :key="item.name"
-              :label="item.name"
-              :value="item.name"
-            ></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="是否信创">
-          <el-select v-model="editForm.innovation">
-            <el-option label="是" value="1"></el-option>
-            <el-option label="否" value="0"></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="项目名称">
-          <el-input v-model="editForm.name"></el-input>
-        </el-form-item>
-        <el-form-item label="项目概述">
-          <el-input v-model="editForm.description"></el-input>
-        </el-form-item>
-        <el-form-item label="部门">
-          <el-select v-model="editForm.departmentName">
-            <el-option
-              v-for="item in departments"
-              :key="item.name"
-              :label="item.name"
-              :value="item.name"
-            ></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="预算金额">
-          <el-input v-model="editForm.amount"></el-input>
-        </el-form-item>
-
-        <el-form-item label="团队">
-          <el-select v-model="editForm.teamName">
-            <el-option
-              v-for="item in teams"
-              :key="item.name"
-              :label="item.name"
-              :value="item.name"
-            ></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="优先级" v-if="!isTech">
-          <el-select v-model="editForm.priority">
-            <el-option label="0-默认" value="0"></el-option>
-            <el-option label="1-优先" value="1"></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="业务优先级" v-if="!isTech">
-          <el-select v-model="editForm.businessPriority">
-            <el-option label="0-默认" value="0"></el-option>
-            <el-option label="1-A" value="1"></el-option>
-            <el-option label="2-B" value="2"></el-option>
-            <el-option label="3-C" value="3"></el-option>
-            <el-option label="4-D" value="4"></el-option>
-            <el-option label="5-已立项" value="5"></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="业务优先级情况说明" v-if="!isTech">
-          <el-input v-model="editForm.businessDescription"></el-input>
-        </el-form-item>
-        <el-form-item label="备注">
-          <el-input v-model="editForm.remark"></el-input>
-        </el-form-item>
-      </el-form>
-      <template #footer>
-        <span class="dialog-footer">
-          <el-button @click="editVisible = false">取 消</el-button>
-          <el-button type="primary" @click="saveEdit">确 定</el-button>
-        </span>
-      </template>
-    </el-dialog>
+    <BudgetDialog
+      v-model:visible="dialogVisible"
+      :mode="dialogMode"
+      :budget-types="budgetTypes"
+      :budget-categories="budgetCategories"
+      :departments="departments"
+      :teams="teams"
+      :is-tech="isTech"
+      :selected-year="selectedYear"
+      :budget="currentBudget || undefined"
+      @success="handleSuccess"
+      @approval-required="handleApprovalRequired"
+    />
 
     <!-- 审批流程抽屉 -->
     <el-drawer
@@ -481,6 +313,7 @@ import { deleteBudgetById, getBudgetList, addBudget, updateBudget } from '@/api/
 import { type Budget } from '@/types/budget'
 import dayjs from 'dayjs'
 import { hasPermission } from '@/utils/permission'
+import BudgetDialog from '@/components/budget/BudgetDialog.vue'
 
 const { departments, fetchDepartments } = useDepartment()
 const { budgetTypes, fetchBudgetTypes } = useBudgetType()
@@ -521,9 +354,6 @@ const saveYear = () => {
   yearVisible.value = false
   // 添加至后台的逻辑
   ElMessage.success(`已选择 ${selectedYear.value.getFullYear()} 年度`)
-  // 更新年度
-  addForm.year = selectedYear.value.getFullYear()
-  editForm.year = selectedYear.value.getFullYear()
   // 更新表格数据
   getData()
 }
@@ -551,43 +381,9 @@ const query = reactive({
 const tableData = ref<Budget[]>([])
 const pageTotal = ref(0)
 // 表格编辑时弹窗和保存
-const addVisible = ref(false)
-let addForm = reactive({
-  year: selectedYear.value.getFullYear(),
-  name: '测试项目1',
-  description: '测试需求及目标',
-  budgetType: '软件',
-  budgetCategory: '监管要求落实',
-  innovation: '1',
-  amount: 10000,
-  departmentName: '信息科技部',
-  teamName: '核心开发',
-  priority: 1,
-  businessPriority: '5',
-  businessDescription: '测试业务优先级情况说明',
-  plannedStartDate: dayjs().format('YYYY-MM-DD'),
-  remark: '测试备注',
-  status: '正常'
-})
-const editVisible = ref(false)
-let editForm = reactive({
-  id: '',
-  year: selectedYear.value.getFullYear(),
-  name: '',
-  description: '',
-  budgetType: '',
-  budgetCategory: '',
-  innovation: '',
-  amount: 0,
-  departmentName: '',
-  teamName: '',
-  priority: 1,
-  businessPriority: '5',
-  businessDescription: '',
-  plannedStartDate: dayjs().format('YYYY-MM-DD'),
-  remark: '',
-  status: ''
-})
+const dialogVisible = ref(false)
+const dialogMode = ref<'add' | 'edit'>('add')
+const currentBudget = ref<Budget | null>(null)
 
 // 获取表格数据
 const getData = async () => {
@@ -679,49 +475,40 @@ const handleAdd = async () => {
     await fetchBudgetCategories()
     await fetchDepartments()
     await fetchTeams()
-    addVisible.value = true
+    dialogMode.value = 'add'
+    currentBudget.value = null
+    dialogVisible.value = true
   } catch (err) {
     ElMessage.error('获取数据失败')
   }
 }
-const getMaxPage = () => {
-  if (!pageTotal.value) {
-    return 1
-  }
-
-  let maxPage = Math.ceil((pageTotal.value + 1) / query.pageSize)
-  return maxPage
-}
 // 保存新增操作
-const saveAdd = async () => {
-  addVisible.value = false
-  try {
-    const res = await addBudget(addForm)
-
-    if (res.code === 200) {
-      ElMessage.success('新增成功')
-      query.pageIndex = getMaxPage()
-      getData()
-    } else {
-      ElMessage.error(res.message)
-    }
-  } catch (err) {
-    ElMessage.error('新增失败')
-  }
+const handleSuccess = () => {
+  getData()
 }
 
 // 编辑操作
-const handleEdit = async (index: number, row: any) => {
+const handleEdit = async (index: number, row: Budget) => {
   try {
     await fetchBudgetTypes()
     await fetchBudgetCategories()
     await fetchDepartments()
     await fetchTeams()
-    Object.assign(editForm, row)
-    editVisible.value = true
+    dialogMode.value = 'edit'
+    currentBudget.value = row
+    dialogVisible.value = true
   } catch (err) {
     ElMessage.error('获取数据失败')
   }
+}
+
+// 处理需要审批的情况
+const handleApprovalRequired = (form: Budget) => {
+  approvalForm.projectName = form.name
+  approvalForm.projectId = form.id
+  approvalForm.reason = ''
+  approvalForm.approver = ''
+  approvalDrawerVisible.value = true
 }
 
 // 修改内容数据结构
@@ -755,9 +542,9 @@ const changesData = computed(() => {
   const changes: ChangeItem[] = []
   const originalData = tableData.value.find((item) => item.id === approvalForm.projectId)
 
-  if (!originalData) return changes
+  if (!originalData || !currentBudget.value) return changes
 
-  Object.entries(editForm).forEach(([key, value]) => {
+  Object.entries(currentBudget.value).forEach(([key, value]) => {
     if (key === 'id') return // 跳过ID字段
 
     const oldValue = originalData[key as keyof Budget]
@@ -790,19 +577,21 @@ const changesData = computed(() => {
 const saveEdit = async () => {
   if (!hasPermission(15)) {
     // 如果没有编辑权限，打开审批抽屉
-    approvalForm.projectName = editForm.name
-    approvalForm.projectId = editForm.id
+    approvalForm.projectName = currentBudget.value?.name || ''
+    approvalForm.projectId = currentBudget.value?.id || ''
     approvalForm.reason = ''
     approvalForm.approver = ''
-    editVisible.value = false
     approvalDrawerVisible.value = true
     return
   }
 
-  editVisible.value = false
+  dialogVisible.value = false
   let currentPage = query.pageIndex
   try {
-    const res = await updateBudget(editForm)
+    if (!currentBudget.value) {
+      throw new Error('No budget data to update')
+    }
+    const res = await updateBudget(currentBudget.value)
 
     if (res.code === 200) {
       ElMessage.success(`修改成功`)
