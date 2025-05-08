@@ -88,7 +88,7 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
 import { Delete, Edit, Search } from '@element-plus/icons-vue'
-import MessageDialog from '@/views/message/MessageDialog.vue'
+import MessageDialog from '@/components/message/MessageDialog.vue'
 import { type MessageDTO } from '@/types/message'
 import { useMessage } from '@/hooks/useMessage'
 import dayjs from 'dayjs'

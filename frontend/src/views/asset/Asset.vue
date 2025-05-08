@@ -68,7 +68,7 @@
             text
             type="primary"
             @click="handleBorrow(scope.row)"
-            v-if="scope.row.status === '正常'"
+            :disabled="scope.row.status !== '正常'"
           >
             领用
           </el-button>
@@ -88,218 +88,40 @@
       ></el-pagination>
     </div>
 
-    <!-- 新增弹出框 -->
-    <el-dialog title="新增资产" v-model="addVisible" width="30%">
-      <el-form label-width="70px">
-        <el-form-item label="资产名称">
-          <el-input v-model="addForm.assetName"></el-input>
-        </el-form-item>
-        <el-form-item label="资产编号">
-          <el-input v-model="addForm.assetCode"></el-input>
-        </el-form-item>
-        <el-form-item label="资产类型">
-          <el-select v-model="addForm.assetType" placeholder="请选择">
-            <el-option
-              v-for="item in assetTypes"
-              :key="item.name"
-              :label="item.name"
-              :value="item.name"
-            ></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="所属部门">
-          <el-select v-model="addForm.departmentName">
-            <el-option
-              v-for="item in departments"
-              :key="item.name"
-              :label="item.name"
-              :value="item.name"
-            ></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="状态">
-          <el-select v-model="addForm.status">
-            <el-option label="正常" value="正常"></el-option>
-            <el-option label="维修" value="维修"></el-option>
-            <el-option label="报废" value="报废"></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="购入时间">
-          <span class="demonstration"></span>
-          <el-date-picker
-            class="date-picker"
-            v-model="addForm.purchaseDate"
-            type="date"
-            format="YYYY-MM-DD"
-            value-format="YYYY-MM-DD"
-            size="default"
-            placeholder="选择日期"
-          />
-        </el-form-item>
-        <el-form-item label="购买价格">
-          <el-input v-model="addForm.purchasePrice"></el-input>
-        </el-form-item>
-        <el-form-item label="数量">
-          <el-input v-model="addForm.count"></el-input>
-        </el-form-item>
-      </el-form>
-      <template #footer>
-        <span class="dialog-footer">
-          <el-button @click="addVisible = false">取 消</el-button>
-          <el-button type="primary" @click="saveAdd">确 定</el-button>
-        </span>
-      </template>
-    </el-dialog>
+    <!-- 使用组合对话框组件 -->
+    <AssetDialog
+      v-model:visible="dialogVisible"
+      :mode="dialogMode"
+      :asset-types="assetTypes"
+      :departments="departments"
+      :asset="currentAsset"
+      @success="handleSuccess"
+    />
 
-    <!-- 编辑弹出框 -->
-    <el-dialog title="编辑" v-model="editVisible" width="30%">
-      <el-form label-width="70px">
-        <el-form-item label="ID" v-if="false">
-          <el-input v-model="editForm.id" disabled></el-input>
-        </el-form-item>
-        <el-form-item label="资产名称">
-          <el-input v-model="editForm.assetName"></el-input>
-        </el-form-item>
-        <el-form-item label="资产编号">
-          <el-input v-model="editForm.assetCode"></el-input>
-        </el-form-item>
-        <el-form-item label="资产类型">
-          <el-select v-model="addForm.assetType" placeholder="请选择">
-            <el-option
-              v-for="item in assetTypes"
-              :key="item.name"
-              :label="item.name"
-              :value="item.name"
-            ></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="所属部门">
-          <el-select v-model="editForm.departmentName">
-            <el-option
-              v-for="item in departments"
-              :key="item.name"
-              :label="item.name"
-              :value="item.name"
-            ></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="状态">
-          <el-select v-model="editForm.status">
-            <el-option label="正常" value="正常"></el-option>
-            <el-option label="维修" value="维修"></el-option>
-            <el-option label="报废" value="报废"></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="购入时间">
-          <span class="demonstration"></span>
-          <el-date-picker
-            class="date-picker"
-            v-model="editForm.purchaseDate"
-            type="date"
-            format="YYYY-MM-DD"
-            value-format="YYYY-MM-DD"
-            size="default"
-            placeholder="选择日期"
-          />
-        </el-form-item>
-        <el-form-item label="购买价格">
-          <el-input v-model="editForm.purchasePrice"></el-input>
-        </el-form-item>
-        <el-form-item label="数量">
-          <el-input v-model="editForm.count"></el-input>
-        </el-form-item>
-      </el-form>
-      <template #footer>
-        <span class="dialog-footer">
-          <el-button @click="editVisible = false">取 消</el-button>
-          <el-button type="primary" @click="saveEdit">确 定</el-button>
-        </span>
-      </template>
-    </el-dialog>
-
-    <!-- 领用弹出框 -->
-    <el-dialog title="资产领用" v-model="borrowVisible" width="30%">
-      <el-form :model="borrowForm" label-width="100px" :rules="borrowRules" ref="borrowFormRef">
-        <el-form-item label="资产名称">
-          <span>{{ borrowForm.assetName }}</span>
-        </el-form-item>
-        <el-form-item label="资产编号">
-          <span>{{ borrowForm.assetCode }}</span>
-        </el-form-item>
-        <el-form-item label="领用数量" prop="borrowCount">
-          <el-input-number
-            v-model="borrowForm.borrowCount"
-            :min="1"
-            :max="borrowForm.availableCount"
-            @change="handleCountChange"
-          />
-          <span class="count-tip">可用数量: {{ borrowForm.availableCount }}</span>
-        </el-form-item>
-        <el-form-item label="领用部门" prop="borrowDepartment">
-          <el-select v-model="borrowForm.borrowDepartment" placeholder="请选择领用部门">
-            <el-option
-              v-for="item in departments"
-              :key="item.name"
-              :label="item.name"
-              :value="item.name"
-            />
-          </el-select>
-        </el-form-item>
-        <el-form-item label="领用人" prop="borrower">
-          <el-input v-model="borrowForm.borrower" placeholder="请输入领用人姓名" />
-        </el-form-item>
-        <el-form-item label="领用日期" prop="borrowDate">
-          <el-date-picker
-            v-model="borrowForm.borrowDate"
-            type="date"
-            placeholder="选择领用日期"
-            format="YYYY-MM-DD"
-            value-format="YYYY-MM-DD"
-            :disabled-date="disabledDate"
-          />
-        </el-form-item>
-        <el-form-item label="预计归还" prop="expectedReturnDate">
-          <el-date-picker
-            v-model="borrowForm.expectedReturnDate"
-            type="date"
-            placeholder="选择预计归还日期"
-            format="YYYY-MM-DD"
-            value-format="YYYY-MM-DD"
-            :disabled-date="disabledDate"
-          />
-        </el-form-item>
-        <el-form-item label="领用原因" prop="reason">
-          <el-input
-            v-model="borrowForm.reason"
-            type="textarea"
-            :rows="3"
-            placeholder="请输入领用原因"
-          />
-        </el-form-item>
-      </el-form>
-      <template #footer>
-        <span class="dialog-footer">
-          <el-button @click="borrowVisible = false">取 消</el-button>
-          <el-button type="primary" @click="submitBorrow">确 定</el-button>
-        </span>
-      </template>
-    </el-dialog>
+    <!-- 使用领用对话框组件 -->
+    <AssetBorrowDialog
+      v-model:visible="borrowVisible"
+      :departments="departments"
+      :asset="currentAsset"
+      @success="handleSuccess"
+    />
   </div>
 </template>
 
 <script lang="ts" setup>
-import { ref, reactive, onMounted, computed } from 'vue'
+import { ref, reactive, onMounted } from 'vue'
 import { useAssetType } from '@/hooks/useAssetType'
 import { useDepartment } from '@/hooks/useDepartment'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { Delete, Edit, Search, Plus } from '@element-plus/icons-vue'
-import { deleteAssetById, getAssetList, addAsset, updateAsset } from '@/api/asset'
+import { deleteAssetById, getAssetList } from '@/api/asset'
 import { type Asset } from '@/types/asset'
-import dayjs from 'dayjs'
-import type { FormInstance, FormRules } from 'element-plus'
+import AssetDialog from '@/components/asset/AssetDialog.vue'
+import AssetBorrowDialog from '@/components/asset/AssetBorrowDialog.vue'
 
 const { assetTypes, fetchAssetTypes } = useAssetType()
 const { departments, fetchDepartments } = useDepartment()
+
 const query = reactive({
   id: '',
   assetName: '',
@@ -310,69 +132,16 @@ const query = reactive({
   purchaseDate: '',
   purchasePrice: '',
   count: 0,
-  // 分页参数
   pageIndex: 1,
   pageSize: 10
 })
+
 const tableData = ref<Asset[]>([])
 const pageTotal = ref(0)
-// 表格编辑时弹窗和保存
-const addVisible = ref(false)
-
-let addForm = reactive({
-  assetName: '测试资产1',
-  assetCode: 'TEST-2025-1',
-  assetType: '服务器',
-  departmentName: '信息科技部',
-  status: '正常',
-  purchaseDate: dayjs().format('YYYY-MM-DD'),
-  purchasePrice: 0,
-  count: 0
-})
-const editVisible = ref(false)
-let editForm = reactive({
-  id: '',
-  assetName: '',
-  assetCode: '',
-  assetType: '',
-  departmentName: '',
-  status: '',
-  purchaseDate: '',
-  purchasePrice: 100,
-  count: 1
-})
-let idx: number = -1
-
-// 领用相关
+const dialogVisible = ref(false)
+const dialogMode = ref<'add' | 'edit'>('add')
+const currentAsset = ref<Asset | null>(null)
 const borrowVisible = ref(false)
-const borrowFormRef = ref<FormInstance>()
-const borrowForm = reactive({
-  assetId: '',
-  assetName: '',
-  assetCode: '',
-  borrowCount: 1,
-  availableCount: 0,
-  borrowDepartment: '',
-  borrower: '',
-  borrowDate: dayjs().format('YYYY-MM-DD'),
-  expectedReturnDate: '',
-  reason: ''
-})
-
-const borrowRules = reactive<FormRules>({
-  borrowCount: [
-    { required: true, message: '请输入领用数量', trigger: 'blur' },
-    { type: 'number', min: 1, message: '领用数量必须大于0', trigger: 'blur' }
-  ],
-  borrowDepartment: [{ required: true, message: '请选择领用部门', trigger: 'change' }],
-  borrower: [{ required: true, message: '请输入领用人姓名', trigger: 'blur' }],
-  borrowDate: [{ required: true, message: '请选择领用日期', trigger: 'change' }],
-  expectedReturnDate: [{ required: true, message: '请选择预计归还日期', trigger: 'change' }],
-  reason: [
-    { required: true, message: '请输入领用原因', trigger: 'blur' },
-    { min: 5, message: '领用原因不能少于5个字符', trigger: 'blur' }
-  ]
-})
 
 // 获取表格数据
 const getData = async () => {
@@ -384,8 +153,6 @@ const getData = async () => {
     })
 
     if (res.code === 200) {
-      // console.log('getAssetList res.data:', res.data)
-
       tableData.value = res.data.items
       pageTotal.value = res.data.total
     } else {
@@ -395,6 +162,7 @@ const getData = async () => {
     ElMessage.error('获取数据失败')
   }
 }
+
 onMounted(() => {
   const savedPageIndex = localStorage.getItem('AMSCurrentAssetPageIndex')
   if (savedPageIndex) {
@@ -407,9 +175,6 @@ onMounted(() => {
 // 搜索操作
 const handleSearch = async () => {
   query.pageIndex = 1
-  // 获取输入框中的值
-  console.log('query.assetName', query.assetName)
-  // 这里可以添加搜索逻辑
   try {
     await getData()
   } catch (err) {
@@ -427,6 +192,7 @@ const handleSizeChange = async (val: number) => {
     ElMessage.error('搜索失败')
   }
 }
+
 const handleCurrentChange = async (val: number) => {
   query.pageIndex = val
   localStorage.setItem('AMSCurrentAssetPageIndex', val.toString())
@@ -441,76 +207,21 @@ const handleCurrentChange = async (val: number) => {
 const handleAdd = async () => {
   await fetchAssetTypes()
   await fetchDepartments()
-  addVisible.value = true
-}
-
-const getMaxPage = () => {
-  if (!pageTotal.value) {
-    return 1
-  }
-  let maxPage = Math.ceil((pageTotal.value + 1) / query.pageSize)
-  return maxPage
-}
-// 保存新增操作
-const saveAdd = async () => {
-  addVisible.value = false
-  try {
-    const res = await addAsset(addForm)
-
-    if (res.code === 200) {
-      ElMessage.success('新增成功')
-      // 更新当前页码
-      query.pageIndex = getMaxPage()
-      // 更新表格数据
-      await getData()
-    } else {
-      ElMessage.error(res.message)
-    }
-  } catch (error) {
-    ElMessage.error('新增失败: ' + error)
-  }
+  dialogMode.value = 'add'
+  currentAsset.value = null
+  dialogVisible.value = true
 }
 
 // 编辑操作
-const handleEdit = async (index: number, row: any) => {
+const handleEdit = async (index: number, row: Asset) => {
   try {
     await fetchAssetTypes()
     await fetchDepartments()
-    idx = index
-    editForm.id = row.id
-    editForm.assetName = row.assetName
-    editForm.assetCode = row.assetCode
-    editForm.assetType = row.assetType
-    editForm.departmentName = row.departmentName
-    editForm.status = row.status
-    editForm.purchaseDate = row.purchaseDate
-    editForm.purchasePrice = row.purchasePrice
-    editForm.count = row.count
-    // 这里可以根据需要设置其他字段
-    editVisible.value = true
-    // 更新后台数据
+    dialogMode.value = 'edit'
+    currentAsset.value = row
+    dialogVisible.value = true
   } catch (error) {
     ElMessage.error('编辑失败: ' + error)
-  }
-}
-
-// 保存编辑操作
-const saveEdit = async () => {
-  editVisible.value = false
-  let currentPage = query.pageIndex
-  try {
-    const res = await updateAsset(editForm)
-
-    if (res.code === 200) {
-      ElMessage.success(`修改成功`)
-      // 更新表格数据
-      query.pageIndex = currentPage
-      await getData()
-    } else {
-      ElMessage.error(res.message)
-    }
-  } catch (error) {
-    ElMessage.error('修改失败:' + error)
   }
 }
 
@@ -521,70 +232,30 @@ const handleDelete = async (index: number) => {
       type: 'warning'
     })
 
-    // 删除操作
     const res = await deleteAssetById(tableData.value[index].id)
 
     if (res.code === 200) {
       ElMessage.success('删除成功')
-      // 更新表格数据
       await getData()
     } else {
       ElMessage.error(res.message)
     }
   } catch (error) {
-    ElMessage.error('删除失败: ' + error)
+    if (error !== 'cancel') {
+      ElMessage.error('删除失败: ' + error)
+    }
   }
 }
 
-// 领用相关
+// 领用操作
 const handleBorrow = (row: Asset) => {
-  borrowForm.assetId = row.id
-  borrowForm.assetName = row.assetName
-  borrowForm.assetCode = row.assetCode
-  borrowForm.availableCount = row.count
-  borrowForm.borrowCount = 1
-  borrowForm.borrowDepartment = ''
-  borrowForm.borrower = ''
-  borrowForm.borrowDate = dayjs().format('YYYY-MM-DD')
-  borrowForm.expectedReturnDate = ''
-  borrowForm.reason = ''
+  currentAsset.value = row
   borrowVisible.value = true
 }
 
-const handleCountChange = (value: number) => {
-  if (value > borrowForm.availableCount) {
-    borrowForm.borrowCount = borrowForm.availableCount
-  }
-}
-
-const disabledDate = (time: Date) => {
-  return time.getTime() < Date.now() - 8.64e7 // 禁用今天之前的日期
-}
-
-const submitBorrow = async () => {
-  if (!borrowFormRef.value) return
-
-  // await borrowFormRef.value.validate(async (valid) => {
-  //   if (valid) {
-  //     try {
-  //       // TODO: 调用领用API
-  //       const res = await borrowAsset({
-  //         ...borrowForm,
-  //         assetId: borrowForm.assetId
-  //       })
-
-  //       if (res.code === 200) {
-  //         ElMessage.success('领用申请已提交')
-  //         borrowVisible.value = false
-  //         await getData() // 刷新资产列表
-  //       } else {
-  //         ElMessage.error(res.message)
-  //       }
-  //     } catch (err) {
-  //       ElMessage.error('领用失败')
-  //     }
-  //   }
-  // })
+// 操作成功后的回调
+const handleSuccess = () => {
+  getData()
 }
 </script>
 
@@ -600,37 +271,25 @@ const submitBorrow = async () => {
 .handle-input {
   width: 300px;
 }
+
 .table {
   width: 100%;
   font-size: 14px;
 }
+
 .red {
   color: #f56c6c;
 }
+
 .mr10 {
   margin-right: 10px;
 }
+
 .table-td-avatar {
   display: block;
   margin: auto;
   width: 40px;
   height: 40px;
 }
-.date-picker {
-  width: 100%;
-}
-
-.count-tip {
-  margin-left: 10px;
-  color: #909399;
-  font-size: 12px;
-}
-
-:deep(.el-input-number) {
-  width: 180px;
-}
 </style>
 
-function getMaxPage(): number {
-  throw new Error('Function not implemented.')
-}

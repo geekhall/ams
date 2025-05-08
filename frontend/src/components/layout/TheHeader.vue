@@ -103,7 +103,6 @@ onMounted(() => {
 // 用户名下拉菜单选择事件
 const router = useRouter()
 const handleCommand = (command: string) => {
-  console.log('handleCommand', command)
   if (command == 'loginout') {
     authStore.logout()
     router.push('/login')
@@ -123,8 +122,6 @@ const handleCommand = (command: string) => {
   height: 70px;
   font-size: 22px;
   color: white;
-  // background-color: #2c2e3a; // dark
-  // background-color: #d32d2a; // 盛京红
   background: linear-gradient(135deg, #d32d2a, #ff5733);
 }
 .collapse-btn {

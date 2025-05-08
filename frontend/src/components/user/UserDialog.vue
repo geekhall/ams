@@ -4,12 +4,6 @@
       <el-form-item label="用户名" prop="username">
         <el-input v-model="formData.username" :disabled="isEdit" />
       </el-form-item>
-      <!-- <el-form-item label="密码" prop="password">
-        <el-input v-model="formData.password" type="password" />
-      </el-form-item>
-      <el-form-item label="确认密码" prop="confirmPassword">
-        <el-input v-model="formData.confirmPassword" type="password" />
-      </el-form-item> -->
       <el-form-item label="昵称" prop="name">
         <el-input v-model="formData.name" />
       </el-form-item>
@@ -19,18 +13,6 @@
       <el-form-item label="邮箱" prop="email">
         <el-input v-model="formData.email" />
       </el-form-item>
-      <!-- <el-form-item label="头像">
-        <el-upload
-          class="avatar-uploader"
-          action="/upload"
-          :show-file-list="false"
-          :on-success="handleAvatarSuccess"
-          :file-list="formData.avatar ? [formData.avatar] : []"
-        >
-          <img v-if="formData.avatar" :src="formData.avatar" class="avatar" />
-          <el-button size="small" type="primary">上传头像</el-button>
-        </el-upload>
-      </el-form-item> -->
       <el-form-item label="部门" prop="department">
         <el-select v-model="formData.department">
           <el-option

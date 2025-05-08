@@ -111,7 +111,7 @@ import { ElMessage, ElMessageBox, FormInstance } from 'element-plus'
 import { Delete, Edit, Search, Plus } from '@element-plus/icons-vue'
 import { getUserList, addUser, updateUser, deleteUser } from '~/api/user'
 import { UserDTO } from '~/types/user'
-import UserDialog from './UserDialog.vue'
+import UserDialog from '../components/user/UserDialog.vue'
 const dialogVisible = ref(false)
 const isEdit = ref(false)
 const currentFormData = ref<UserDTO>({
