@@ -66,6 +66,7 @@
           </el-button>
           <el-button
             text
+            :icon="Memo"
             type="primary"
             @click="handleBorrow(scope.row)"
             :disabled="scope.row.status !== '正常'"
@@ -112,7 +113,7 @@
 import { onMounted } from 'vue'
 import { useAssetType } from '@/hooks/useAssetType'
 import { useDepartment } from '@/hooks/useDepartment'
-import { Delete, Edit, Search, Plus } from '@element-plus/icons-vue'
+import { Delete, Edit, Search, Plus, Memo } from '@element-plus/icons-vue'
 import { useAsset } from '@/hooks/useAsset'
 import AssetDialog from '@/components/asset/AssetDialog.vue'
 import AssetBorrowDialog from '@/components/asset/AssetBorrowDialog.vue'
