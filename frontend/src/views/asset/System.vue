@@ -52,11 +52,13 @@
     <div class="pagination">
       <el-pagination
         background
-        layout="total, prev, pager, next"
+        layout="total, sizes, prev, pager, next"
         :current-page="query.pageIndex"
         :page-size="query.pageSize"
+        :page-sizes="[10, 20, 50, 100]"
         :total="pageTotal"
-        @current-change="handlePageChange"
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
       ></el-pagination>
     </div>
     <!-- 编辑弹出框 -->
@@ -116,7 +118,16 @@ const handleSearch = () => {
   getData()
 }
 // 分页导航
-const handlePageChange = (val: number) => {
+const handleSizeChange = async (val: number) => {
+  query.pageSize = val
+  query.pageIndex = 1
+  try {
+    await getData()
+  } catch (err) {
+    ElMessage.error('搜索失败')
+  }
+}
+const handleCurrentChange = (val: number) => {
   query.pageIndex = val
   getData()
 }
