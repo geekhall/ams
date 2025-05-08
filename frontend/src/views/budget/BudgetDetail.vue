@@ -145,25 +145,17 @@
       </el-table-column>
     </el-table>
 
-    <!--    <div class="pagination">-->
-    <!--      <el-pagination-->
-    <!--        background-->
-    <!--        layout="total, prev, pager, next"-->
-    <!--        :current-page="query.pageIndex"-->
-    <!--        :page-size="query.pageSize"-->
-    <!--        :total="pageTotal"-->
-    <!--        @current-change="handlePageChange"-->
-    <!--      ></el-pagination>-->
-    <!--    </div>-->
     <div class="pagination-and-actions">
       <!-- 左：分页 -->
       <el-pagination
         background
-        layout="total, prev, pager, next"
+        layout="total, sizes, prev, pager, next"
         :current-page="query.pageIndex"
         :page-size="query.pageSize"
+        :page-sizes="[10, 20, 50, 100]"
         :total="pageTotal"
-        @current-change="handlePageChange"
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
       ></el-pagination>
 
       <!-- 右：季度选择 + 报告按钮 -->
@@ -660,7 +652,17 @@ const handleClear = () => {
   getData()
 }
 // 分页导航
-const handlePageChange = async (val: number) => {
+const handleSizeChange = async (val: number) => {
+  query.pageSize = val
+  query.pageIndex = 1
+  try {
+    await getData()
+  } catch (err) {
+    ElMessage.error('搜索失败')
+  }
+}
+
+const handleCurrentChange = async (val: number) => {
   query.pageIndex = val
   localStorage.setItem('AMSCurrentBudgetPageIndex', val.toString())
   try {
