@@ -58,14 +58,16 @@
       </el-table-column>
     </el-table>
     <div class="footer-container">
-      <div class="pagination">
+      <div class="pagination-container">
         <el-pagination
           background
-          layout="total, prev, pager, next"
-          :current-page="query.pageIndex"
-          :page-size="query.pageSize"
+          v-model:current-page="query.pageIndex"
+          v-model:page-size="query.pageSize"
+          :page-sizes="[10, 20, 50, 100]"
           :total="pageTotal"
-          @current-change="handlePageChange"
+          layout="total, sizes, prev, pager, next"
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
         ></el-pagination>
       </div>
       <div class="totalQuota">总计：{{ query.yearTotal }}</div>
@@ -172,7 +174,7 @@ const query = reactive({
   yearTotal: 0,
   // 分页参数
   pageIndex: 1,
-  pageSize: 16
+  pageSize: 10
 })
 const tableData = ref<Quota[]>([])
 const pageTotal = ref(0)
@@ -277,7 +279,13 @@ const handleSearch = () => {
 }
 
 // 分页导航
-const handlePageChange = (val: number) => {
+const handleSizeChange = (val: number) => {
+  query.pageSize = val
+  query.pageIndex = 1
+  getData()
+}
+
+const handleCurrentChange = (val: number) => {
   query.pageIndex = val
   localStorage.setItem('AMSCurrentQuotaPageIndex', val.toString())
   getData()

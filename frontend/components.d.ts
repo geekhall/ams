@@ -95,4 +95,7 @@ declare module 'vue' {
     UserDialog: typeof import('./src/views/UserDialog.vue')['default']
     UserManagement: typeof import('./src/views/UserManagement.vue')['default']
   }
+  export interface ComponentCustomProperties {
+    vLoading: typeof import('element-plus/es')['ElLoadingDirective']
+  }
 }
