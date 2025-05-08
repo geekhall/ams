@@ -2,10 +2,13 @@ package net.geekhour.loki.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import lombok.RequiredArgsConstructor;
 import net.geekhour.loki.entity.Message;
+import net.geekhour.loki.entity.MessageReceiver;
+import net.geekhour.loki.entity.User;
 import net.geekhour.loki.entity.dto.MessageDTO;
 import net.geekhour.loki.mapper.MessageMapper;
+import net.geekhour.loki.mapper.MessageReceiverMapper;
+import net.geekhour.loki.mapper.UserMapper;
 import net.geekhour.loki.service.IMessageService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.BeanUtils;
@@ -13,7 +16,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * <p>
@@ -27,7 +32,13 @@ import java.util.Map;
 public class MessageServiceImpl extends ServiceImpl<MessageMapper, Message> implements IMessageService {
 
     @Autowired
+    private UserMapper userMapper;
+
+    @Autowired
     private MessageMapper messageMapper;
+
+    @Autowired
+    private MessageReceiverMapper messageReceiverMapper;
 
     @Override
     public Page<Message> getMessageList(Map<String, Object> params) {
@@ -60,7 +71,39 @@ public class MessageServiceImpl extends ServiceImpl<MessageMapper, Message> impl
             .setUpdateDate(System.currentTimeMillis())
             .setDeleted((byte) 0);
 
-        return messageMapper.insert(message) > 0;
+        // 插入消息记录
+        boolean messageInserted = messageMapper.insert(message) > 0;
+        if (!messageInserted) {
+            return false;
+        }
+
+        // 获取所有用户ID（这里需要注入UserMapper或UserService）
+        List<Long> userIds = userMapper.selectList(null).stream()
+                .map(User::getId)
+                .collect(Collectors.toList());
+
+        // 如果没有用户，则不需要插入消息接收记录
+        if (userIds.isEmpty()) {
+            return true;
+        }
+        
+        // 批量插入消息接收记录
+        List<MessageReceiver> receivers = userIds.stream()
+                .map(userId -> {
+                    MessageReceiver receiver = new MessageReceiver();
+                    receiver.setMessageId(message.getId())
+                            .setUserId(userId)
+                            .setRead(false)
+                            .setCreateDate(System.currentTimeMillis())
+                            .setUpdateDate(System.currentTimeMillis())
+                            .setDeleted((byte) 0);
+                    return receiver;
+                })
+                .collect(Collectors.toList());
+
+        messageReceiverMapper.insert(receivers);
+
+        return true;
     }
 
     @Override
