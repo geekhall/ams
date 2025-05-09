@@ -1,105 +1,189 @@
 <template>
   <div id="dashboardPage" class="content-container">
-    <el-row :gutter="20">
-      <el-col :span="8">
-        <el-card shadow="hover" class="mgb20">
-          <div class="user-info">
-            <el-avatar :size="120" :src="imgurl"></el-avatar>
-            <div class="user-info-content">
-              <div class="user-name">{{ name }}</div>
-              <div class="user-role">{{ role }}</div>
+    <!-- 顶部数据概览 -->
+    <el-row :gutter="24" class="data-overview">
+      <el-col :xs="24" :sm="12" :md="6" :lg="6" :xl="6">
+        <el-card shadow="hover" class="overview-card">
+          <div class="overview-item">
+            <div class="overview-icon" style="background: var(--el-color-primary-light-8)">
+              <el-icon><Box /></el-icon>
+            </div>
+            <div class="overview-info">
+              <div class="overview-title">资产总数</div>
+              <div class="overview-value">2,846</div>
+              <div class="overview-footer">
+                <span class="trend-up">
+                  <el-icon><ArrowUp /></el-icon>
+                  12.5%
+                </span>
+                较上月
+              </div>
             </div>
           </div>
-          <div class="user-info-list">
-            上次登录时间：<span>{{ formattedDate }}</span>
-          </div>
-          <div class="user-info-list">上次登录地点：<span>北京</span></div>
-        </el-card>
-        <el-card shadow="hover">
-          <template #header>
-            <div class="clearfix">
-              <span>语言详情</span>
-            </div>
-          </template>
-          Vue
-          <el-progress :percentage="79.4" color="#42b983"></el-progress>
-          TypeScript
-          <el-progress :percentage="14" color="#f1e05a"></el-progress>
-          CSS
-          <el-progress :percentage="5.6"></el-progress>
-          HTML
-          <el-progress :percentage="1" color="#f56c6c"></el-progress>
         </el-card>
       </el-col>
-      <el-col :span="16">
-        <el-row :gutter="20" class="mgb20">
-          <el-col :span="8">
-            <el-card shadow="hover" :body-style="{ padding: '0px' }">
-              <div class="grid-content grid-content-1">
-                <el-icon class="grid-content-icon"><User /></el-icon>
-                <div class="grid-content-right">
-                  <div class="grid-number">1234</div>
-                  <div>用户访问量</div>
-                </div>
+      <el-col :xs="24" :sm="12" :md="6" :lg="6" :xl="6">
+        <el-card shadow="hover" class="overview-card">
+          <div class="overview-item">
+            <div class="overview-icon" style="background: var(--el-color-success-light-8)">
+              <el-icon><Money /></el-icon>
+            </div>
+            <div class="overview-info">
+              <div class="overview-title">资产总值</div>
+              <div class="overview-value">¥ 2.6亿</div>
+              <div class="overview-footer">
+                <span class="trend-up">
+                  <el-icon><ArrowUp /></el-icon>
+                  8.2%
+                </span>
+                较上月
               </div>
-            </el-card>
-          </el-col>
-          <el-col :span="8">
-            <el-card shadow="hover" :body-style="{ padding: '0px' }">
-              <div class="grid-content grid-content-2">
-                <el-icon class="grid-content-icon"><ChatDotRound /></el-icon>
-                <div class="grid-content-right">
-                  <div class="grid-number">{{ totalMessage }}</div>
-                  <div>系统消息</div>
-                </div>
+            </div>
+          </div>
+        </el-card>
+      </el-col>
+      <el-col :xs="24" :sm="12" :md="6" :lg="6" :xl="6">
+        <el-card shadow="hover" class="overview-card">
+          <div class="overview-item">
+            <div class="overview-icon" style="background: var(--el-color-warning-light-8)">
+              <el-icon><Warning /></el-icon>
+            </div>
+            <div class="overview-info">
+              <div class="overview-title">待处理事项</div>
+              <div class="overview-value">12</div>
+              <div class="overview-footer">
+                <span class="trend-down">
+                  <el-icon><ArrowDown /></el-icon>
+                  3.2%
+                </span>
+                较上周
               </div>
-            </el-card>
-          </el-col>
-          <el-col :span="8">
-            <el-card shadow="hover" :body-style="{ padding: '0px' }">
-              <div class="grid-content grid-content-3">
-                <el-icon class="grid-content-icon"><DataAnalysis /></el-icon>
-                <div class="grid-content-right">
-                  <div class="grid-number">260000000</div>
-                  <div>资产规模</div>
-                </div>
+            </div>
+          </div>
+        </el-card>
+      </el-col>
+      <el-col :xs="24" :sm="12" :md="6" :lg="6" :xl="6">
+        <el-card shadow="hover" class="overview-card">
+          <div class="overview-item">
+            <div class="overview-icon" style="background: var(--el-color-danger-light-8)">
+              <el-icon><Bell /></el-icon>
+            </div>
+            <div class="overview-info">
+              <div class="overview-title">系统消息</div>
+              <div class="overview-value">{{ totalMessage }}</div>
+              <div class="overview-footer">
+                <span class="trend-up">
+                  <el-icon><ArrowUp /></el-icon>
+                  5.6%
+                </span>
+                较昨日
               </div>
-            </el-card>
-          </el-col>
-        </el-row>
-        <el-card shadow="hover" style="height: 403px">
+            </div>
+          </div>
+        </el-card>
+      </el-col>
+    </el-row>
+
+    <!-- 图表区域 -->
+    <el-row :gutter="24" class="chart-section">
+      <el-col :xs="24" :lg="16">
+        <el-card shadow="hover" class="chart-card">
           <template #header>
-            <div class="clearfix">
-              <span>待办事项</span>
-              <el-button type="primary" style="float: right; padding: 3px 0" text>添加</el-button>
+            <div class="card-header">
+              <span class="header-title">资产趋势</span>
+              <el-radio-group v-model="chartTimeRange" size="small">
+                <el-radio-button label="week">本周</el-radio-button>
+                <el-radio-button label="month">本月</el-radio-button>
+                <el-radio-button label="year">全年</el-radio-button>
+              </el-radio-group>
             </div>
           </template>
-          <el-table :show-header="false" :data="todoList" style="width: 100%">
-            <el-table-column width="40">
+          <line-chart class="chart" />
+        </el-card>
+      </el-col>
+      <el-col :xs="24" :lg="8">
+        <el-card shadow="hover" class="chart-card">
+          <template #header>
+            <div class="card-header">
+              <span class="header-title">资产分类</span>
+            </div>
+          </template>
+          <random-chart class="chart" />
+        </el-card>
+      </el-col>
+    </el-row>
+
+    <!-- 待办事项和系统公告 -->
+    <el-row :gutter="24" class="bottom-section">
+      <el-col :xs="24" :lg="12">
+        <el-card shadow="hover" class="todo-card">
+          <template #header>
+            <div class="card-header">
+              <span class="header-title">待办事项</span>
+              <el-button type="primary" link>
+                <el-icon><Plus /></el-icon>
+                添加
+              </el-button>
+            </div>
+          </template>
+          <el-table :data="todoList" style="width: 100%" :show-header="false">
+            <el-table-column width="50">
               <template #default="scope">
-                <el-checkbox v-model="scope.row.status"></el-checkbox>
+                <el-checkbox v-model="scope.row.status" />
               </template>
             </el-table-column>
             <el-table-column>
               <template #default="scope">
-                <div class="todo-item" :class="{ 'todo-item-del': scope.row.status }">
+                <div class="todo-item" :class="{ 'todo-item-done': scope.row.status }">
                   {{ scope.row.title }}
                 </div>
+              </template>
+            </el-table-column>
+            <el-table-column width="100">
+              <template #default="scope">
+                <el-tag size="small" :type="scope.row.priority" effect="plain">
+                  {{ scope.row.priorityText }}
+                </el-tag>
               </template>
             </el-table-column>
           </el-table>
         </el-card>
       </el-col>
-    </el-row>
-    <el-row :gutter="20">
-      <el-col :span="12">
-        <el-card shadow="hover">
-          <line-chart class="chart" />
+      <el-col :xs="24" :lg="12">
+        <el-card shadow="hover" class="notice-card">
+          <template #header>
+            <div class="card-header">
+              <span class="header-title">系统公告</span>
+              <el-button type="primary" link>更多</el-button>
+            </div>
+          </template>
+          <div class="notice-list">
+            <div v-for="notice in notices" :key="notice.id" class="notice-item">
+              <el-tag size="small" :type="notice.type" effect="plain">{{ notice.tag }}</el-tag>
+              <span class="notice-title">{{ notice.title }}</span>
+              <span class="notice-time">{{ notice.time }}</span>
+            </div>
+          </div>
         </el-card>
       </el-col>
-      <el-col :span="12">
-        <el-card shadow="hover">
-          <random-chart class="chart" />
+    </el-row>
+
+    <!-- 快捷操作区 -->
+    <el-row :gutter="24" class="quick-actions">
+      <el-col
+        :xs="24"
+        :sm="12"
+        :md="8"
+        :lg="6"
+        :xl="4"
+        v-for="action in quickActions"
+        :key="action.title"
+      >
+        <el-card shadow="hover" class="action-card" @click="handleQuickAction(action)">
+          <el-icon class="action-icon" :style="{ background: action.bgColor }">
+            <component :is="action.icon" />
+          </el-icon>
+          <span class="action-title">{{ action.title }}</span>
         </el-card>
       </el-col>
     </el-row>
@@ -110,49 +194,121 @@
 import { ref, reactive, onMounted } from 'vue'
 import imgurl from '~/assets/img/avatar.png'
 import { useMessage } from '@/hooks/useMessage'
+import {
+  Box,
+  Money,
+  Warning,
+  Bell,
+  ArrowUp,
+  ArrowDown,
+  Plus,
+  Document,
+  Setting,
+  User,
+  List,
+  Search,
+  Upload
+} from '@element-plus/icons-vue'
 
 const name = localStorage.getItem('ms_username')
 const role: string = name === 'admin' ? '超级管理员' : '普通用户'
 
 const { getMessageCount } = useMessage()
-let totalMessage = ref(0)
+const totalMessage = ref(0)
+const chartTimeRange = ref('month')
 
+// 待办事项数据
 const todoList = reactive([
   {
-    title: '前后端登录功能整合',
-    status: false
+    title: '审核资产采购申请',
+    status: false,
+    priority: 'danger',
+    priorityText: '紧急'
   },
   {
-    title: '添加dark-mode主题切换',
-    status: false
+    title: '更新资产分类信息',
+    status: false,
+    priority: 'warning',
+    priorityText: '重要'
   },
   {
-    title: '整合移动端UI',
-    status: false
+    title: '处理资产调拨申请',
+    status: false,
+    priority: 'info',
+    priorityText: '普通'
   },
   {
-    title: '添加响应式布局优化',
-    status: false
-  },
-  {
-    title: '完成前台系统基本功能',
-    status: false
-  },
-  {
-    title: '完成后台管理系统前端基本功能',
-    status: true
-  },
-  {
-    title: '完成服务端系统框架和基本功能',
-    status: true
+    title: '完成月度资产盘点',
+    status: false,
+    priority: 'warning',
+    priorityText: '重要'
   }
 ])
-// 取当前日期，并格式化成YYYY-MM-DD的格式
-const date = new Date()
-const year = date.getFullYear()
-const month = (date.getMonth() + 1).toString().padStart(2, '0')
-const day = date.getDate().toString().padStart(2, '0')
-const formattedDate = `${year}-${month}-${day}`
+
+// 系统公告数据
+const notices = reactive([
+  {
+    id: 1,
+    title: '系统将于本周六进行例行维护',
+    type: 'warning',
+    tag: '系统维护',
+    time: '2024-03-20'
+  },
+  {
+    id: 2,
+    title: '新版资产管理系统使用指南已发布',
+    type: 'success',
+    tag: '更新通知',
+    time: '2024-03-19'
+  },
+  {
+    id: 3,
+    title: '关于资产盘点工作的通知',
+    type: 'info',
+    tag: '工作通知',
+    time: '2024-03-18'
+  }
+])
+
+// 快捷操作数据
+const quickActions = reactive([
+  {
+    title: '资产登记',
+    icon: 'Document',
+    bgColor: 'var(--el-color-primary-light-8)'
+  },
+  {
+    title: '资产查询',
+    icon: 'Search',
+    bgColor: 'var(--el-color-success-light-8)'
+  },
+  {
+    title: '资产盘点',
+    icon: 'List',
+    bgColor: 'var(--el-color-warning-light-8)'
+  },
+  {
+    title: '数据导入',
+    icon: 'Upload',
+    bgColor: 'var(--el-color-info-light-8)'
+  },
+  {
+    title: '用户管理',
+    icon: 'User',
+    bgColor: 'var(--el-color-danger-light-8)'
+  },
+  {
+    title: '系统设置',
+    icon: 'Setting',
+    bgColor: 'var(--el-color-primary-light-8)'
+  }
+])
+
+// 处理快捷操作点击
+const handleQuickAction = (action: any) => {
+  // TODO: 实现快捷操作跳转逻辑
+  console.log('Quick action clicked:', action.title)
+}
 
 onMounted(async () => {
   totalMessage.value = await getMessageCount()
@@ -160,98 +316,225 @@ onMounted(async () => {
 </script>
 
 <style lang="less" scoped>
-.el-row {
-  margin-bottom: 20px;
+.content-container {
+  padding: 24px;
+  background-color: var(--el-bg-color-page);
+  min-height: calc(100vh - 60px);
 }
 
-.user-info {
-  display: flex;
-  align-items: center;
-  padding-bottom: 20px;
-  border-bottom: 2px solid #ccc;
-  margin-bottom: 20px;
-  justify-content: center;
-  flex-direction: column;
-  height: 100%;
+// 数据概览卡片样式
+.data-overview {
+  margin-bottom: 24px;
+
+  .overview-card {
+    height: 120px;
+    transition: all 0.3s ease;
+
+    &:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    }
+  }
+
+  .overview-item {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    padding: 0 20px;
+  }
+
+  .overview-icon {
+    width: 64px;
+    height: 64px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 16px;
+
+    .el-icon {
+      font-size: 32px;
+      color: var(--el-text-color-primary);
+    }
+  }
+
+  .overview-info {
+    flex: 1;
+  }
+
+  .overview-title {
+    font-size: 14px;
+    color: var(--el-text-color-secondary);
+    margin-bottom: 8px;
+  }
+
+  .overview-value {
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--el-text-color-primary);
+    margin-bottom: 8px;
+  }
+
+  .overview-footer {
+    font-size: 12px;
+    color: var(--el-text-color-secondary);
+
+    .trend-up {
+      color: var(--el-color-success);
+      margin-right: 4px;
+    }
+
+    .trend-down {
+      color: var(--el-color-danger);
+      margin-right: 4px;
+    }
+  }
 }
 
-.user-info-content {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  color: #999;
-}
-.user-info-content div:first-child {
-  font-size: 30px;
-  color: #333;
+// 图表区域样式
+.chart-section {
+  margin-bottom: 24px;
+
+  .chart-card {
+    .card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--el-border-color-lighter);
+
+      .header-title {
+        font-size: 16px;
+        font-weight: 600;
+        color: var(--el-text-color-primary);
+      }
+    }
+  }
+
+  .chart {
+    height: 350px;
+    padding: 20px;
+  }
 }
 
-.user-info-list {
-  margin-left: 70px;
+// 底部区域样式
+.bottom-section {
+  margin-bottom: 24px;
+
+  .todo-card,
+  .notice-card {
+    .card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--el-border-color-lighter);
+
+      .header-title {
+        font-size: 16px;
+        font-weight: 600;
+        color: var(--el-text-color-primary);
+      }
+    }
+  }
+
+  .todo-item {
+    font-size: 14px;
+    color: var(--el-text-color-primary);
+    transition: all 0.3s ease;
+
+    &:hover {
+      color: var(--el-color-primary);
+    }
+
+    &.todo-item-done {
+      text-decoration: line-through;
+      color: var(--el-text-color-secondary);
+    }
+  }
+
+  .notice-list {
+    padding: 0 20px;
+
+    .notice-item {
+      display: flex;
+      align-items: center;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--el-border-color-lighter);
+
+      &:last-child {
+        border-bottom: none;
+      }
+
+      .notice-title {
+        flex: 1;
+        margin: 0 12px;
+        font-size: 14px;
+        color: var(--el-text-color-primary);
+      }
+
+      .notice-time {
+        font-size: 12px;
+        color: var(--el-text-color-secondary);
+      }
+    }
+  }
 }
 
-.mgb20 {
-  margin-bottom: 20px;
+// 快捷操作区样式
+.quick-actions {
+  .action-card {
+    height: 100px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+
+    &:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    }
+
+    .action-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 12px;
+
+      .el-icon {
+        font-size: 24px;
+        color: var(--el-text-color-primary);
+      }
+    }
+
+    .action-title {
+      font-size: 14px;
+      color: var(--el-text-color-primary);
+    }
+  }
 }
 
-.grid-content {
-  height: 100px;
-  display: flex;
-  align-items: center;
-  color: #999;
-}
-.grid-content-right {
-  flex: 1;
-  text-align: center;
-  font-size: 14px;
-  color: #999;
-}
-.grid-number {
-  font-size: 30px;
-  font-weight: bold;
-}
-.grid-content-icon {
-  font-size: 50px;
-  width: 100px;
-  height: 100px;
-  text-align: center;
-  line-height: 100px;
-  color: #fff;
-}
-.grid-content-1 .grid-content-icon {
-  background-color: #409eff;
-}
+// 响应式适配
+@media screen and (max-width: 768px) {
+  .content-container {
+    padding: 16px;
+  }
 
-.grid-content-1 .grid-number {
-  color: rgb(45, 140, 240);
-}
+  .overview-card {
+    margin-bottom: 16px;
+  }
 
-.grid-content-2 .grid-content-icon {
-  background-color: #67c23a;
-}
-.grid-content-2 .grid-number {
-  color: #67c23a;
-}
+  .chart {
+    height: 300px;
+  }
 
-.grid-content-3 .grid-content-icon {
-  background: rgb(242, 94, 67);
-}
-
-.grid-content-3 .grid-number {
-  color: rgb(242, 94, 67);
-}
-
-.todo-item {
-  font-size: 14px;
-}
-
-.todo-item-del {
-  text-decoration: line-through;
-  color: #999;
-}
-.chart {
-  width: 100%;
-  height: 300px;
+  .action-card {
+    margin-bottom: 16px;
+  }
 }
 </style>
