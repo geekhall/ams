@@ -86,7 +86,7 @@ public class MessageServiceImpl extends ServiceImpl<MessageMapper, Message> impl
         if (userIds.isEmpty()) {
             return true;
         }
-        
+
         // 批量插入消息接收记录
         List<MessageReceiver> receivers = userIds.stream()
                 .map(userId -> {
