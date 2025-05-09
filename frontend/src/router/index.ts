@@ -6,7 +6,6 @@ import { useAuthStore } from '~/store/auth'
 // 1. Define route components.
 const Dashboard = () => import('../views/Dashboard.vue')
 const Asset = () => import('../views/asset/Asset.vue')
-const Budget = () => import('../views/budget/Budget.vue')
 const BudgetBoard = () => import('../views/budget/BudgetBoard.vue')
 const BudgetDetail = () => import('../views/budget/BudgetDetail.vue')
 const BudgetQuota = () => import('../views/budget/BudgetQuota.vue')
@@ -44,7 +43,7 @@ const routes: RouteRecordRaw[] = [
       {
         path: '/budget', name: "budget",
         meta: { title: '预算管理', permission: 'budget' },
-        component: Budget,
+        component: BudgetBoard,
       },
       {
         path: '/budget/board', name: "budgetBoard",
