@@ -51,7 +51,6 @@ for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
   app.component(key, component)
 }
 
-
 // 自定义权限指令
 const permission = usePermissionStore();
 app.directive('permission', {

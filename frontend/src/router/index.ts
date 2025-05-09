@@ -1,29 +1,29 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 import { usePermissionStore } from '~/store/permission'
-import Home from '~/views/Home.vue'
+import Home from '@/views/Home.vue'
 import { useAuthStore } from '~/store/auth'
 
 // 1. Define route components.
-const Dashboard = () => import('../views/Dashboard.vue')
-const Asset = () => import('../views/asset/Asset.vue')
-const BudgetBoard = () => import('../views/budget/BudgetBoard.vue')
-const BudgetDetail = () => import('../views/budget/BudgetDetail.vue')
-const BudgetQuota = () => import('../views/budget/BudgetQuota.vue')
-const Project = () => import('../views/Project.vue')
-const System = () => import('../views/asset/System.vue')
-const Duty = () => import('../views/Duty.vue')
-const UserManagement = () => import('../views/UserManagement.vue')
+const Dashboard = () => import('@/views/Dashboard.vue')
+const Asset = () => import('@/views/asset/Asset.vue')
+const BudgetBoard = () => import('@/views/budget/BudgetBoard.vue')
+const BudgetDetail = () => import('@/views/budget/BudgetDetail.vue')
+const BudgetQuota = () => import('@/views/budget/BudgetQuota.vue')
+const Project = () => import('@/views/Project.vue')
+const System = () => import('@/views/asset/System.vue')
+const Duty = () => import('@/views/Duty.vue')
+const UserManagement = () => import('@/views/UserManagement.vue')
 
-const About = () => import('../views/About.vue')
-const Login = () => import('../views/Login.vue')
-const Register = () => import('../views/Register.vue')
-const NoPermission = () => import('../views/403.vue')
-const NotFound = () => import('../views/404.vue')
-const Profile = () => import('../views/Profile.vue')
-const Setting = () => import('../views/Setting.vue')
-const Tabs = () => import('../views/Tabs.vue')
-const Message = () => import('../views/message/Message.vue')
-const IconSample = () => import('../views/IconSample.vue')
+const About = () => import('@/views/About.vue')
+const Login = () => import('@/views/Login.vue')
+const Register = () => import('@/views/Register.vue')
+const NoPermission = () => import('@/views/403.vue')
+const NotFound = () => import('@/views/404.vue')
+const Profile = () => import('@/views/Profile.vue')
+const Setting = () => import('@/views/Setting.vue')
+const Tabs = () => import('@/views/Tabs.vue')
+const Message = () => import('@/views/message/Message.vue')
+const IconSample = () => import('@/views/IconSample.vue')
 
 // 2. Define some routes
 const routes: RouteRecordRaw[] = [
