@@ -1,61 +1,88 @@
 <template>
-  <div id="registerPage" class="register-wrap">
-    <div class="ms-register">
-      <div class="ms-title">AMS资产管理系统</div>
-      <el-form
-        :model="param"
-        :rules="rules"
-        ref="registerForm"
-        label-width="0px"
-        class="ms-content"
-      >
-        <el-form-item prop="username">
-          <el-input v-model="param.username" placeholder="请输入用户名">
-            <template #prepend>
-              <el-button tabindex="-1"
-                ><el-icon><UserIcon /> </el-icon
-              ></el-button>
-            </template>
-          </el-input>
-        </el-form-item>
-        <el-form-item prop="email">
-          <el-input v-model="param.email" placeholder="请输入Email">
-            <template #prepend>
-              <el-button tabindex="-1"
-                ><el-icon><EmailIcon /> </el-icon
-              ></el-button>
-            </template>
-          </el-input>
-        </el-form-item>
-        <el-form-item prop="password">
-          <el-input type="password" placeholder="请输入密码" v-model="param.password">
-            <template #prepend>
-              <el-button tabindex="-1">
-                <el-icon><Lock /> </el-icon>
-              </el-button>
-            </template>
-          </el-input>
-        </el-form-item>
-
-        <el-form-item prop="password">
-          <el-input type="password" placeholder="请确认密码" v-model="param.confirm">
-            <template #prepend>
-              <el-button tabindex="-1">
-                <el-icon><Lock /> </el-icon>
-              </el-button>
-            </template>
-          </el-input>
-        </el-form-item>
-
-        <el-form-item>
-          <el-checkbox v-model="param.remember">记住密码</el-checkbox>
-        </el-form-item>
-
-        <div class="register-btn">
-          <el-button type="primary" @click="handleRegister">注册</el-button>
+  <div id="registerPage" class="register-container">
+    <div class="register-content">
+      <div class="register-left">
+        <div class="brand-section">
+          <h1 class="brand-title">AMS</h1>
+          <p class="brand-subtitle">资产管理系统</p>
+          <div class="brand-description">
+            <p>加入我们</p>
+            <p>开启智能资产管理之旅</p>
+          </div>
         </div>
-        <p class="register-tips">已有账号？<router-link to="/login">立即登录</router-link></p>
-      </el-form>
+      </div>
+      <div class="register-right">
+        <div class="register-form-container">
+          <h2 class="welcome-text">创建账号</h2>
+          <p class="register-subtitle">请填写以下信息完成注册</p>
+          <el-form
+            :model="param"
+            :rules="rules"
+            ref="registerForm"
+            label-width="0px"
+            class="ms-content"
+          >
+            <el-form-item prop="username">
+              <el-input
+                v-model="param.username"
+                placeholder="用户名"
+                :prefix-icon="UserIcon"
+                class="custom-input"
+              />
+            </el-form-item>
+            <el-form-item prop="email">
+              <el-input
+                v-model="param.email"
+                placeholder="邮箱"
+                :prefix-icon="EmailIcon"
+                class="custom-input"
+              />
+            </el-form-item>
+            <el-form-item prop="password">
+              <el-input
+                type="password"
+                placeholder="密码"
+                v-model="param.password"
+                :prefix-icon="Lock"
+                class="custom-input"
+              />
+            </el-form-item>
+            <el-form-item prop="confirm">
+              <el-input
+                type="password"
+                placeholder="确认密码"
+                v-model="param.confirm"
+                :prefix-icon="Lock"
+                class="custom-input"
+              />
+            </el-form-item>
+            <el-form-item prop="phone">
+              <el-input v-model="param.phone" placeholder="手机号码" class="custom-input">
+                <template #prefix>
+                  <el-icon><Phone /></el-icon>
+                </template>
+              </el-input>
+            </el-form-item>
+            <div class="form-options">
+              <el-checkbox v-model="param.remember">记住密码</el-checkbox>
+            </div>
+            <div class="register-btn">
+              <el-button
+                type="primary"
+                @click="handleRegister"
+                :loading="loading"
+                class="submit-btn"
+              >
+                {{ loading ? '注册中...' : '注册' }}
+              </el-button>
+            </div>
+            <div class="login-link">
+              <span>已有账号？</span>
+              <router-link to="/login" class="login-btn">立即登录</router-link>
+            </div>
+          </el-form>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -67,7 +94,13 @@ import { usePermissionStore } from '../store/permission'
 import { useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus'
 import type { FormInstance, FormRules } from 'element-plus'
-import { Loading, Lock, User as UserIcon, Message as EmailIcon } from '@element-plus/icons-vue'
+import {
+  Loading,
+  Lock,
+  User as UserIcon,
+  Message as EmailIcon,
+  Phone
+} from '@element-plus/icons-vue'
 import { User, RegisterInfo } from '~/types/auth'
 import { useAuthStore } from '~/store/auth'
 
@@ -200,52 +233,189 @@ tags.clearTags()
 </script>
 
 <style scoped>
-.register-wrap {
+.register-container {
   position: relative;
   width: 100%;
-  /* height: 100%; */
-  height: 100%;
-  background: linear-gradient(to right, #c056f9, #6b56f9);
-  /* background-image: url(../assets/img/login-bg.jpg); */
-  background-size: 100%;
-  background-color: rebeccapurple;
-}
-.ms-title {
-  width: 100%;
-  line-height: 50px;
-  text-align: center;
-  font-size: 20px;
-  color: #fff;
-  border-bottom: 1px solid #ddd;
-}
-.ms-register {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  width: 350px;
-  margin: -190px 0 0 -175px;
-  border-radius: 5px;
-  background: rgba(255, 255, 255, 0.3);
+  height: 100vh;
+  background: linear-gradient(135deg, #1a237e, #0d47a1);
+  display: flex;
+  justify-content: center;
+  align-items: center;
   overflow: hidden;
 }
-.ms-content {
-  padding: 30px 30px;
+
+.register-container::before {
+  content: '';
+  position: absolute;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0) 60%);
+  animation: rotate 20s linear infinite;
 }
-.register-btn {
-  text-align: center;
+
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
-.register-btn button {
+
+.register-content {
+  display: flex;
+  width: 900px;
+  height: 700px;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 20px;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+  backdrop-filter: blur(10px);
+}
+
+.register-left {
+  flex: 1;
+  background: linear-gradient(135deg, #1a237e, #0d47a1);
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  color: white;
+  position: relative;
+  overflow: hidden;
+}
+
+.register-left::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="40" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="2"/></svg>')
+    center/cover;
+  opacity: 0.1;
+}
+
+.brand-section {
+  position: relative;
+  z-index: 1;
+}
+
+.brand-title {
+  font-size: 48px;
+  font-weight: 700;
+  margin: 0;
+  letter-spacing: 2px;
+}
+
+.brand-subtitle {
+  font-size: 24px;
+  margin: 10px 0 30px;
+  opacity: 0.9;
+}
+
+.brand-description {
+  font-size: 16px;
+  line-height: 1.6;
+  opacity: 0.8;
+}
+
+.register-right {
+  flex: 1;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.register-form-container {
+  max-width: 360px;
+  margin: 0 auto;
   width: 100%;
-  height: 36px;
-  margin-bottom: 10px;
 }
-.register-tips {
-  font-size: 12px;
-  line-height: 30px;
-  color: #fff;
+
+.welcome-text {
+  font-size: 28px;
+  font-weight: 600;
+  color: #1a237e;
+  margin: 0 0 10px;
 }
-.chapta-container {
+
+.register-subtitle {
+  color: #666;
+  margin-bottom: 30px;
+}
+
+.custom-input :deep(.el-input__wrapper) {
+  padding: 12px 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+}
+
+.custom-input :deep(.el-input__wrapper:hover) {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.custom-input :deep(.el-input__wrapper.is-focus) {
+  box-shadow: 0 0 0 2px rgba(26, 35, 126, 0.2);
+}
+
+.form-options {
   display: flex;
   justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.submit-btn {
+  width: 100%;
+  padding: 12px;
+  font-size: 16px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #1a237e, #0d47a1);
+  border: none;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.submit-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(26, 35, 126, 0.3);
+}
+
+.login-link {
+  text-align: center;
+  margin-top: 20px;
+  color: #666;
+}
+
+.login-btn {
+  color: #1a237e;
+  text-decoration: none;
+  font-weight: 600;
+  margin-left: 5px;
+  transition: color 0.3s ease;
+}
+
+.login-btn:hover {
+  color: #0d47a1;
+}
+
+@media (max-width: 768px) {
+  .register-content {
+    width: 100%;
+    height: 100%;
+    border-radius: 0;
+    flex-direction: column;
+  }
+
+  .register-left {
+    display: none;
+  }
+
+  .register-right {
+    padding: 20px;
+  }
 }
 </style>
