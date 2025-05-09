@@ -13,15 +13,12 @@ declare module 'vue' {
     500: typeof import('./src/views/500.vue')['default']
     About: typeof import('./src/views/About.vue')['default']
     Asset: typeof import('./src/views/asset/Asset.vue')['default']
-    AssetAddDialog: typeof import('./src/components/asset/AssetAddDialog.vue')['default']
     AssetBorrowDialog: typeof import('./src/components/asset/AssetBorrowDialog.vue')['default']
     AssetDialog: typeof import('./src/components/asset/AssetDialog.vue')['default']
-    AssetEditDialog: typeof import('./src/components/asset/AssetEditDialog.vue')['default']
     BarChart: typeof import('./src/components/charts/BarChart.vue')['default']
     BorrowRecords: typeof import('./src/components/asset/BorrowRecords.vue')['default']
     Breadcrumb: typeof import('./src/components/layout/Breadcrumb.vue')['default']
     BubbleChart: typeof import('./src/components/charts/BubbleChart.vue')['default']
-    Budget: typeof import('./src/views/budget/Budget.vue')['default']
     BudgetBoard: typeof import('./src/views/budget/BudgetBoard.vue')['default']
     BudgetDetail: typeof import('./src/views/budget/BudgetDetail.vue')['default']
     BudgetDialog: typeof import('./src/components/budget/BudgetDialog.vue')['default']
@@ -56,8 +53,6 @@ declare module 'vue' {
     ElOption: typeof import('element-plus/es')['ElOption']
     ElPagination: typeof import('element-plus/es')['ElPagination']
     ElProgress: typeof import('element-plus/es')['ElProgress']
-    ElRadio: typeof import('element-plus/es')['ElRadio']
-    ElRadioGroup: typeof import('element-plus/es')['ElRadioGroup']
     ElRow: typeof import('element-plus/es')['ElRow']
     ElSelect: typeof import('element-plus/es')['ElSelect']
     ElSubMenu: typeof import('element-plus/es')['ElSubMenu']
@@ -98,8 +93,5 @@ declare module 'vue' {
     TheSidebar: typeof import('./src/components/layout/TheSidebar.vue')['default']
     UserDialog: typeof import('./src/components/user/UserDialog.vue')['default']
     UserManagement: typeof import('./src/views/UserManagement.vue')['default']
-  }
-  export interface ComponentCustomProperties {
-    vLoading: typeof import('element-plus/es')['ElLoadingDirective']
   }
 }
