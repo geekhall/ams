@@ -19,13 +19,19 @@
       ref="multipleTable"
       header-cell-class-name="table-header"
     >
-      <el-table-column
-        prop="id"
-        label="ID"
-        width="180"
-        align="center"
-        v-if="false"
-      ></el-table-column>
+      <el-table-column type="expand">
+        <template #default="props">
+          <div m="4">
+            <p m="t-0 b-2">资产描述: {{ props.row.description }}</p>
+            <p m="t-0 b-2">资产配置: {{ props.row.config }}</p>
+            <p m="t-0 b-2">资产IP: {{ props.row.ip }}</p>
+            <p m="t-0 b-2">资产提供商: {{ props.row.provider }}</p>
+            <p m="t-0 b-2">资产位置: {{ props.row.location }}</p>
+            <p m="t-0 b-2">购入时间: {{ props.row.purchaseDate }}</p>
+            <p m="t-0 b-2">购买价格: ¥{{ props.row.purchasePrice }}</p>
+          </div>
+        </template>
+      </el-table-column>
       <el-table-column
         type="index"
         label="序号"
@@ -64,40 +70,10 @@
         v-if="visibleColumns.model"
       ></el-table-column>
       <el-table-column
-        prop="config"
-        label="资产配置"
-        align="center"
-        v-if="visibleColumns.config"
-      ></el-table-column>
-      <el-table-column
-        prop="ip"
-        label="资产IP"
-        align="center"
-        v-if="visibleColumns.ip"
-      ></el-table-column>
-      <el-table-column
-        prop="description"
-        label="资产描述"
-        align="center"
-        v-if="visibleColumns.description"
-      ></el-table-column>
-      <el-table-column
-        prop="provider"
-        label="资产提供商"
-        align="center"
-        v-if="visibleColumns.provider"
-      ></el-table-column>
-      <el-table-column
         prop="departmentName"
         label="所属部门"
         align="center"
         v-if="visibleColumns.departmentName"
-      ></el-table-column>
-      <el-table-column
-        prop="location"
-        label="资产位置"
-        align="center"
-        v-if="visibleColumns.location"
       ></el-table-column>
       <el-table-column
         prop="status"
@@ -110,19 +86,6 @@
         label="使用状态"
         align="center"
         v-if="visibleColumns.useStatus"
-      ></el-table-column>
-      <el-table-column
-        prop="purchaseDate"
-        label="购入时间"
-        align="center"
-        v-if="visibleColumns.purchaseDate"
-      ></el-table-column>
-      <el-table-column
-        prop="purchasePrice"
-        label="购买价格"
-        width="100"
-        align="right"
-        v-if="visibleColumns.purchasePrice"
       ></el-table-column>
       <el-table-column
         prop="count"
