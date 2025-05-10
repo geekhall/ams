@@ -127,10 +127,17 @@
             </el-form-item>
           </el-col>
           <el-col :span="8">
+            <el-form-item label="负责人" prop="ownerName">
+              <el-input v-model="form.ownerName" placeholder="请输入负责人"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="8">
             <el-form-item label="资产位置" prop="location">
               <el-input v-model="form.location" placeholder="请输入资产位置"></el-input>
             </el-form-item>
           </el-col>
+        </el-row>
+        <el-row :gutter="24">
           <el-col :span="8">
             <el-form-item label="数量" prop="count">
               <el-input-number
@@ -141,8 +148,6 @@
               ></el-input-number>
             </el-form-item>
           </el-col>
-        </el-row>
-        <el-row :gutter="24">
           <el-col :span="8">
             <el-form-item label="状态" prop="status">
               <el-select v-model="form.status" placeholder="请选择状态" style="width: 100%">
@@ -160,6 +165,13 @@
                 <el-option label="维修" value="维修"></el-option>
                 <el-option label="报废" value="报废"></el-option>
               </el-select>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="24">
+          <el-col :span="8">
+            <el-form-item label="使用人" prop="userName">
+              <el-input v-model="form.userName" placeholder="请输入使用人"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -207,6 +219,8 @@ const form = reactive({
   description: '',
   provider: '',
   departmentName: '',
+  ownerName: '',
+  userName: '',
   location: '',
   status: '正常',
   useStatus: '闲置',
@@ -220,6 +234,8 @@ const rules = reactive<FormRules>({
   code: [{ required: true, message: '请输入资产编号', trigger: 'blur' }],
   type: [{ required: true, message: '请选择资产类型', trigger: 'change' }],
   departmentName: [{ required: true, message: '请选择所属部门', trigger: 'change' }],
+  ownerName: [{ required: true, message: '请选择负责人', trigger: 'change' }],
+  userName: [{ required: true, message: '请选择使用人', trigger: 'change' }],
   status: [{ required: true, message: '请选择状态', trigger: 'change' }],
   useStatus: [{ required: true, message: '请选择使用状态', trigger: 'change' }],
   purchaseDate: [{ required: true, message: '请选择购入时间', trigger: 'change' }],
@@ -247,6 +263,8 @@ watch(
         description: '',
         provider: '',
         departmentName: '',
+        ownerName: '',
+        userName: '',
         location: '',
         status: '正常',
         useStatus: '闲置',

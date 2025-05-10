@@ -11,6 +11,8 @@ export interface AssetDTO {
   description: string
   provider: string
   departmentName: string
+  ownerName: string
+  userName: string
   location: string
   status: string
   useStatus: string

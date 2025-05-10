@@ -28,6 +28,7 @@ declare module 'vue' {
     Dashboard: typeof import('./src/views/Dashboard.vue')['default']
     DoughnutChart: typeof import('./src/components/charts/DoughnutChart.vue')['default']
     Duty: typeof import('./src/views/Duty.vue')['default']
+    ElAutocomplete: typeof import('element-plus/es')['ElAutocomplete']
     ElAvatar: typeof import('element-plus/es')['ElAvatar']
     ElButton: typeof import('element-plus/es')['ElButton']
     ElButtonGroup: typeof import('element-plus/es')['ElButtonGroup']
