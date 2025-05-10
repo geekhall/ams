@@ -14,7 +14,7 @@ import java.util.Map;
 
 /**
  * <p>
- *  前端控制器
+ * 前端控制器
  * </p>
  *
  * @author Jasper Yang
@@ -30,6 +30,7 @@ public class AssetController {
 
     /**
      * list all assets (列出所有资产)
+     *
      * @return Asset
      */
     @RequestMapping("/all")
@@ -40,6 +41,7 @@ public class AssetController {
 
     /**
      * list all assets (列出所有资产)
+     *
      * @param requestBody {name: "资产名称", pageIndex: 1, pageSize: 10}
      * @return AssetDTO
      */
@@ -52,12 +54,14 @@ public class AssetController {
         Integer pageSize = 10;
         if (requestBody != null && !requestBody.isEmpty()) {
             try {
-                Map<String, Object> requestMap = new ObjectMapper().readValue(requestBody, Map.class);
+                Map<String, Object> requestMap = new ObjectMapper().readValue(requestBody,
+                        new com.fasterxml.jackson.core.type.TypeReference<Map<String, Object>>() {
+                        });
                 name = (String) requestMap.get("name");
-                pageIndex = requestMap.get("pageIndex") == null ? 1 :
-                        Integer.parseInt(requestMap.get("pageIndex").toString());
-                pageSize = requestMap.get("pageSize") == null ? 10 :
-                        Integer.parseInt(requestMap.get("pageSize").toString());
+                pageIndex = requestMap.get("pageIndex") == null ? 1
+                        : Integer.parseInt(requestMap.get("pageIndex").toString());
+                pageSize = requestMap.get("pageSize") == null ? 10
+                        : Integer.parseInt(requestMap.get("pageSize").toString());
             } catch (Exception e) {
                 e.printStackTrace();
                 return ResponseUtil.error(400, e.getMessage());
@@ -68,12 +72,12 @@ public class AssetController {
         Long total = assetService.countAssets(name);
         return ResponseUtil.success(Map.of(
                 "items", assetList,
-                "total", total
-        ));
+                "total", total));
     }
 
     /**
      * Delete an asset by ID
+     *
      * @param id Asset ID
      * @return ResponseEntity
      */
@@ -87,6 +91,7 @@ public class AssetController {
 
     /**
      * Create a new asset
+     *
      * @param assetDTO Asset details
      * @return ResponseEntity
      */
@@ -118,6 +123,7 @@ public class AssetController {
 
     /**
      * Update an existing asset
+     *
      * @param assetDTO Updated asset details
      * @return ResponseEntity
      */
