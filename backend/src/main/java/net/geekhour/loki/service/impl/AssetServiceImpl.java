@@ -86,9 +86,9 @@ public class AssetServiceImpl extends ServiceImpl<AssetMapper, Asset> implements
         if (assetMapper.checkAssetCodeExists(assetDTO.getCode())) {
             return false; // Asset code must be unique
         }
-        if (assetMapper.checkAssetSnExists(assetDTO.getSn())) {
-            return false; // Asset sn must be unique
-        }
+//        if (assetMapper.checkAssetSnExists(assetDTO.getSn())) {
+//            return false; // Asset sn must be unique
+//        }
 
         Asset asset = mapToAsset(assetDTO);
         if (asset == null) {
@@ -116,10 +116,10 @@ public class AssetServiceImpl extends ServiceImpl<AssetMapper, Asset> implements
         }
 
         // Check for duplicate sn, excluding the current asset
-        if (!existingAsset.getSn().equals(assetDTO.getSn()) &&
-                assetMapper.checkAssetSnExists(assetDTO.getSn())) {
-            return false;
-        }
+//        if (!existingAsset.getSn().equals(assetDTO.getSn()) &&
+//                assetMapper.checkAssetSnExists(assetDTO.getSn())) {
+//            return false;
+//        }
 
         Asset asset = mapToAsset(assetDTO);
         if (asset == null) {
