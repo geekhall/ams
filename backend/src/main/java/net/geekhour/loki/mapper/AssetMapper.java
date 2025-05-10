@@ -24,12 +24,15 @@ public interface AssetMapper extends BaseMapper<Asset> {
     @Select("<script>" +
             "select a.id, a.name, a.code, a.sn, c.`name` as type, " +
             "a.model, a.config, a.ip, a.description, a.provider, " +
-            "b.name as department_name, a.location, " +
-            "a.`status`, a.use_status, " +
+            "b.name as department_name, " +
+            "d.name as owner_name, e.name as user_name, " +
+            "a.location, a.`status`, a.use_status, " +
             "FROM_UNIXTIME(a.purchase_date/1000, '%Y-%m-%d') as purchase_date, " +
             "a.purchase_price, a.count from h_asset a " +
             "left join h_department b on a.department_id=b.id " +
             "left join h_asset_type c on a.type = c.id " +
+            "left join h_user d on a.owner_id = d.id " +
+            "left join h_user e on a.user_id = e.id " +
             "where a.deleted = 0 and b.deleted=0 and c.deleted=0" +
             "<if test='name != null and name != \"\"'> " +
             "and a.name like CONCAT('%', #{name}, '%') " +
@@ -45,6 +48,8 @@ public interface AssetMapper extends BaseMapper<Asset> {
             "select count(*) from h_asset a " +
             "left join h_department b on a.department_id=b.id " +
             "left join h_asset_type c on a.type = c.id " +
+            "left join h_user d on a.owner_id = d.id " +
+            "left join h_user e on a.user_id = e.id " +
             "where a.deleted = 0 and b.deleted=0 and c.deleted=0" +
             "<if test='name != null and name != \"\"'> " +
             "and a.name like CONCAT('%', #{name}, '%') " +

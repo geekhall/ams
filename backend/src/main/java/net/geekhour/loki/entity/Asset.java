@@ -77,6 +77,14 @@ public class Asset extends Model<Asset> {
     @TableField("department_id")
     private Long departmentId;
 
+    @ApiModelProperty("负责人")
+    @TableField("owner_id")
+    private Long ownerId;
+
+    @ApiModelProperty("使用人")
+    @TableField("user_id")
+    private Long userId;
+
     @ApiModelProperty("存放地点")
     @TableField("location")
     private String location;

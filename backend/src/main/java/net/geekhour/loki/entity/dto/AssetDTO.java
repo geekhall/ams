@@ -1,5 +1,6 @@
 package net.geekhour.loki.entity.dto;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -52,6 +53,12 @@ public class AssetDTO extends Model<AssetDTO> {
 
     @ApiModelProperty("所属部门")
     private String departmentName;
+
+    @ApiModelProperty("负责人")
+    private String ownerName;
+
+    @ApiModelProperty("使用人")
+    private String userName;
 
     @ApiModelProperty("存放地点")
     private String location;

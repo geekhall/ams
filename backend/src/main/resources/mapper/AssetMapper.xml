@@ -15,6 +15,8 @@
         <result column="description" property="description" />
         <result column="provider" property="provider" />
         <result column="department_id" property="departmentId" />
+        <result column="owner_id" property="ownerId" />
+        <result column="user_id" property="userId" />
         <result column="location" property="location" />
         <result column="status" property="status" />
         <result column="use_status" property="useStatus" />
@@ -30,7 +32,7 @@
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
         id,
-        name, code, sn, type, model, config, ip, description, provider, department_id, location, status, use_status, purchase_date, purchase_price, count, version, create_time, update_time, deleted
+        name, code, sn, type, model, config, ip, description, provider, department_id, owner_id, user_id, location, status, use_status, purchase_date, purchase_price, count, version, create_time, update_time, deleted
     </sql>
 
 </mapper>
