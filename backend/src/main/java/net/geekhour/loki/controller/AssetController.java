@@ -104,13 +104,12 @@ public class AssetController {
         if (assetDTO.getCode() == null || assetDTO.getCode().isEmpty()) {
             return ResponseUtil.error(400, "资产编码不能为空");
         }
-        if (assetService.checkAssetNameExists(assetDTO.getName())) {
-            return ResponseUtil.error(400, "资产名称已存在");
-        }
         if (assetService.checkAssetCodeExists(assetDTO.getCode())) {
             return ResponseUtil.error(400, "资产编码已存在");
         }
-
+        if (assetService.checkAssetSnExists(assetDTO.getSn())) {
+            return ResponseUtil.error(400, "资产序列号已存在");
+        }
         try {
             return assetService.createAsset(assetDTO)
                     ? ResponseUtil.success(assetDTO)

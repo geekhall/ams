@@ -57,4 +57,7 @@ public interface AssetMapper extends BaseMapper<Asset> {
 
     @Select("select count(*) from h_asset where name = #{name} and deleted = 0")
     boolean checkAssetNameExists(@Param("name")String name);
+
+    @Select("select count(*) from h_asset where sn = #{sn} and deleted = 0")
+    boolean checkAssetSnExists(String sn);
 }
