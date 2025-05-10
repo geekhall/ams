@@ -40,6 +40,22 @@ public class AssetController {
     }
 
     /**
+     * Get the total count of assets (获取资产总数)
+     *
+     * @return ResponseEntity
+     */
+    @PostMapping("/count")
+    @PreAuthorize("hasRole('USER') || hasAuthority('user:asset:count')")
+    public ResponseEntity<?> getAssetCount() {
+        try {
+            Long total = assetService.countAssets(null);
+            return ResponseUtil.success(Map.of("total", total));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseUtil.error(500, "获取资产数量失败: " + e.getMessage());
+        }
+    }
+    /**
      * list all assets (列出所有资产)
      *
      * @param requestBody {name: "资产名称", pageIndex: 1, pageSize: 10}
