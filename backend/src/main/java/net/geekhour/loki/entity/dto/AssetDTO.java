@@ -26,14 +26,29 @@ public class AssetDTO extends Model<AssetDTO> {
     @ApiModelProperty("资产名称")
     private String name;
 
-    @ApiModelProperty("资产编号")
+    @ApiModelProperty("编号")
     private String code;
 
-    @ApiModelProperty("资产序列号")
+    @ApiModelProperty("序列号")
     private String sn;
 
-    @ApiModelProperty("资产类型")
+    @ApiModelProperty("类型")
     private String type;
+
+    @ApiModelProperty("型号")
+    private String model;
+
+    @ApiModelProperty("配置")
+    private String config;
+
+    @ApiModelProperty("IP")
+    private String ip;
+
+    @ApiModelProperty("描述")
+    private String description;
+
+    @ApiModelProperty("供应商")
+    private String provider;
 
     @ApiModelProperty("所属部门")
     private String departmentName;
@@ -43,6 +58,9 @@ public class AssetDTO extends Model<AssetDTO> {
 
     @ApiModelProperty("状态")
     private String status;
+
+    @ApiModelProperty("使用状态")
+    private String useStatus;
 
     @ApiModelProperty("购入日期 (YYYY-MM-DD格式)")
     private String purchaseDate;

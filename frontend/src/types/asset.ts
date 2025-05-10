@@ -3,9 +3,17 @@ import { ApiResponse } from "."
 export interface AssetDTO {
   name: string
   code: string
+  sn: string
   type: string
+  model: string
+  config: string
+  ip: string
+  description: string
+  provider: string
   departmentName: string
+  location: string
   status: string
+  useStatus: string
   purchaseDate: string
   purchasePrice: number
   count: number

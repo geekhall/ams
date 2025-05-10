@@ -22,9 +22,11 @@ import java.util.List;
 public interface AssetMapper extends BaseMapper<Asset> {
 
     @Select("<script>" +
-            "select a.id, a.name, a.code, c.`name` as type, " +
+            "select a.id, a.name, a.code, a.sn, c.`name` as type, " +
+            "a.model, a.config, a.ip, a.description, a.provider, " +
             "b.name as department_name, a.location, " +
-            "a.`status`, FROM_UNIXTIME(a.purchase_date/1000, '%Y-%m-%d') as purchase_date, " +
+            "a.`status`, a.use_status, " +
+            "FROM_UNIXTIME(a.purchase_date/1000, '%Y-%m-%d') as purchase_date, " +
             "a.purchase_price, a.count from h_asset a " +
             "left join h_department b on a.department_id=b.id " +
             "left join h_asset_type c on a.type = c.id " +

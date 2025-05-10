@@ -54,7 +54,7 @@ CREATE TABLE `h_asset` (
   `code` varchar(255) NOT NULL COMMENT '资产编号',
   `sn` varchar(255) DEFAULT NULL COMMENT '资产序列号',
   `type` bigint NOT NULL COMMENT '资产类型',
-  `model` bigint DEFAULT NULL COMMENT '设备型号',
+  `model` varchar(255) DEFAULT NULL COMMENT '设备型号',
   `config` varchar(255) DEFAULT NULL COMMENT '配置',
   `ip` varchar(255) DEFAULT NULL COMMENT '设备IP',
   `description` varchar(255) DEFAULT NULL COMMENT '描述',

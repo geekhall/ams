@@ -55,7 +55,7 @@ public class Asset extends Model<Asset> {
 
     @ApiModelProperty("设备型号")
     @TableField("model")
-    private Long model;
+    private String model;
 
     @ApiModelProperty("配置")
     @TableField("config")

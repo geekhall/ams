@@ -24,6 +24,7 @@ declare module 'vue' {
     BudgetDialog: typeof import('./src/components/budget/BudgetDialog.vue')['default']
     BudgetQuota: typeof import('./src/views/budget/BudgetQuota.vue')['default']
     Charts: typeof import('./src/views/Charts.vue')['default']
+    ColumnSettings: typeof import('./src/components/asset/ColumnSettings.vue')['default']
     Dashboard: typeof import('./src/views/Dashboard.vue')['default']
     DoughnutChart: typeof import('./src/components/charts/DoughnutChart.vue')['default']
     Duty: typeof import('./src/views/Duty.vue')['default']
