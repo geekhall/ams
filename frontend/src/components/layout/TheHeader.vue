@@ -123,65 +123,89 @@ const handleCommand = (command: string) => {
   font-size: 22px;
   color: white;
   background: linear-gradient(135deg, #d32d2a, #ff5733);
+  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
 }
 .collapse-btn {
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100%;
-  float: left;
   padding: 0 21px;
   cursor: pointer;
+  transition: all 0.3s;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.1);
+  }
+
+  .el-icon {
+    transition: all 0.3s;
+    &:hover {
+      transform: scale(1.1);
+    }
+  }
 }
 .header .logo {
-  float: left;
   width: 70px;
   height: 70px;
   background-image: url('~/assets/img/logo-only-white-70.png');
   background-repeat: no-repeat;
   background-position: center;
   background-size: 50% auto; /* 宽度 100%，高度自动调整 */
+  margin-right: 20px;
 }
 .header .title {
-  float: left;
   line-height: 70px;
   width: 300px;
+  font-size: 24px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  background: linear-gradient(to right, #fff, #e3f2fd);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 .header-right {
-  float: right;
-  padding-right: 50px;
+  margin-left: auto;
+  padding-right: 20px;
 }
 .header-user-con {
   display: flex;
   height: 70px;
   align-items: center;
 }
-.btn-fullscreen {
-  transform: rotate(45deg);
-  margin-right: 5px;
-  font-size: 24px;
-}
-
-.btn-bell,
-.btn-fullscreen {
+.btn-bell {
   position: relative;
-  width: 30px;
-  height: 30px;
-  text-align: center;
-  border-radius: 15px;
-  cursor: pointer;
+  width: 40px;
+  height: 40px;
   display: flex;
   align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.3s;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.1);
+  }
+
+  .el-icon {
+    font-size: 24px;
+    color: #fff;
+  }
 }
 .btn-bell-badge {
   position: absolute;
-  top: 0;
-  right: 4px;
+  top: 4px;
+  right: 8px;
   width: 8px;
   height: 8px;
-  border-radius: 4px;
-  background-color: #f56c6c;
-  color: white;
+  border-radius: 50%;
+  background-color: white;
+  box-shadow: 0 0 4px rgba(255, 82, 82, 0.5);
 }
 .btn-bell .el-icon-lx-notice {
   color: #fff;
@@ -191,14 +215,54 @@ const handleCommand = (command: string) => {
 }
 .user-avatar {
   margin-left: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: all 0.3s;
+
+  &:hover {
+    border-color: rgba(255, 255, 255, 0.5);
+    transform: scale(1.05);
+  }
 }
 .el-dropdown-link {
   color: #fff;
   cursor: pointer;
   display: flex;
   align-items: center;
+  transition: all 0.3s;
+
+  &:hover {
+    opacity: 0.8;
+  }
+
+  .el-icon {
+    margin-left: 4px;
+    transition: transform 0.3s;
+  }
+
+  &:hover .el-icon {
+    transform: rotate(180deg);
+  }
 }
-.el-dropdown-menu__item {
-  text-align: center;
+
+:deep(.el-dropdown-menu) {
+  padding: 8px 0;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+
+  .el-dropdown-menu__item {
+    padding: 8px 20px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s;
+
+    &:hover {
+      background-color: #f5f7fa;
+    }
+
+    .el-icon {
+      font-size: 18px;
+    }
+  }
 }
 </style>
