@@ -21,17 +21,21 @@
     >
       <el-table-column type="expand">
         <template #default="props">
-          <div m="4">
-            <template v-for="field in expandFields" :key="field.value">
-              <p m="t-0 b-2">
-                {{ field.label }}:
-                {{
-                  field.value === 'purchasePrice'
-                    ? '¥' + props.row[field.value]
-                    : props.row[field.value]
-                }}
-              </p>
-            </template>
+          <div class="expand-content">
+            <div class="expand-grid">
+              <template v-for="field in expandFields" :key="field.value">
+                <div class="expand-item">
+                  <div class="expand-label">{{ field.label }}</div>
+                  <div class="expand-value">
+                    {{
+                      field.value === 'purchasePrice'
+                        ? '¥' + props.row[field.value]
+                        : props.row[field.value]
+                    }}
+                  </div>
+                </div>
+              </template>
+            </div>
           </div>
         </template>
       </el-table-column>
@@ -284,6 +288,53 @@ const handleEditWithFetch = async (index: number, row: any) => {
   margin: auto;
   width: 40px;
   height: 40px;
+}
+
+.expand-content {
+  padding: 20px;
+  background-color: #fafafa;
+}
+
+.expand-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1px;
+  background-color: #ebeef5;
+  border: 1px solid #ebeef5;
+  border-radius: 4px;
+}
+
+.expand-item {
+  display: flex;
+  width: calc(33.33% - 1px);
+  background-color: #fff;
+}
+
+.expand-label {
+  width: 120px;
+  padding: 12px 15px;
+  background-color: #f5f7fa;
+  font-weight: bold;
+  color: #606266;
+  border-right: 1px solid #ebeef5;
+}
+
+.expand-value {
+  flex: 1;
+  padding: 12px 15px;
+  color: #606266;
+}
+
+@media screen and (max-width: 1200px) {
+  .expand-item {
+    width: calc(50% - 1px);
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .expand-item {
+    width: 100%;
+  }
 }
 </style>
 
