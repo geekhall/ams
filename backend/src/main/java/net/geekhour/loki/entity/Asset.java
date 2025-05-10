@@ -6,20 +6,18 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 import lombok.experimental.Accessors;
 
 /**
  * <p>
- * 
+ *
  * </p>
  *
  * @author Jasper Yang
  * @since 2025-04-05
  */
-@Getter
-@Setter
+@Data
 @Accessors(chain = true)
 @TableName("h_asset")
 @ApiModel(value = "Asset对象", description = "")
@@ -86,6 +84,6 @@ public class Asset extends Model<Asset> {
 
     @Override
     public Serializable pkVal() {
-        return null;
+        return this.id;
     }
 }

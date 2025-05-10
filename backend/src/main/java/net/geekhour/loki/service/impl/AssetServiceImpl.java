@@ -9,21 +9,19 @@ import net.geekhour.loki.mapper.AssetTypeMapper;
 import net.geekhour.loki.mapper.DepartmentMapper;
 import net.geekhour.loki.service.IAssetService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.ArrayList;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.List;
-import java.util.Map;
 
 /**
  * <p>
- *  服务实现类
+ * 服务实现类
  * </p>
  *
  * @author Jasper Yang
@@ -40,6 +38,8 @@ public class AssetServiceImpl extends ServiceImpl<AssetMapper, Asset> implements
 
     @Autowired
     AssetTypeMapper assetTypeMapper;
+
+    private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     @Override
     public List<Asset> all() {
@@ -95,6 +95,10 @@ public class AssetServiceImpl extends ServiceImpl<AssetMapper, Asset> implements
     @Override
     @Transactional
     public boolean updateAsset(AssetDTO assetDTO) {
+        if (assetDTO.getId() == null || assetDTO.getId().isEmpty()) {
+            return false;
+        }
+
         Asset existingAsset = assetMapper.selectById(assetDTO.getId());
         if (existingAsset == null) {
             return false; // Asset must exist for update
@@ -131,20 +135,24 @@ public class AssetServiceImpl extends ServiceImpl<AssetMapper, Asset> implements
         }
 
         Asset asset = new Asset();
-        if (assetDTO.getId() != null && !assetDTO.getId().isEmpty()) {
-            asset.setId(Long.valueOf(assetDTO.getId()));
-        }
+        asset.setId(Long.valueOf(assetDTO.getId()));
         asset.setAssetName(assetDTO.getAssetName());
         asset.setAssetCode(assetDTO.getAssetCode());
         asset.setAssetType(assetTypeId);
         asset.setDepartmentId(departmentId);
         asset.setLocation(assetDTO.getLocation());
         asset.setStatus(assetDTO.getStatus());
-        Long purchaseDateTimestamp = LocalDate.parse(assetDTO.getPurchaseDate())
-                .atStartOfDay(ZoneId.systemDefault())
-                .toInstant()
-                .toEpochMilli();
-        asset.setPurchaseDate(purchaseDateTimestamp);
+
+        try {
+            Long purchaseDateTimestamp = LocalDate.parse(assetDTO.getPurchaseDate(), DATE_FORMATTER)
+                    .atStartOfDay(ZoneId.systemDefault())
+                    .toInstant()
+                    .toEpochMilli();
+            asset.setPurchaseDate(purchaseDateTimestamp);
+        } catch (DateTimeParseException e) {
+            throw new IllegalArgumentException("Invalid purchase date format. Expected format: yyyy-MM-dd");
+        }
+
         asset.setPurchasePrice(assetDTO.getPurchasePrice());
         asset.setCount(assetDTO.getCount());
         return asset;

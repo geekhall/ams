@@ -58,10 +58,10 @@ public class AssetController {
                         new com.fasterxml.jackson.core.type.TypeReference<Map<String, Object>>() {
                         });
                 name = (String) requestMap.get("name");
-                pageIndex = requestMap.get("pageIndex") == null ? 1
-                        : Integer.parseInt(requestMap.get("pageIndex").toString());
-                pageSize = requestMap.get("pageSize") == null ? 10
-                        : Integer.parseInt(requestMap.get("pageSize").toString());
+                Object pageIndexObj = requestMap.get("pageIndex");
+                Object pageSizeObj = requestMap.get("pageSize");
+                pageIndex = pageIndexObj == null ? 1 : ((Number) pageIndexObj).intValue();
+                pageSize = pageSizeObj == null ? 10 : ((Number) pageSizeObj).intValue();
             } catch (Exception e) {
                 e.printStackTrace();
                 return ResponseUtil.error(400, e.getMessage());
