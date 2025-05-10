@@ -22,13 +22,16 @@
       <el-table-column type="expand">
         <template #default="props">
           <div m="4">
-            <p m="t-0 b-2">资产描述: {{ props.row.description }}</p>
-            <p m="t-0 b-2">资产配置: {{ props.row.config }}</p>
-            <p m="t-0 b-2">资产IP: {{ props.row.ip }}</p>
-            <p m="t-0 b-2">资产提供商: {{ props.row.provider }}</p>
-            <p m="t-0 b-2">资产位置: {{ props.row.location }}</p>
-            <p m="t-0 b-2">购入时间: {{ props.row.purchaseDate }}</p>
-            <p m="t-0 b-2">购买价格: ¥{{ props.row.purchasePrice }}</p>
+            <template v-for="field in expandFields" :key="field.value">
+              <p m="t-0 b-2">
+                {{ field.label }}:
+                {{
+                  field.value === 'purchasePrice'
+                    ? '¥' + props.row[field.value]
+                    : props.row[field.value]
+                }}
+              </p>
+            </template>
           </div>
         </template>
       </el-table-column>
@@ -39,61 +42,14 @@
         align="center"
         :index="(index:number) => index + 1 + (query.pageIndex - 1) * query.pageSize"
       ></el-table-column>
-      <el-table-column
-        prop="name"
-        label="资产名称"
-        align="center"
-        v-if="visibleColumns.name"
-      ></el-table-column>
-      <el-table-column
-        prop="code"
-        label="资产编号"
-        align="center"
-        v-if="visibleColumns.code"
-      ></el-table-column>
-      <el-table-column
-        prop="sn"
-        label="资产序列号"
-        align="center"
-        v-if="visibleColumns.sn"
-      ></el-table-column>
-      <el-table-column
-        prop="type"
-        label="资产类型"
-        align="center"
-        v-if="visibleColumns.type"
-      ></el-table-column>
-      <el-table-column
-        prop="model"
-        label="资产型号"
-        align="center"
-        v-if="visibleColumns.model"
-      ></el-table-column>
-      <el-table-column
-        prop="departmentName"
-        label="所属部门"
-        align="center"
-        v-if="visibleColumns.departmentName"
-      ></el-table-column>
-      <el-table-column
-        prop="status"
-        label="状态"
-        align="center"
-        v-if="visibleColumns.status"
-      ></el-table-column>
-      <el-table-column
-        prop="useStatus"
-        label="使用状态"
-        align="center"
-        v-if="visibleColumns.useStatus"
-      ></el-table-column>
-      <el-table-column
-        prop="count"
-        label="数量"
-        align="center"
-        width="80"
-        v-if="visibleColumns.count"
-      ></el-table-column>
+      <template v-for="field in tableFields" :key="field.value">
+        <el-table-column
+          :prop="field.value"
+          :label="field.label"
+          align="center"
+          :width="field.value === 'count' ? 80 : undefined"
+        ></el-table-column>
+      </template>
       <el-table-column label="操作" width="300" align="center">
         <template #default="scope">
           <el-button
@@ -166,7 +122,7 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, computed } from 'vue'
 import { useAssetType } from '@/hooks/useAssetType'
 import { useDepartment } from '@/hooks/useDepartment'
 import { Delete, Edit, Search, Plus, Memo, Setting } from '@element-plus/icons-vue'
@@ -196,6 +152,39 @@ const {
   handleSuccess
 } = useAsset()
 
+// 定义所有字段
+const allFields = [
+  { value: 'name', label: '资产名称' },
+  { value: 'code', label: '资产编号' },
+  { value: 'sn', label: '资产序列号' },
+  { value: 'type', label: '资产类型' },
+  { value: 'model', label: '资产型号' },
+  { value: 'config', label: '资产配置' },
+  { value: 'ip', label: '资产IP' },
+  { value: 'description', label: '资产描述' },
+  { value: 'provider', label: '资产提供商' },
+  { value: 'departmentName', label: '所属部门' },
+  { value: 'location', label: '资产位置' },
+  { value: 'status', label: '状态' },
+  { value: 'useStatus', label: '使用状态' },
+  { value: 'purchaseDate', label: '购入时间' },
+  { value: 'purchasePrice', label: '购买价格' },
+  { value: 'count', label: '数量' }
+]
+
+// 选中的列（表格显示字段）
+const selectedColumns = ref<string[]>([])
+
+// 计算表格显示的字段
+const tableFields = computed(() => {
+  return allFields.filter((field) => selectedColumns.value.includes(field.value))
+})
+
+// 计算展开行显示的字段
+const expandFields = computed(() => {
+  return allFields.filter((field) => !selectedColumns.value.includes(field.value))
+})
+
 // 列显示控制
 const visibleColumns = ref({
   name: true,
@@ -203,16 +192,16 @@ const visibleColumns = ref({
   sn: true,
   type: true,
   model: true,
-  config: true,
-  ip: true,
-  description: true,
-  provider: true,
+  config: false,
+  ip: false,
+  description: false,
+  provider: false,
   departmentName: true,
-  location: true,
+  location: false,
   status: true,
   useStatus: true,
-  purchaseDate: true,
-  purchasePrice: true,
+  purchaseDate: false,
+  purchasePrice: false,
   count: true
 })
 
@@ -220,7 +209,20 @@ const visibleColumns = ref({
 const columnSettingsVisible = ref(false)
 
 const showColumnSettings = () => {
+  // 初始化选中的列（表格中显示的字段）
+  selectedColumns.value = Object.entries(visibleColumns.value)
+    .filter(([_, value]) => value)
+    .map(([key]) => key)
   columnSettingsVisible.value = true
+}
+
+// 更新列显示控制
+const updateVisibleColumns = (newVisibleColumns: any) => {
+  visibleColumns.value = newVisibleColumns
+  // 更新选中的列（表格中显示的字段）
+  selectedColumns.value = Object.entries(newVisibleColumns)
+    .filter(([_, value]) => value)
+    .map(([key]) => key)
 }
 
 onMounted(() => {
@@ -228,6 +230,10 @@ onMounted(() => {
   if (savedPageIndex) {
     query.pageIndex = parseInt(savedPageIndex, 10)
   }
+  // 初始化选中的列
+  selectedColumns.value = Object.entries(visibleColumns.value)
+    .filter(([_, value]) => value)
+    .map(([key]) => key)
   getData()
   fetchDepartments()
 })
@@ -244,11 +250,6 @@ const handleEditWithFetch = async (index: number, row: any) => {
   await fetchAssetTypes()
   await fetchDepartments()
   await handleEdit(index, row)
-}
-
-// 更新列显示控制
-const updateVisibleColumns = (newVisibleColumns: any) => {
-  visibleColumns.value = newVisibleColumns
 }
 </script>
 

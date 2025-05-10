@@ -1,27 +1,18 @@
 <template>
-  <el-dialog v-model="dialogVisible" title="列设置" width="500px" :before-close="handleClose">
-    <el-form>
-      <el-form-item label="显示列">
-        <el-checkbox-group v-model="selectedColumns">
-          <el-checkbox value="name">资产名称</el-checkbox>
-          <el-checkbox value="code">资产编号</el-checkbox>
-          <el-checkbox value="sn">资产序列号</el-checkbox>
-          <el-checkbox value="type">资产类型</el-checkbox>
-          <el-checkbox value="model">资产型号</el-checkbox>
-          <el-checkbox value="config">资产配置</el-checkbox>
-          <el-checkbox value="ip">资产IP</el-checkbox>
-          <el-checkbox value="description">资产描述</el-checkbox>
-          <el-checkbox value="provider">资产提供商</el-checkbox>
-          <el-checkbox value="departmentName">所属部门</el-checkbox>
-          <el-checkbox value="location">资产位置</el-checkbox>
-          <el-checkbox value="status">状态</el-checkbox>
-          <el-checkbox value="useStatus">使用状态</el-checkbox>
-          <el-checkbox value="purchaseDate">购入时间</el-checkbox>
-          <el-checkbox value="purchasePrice">购买价格</el-checkbox>
-          <el-checkbox value="count">数量</el-checkbox>
-        </el-checkbox-group>
-      </el-form-item>
-    </el-form>
+  <el-dialog v-model="dialogVisible" title="列设置" width="800px" :before-close="handleClose">
+    <div class="transfer-container">
+      <el-transfer
+        v-model="selectedColumns"
+        :data="allColumns"
+        :titles="['表格显示字段', '展开行字段']"
+        :props="{
+          key: 'value',
+          label: 'label'
+        }"
+        :left-default-checked="[]"
+        :right-default-checked="[]"
+      />
+    </div>
     <template #footer>
       <span class="dialog-footer">
         <el-button @click="handleClose">取消</el-button>
@@ -45,6 +36,28 @@ const emit = defineEmits<{
 }>()
 
 const dialogVisible = ref(props.visible)
+
+// 定义所有列
+const allColumns = [
+  { value: 'name', label: '资产名称' },
+  { value: 'code', label: '资产编号' },
+  { value: 'sn', label: '资产序列号' },
+  { value: 'type', label: '资产类型' },
+  { value: 'model', label: '资产型号' },
+  { value: 'config', label: '资产配置' },
+  { value: 'ip', label: '资产IP' },
+  { value: 'description', label: '资产描述' },
+  { value: 'provider', label: '资产提供商' },
+  { value: 'departmentName', label: '所属部门' },
+  { value: 'location', label: '资产位置' },
+  { value: 'status', label: '状态' },
+  { value: 'useStatus', label: '使用状态' },
+  { value: 'purchaseDate', label: '购入时间' },
+  { value: 'purchasePrice', label: '购买价格' },
+  { value: 'count', label: '数量' }
+]
+
+// 选中的列（表格显示字段）
 const selectedColumns = ref<string[]>([])
 
 // 监听visible属性变化
@@ -53,9 +66,9 @@ watch(
   (newVal) => {
     dialogVisible.value = newVal
     if (newVal) {
-      // 初始化选中的列
+      // 初始化选中的列（展开行字段）
       selectedColumns.value = Object.entries(props.visibleColumns)
-        .filter(([_, value]) => value)
+        .filter(([_, value]) => !value)
         .map(([key]) => key)
     }
   }
@@ -74,7 +87,7 @@ const handleConfirm = () => {
   // 更新列显示状态
   const newVisibleColumns = { ...props.visibleColumns }
   Object.keys(newVisibleColumns).forEach((key) => {
-    newVisibleColumns[key] = selectedColumns.value.includes(key)
+    newVisibleColumns[key] = !selectedColumns.value.includes(key)
   })
   emit('updateVisibleColumns', newVisibleColumns)
   dialogVisible.value = false
@@ -88,9 +101,45 @@ const handleConfirm = () => {
   gap: 10px;
 }
 
-:deep(.el-checkbox-group) {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 10px;
+.transfer-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px 0;
+}
+
+:deep(.el-transfer) {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+:deep(.el-transfer-panel) {
+  width: 45%;
+  margin: 0;
+}
+
+:deep(.el-transfer-panel__header) {
+  background-color: #f5f7fa;
+}
+
+:deep(.el-transfer-panel__body) {
+  height: 400px;
+}
+
+:deep(.el-transfer-panel__list) {
+  height: 350px;
+}
+
+:deep(.el-transfer__buttons) {
+  padding: 0 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+:deep(.el-transfer__button) {
+  margin: 10px 0;
 }
 </style>
