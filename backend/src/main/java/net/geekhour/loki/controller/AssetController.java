@@ -98,16 +98,16 @@ public class AssetController {
     @PostMapping("/create")
     @PreAuthorize("hasRole('USER') || hasAuthority('user:asset:create')")
     public ResponseEntity<?> createAsset(@RequestBody AssetDTO assetDTO) {
-        if (assetDTO.getAssetName() == null || assetDTO.getAssetName().isEmpty()) {
+        if (assetDTO.getName() == null || assetDTO.getName().isEmpty()) {
             return ResponseUtil.error(400, "资产名称不能为空");
         }
-        if (assetDTO.getAssetCode() == null || assetDTO.getAssetCode().isEmpty()) {
+        if (assetDTO.getCode() == null || assetDTO.getCode().isEmpty()) {
             return ResponseUtil.error(400, "资产编码不能为空");
         }
-        if (assetService.checkAssetNameExists(assetDTO.getAssetName())) {
+        if (assetService.checkAssetNameExists(assetDTO.getName())) {
             return ResponseUtil.error(400, "资产名称已存在");
         }
-        if (assetService.checkAssetCodeExists(assetDTO.getAssetCode())) {
+        if (assetService.checkAssetCodeExists(assetDTO.getCode())) {
             return ResponseUtil.error(400, "资产编码已存在");
         }
 
@@ -134,10 +134,10 @@ public class AssetController {
         if (assetDTO.getId() == null) {
             return ResponseUtil.error(400, "资产ID不能为空");
         }
-        if (assetDTO.getAssetName() == null || assetDTO.getAssetName().isEmpty()) {
+        if (assetDTO.getName() == null || assetDTO.getName().isEmpty()) {
             return ResponseUtil.error(400, "资产名称不能为空");
         }
-        if (assetDTO.getAssetCode() == null || assetDTO.getAssetCode().isEmpty()) {
+        if (assetDTO.getCode() == null || assetDTO.getCode().isEmpty()) {
             return ResponseUtil.error(400, "资产编码不能为空");
         }
         try {

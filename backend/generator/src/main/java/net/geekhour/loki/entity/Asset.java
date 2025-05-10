@@ -22,7 +22,7 @@ import lombok.experimental.Accessors;
  * </p>
  *
  * @author Jasper Yang
- * @since 2025-04-11
+ * @since 2025-05-10
  */
 @Getter
 @Setter
@@ -34,18 +34,42 @@ public class Asset extends Model<Asset> {
     private static final long serialVersionUID = 1L;
 
     @ApiModelProperty("资产名称")
-    @TableField("asset_name")
-    private String assetName;
+    @TableField("name")
+    private String name;
 
     @ApiModelProperty("资产编号")
-    @TableField("asset_code")
-    private String assetCode;
+    @TableField("code")
+    private String code;
 
-    @ApiModelProperty("资产类型(外键关联h_asset_type)")
-    @TableField("asset_type")
-    private Long assetType;
+    @ApiModelProperty("资产序列号")
+    @TableField("sn")
+    private String sn;
 
-    @ApiModelProperty("所属部门（外键关联h_department)")
+    @ApiModelProperty("资产类型")
+    @TableField("type")
+    private Long type;
+
+    @ApiModelProperty("设备型号")
+    @TableField("model")
+    private Long model;
+
+    @ApiModelProperty("配置")
+    @TableField("config")
+    private String config;
+
+    @ApiModelProperty("设备IP")
+    @TableField("ip")
+    private String ip;
+
+    @ApiModelProperty("描述")
+    @TableField("description")
+    private String description;
+
+    @ApiModelProperty("供应商")
+    @TableField("provider")
+    private String provider;
+
+    @ApiModelProperty("所属部门")
     @TableField("department_id")
     private Long departmentId;
 
@@ -56,6 +80,10 @@ public class Asset extends Model<Asset> {
     @ApiModelProperty("状态 正常 报废 维修")
     @TableField("status")
     private String status;
+
+    @ApiModelProperty("使用状态")
+    @TableField("use_status")
+    private String useStatus;
 
     @ApiModelProperty("购入日期")
     @TableField("purchase_date")

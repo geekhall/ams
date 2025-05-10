@@ -24,13 +24,16 @@ public class AssetDTO extends Model<AssetDTO> {
     private String id;
 
     @ApiModelProperty("资产名称")
-    private String assetName;
+    private String name;
 
     @ApiModelProperty("资产编号")
-    private String assetCode;
+    private String code;
+
+    @ApiModelProperty("资产序列号")
+    private String sn;
 
     @ApiModelProperty("资产类型")
-    private String assetType;
+    private String type;
 
     @ApiModelProperty("所属部门")
     private String departmentName;

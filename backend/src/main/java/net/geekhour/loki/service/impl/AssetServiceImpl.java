@@ -75,13 +75,13 @@ public class AssetServiceImpl extends ServiceImpl<AssetMapper, Asset> implements
     @Override
     @Transactional
     public boolean createAsset(AssetDTO assetDTO) {
-        if (StringUtil.isEmpty(assetDTO.getAssetName()) || StringUtil.isEmpty(assetDTO.getAssetCode())) {
+        if (StringUtil.isEmpty(assetDTO.getName()) || StringUtil.isEmpty(assetDTO.getCode())) {
             return false;
         }
-        if (assetMapper.checkAssetCodeExists(assetDTO.getAssetCode())) {
+        if (assetMapper.checkAssetCodeExists(assetDTO.getCode())) {
             return false; // Asset code must be unique
         }
-        if (assetMapper.checkAssetNameExists(assetDTO.getAssetName())) {
+        if (assetMapper.checkAssetNameExists(assetDTO.getName())) {
             return false; // Asset name must be unique
         }
 
@@ -105,14 +105,14 @@ public class AssetServiceImpl extends ServiceImpl<AssetMapper, Asset> implements
         }
 
         // Check for duplicate code, excluding the current asset
-        if (!existingAsset.getAssetCode().equals(assetDTO.getAssetCode()) &&
-                assetMapper.checkAssetCodeExists(assetDTO.getAssetCode())) {
+        if (!existingAsset.getCode().equals(assetDTO.getCode()) &&
+                assetMapper.checkAssetCodeExists(assetDTO.getCode())) {
             return false;
         }
 
         // Check for duplicate name, excluding the current asset
-        if (!existingAsset.getAssetName().equals(assetDTO.getAssetName()) &&
-                assetMapper.checkAssetNameExists(assetDTO.getAssetName())) {
+        if (!existingAsset.getName().equals(assetDTO.getName()) &&
+                assetMapper.checkAssetNameExists(assetDTO.getName())) {
             return false;
         }
 
@@ -125,7 +125,7 @@ public class AssetServiceImpl extends ServiceImpl<AssetMapper, Asset> implements
     }
 
     private Asset mapToAsset(AssetDTO assetDTO) {
-        Long assetTypeId = assetTypeMapper.getIdByName(assetDTO.getAssetType());
+        Long assetTypeId = assetTypeMapper.getIdByName(assetDTO.getType());
         if (assetTypeId == null) {
             return null;
         }
@@ -136,9 +136,9 @@ public class AssetServiceImpl extends ServiceImpl<AssetMapper, Asset> implements
 
         Asset asset = new Asset();
         asset.setId(Long.valueOf(assetDTO.getId()));
-        asset.setAssetName(assetDTO.getAssetName());
-        asset.setAssetCode(assetDTO.getAssetCode());
-        asset.setAssetType(assetTypeId);
+        asset.setName(assetDTO.getName());
+        asset.setCode(assetDTO.getCode());
+        asset.setType(assetTypeId);
         asset.setDepartmentId(departmentId);
         asset.setLocation(assetDTO.getLocation());
         asset.setStatus(assetDTO.getStatus());

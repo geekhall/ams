@@ -1,46 +1,79 @@
 package net.geekhour.loki.entity;
 
-import com.baomidou.mybatisplus.annotation.*;
+import com.baomidou.mybatisplus.annotation.FieldFill;
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableLogic;
+import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.Version;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.experimental.Accessors;
 
 /**
  * <p>
- *
+ * 
  * </p>
  *
  * @author Jasper Yang
- * @since 2025-04-05
+ * @since 2025-05-10
  */
-@Data
+@Getter
+@Setter
 @Accessors(chain = true)
 @TableName("h_asset")
-@ApiModel(value = "Asset对象", description = "")
+@ApiModel(value = "Asset对象", description = "资产对象")
 public class Asset extends Model<Asset> {
 
     private static final long serialVersionUID = 1L;
 
     @ApiModelProperty("主键ID")
+    @TableField("id")
     private Long id;
 
     @ApiModelProperty("资产名称")
-    @TableField("asset_name")
-    private String assetName;
+    @TableField("name")
+    private String name;
 
     @ApiModelProperty("资产编号")
-    @TableField("asset_code")
-    private String assetCode;
+    @TableField("code")
+    private String code;
 
-    @ApiModelProperty("资产类型(外键关联h_asset_type)")
-    @TableField("asset_type")
-    private Long assetType;
+    @ApiModelProperty("资产序列号")
+    @TableField("sn")
+    private String sn;
 
-    @ApiModelProperty("所属部门（外键关联h_department)")
+    @ApiModelProperty("资产类型")
+    @TableField("type")
+    private Long type;
+
+    @ApiModelProperty("设备型号")
+    @TableField("model")
+    private Long model;
+
+    @ApiModelProperty("配置")
+    @TableField("config")
+    private String config;
+
+    @ApiModelProperty("设备IP")
+    @TableField("ip")
+    private String ip;
+
+    @ApiModelProperty("描述")
+    @TableField("description")
+    private String description;
+
+    @ApiModelProperty("供应商")
+    @TableField("provider")
+    private String provider;
+
+    @ApiModelProperty("所属部门")
     @TableField("department_id")
     private Long departmentId;
 
@@ -51,6 +84,10 @@ public class Asset extends Model<Asset> {
     @ApiModelProperty("状态 正常 报废 维修")
     @TableField("status")
     private String status;
+
+    @ApiModelProperty("使用状态")
+    @TableField("use_status")
+    private String useStatus;
 
     @ApiModelProperty("购入日期")
     @TableField("purchase_date")
@@ -73,7 +110,7 @@ public class Asset extends Model<Asset> {
     @TableField(value = "create_time", fill = FieldFill.INSERT)
     private Long createTime;
 
-    @ApiModelProperty("更新时间")
+    @ApiModelProperty("修改时间")
     @TableField(value = "update_time", fill = FieldFill.INSERT_UPDATE)
     private Long updateTime;
 
@@ -84,6 +121,6 @@ public class Asset extends Model<Asset> {
 
     @Override
     public Serializable pkVal() {
-        return this.id;
+        return null;
     }
 }
