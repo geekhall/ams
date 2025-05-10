@@ -3,7 +3,7 @@
     <h1>资产领用记录</h1>
     <div class="handle-box">
       <el-input
-        v-model="query.assetName"
+        v-model="query.name"
         placeholder="输入资产名称"
         class="handle-input mr10"
         @keyup.enter.native="handleSearch"
@@ -24,8 +24,8 @@
         align="center"
         :index="(index:number) => index + 1 + (query.pageIndex - 1) * query.pageSize"
       />
-      <el-table-column prop="assetName" label="资产名称" align="center" />
-      <el-table-column prop="assetCode" label="资产编号" align="center" />
+      <el-table-column prop="name" label="资产名称" align="center" />
+      <el-table-column prop="code" label="资产编号" align="center" />
       <el-table-column prop="borrowDepartment" label="领用部门" align="center" />
       <el-table-column prop="borrower" label="领用人" align="center" />
       <el-table-column prop="borrowCount" label="领用数量" align="center" />
@@ -69,7 +69,7 @@
     <el-dialog title="资产归还" v-model="returnVisible" width="30%">
       <el-form :model="returnForm" label-width="100px" :rules="returnRules" ref="returnFormRef">
         <el-form-item label="资产名称">
-          <span>{{ returnForm.assetName }}</span>
+          <span>{{ returnForm.name }}</span>
         </el-form-item>
         <el-form-item label="领用人">
           <span>{{ returnForm.borrower }}</span>
@@ -104,8 +104,8 @@
     <!-- 详情弹窗 -->
     <el-dialog title="领用详情" v-model="detailsVisible" width="40%">
       <el-descriptions :column="2" border>
-        <el-descriptions-item label="资产名称">{{ details.assetName }}</el-descriptions-item>
-        <el-descriptions-item label="资产编号">{{ details.assetCode }}</el-descriptions-item>
+        <el-descriptions-item label="资产名称">{{ details.name }}</el-descriptions-item>
+        <el-descriptions-item label="资产编号">{{ details.code }}</el-descriptions-item>
         <el-descriptions-item label="领用部门">{{ details.borrowDepartment }}</el-descriptions-item>
         <el-descriptions-item label="领用人">{{ details.borrower }}</el-descriptions-item>
         <el-descriptions-item label="领用数量">{{ details.borrowCount }}</el-descriptions-item>
@@ -141,7 +141,7 @@ import type { FormInstance, FormRules } from 'element-plus'
 import dayjs from 'dayjs'
 
 const query = reactive({
-  assetName: '',
+  name: '',
   status: '',
   pageIndex: 1,
   pageSize: 10
@@ -155,15 +155,15 @@ const returnFormRef = ref<FormInstance>()
 
 const returnForm = reactive({
   borrowId: '',
-  assetName: '',
+  name: '',
   borrower: '',
   returnDate: dayjs().format('YYYY-MM-DD'),
   returnNote: ''
 })
 
 const details = reactive({
-  assetName: '',
-  assetCode: '',
+  name: '',
+  code: '',
   borrowDepartment: '',
   borrower: '',
   borrowCount: 0,
@@ -186,7 +186,7 @@ const returnRules = reactive<FormRules>({
 const getData = async () => {
   try {
     const res = await getAssetBorrowRecords({
-      assetName: query.assetName,
+      name: query.name,
       status: query.status,
       pageIndex: query.pageIndex,
       pageSize: query.pageSize
@@ -245,7 +245,7 @@ const getStatusText = (status: string) => {
 
 const handleReturn = (row: AssetBorrowRecord) => {
   returnForm.borrowId = row.id
-  returnForm.assetName = row.assetName
+  returnForm.name = row.name
   returnForm.borrower = row.borrower
   returnForm.returnDate = dayjs().format('YYYY-MM-DD')
   returnForm.returnNote = ''

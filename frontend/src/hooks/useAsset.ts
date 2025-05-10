@@ -13,9 +13,9 @@ export const useAsset = () => {
 
   const query = reactive({
     id: '',
-    assetName: '',
-    assetCode: '',
-    assetType: '',
+    name: '',
+    code: '',
+    type: '',
     departmentName: '',
     status: '',
     purchaseDate: '',
@@ -29,7 +29,7 @@ export const useAsset = () => {
   const getData = async () => {
     try {
       const res = await getAssetList({
-        name: query.assetName,
+        name: query.name,
         pageIndex: query.pageIndex,
         pageSize: query.pageSize
       })

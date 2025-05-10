@@ -9,14 +9,14 @@
       <el-form-item label="ID" v-if="mode === 'edit'">
         <el-input v-model="form.id" disabled></el-input>
       </el-form-item>
-      <el-form-item label="资产名称" prop="assetName">
-        <el-input v-model="form.assetName"></el-input>
+      <el-form-item label="资产名称" prop="name">
+        <el-input v-model="form.name"></el-input>
       </el-form-item>
-      <el-form-item label="资产编号" prop="assetCode">
-        <el-input v-model="form.assetCode"></el-input>
+      <el-form-item label="资产编号" prop="code">
+        <el-input v-model="form.code"></el-input>
       </el-form-item>
-      <el-form-item label="资产类型" prop="assetType">
-        <el-select v-model="form.assetType" placeholder="请选择">
+      <el-form-item label="资产类型" prop="type">
+        <el-select v-model="form.type" placeholder="请选择">
           <el-option
             v-for="item in assetTypes"
             :key="item.name"
@@ -92,9 +92,9 @@ const formRef = ref<FormInstance>()
 
 const form = reactive({
   id: '',
-  assetName: '',
-  assetCode: '',
-  assetType: '',
+  name: '',
+  code: '',
+  type: '',
   departmentName: '',
   status: '正常',
   purchaseDate: dayjs().format('YYYY-MM-DD'),
@@ -112,9 +112,9 @@ watch(
       // 重置表单
       Object.assign(form, {
         id: '',
-        assetName: '',
-        assetCode: '',
-        assetType: '',
+        name: '',
+        code: '',
+        type: '',
         departmentName: '',
         status: '正常',
         purchaseDate: dayjs().format('YYYY-MM-DD'),

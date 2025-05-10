@@ -128,9 +128,9 @@ export const borrowAsset = (data: BorrowAssetParams) => {
 // 资产领用记录
 export interface AssetBorrowRecord {
   id: string
-  assetId: string
-  assetName: string
-  assetCode: string
+  name: string
+  code: string
+  type: string
   borrowDepartment: string
   borrower: string
   borrowCount: number
@@ -149,7 +149,7 @@ export interface AssetBorrowListResponse {
 
 // 获取资产领用记录
 export const getAssetBorrowRecords = (params: {
-  assetName?: string
+  name?: string
   status?: string
   pageIndex: number
   pageSize: number

@@ -22,15 +22,15 @@ import java.util.List;
 public interface AssetMapper extends BaseMapper<Asset> {
 
     @Select("<script>" +
-            "select a.id, a.asset_name, a.asset_code, c.`name` as asset_type, " +
+            "select a.id, a.name, a.code, c.`name` as type, " +
             "b.name as department_name, a.location, " +
             "a.`status`, FROM_UNIXTIME(a.purchase_date/1000, '%Y-%m-%d') as purchase_date, " +
             "a.purchase_price, a.count from h_asset a " +
             "left join h_department b on a.department_id=b.id " +
-            "left join h_asset_type c on a.asset_type = c.id " +
+            "left join h_asset_type c on a.type = c.id " +
             "where a.deleted = 0 and b.deleted=0 and c.deleted=0" +
             "<if test='name != null and name != \"\"'> " +
-            "and a.asset_name like CONCAT('%', #{name}, '%') " +
+            "and a.name like CONCAT('%', #{name}, '%') " +
             "</if>" +
             "order by a.id " +
             "limit #{offset}, #{pageSize}" +
@@ -42,17 +42,17 @@ public interface AssetMapper extends BaseMapper<Asset> {
     @Select("<script>" +
             "select count(*) from h_asset a " +
             "left join h_department b on a.department_id=b.id " +
-            "left join h_asset_type c on a.asset_type = c.id " +
+            "left join h_asset_type c on a.type = c.id " +
             "where a.deleted = 0 and b.deleted=0 and c.deleted=0" +
             "<if test='name != null and name != \"\"'> " +
-            "and a.asset_name like CONCAT('%', #{name}, '%') " +
+            "and a.name like CONCAT('%', #{name}, '%') " +
             "</if>" +
             "</script>")
     Long countAssets(@Param("name") String name);
 
-    @Select("select count(*) from h_asset where asset_code = #{assetCode} and deleted = 0")
-    boolean checkAssetCodeExists(@Param("assetCode") String assetCode);
+    @Select("select count(*) from h_asset where code = #{code} and deleted = 0")
+    boolean checkAssetCodeExists(@Param("code") String code);
 
-    @Select("select count(*) from h_asset where asset_name = #{assetName} and deleted = 0")
-    boolean checkAssetNameExists(@Param("assetName")String assetName);
+    @Select("select count(*) from h_asset where name = #{name} and deleted = 0")
+    boolean checkAssetNameExists(@Param("name")String name);
 }

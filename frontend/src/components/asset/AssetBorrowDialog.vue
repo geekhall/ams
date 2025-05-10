@@ -2,10 +2,10 @@
   <el-dialog title="资产领用" v-model="dialogVisible" width="30%" @close="handleClose">
     <el-form :model="form" label-width="100px" :rules="rules" ref="formRef">
       <el-form-item label="资产名称">
-        <span>{{ form.assetName }}</span>
+        <span>{{ form.name }}</span>
       </el-form-item>
       <el-form-item label="资产编号">
-        <span>{{ form.assetCode }}</span>
+        <span>{{ form.code }}</span>
       </el-form-item>
       <el-form-item label="领用数量" prop="borrowCount">
         <el-input-number
@@ -81,9 +81,9 @@ const dialogVisible = ref(props.visible)
 const formRef = ref<FormInstance>()
 
 const form = reactive({
-  assetId: '',
-  assetName: '',
-  assetCode: '',
+  id: '',
+  name: '',
+  code: '',
   borrowCount: 1,
   availableCount: 0,
   borrowDepartment: '',
@@ -113,9 +113,9 @@ watch(
   () => props.asset,
   (newAsset) => {
     if (newAsset) {
-      form.assetId = newAsset.id
-      form.assetName = newAsset.assetName
-      form.assetCode = newAsset.assetCode
+      form.id = newAsset.id
+      form.name = newAsset.name
+      form.code = newAsset.code
       form.availableCount = newAsset.count
       form.borrowCount = 1
       form.borrowDepartment = ''

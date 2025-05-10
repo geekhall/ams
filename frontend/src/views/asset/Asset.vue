@@ -3,7 +3,7 @@
     <h1>资产管理</h1>
     <div class="handle-box">
       <el-input
-        v-model="query.assetName"
+        v-model="query.name"
         placeholder="输入资产名称"
         class="handle-input mr10"
         @keyup.enter.native="handleSearch"
@@ -32,9 +32,9 @@
         align="center"
         :index="(index:number) => index + 1 + (query.pageIndex - 1) * query.pageSize"
       ></el-table-column>
-      <el-table-column prop="assetName" label="资产名称" align="center"></el-table-column>
-      <el-table-column prop="assetCode" label="资产编号" align="center"> </el-table-column>
-      <el-table-column prop="assetType" label="资产类型" align="center"></el-table-column>
+      <el-table-column prop="name" label="资产名称" align="center"></el-table-column>
+      <el-table-column prop="code" label="资产编号" align="center"> </el-table-column>
+      <el-table-column prop="type" label="资产类型" align="center"></el-table-column>
       <el-table-column prop="departmentName" label="所属部门" align="center"> </el-table-column>
       <el-table-column prop="status" label="状态" align="center"> </el-table-column>
       <el-table-column prop="purchaseDate" label="购入时间" align="center"></el-table-column>
