@@ -77,11 +77,11 @@
 
 <script setup lang="ts">
 import { onMounted } from 'vue'
-import { useSidebarStore } from '~/store/sidebar'
+import { useSidebarStore } from '@/stores/sidebar'
 import { useRouter } from 'vue-router'
 import imgurl from '~/assets/img/avatar.png'
 import { SwitchButton } from '@element-plus/icons-vue'
-import { useAuthStore } from '~/store/auth'
+import { useAuthStore } from '@/stores/auth'
 
 const authStore = useAuthStore()
 const username: string | null = authStore.username

@@ -63,13 +63,13 @@
 
 <script setup lang="ts">
 import { ref, reactive, computed, onMounted } from 'vue'
-import { useTagsStore } from '../store/tags'
-import { usePermissionStore } from '../store/permission'
+import { useTagsStore } from '../stores/tags'
+import { usePermissionStore } from '../stores/permission'
 import { useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus'
 import type { FormInstance, FormRules } from 'element-plus'
 import { Lock, User as UserIcon } from '@element-plus/icons-vue'
-import { useAuthStore } from '~/store/auth'
+import { useAuthStore } from '@/stores/auth'
 
 const loading = ref(false)
 const authStore = useAuthStore()

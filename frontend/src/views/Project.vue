@@ -78,7 +78,7 @@
 import { ref, reactive, onMounted } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { Delete, Edit, Search, Plus } from '@element-plus/icons-vue'
-import { useUserStore } from '~/store/user'
+import { useUserStore } from '@/stores/user'
 
 interface TableItem {
   id: number

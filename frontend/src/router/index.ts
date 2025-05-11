@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
-import { usePermissionStore } from '~/store/permission'
+import { usePermissionStore } from '@/stores/permission'
 import Home from '@/views/Home.vue'
-import { useAuthStore } from '~/store/auth'
+import { useAuthStore } from '@/stores/auth'
 
 // 1. Define route components.
 const Dashboard = () => import('@/views/Dashboard.vue')

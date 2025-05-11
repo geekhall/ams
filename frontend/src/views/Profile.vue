@@ -207,7 +207,7 @@ import { ElMessage, FormInstance } from 'element-plus'
 import { Camera } from '@element-plus/icons-vue'
 import VueCropper from 'vue-cropperjs'
 import 'cropperjs/dist/cropper.css'
-import { useAuthStore } from '~/store/auth'
+import { useAuthStore } from '@/stores/auth'
 import defaultAvatar from '../assets/img/avatar.png'
 
 const authStore = useAuthStore()

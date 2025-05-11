@@ -31,7 +31,7 @@
 </template>
 
 <script setup lang="ts">
-import { useTagsStore } from '~/store/tags'
+import { useTagsStore } from '@/stores/tags'
 import { onBeforeRouteUpdate, useRoute, useRouter } from 'vue-router'
 
 const route = useRoute()
