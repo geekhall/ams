@@ -55,32 +55,33 @@
 import { computed } from 'vue'
 import { useSidebarStore } from '@/stores/sidebar'
 import { useRoute } from 'vue-router'
+import { PermissionType } from '@/types/user'
 
 interface MenuItem {
   icon: string
   index: string
   title: string
   subs?: MenuItem[]
-  permission?: string
+  permission?: PermissionType | PermissionType[]
 }
 const items: MenuItem[] = [
   {
     icon: 'HomeFilled',
     index: '/',
     title: '系统首页',
-    permission: 'dashboard'
+    permission: PermissionType.DASHBOARD_VIEW
   },
   {
     icon: 'DocumentCopy',
     index: '/asset',
     title: '资产管理',
-    permission: 'asset',
+    permission: [PermissionType.ASSET_VIEW, PermissionType.ASSET_MANAGE],
     subs: [
       {
         icon: 'DocumentCopy',
         index: '/asset',
         title: '固定资产',
-        permission: 'asset'
+        permission: [PermissionType.ASSET_VIEW, PermissionType.ASSET_MANAGE]
       },
       // {
       //   icon: 'List',
@@ -92,7 +93,7 @@ const items: MenuItem[] = [
         icon: 'Platform',
         index: '/system',
         title: '系统清单',
-        permission: 'system'
+        permission: [PermissionType.SYSTEM_VIEW, PermissionType.SYSTEM_MANAGE]
       }
     ]
   },
@@ -100,25 +101,25 @@ const items: MenuItem[] = [
     icon: 'Money',
     index: '',
     title: '预算管理',
-    permission: 'budget',
+    permission: [PermissionType.BUDGET_VIEW, PermissionType.BUDGET_MANAGE],
     subs: [
       {
         icon: 'DocumentCopy',
         index: '/budget/board',
         title: '预算概览',
-        permission: 'budget'
+        permission: PermissionType.BUDGET_VIEW
       },
       {
         icon: 'DocumentCopy',
         index: '/budget/quota',
         title: '部门额度',
-        permission: 'budget'
+        permission: PermissionType.BUDGET_VIEW
       },
       {
         icon: 'DocumentCopy',
         index: '/budget/detail',
         title: '预算明细',
-        permission: 'budget'
+        permission: PermissionType.BUDGET_VIEW
       }
     ]
   },
@@ -132,19 +133,19 @@ const items: MenuItem[] = [
     icon: 'Message',
     index: '/message',
     title: '消息管理',
-    permission: 'message'
+    permission: [PermissionType.MESSAGE_VIEW, PermissionType.MESSAGE_MANAGE]
   },
   {
     icon: 'User',
     index: '/user',
     title: '用户管理',
-    permission: 'user'
+    permission: PermissionType.USER_MANAGE
   },
   {
     icon: 'Setting',
     index: '/setting',
     title: '系统设置',
-    permission: 'setting'
+    permission: PermissionType.SETTING_MANAGE
   }
 ]
 const route = useRoute()

@@ -1,41 +1,35 @@
 import { ApiResponse } from '.';
 
 export interface BaseUser {
+  name: string;
   username: string;
   password?: string;
+  gender?: string;
+  idCard?: string;
+  phone?: string;
+  avatar?: string;
+  age?: number;
+  email?: string;
+  department?: string;
+  status?: number;
+  isLocked?: boolean;
+  isActive?: boolean;
+  lastLoginTime?: string;
+  lastLoginIp?: string;
+  address?: string;
+  version?: number;
+  createTime?: string;
+  updateTime?: string;
   confirmPassword?: string;
   rememberPassword?: string;
 }
 
 export interface User extends BaseUser {
-  name: string;
-  email?: string;
-  gender?: number;
-  idCard?: string;
-  phone?: string;
-  avatar?: string;
-  age?: number;
-  status?: number;
-  version?: number;
+  id?: string;
 }
 
 export interface UserDTO extends BaseUser {
   id?: string;
-  name: string;
-  phone?: string;
-  avatar?: string;
-  email?: string;
-  age?: number;
-  status?: number;
-  gender?: string;
-  address?: string;
-  department?: string;
-  isActive?: boolean;
-  isLocked?: boolean;
-  lastLoginTime?: string;
-  lastLoginIp?: string;
-  createTime?: string;
-  updateTime?: string;
   roles: string[];
   permissions: string[];
 }
@@ -59,16 +53,10 @@ export interface RegisterInfo {
 }
 
 export interface AuthResponse {
-  code: number;
-  message: string;
-  token: string;
-  user: {
-    password: any;
-    id: number;
-    username: string;
-    email?: string;
-    avatar?: string;
-  }
+  code: number
+  message: string
+  token: string
+  user: UserDTO
 }
 
 export interface AuthState {
@@ -76,43 +64,100 @@ export interface AuthState {
   token: string | null;
 }
 
-// 用户角色枚举
+// User roles enum
 export enum UserRole {
   ADMIN = 'admin',
   MANAGER = 'manager',
   USER = 'user'
 }
 
-// 用户信息接口
+// Permission types enum
+export enum PermissionType {
+  // System permissions
+  DASHBOARD_VIEW = 'dashboard:view',
+  USER_MANAGE = 'user:manage',
+  SETTING_MANAGE = 'setting:manage',
+
+  // Asset permissions
+  ASSET_VIEW = 'asset:view',
+  ASSET_MANAGE = 'asset:manage',
+  SYSTEM_VIEW = 'system:view',
+  SYSTEM_MANAGE = 'system:manage',
+
+  // Budget permissions
+  BUDGET_VIEW = 'budget:view',
+  BUDGET_MANAGE = 'budget:manage',
+
+  // Message permissions
+  MESSAGE_VIEW = 'message:view',
+  MESSAGE_MANAGE = 'message:manage'
+}
+
+// Role-Permission mapping
+export const rolePermissions: Record<UserRole, PermissionType[]> = {
+  [UserRole.ADMIN]: Object.values(PermissionType),
+  [UserRole.MANAGER]: [
+    PermissionType.DASHBOARD_VIEW,
+    PermissionType.ASSET_VIEW,
+    PermissionType.ASSET_MANAGE,
+    PermissionType.SYSTEM_VIEW,
+    PermissionType.SYSTEM_MANAGE,
+    PermissionType.BUDGET_VIEW,
+    PermissionType.BUDGET_MANAGE,
+    PermissionType.MESSAGE_VIEW,
+    PermissionType.MESSAGE_MANAGE
+  ],
+  [UserRole.USER]: [
+    PermissionType.DASHBOARD_VIEW,
+    PermissionType.ASSET_VIEW,
+    PermissionType.SYSTEM_VIEW,
+    PermissionType.BUDGET_VIEW,
+    PermissionType.MESSAGE_VIEW
+  ]
+}
+
+// Route permission configuration
+export interface RoutePermission {
+  path: string
+  permissions: PermissionType[]
+}
+
+// Route permissions mapping
+export const routePermissions: RoutePermission[] = [
+  {
+    path: '/dashboard',
+    permissions: [PermissionType.DASHBOARD_VIEW]
+  },
+  {
+    path: '/asset',
+    permissions: [PermissionType.ASSET_VIEW, PermissionType.ASSET_MANAGE]
+  },
+  {
+    path: '/system',
+    permissions: [PermissionType.SYSTEM_VIEW, PermissionType.SYSTEM_MANAGE]
+  },
+  {
+    path: '/budget',
+    permissions: [PermissionType.BUDGET_VIEW, PermissionType.BUDGET_MANAGE]
+  },
+  {
+    path: '/message',
+    permissions: [PermissionType.MESSAGE_VIEW, PermissionType.MESSAGE_MANAGE]
+  },
+  {
+    path: '/user',
+    permissions: [PermissionType.USER_MANAGE]
+  },
+  {
+    path: '/setting',
+    permissions: [PermissionType.SETTING_MANAGE]
+  }
+]
+
+// User info interface
 export interface UserInfo {
   id: number
   username: string
   role: UserRole
-  permissions: string[]
+  permissions: PermissionType[]
 }
-
-// 路由权限配置接口
-export interface RoutePermission {
-  path: string
-  roles: UserRole[]
-}
-
-// 路由权限配置
-export const routePermissions: RoutePermission[] = [
-  {
-    path: '/dashboard',
-    roles: [UserRole.ADMIN, UserRole.MANAGER, UserRole.USER]
-  },
-  {
-    path: '/asset',
-    roles: [UserRole.ADMIN, UserRole.MANAGER]
-  },
-  {
-    path: '/budget',
-    roles: [UserRole.ADMIN, UserRole.MANAGER]
-  },
-  {
-    path: '/user',
-    roles: [UserRole.ADMIN]
-  }
-]

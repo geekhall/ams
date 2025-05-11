@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import net.geekhour.loki.common.RedisCache;
 import net.geekhour.loki.common.ResponseUtil;
 import net.geekhour.loki.entity.User;
+import net.geekhour.loki.entity.dto.UserDTO;
 import net.geekhour.loki.mapper.UserMapper;
 import net.geekhour.loki.mapper.UserRoleMapper;
 import net.geekhour.loki.payload.RegisterRequest;
@@ -11,6 +12,7 @@ import net.geekhour.loki.security.SecurityConstants;
 import net.geekhour.loki.security.UserDetailsImpl;
 import net.geekhour.loki.security.jwt.JwtUtil;
 import net.geekhour.loki.service.IAuthService;
+import net.geekhour.loki.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -55,6 +57,9 @@ public class AuthController {
 
     @Autowired
     private IAuthService authService;
+
+    @Autowired
+    private IUserService userService;
 
     /**
      * 用户注册接口
@@ -113,6 +118,8 @@ public class AuthController {
         org.springframework.security.core.userdetails.User user = (org.springframework.security.core.userdetails.User) authentication.getPrincipal();
         // 获取用户信息
         User savedUser = userMapper.selectByUsername(username);
+        UserDTO userDTO = userService.getUserinfo(username);
+
         // 获取用户权限
         Collection<GrantedAuthority> authorities = user.getAuthorities();
         List<String> permissions = authorities.stream()
@@ -127,7 +134,7 @@ public class AuthController {
                 "code", 200,
                 "token", token,
                 "message", "Login successfully!",
-                "user", savedUser));
+                "user", userDTO));
 
     }
     // Logout

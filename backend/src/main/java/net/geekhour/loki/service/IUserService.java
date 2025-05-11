@@ -27,4 +27,6 @@ public interface IUserService extends IService<User> {
     boolean updateUser(UserDTO userDTO);
 
     boolean addUser(UserDTO userDTO);
+
+    UserDTO getUserinfo(String username);
 }

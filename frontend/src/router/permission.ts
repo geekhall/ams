@@ -6,14 +6,21 @@ export function setupPermissionGuard(router: Router) {
   router.beforeEach(async (to, from, next) => {
     const userStore = useUserStore()
 
-    // 如果用户未登录，重定向到登录页
-    if (!userStore.token && to.path !== '/login') {
+    // Public routes that don't require authentication
+    const publicRoutes = ['/login', '/register', '/403', '/404', '/500']
+    if (publicRoutes.includes(to.path)) {
+      next()
+      return
+    }
+
+    // Check if user is logged in
+    if (!userStore.token) {
       next('/login')
       return
     }
 
-    // 如果用户已登录但未获取用户信息，先获取用户信息
-    if (userStore.token && !userStore.userInfo.id) {
+    // Fetch user info if not already loaded
+    if (!userStore.userInfo.id) {
       const success = await userStore.fetchUserInfo()
       if (!success) {
         next('/login')
@@ -21,8 +28,8 @@ export function setupPermissionGuard(router: Router) {
       }
     }
 
-    // 检查路由权限
-    if (userStore.userInfo.id && !hasRoutePermission(userStore.userInfo, to)) {
+    // Check route permission
+    if (!hasRoutePermission(userStore.userInfo, to)) {
       next('/403')
       return
     }

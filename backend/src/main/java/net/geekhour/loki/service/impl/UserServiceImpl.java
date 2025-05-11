@@ -112,7 +112,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         }
 
         int rowsAffected = userMapper.updateById(user);
-        if ( rowsAffected <= 0 )
+        if (rowsAffected <= 0)
             return false; // Update failed
 
         // 删除用户原有角色
@@ -171,7 +171,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
 
     private User mapToUser(UserDTO userDTO) {
         User user = new User();
-        if (userDTO.getId() != null && !userDTO.getId().isEmpty()){
+        if (userDTO.getId() != null && !userDTO.getId().isEmpty()) {
             user.setId(Long.valueOf(userDTO.getId()));
         }
         user.setName(userDTO.getName());
@@ -219,9 +219,47 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         userDTO.setCreateTime((Long) data.get("create_time"));
         userDTO.setUpdateTime((Long) data.get("update_time"));
         userDTO.setRoles(data.get("roles") != null ? List.of(((String) data.get("roles")).split(",")) : null);
-        userDTO.setPermissions(data.get("permissions") != null ? List.of(((String) data.get("permissions")).split(",")) : null);
+        userDTO.setPermissions(
+                data.get("permissions") != null ? List.of(((String) data.get("permissions")).split(",")) : null);
         return userDTO;
     }
 
+    @Override
+    public UserDTO getUserinfo(String username) {
+        User user = userMapper.selectByUsername(username);
+        if (user == null) {
+            return null;
+        }
+        Map<String, Object> data = new HashMap<>();
+        data.put("id", user.getId());
+        data.put("name", user.getName());
+        data.put("username", user.getUsername());
+        data.put("gender", user.getGender());
+        data.put("id_card", user.getIdCard());
+        data.put("phone", user.getPhone());
+        data.put("avatar", user.getAvatar());
+        data.put("age", user.getAge());
+        data.put("email", user.getEmail());
+        data.put("department_id", user.getDepartmentId());
+        data.put("status", user.getStatus());
+        data.put("is_lock", user.getIsLock());
+        data.put("is_active", user.getIsActive());
+        data.put("last_login_time", user.getLastLoginTime());
+        data.put("last_login_ip", user.getLastLoginIp());
+        data.put("address", user.getAddress());
+        data.put("version", user.getVersion());
+        data.put("create_time", user.getCreateTime());
+        data.put("update_time", user.getUpdateTime());
+
+        // 获取用户角色
+        List<String> roles = userMapper.getRolesByUsername(username);
+        data.put("roles", String.join(",", roles));
+
+        // 获取用户权限
+        List<String> permissions = userMapper.getPermissionsByUsername(username);
+        data.put("permissions", String.join(",", permissions));
+
+        return mapToUserDTO(data);
+    }
 
 }
