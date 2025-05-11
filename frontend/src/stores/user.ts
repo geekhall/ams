@@ -1,8 +1,8 @@
 // 调用顺序：Vue组件 -> Pinia存储模块(store/user.ts) -> API模块(api/user.ts) -> Axios
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
-import { UserInfo, UserRole, User, AuthResponse } from '@/types/auth'
-import { login, getUserInfo } from '@/api/auth'
+import { UserInfo, UserRole, User, AuthResponse } from '@/types/user'
+import { login, getUserInfo } from '@/api/user'
 import { ElMessage } from 'element-plus'
 import loki from '~/api/loki'
 import axios from 'axios'
@@ -72,13 +72,13 @@ export const useUserStore = defineStore('user', () => {
   }
   const login = async (credentials: User) => {
     console.log('credentials in authStore ::::: ', credentials)
-    const response: AuthResponse = await loki.post('/auth/login', credentials)
+    const response: AuthResponse = await loki.post('/user/login', credentials)
     console.log('response in authStore ::::: ', response)
     setAuthData(response)
   }
   // 用户注册
   const register = async (newUser: User) => {
-    const response = await loki.post('/auth/register', newUser)
+    const response = await loki.post('/user/register', newUser)
     user.value = { username: newUser.username, rememberPassword: newUser.password }
   }
 

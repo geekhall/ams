@@ -54,7 +54,7 @@ loki.interceptors.response.use(
     // if (data.code === 40010) {
     //   console.log('未登录跳转到登录页');
     //   if (
-    //     !response.request.responseURL.includes('/api/auth/login') &&
+    //     !response.request.responseURL.includes('/api/user/login') &&
     //     !window.location.pathname.includes('/login')
     //   ) {
     //     window.location.href = '/user/login?redirect=${window.location.href}';

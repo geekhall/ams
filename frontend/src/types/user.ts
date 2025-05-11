@@ -4,6 +4,7 @@ export interface BaseUser {
   username: string;
   password?: string;
   confirmPassword?: string;
+  rememberPassword?: string;
 }
 
 export interface User extends BaseUser {
@@ -44,15 +45,7 @@ export type UserListResponse = ApiResponse<{
   total: number
 }>;
 
-export interface User {
-  username: string;
-  email?: string;
-  password?: string;
-  rememberPassword?: string;
-  phone?: string;
-  avatar?: string;
-  status?: number;
-}
+
 export interface RegisterInfo {
   username: string
   email: string

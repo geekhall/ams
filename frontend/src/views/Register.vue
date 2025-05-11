@@ -101,7 +101,7 @@ import {
   Message as EmailIcon,
   Phone
 } from '@element-plus/icons-vue'
-import { User, RegisterInfo } from '~/types/auth'
+import { User, RegisterInfo } from '~/types/user'
 import { useUserStore } from '@/stores/user'
 
 const permission = usePermissionStore()

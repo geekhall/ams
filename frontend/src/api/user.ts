@@ -6,7 +6,7 @@ import { AxiosRequestConfig } from "axios";
 // 用户注册
 export const userRegister = async (params: any) => {
   return await loki.request({
-    url: "/auth/register",
+    url: "/user/register",
     method: "POST",
     data: params,
   });
@@ -16,7 +16,7 @@ export const userRegister = async (params: any) => {
 // // 用户登录
 // export const userLogin = async (params: any) => {
 //   return await loki.request({
-//     url: "/api/auth/login",
+//     url: "/api/user/login",
 //     method: "POST",
 //     data: params,
 //   });
@@ -27,7 +27,7 @@ export const userLogin = async (params: any) => {
   try {
     // 不指定响应类型，axios 会自动推断
     const response = await loki.request({
-      url: "/api/auth/login",
+      url: "/api/user/login",
       method: "POST",
       data: params,
     });
@@ -55,7 +55,7 @@ export const userLogin = async (params: any) => {
 // 用户退出登录
 export const userLogout = async () => {
   return await loki.request({
-    url: "/auth/logout",
+    url: "/user/logout",
     method: "POST",
   });
 };

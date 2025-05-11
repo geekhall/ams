@@ -1,4 +1,4 @@
-import { UserRole, UserInfo, RoutePermission, routePermissions } from '@/types/auth'
+import { UserRole, UserInfo, RoutePermission, routePermissions } from '@/types/user'
 import { RouteLocationNormalized } from 'vue-router'
 
 // 检查用户是否具有指定角色
