@@ -3,12 +3,14 @@ package net.geekhour.loki.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import net.geekhour.loki.common.ResponseUtil;
 import net.geekhour.loki.entity.dto.AssetDTO;
+import net.geekhour.loki.entity.dto.AssetSummaryDTO;
 import net.geekhour.loki.service.IAssetService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
@@ -55,6 +57,24 @@ public class AssetController {
             return ResponseUtil.error(500, "获取资产数量失败: " + e.getMessage());
         }
     }
+
+    /**
+     * 获取资产总数量和总金额
+     *
+     * @return ResponseEntity
+     */
+    @PostMapping("/summary")
+    @PreAuthorize("hasRole('USER') || hasAuthority('user:asset:summary')")
+    public ResponseEntity<?> getAssetSummary() {
+        try {
+            AssetSummaryDTO assetSummaryDTO = assetService.getSummary();
+            return ResponseUtil.success(assetSummaryDTO);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseUtil.error(500, "获取资产汇总信息失败: " + e.getMessage());
+        }
+    }
+
     /**
      * list all assets (列出所有资产)
      *

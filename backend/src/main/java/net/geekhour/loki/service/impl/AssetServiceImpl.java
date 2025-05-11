@@ -2,8 +2,8 @@ package net.geekhour.loki.service.impl;
 
 import net.geekhour.loki.common.StringUtil;
 import net.geekhour.loki.entity.Asset;
-import net.geekhour.loki.entity.Department;
 import net.geekhour.loki.entity.dto.AssetDTO;
+import net.geekhour.loki.entity.dto.AssetSummaryDTO;
 import net.geekhour.loki.mapper.AssetMapper;
 import net.geekhour.loki.mapper.AssetTypeMapper;
 import net.geekhour.loki.mapper.DepartmentMapper;
@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
@@ -75,6 +76,16 @@ public class AssetServiceImpl extends ServiceImpl<AssetMapper, Asset> implements
     @Override
     public boolean checkAssetSnExists(String sn) {
         return assetMapper.checkAssetSnExists(sn);
+    }
+
+    @Override
+    public BigDecimal calculateTotalAmount() {
+        return assetMapper.calculateTotalAmount();
+    }
+
+    @Override
+    public AssetSummaryDTO getSummary() {
+        return assetMapper.getAssetSummary();
     }
 
     @Override

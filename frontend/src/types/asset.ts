@@ -40,3 +40,12 @@ export interface AssetType {
 }
 
 export type AssetTypeListResponse = ApiResponse<AssetType[]>
+
+export interface AssetSummary {
+  totalCount: number
+  totalValue: number
+  monthlyCountGrowth: number
+  monthlyValueGrowth: number
+}
+
+export type AssetSummaryResponse = ApiResponse<AssetSummary>

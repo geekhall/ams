@@ -3,8 +3,10 @@ package net.geekhour.loki.service;
 import net.geekhour.loki.entity.Asset;
 import com.baomidou.mybatisplus.extension.service.IService;
 import net.geekhour.loki.entity.dto.AssetDTO;
+import net.geekhour.loki.entity.dto.AssetSummaryDTO;
 import org.springframework.http.ResponseEntity;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -34,4 +36,8 @@ public interface IAssetService extends IService<Asset> {
     boolean updateAsset(AssetDTO assetDTO);
 
     boolean checkAssetSnExists(String sn);
+
+    BigDecimal calculateTotalAmount();
+
+    AssetSummaryDTO getSummary();
 }

@@ -4,10 +4,12 @@ import jakarta.validation.constraints.NotBlank;
 import net.geekhour.loki.entity.Asset;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import net.geekhour.loki.entity.dto.AssetDTO;
+import net.geekhour.loki.entity.dto.AssetSummaryDTO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -65,4 +67,31 @@ public interface AssetMapper extends BaseMapper<Asset> {
 
     @Select("select count(*) from h_asset where sn = #{sn} and deleted = 0")
     boolean checkAssetSnExists(String sn);
+
+    @Select("select sum(purchase_price * count) from h_asset where deleted = 0")
+    BigDecimal calculateTotalAmount();
+
+    @Select("SELECT " +
+            "(SELECT COUNT(*) FROM h_asset WHERE deleted = 0) as totalCount, " +
+            "(SELECT SUM(purchase_price * `count`) FROM h_asset WHERE deleted = 0) as totalValue, " +
+            "    CASE " +
+            "        WHEN previous_count = 0 THEN NULL" +
+            "        ELSE (current_count - previous_count) * 1.0 / previous_count * 100" +
+            "    END AS monthly_count_growth, " +
+            "		CASE " +
+            "        WHEN previous_value = 0 THEN NULL" +
+            "        ELSE (current_value - previous_value) * 1.0 / previous_value * 100" +
+            "    END AS monthly_value_growth " +
+            "FROM (" +
+            "    SELECT " +
+            "        (SELECT COUNT(*) FROM h_asset WHERE deleted = 0) AS current_count," +
+            "        (SELECT SUM(purchase_price * `count`) FROM h_asset WHERE deleted = 0) AS current_value," +
+            "        (SELECT COUNT(*) FROM h_asset WHERE deleted = 0 " +
+            "           AND FROM_UNIXTIME(create_time / 1000, '%Y-%m') < DATE_FORMAT(CURDATE() - INTERVAL 1 MONTH, '%Y-%m')" +
+            "        ) AS previous_count," +
+            "        (SELECT SUM(purchase_price * `count`) FROM h_asset WHERE deleted = 0 " +
+            "           AND FROM_UNIXTIME(create_time / 1000, '%Y-%m') < DATE_FORMAT(CURDATE() - INTERVAL 1 MONTH, '%Y-%m')" +
+            "        ) AS previous_value" +
+            ") AS counts;")
+    AssetSummaryDTO getAssetSummary();
 }

@@ -1,6 +1,13 @@
 import { AxiosRequestConfig } from "axios";
 import loki from "./loki";
-import { Asset, AssetDTO, AssetListResponse, AssetNamesResponse, AssetTypeListResponse } from "~/types/asset";
+import {
+  Asset,
+  AssetDTO,
+  AssetListResponse,
+  AssetNamesResponse,
+  AssetTypeListResponse,
+  AssetSummaryResponse
+} from "~/types/asset";
 import request from '@/utils/request'
 
 
@@ -172,4 +179,11 @@ export const returnAsset = (data: {
     method: 'post',
     data
   })
+}
+
+export const getAssetSummary = async (): Promise<AssetSummaryResponse> => {
+  return await loki.request({
+    url: '/asset/summary',
+    method: 'post'
+  } as AxiosRequestConfig);
 }

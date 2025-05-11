@@ -10,11 +10,13 @@
             </div>
             <div class="overview-info">
               <div class="overview-title">资产总数</div>
-              <div class="overview-value">2,846</div>
+              <div class="overview-value">{{ formatNumber(assetStats.totalCount) }}</div>
               <div class="overview-footer">
-                <span class="trend-up">
-                  <el-icon><ArrowUp /></el-icon>
-                  12.5%
+                <span :class="assetStats.monthlyCountGrowth >= 0 ? 'trend-up' : 'trend-down'">
+                  <el-icon>
+                    <component :is="assetStats.monthlyCountGrowth >= 0 ? 'ArrowUp' : 'ArrowDown'" />
+                  </el-icon>
+                  {{ Math.abs(assetStats.monthlyCountGrowth).toFixed(1) }}%
                 </span>
                 较上月
               </div>
@@ -30,11 +32,13 @@
             </div>
             <div class="overview-info">
               <div class="overview-title">资产总值</div>
-              <div class="overview-value">¥ 2.6亿</div>
+              <div class="overview-value">{{ formatCurrency(assetStats.totalValue) }}</div>
               <div class="overview-footer">
-                <span class="trend-up">
-                  <el-icon><ArrowUp /></el-icon>
-                  8.2%
+                <span :class="assetStats.monthlyValueGrowth >= 0 ? 'trend-up' : 'trend-down'">
+                  <el-icon>
+                    <component :is="assetStats.monthlyValueGrowth >= 0 ? 'ArrowUp' : 'ArrowDown'" />
+                  </el-icon>
+                  {{ Math.abs(assetStats.monthlyValueGrowth).toFixed(1) }}%
                 </span>
                 较上月
               </div>
@@ -194,6 +198,8 @@
 import { ref, reactive, onMounted } from 'vue'
 import imgurl from '~/assets/img/avatar.png'
 import { useMessage } from '@/hooks/useMessage'
+import { getAssetSummary } from '@/api/asset'
+import { AssetSummaryResponse } from '@/types/asset'
 import {
   Box,
   Money,
@@ -216,6 +222,14 @@ const role: string = name === 'admin' ? '超级管理员' : '普通用户'
 const { getMessageCount } = useMessage()
 const totalMessage = ref(0)
 const chartTimeRange = ref('month')
+
+// 资产统计数据
+const assetStats = reactive({
+  totalCount: 0,
+  totalValue: 0,
+  monthlyCountGrowth: 0,
+  monthlyValueGrowth: 0
+})
 
 // 待办事项数据
 const todoList = reactive([
@@ -304,6 +318,33 @@ const quickActions = reactive([
   }
 ])
 
+// 格式化数字
+const formatNumber = (num: number) => {
+  return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+}
+
+// 格式化金额
+const formatCurrency = (num: number) => {
+  if (num >= 100000000) {
+    return `¥ ${(num / 100000000).toFixed(2)}亿`
+  } else if (num >= 10000) {
+    return `¥ ${(num / 10000).toFixed(2)}万`
+  }
+  return `¥ ${num.toFixed(2)}`
+}
+
+// 获取资产统计数据
+const fetchAssetSummary = async () => {
+  try {
+    const res: AssetSummaryResponse = await getAssetSummary()
+    if (res.code === 200) {
+      Object.assign(assetStats, res.data)
+    }
+  } catch (error) {
+    console.error('获取资产统计数据失败:', error)
+  }
+}
+
 // 处理快捷操作点击
 const handleQuickAction = (action: any) => {
   // TODO: 实现快捷操作跳转逻辑
@@ -311,7 +352,10 @@ const handleQuickAction = (action: any) => {
 }
 
 onMounted(async () => {
-  totalMessage.value = await getMessageCount()
+  await Promise.all([
+    getMessageCount().then((count) => (totalMessage.value = count)),
+    fetchAssetSummary()
+  ])
 })
 </script>
 
