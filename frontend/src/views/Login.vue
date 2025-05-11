@@ -85,10 +85,10 @@ const rules = {
 const loginForm = ref<FormInstance>()
 
 onMounted(() => {
-  if (userStore.isLoggedIn) {
-    console.log('login success onMounted')
-    router.push('/dashboard')
-  }
+  // if (userStore.isLoggedIn) {
+  //   console.log('login success onMounted')
+  //   router.push('/dashboard')
+  // }
 })
 
 const handleLogin = async () => {
@@ -104,7 +104,7 @@ const handleLogin = async () => {
       }
       try {
         loading.value = true
-        const response = await userStore.login(user)
+        const response = await userStore.loginAction(user.username, user.password)
         router.push('/dashboard')
       } catch (error) {
         console.log('login error 001')

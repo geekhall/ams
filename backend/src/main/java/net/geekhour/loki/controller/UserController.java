@@ -68,7 +68,22 @@ public class UserController {
             return ResponseUtil.error(500, e.getMessage());
         }
     }
+    @PostMapping("/info")
+    public ResponseEntity<?> info(@RequestBody(required = false) String requestBody) {
+        if (requestBody == null || requestBody.isEmpty()) {
+            return ResponseUtil.error(400, "参数不能为空");
+        }
+        try {
+            Map<String, Object> requestMap = new ObjectMapper().readValue(requestBody, Map.class);
+            String username = (String) requestMap.get("username");
+            UserDTO user =  userService.getUserinfo(username);
+            return ResponseUtil.success(user);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseUtil.error(500, e.getMessage());
+        }
 
+    }
     @PostMapping("/update")
     @PreAuthorize("hasRole('ADMIN') || hasAuthority('system:user:update')")
     public ResponseEntity<?> updateUser(@RequestBody UserDTO userDTO) {
@@ -119,4 +134,6 @@ public class UserController {
             return ResponseUtil.error(500, e.getMessage());
         }
     }
+
+
 }

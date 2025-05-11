@@ -152,8 +152,8 @@ router.beforeEach(async (to, from, next) => {
   const userStore = useUserStore();
   const token = localStorage.getItem('token') || userStore.$state.token
 
-  console.log('authRequired', authRequired)
-  console.log('token in route.ts ############# ', token)
+  // console.log('authRequired', authRequired)
+  // console.log('token in route.ts ############# ', token)
   document.title = `${to.meta.title} | AMS`
   // 如果需要认证且没有token，则重定向到登录页面
   if (authRequired && !token) {

@@ -226,6 +226,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
 
     @Override
     public UserDTO getUserinfo(String username) {
+        System.out.println("### UserServiceImpl.getUserinfo: username: " + username);
         User user = userMapper.selectByUsername(username);
         if (user == null) {
             return null;

@@ -89,7 +89,7 @@ class Loki {
     };
 
     if (error?.response?.status === 401) {
-      userStore.logout();
+      userStore.logoutAction();
       router.push('/login');
     }
 

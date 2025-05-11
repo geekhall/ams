@@ -104,7 +104,7 @@ onMounted(() => {
 const router = useRouter()
 const handleCommand = (command: string) => {
   if (command == 'loginout') {
-    userStore.logout()
+    userStore.logoutAction()
     router.push('/login')
   } else if (command == 'profile') {
     router.push('/profile')

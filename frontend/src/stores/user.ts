@@ -1,11 +1,11 @@
 // 调用顺序：Vue组件 -> Pinia存储模块(store/user.ts) -> API模块(api/user.ts) -> Axios
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
-import { UserInfo, UserRole, User, AuthResponse } from '@/types/user'
-import { login, getUserInfo } from '@/api/user'
+import { UserDTO, UserRole, User, AuthResponse, PermissionType } from '@/types/user'
+import { userLogin, getUserInfo, userLogout } from '@/api/user'
 import { ElMessage } from 'element-plus'
 import loki from '~/api/loki'
-import axios from 'axios'
+import { getRolePermissions } from '@/utils/permission'
 // import { getUserList } from '~/api/user'
 
 export const useUserStore = defineStore('user', () => {
@@ -26,10 +26,10 @@ export const useUserStore = defineStore('user', () => {
   // const token = ref<string | null>(null)
   const token = ref<string | null>(localStorage.getItem('token') || null)
   const user = ref<User | null>(null)
-  const userInfo = ref<UserInfo>({
-    id: 0,
+  const userInfo = ref<UserDTO>({
+    id: "0",
     username: '',
-    role: UserRole.USER,
+    roles: [],
     permissions: []
   })
 
@@ -53,16 +53,28 @@ export const useUserStore = defineStore('user', () => {
   const rememberedPassword = computed(() => user.value?.rememberPassword || null)
   const isLoggedIn = computed(() => token.value !== null)
   const getUser = computed(() => user.value)
+  const hasPermission = computed(() => (permission: PermissionType | PermissionType[]) => {
+    if (!userInfo.value) return false
+    if (userInfo.value.roles.includes(UserRole.ADMIN)) return true
+    if (Array.isArray(permission)) {
+      return permission.some(p => userInfo.value.permissions.includes(p))
+    }
+    return userInfo.value.permissions.includes(permission)
+  })
 
   // actions
   async function loginAction(username: string, password: string) {
     try {
-      const res = await login(username, password)
-      const response = res as unknown as { code: number; data: { token: string } }
-      if (response.code === 200) {
-        token.value = response.data.token
+      const response = await userLogin({ username, password })
+      if (response.code === 200 && response.token) {
+        token.value = response.token
+        localStorage.setItem('token', response.token)
+        localStorage.setItem('username', username)
+        setAuthData(response)
+        await fetchUserInfo(username)
         return true
       }
+      ElMessage.error(response.message || '登录失败')
       return false
     } catch (error) {
       console.error('Login error:', error)
@@ -70,12 +82,7 @@ export const useUserStore = defineStore('user', () => {
       return false
     }
   }
-  const login = async (credentials: User) => {
-    console.log('credentials in authStore ::::: ', credentials)
-    const response: AuthResponse = await loki.post('/user/login', credentials)
-    console.log('response in authStore ::::: ', response)
-    setAuthData(response)
-  }
+
   // 用户注册
   const register = async (newUser: User) => {
     const response = await loki.post('/user/register', newUser)
@@ -88,16 +95,17 @@ export const useUserStore = defineStore('user', () => {
       token.value = data.token
       if (token.value) {
         localStorage.setItem('token', token.value)
+        localStorage.setItem('username', data.user.username)
       }
       user.value = { username: data.user.username }
       return { success: true, message: data.message }
     } else {
       // 处理无效 token 情况
       localStorage.removeItem('token')
+      localStorage.removeItem('username')
       return { success: false, message: data.message }
     }
   }
-
 
   const setRememberPassword = (password: string) => {
     if (user.value) {
@@ -106,22 +114,22 @@ export const useUserStore = defineStore('user', () => {
   }
 
   // 初始化时从本地存储中加载认证数据
-  const initialize = () => {
+  const initialize = async () => {
     const storedToken = localStorage.getItem('token')
-    // console.log('token', storedToken)
-    if (storedToken) {
+    const storedUsername = localStorage.getItem('username')
+    if (storedToken && storedUsername) {
       token.value = storedToken
+      const result = await fetchUserInfo(storedUsername)
+      console.log('result in initialize ::::: ', result)
     }
   }
 
-  async function fetchUserInfo() {
+  async function fetchUserInfo(username: string) {
     try {
-      const res = await getUserInfo()
-      const response = res as unknown as { code: number; data: UserInfo }
-      if (response.code === 200) {
-        userInfo.value = response.data
-        return true
-      }
+      const response = await getUserInfo(username)
+      console.log('response in fetchUserInfo ::::: ', response)
+      userInfo.value = response.data
+      ElMessage.error(response.message || '获取用户信息失败')
       return false
     } catch (error) {
       console.error('Error fetching user info:', error)
@@ -130,17 +138,22 @@ export const useUserStore = defineStore('user', () => {
     }
   }
 
-  function logout() {
-    token.value = null
-    userInfo.value = {
-      id: 0,
-      username: '',
-      role: UserRole.USER,
-      permissions: []
+  async function logoutAction() {
+    try {
+      await userLogout()
+    } catch (error) {
+      console.error('Logout error:', error)
+    } finally {
+      // 清除用户状态
+      token.value = null
+      userInfo.value = {
+        id: "0",
+        username: '',
+        roles: [],
+        permissions: []
+      }
+      localStorage.removeItem('token')
     }
-    localStorage.removeItem('token')
-    localStorage.removeItem('AMSCurrentAssetPageIndex')
-    delete axios.defaults.headers.common['Authorization']
   }
 
   return {
@@ -181,12 +194,13 @@ export const useUserStore = defineStore('user', () => {
     rememberedPassword,
     isLoggedIn,
     getUser,
+    hasPermission,
 
     // actions
     loginAction,
     fetchUserInfo,
-    logout,
-    login,
+    logoutAction,
+
     register,
     setAuthData,
     setRememberPassword,

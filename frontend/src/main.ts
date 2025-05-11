@@ -26,7 +26,7 @@ const app = createApp(App)
 const pinia = createPinia()
 app.use(pinia)
 const userStore = useUserStore()
-userStore.initialize()
+await userStore.initialize()
 
 //_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
 // setting

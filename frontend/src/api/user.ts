@@ -1,5 +1,5 @@
 import loki from "./loki";
-import { UserListResponse, UserDTO } from "@/types/user";
+import { UserListResponse, UserDTO, AuthResponse } from "@/types/user";
 import { ApiResponse } from "@/types/index";
 import { AxiosRequestConfig } from "axios";
 import request from '@/utils/request'
@@ -13,84 +13,42 @@ export const userRegister = async (params: any) => {
   });
 };
 
-
-// // 用户登录
-// export const userLogin = async (params: any) => {
-//   return await loki.request({
-//     url: "/api/user/login",
-//     method: "POST",
-//     data: params,
-//   });
-//
-// };
 // 用户登录
-export const userLogin = async (params: any) => {
-  try {
-    // 不指定响应类型，axios 会自动推断
-    const response = await loki.request({
-      url: "/api/user/login",
-      method: "POST",
-      data: params,
-    });
+export const userLogin = async (credentials: { username: string; password: string }): Promise<AuthResponse> => {
+  console.log('credentials in authStore ::::: ', credentials)
 
-    // 假设返回的数据包含 token
-    const token = response?.data?.token;  // 获取返回的 token
-
-    // 判断是否有 token
-    if (token) {
-      // 存储 token 到 localStorage
-      localStorage.setItem('ams_token', token);
-      console.log("Token 已存储");
-    } else {
-      console.error("登录成功，但没有返回 token");
-    }
-
-    // 返回响应
-    return response;
-  } catch (error) {
-    console.error("登录失败", error);
-    throw error;  // 将错误抛出，交由调用者处理
-  }
-};
-// 登录
-export function login(username: string, password: string) {
-  return request({
-    url: '/user/login',
-    method: 'post',
-    data: {
-      username,
-      password
-    }
-  })
-}
-// 获取用户信息
-// export function getUserInfo() {
-//   return request({
-//     url: '/user/info',
-//     method: 'get'
-//   })
-// }
-// 获取当前用户信息
-export const getUserInfo = async () => {
-  return await loki.request({
-    url: "/user/info",
-    method: "get",
+  const response: AuthResponse = await loki.request({
+    url: "/user/login",
+    method: "POST",
+    data: credentials,
   });
+  console.log('response in authStore ::::: ', response)
+  // setAuthData(response)
+  return response;
 };
-// 登出
-export function logout() {
-  return request({
-    url: '/user/logout',
-    method: 'post'
-  })
-}
+
+
+// 获取当前用户信息
+export const getUserInfo = async (username: string): Promise<ApiResponse<UserDTO>> => {
+  console.log('username in getUserInfo ::::: ', username)
+  const response = await loki.request({
+    url: "/user/info",
+    method: "POST",
+    data: { username },
+  });
+  console.log('response in getUserInfo ::::: ', response)
+  return response.data;
+};
 
 // 用户退出登录
-export const userLogout = async () => {
-  return await loki.request({
+export const userLogout = async (): Promise<ApiResponse<void>> => {
+  console.log('userLogout in user.ts ::::: ');
+
+  const response = await loki.request({
     url: "/user/logout",
     method: "POST",
   });
+  return response.data;
 };
 
 // 获取当前用户
@@ -109,40 +67,37 @@ export const getUserList = async (
     pageSize: number;
   }
 ): Promise<UserListResponse> => {
-  const res: UserListResponse = await loki.request({
+  const response = await loki.request({
     url: "/user/list",
     method: "POST",
-    data: params || {}, // 如果没有参数，传递空对象
-  } as AxiosRequestConfig);
-  // console.log("res", res);
-  return res;
+    data: params || {},
+  });
+  return response.data;
 };
 
 // 添加用户
 export const addUser = async (user: UserDTO): Promise<ApiResponse<UserDTO>> => {
-  return await loki.request({
+  const response = await loki.request({
     url: "/user/add",
     method: "POST",
     data: user
   });
+  return response.data;
 };
 
 // 更新用户
-export const updateUser = async (
-  user: UserDTO
-): Promise<ApiResponse<UserDTO>> => {
-  return await loki.request({
+export const updateUser = async (user: UserDTO): Promise<ApiResponse<UserDTO>> => {
+  const response = await loki.request({
     url: `/user/update`,
     method: "POST",
-    data: {
-      ...user,
-    },
-  } as AxiosRequestConfig);
+    data: user,
+  });
+  return response.data;
 };
 
 // 删除用户
-export const deleteUser = async (id: string): Promise<ApiResponse<any>> => {
-  return await loki.request({
+export const deleteUser = async (id: string): Promise<ApiResponse<void>> => {
+  const response = await loki.request({
     url: `/user/delete/${id}`,
     method: "DELETE",
     data: id,
@@ -150,4 +105,5 @@ export const deleteUser = async (id: string): Promise<ApiResponse<any>> => {
       "Content-Type": "application/json",
     }
   });
+  return response.data;
 };

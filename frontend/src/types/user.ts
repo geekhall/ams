@@ -1,7 +1,7 @@
 import { ApiResponse } from '.';
 
 export interface BaseUser {
-  name: string;
+  name?: string;
   username: string;
   password?: string;
   gender?: string;
@@ -153,11 +153,3 @@ export const routePermissions: RoutePermission[] = [
     permissions: [PermissionType.SETTING_MANAGE]
   }
 ]
-
-// User info interface
-export interface UserInfo {
-  id: number
-  username: string
-  role: UserRole
-  permissions: PermissionType[]
-}

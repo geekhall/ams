@@ -4,6 +4,7 @@
 import axios from 'axios';
 import { useUserStore } from '@/stores/user';
 import router from '~/router';
+import { ElMessage } from 'element-plus';
 // axios.defaults.baseURL = '/api'; // 设置默认请求地址
 // const API_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:4000/api"
 const API_URL = "/api"
@@ -36,7 +37,7 @@ loki.interceptors.request.use(
   },
   (error) => {
     // Do something with request error
-    console.log("####### http.ts interceptors.request error #######");
+    console.error('Request error:', error);
     return Promise.reject(error);
   }
 );
@@ -65,62 +66,45 @@ loki.interceptors.response.use(
   (error) => {
     // 状态码范围为非2xx时，调用此函数
     const userStore = useUserStore();
-    if (error?.response) {
-      switch (error.response.status) {
-        case 400:
-          error.message = '请求错误';
-          break;
+
+    // 处理错误响应
+    if (error.response) {
+      const { status, data } = error.response;
+
+      switch (status) {
         case 401:
-          error.message = '未授权，请登录';
-          userStore.logout();
+          // 未授权，清除用户信息并跳转到登录页
+          userStore.logoutAction();
           router.push('/login');
+          ElMessage.error('登录已过期，请重新登录');
           break;
+
         case 403:
-          error.message = '拒绝访问';
+          // 权限不足
+          router.push('/403');
+          ElMessage.error('没有权限访问该资源');
           break;
+
         case 404:
-          error.message = `请求地址出错: ${error.response.config.url}`;
+          ElMessage.error('请求的资源不存在');
           break;
-        case 408:
-          error.message = '请求超时';
-          break;
+
         case 500:
-          error.message = '服务器内部错误';
+          ElMessage.error('服务器内部错误');
           break;
-        case 501:
-          error.message = '服务未实现';
-          break;
-        case 502:
-          error.message = '网关错误';
-          break;
-        case 503:
-          error.message = '服务不可用';
-          break;
-        case 504:
-          error.message = '网关超时';
-          break;
-        case 505:
-          error.message = 'HTTP版本不受支持';
-          break;
+
         default:
-          error.message = '请求失败，请稍后再试';
-          break;
+          ElMessage.error(data?.message || '请求失败');
       }
-      const message = error.response?.data?.message || error.message;
-      console.log(error.message);
-      console.log(error.response.data.message)
-      return Promise.reject(new Error(message));
+    } else if (error.request) {
+      // 请求已发出但没有收到响应
+      ElMessage.error('网络错误，请检查网络连接');
     } else {
-      if (error.message.includes('timeout')) {
-        error.message = '请求超时';
-      }
-      if (error.message.includes('Network Error')) {
-        error.message = '网络错误';
-      }
-      const message = error.response?.data?.message || error.message;
-      console.log(error.message);
-      return Promise.reject(new Error(message));
+      // 请求配置出错
+      ElMessage.error('请求配置错误');
     }
+
+    return Promise.reject(error);
   }
 );
 
