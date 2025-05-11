@@ -90,7 +90,6 @@
 <script setup lang="ts">
 import { ref, reactive } from 'vue'
 import { useTagsStore } from '../stores/tags'
-import { usePermissionStore } from '../stores/permission'
 import { useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus'
 import type { FormInstance, FormRules } from 'element-plus'
@@ -104,7 +103,6 @@ import {
 import { User, RegisterInfo } from '~/types/user'
 import { useUserStore } from '@/stores/user'
 
-const permission = usePermissionStore()
 const registerForm = ref<FormInstance>()
 
 const router = useRouter()

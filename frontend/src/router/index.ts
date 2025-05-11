@@ -1,5 +1,4 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
-import { usePermissionStore } from '@/stores/permission'
 import Home from '@/views/Home.vue'
 import { useUserStore } from '@/stores/user'
 
@@ -152,8 +151,7 @@ router.beforeEach(async (to, from, next) => {
   const authRequired = !publicPages.includes(to.path)
   const userStore = useUserStore();
   const token = localStorage.getItem('token') || userStore.$state.token
-  const permission = usePermissionStore();
-  console.log('permission', permission)
+
   console.log('authRequired', authRequired)
   console.log('token in route.ts ############# ', token)
   document.title = `${to.meta.title} | AMS`

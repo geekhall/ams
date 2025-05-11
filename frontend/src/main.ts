@@ -14,8 +14,7 @@ import { createPinia } from 'pinia'
 import { createI18n } from 'vue-i18n' // 引入vue-i18n，用于国际化
 import messages from "@intlify/unplugin-vue-i18n/messages";
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
-
-import { usePermissionStore } from '@/stores/permission'
+import { permission } from '@/directives/permission'
 import { useUserStore } from '@/stores/user'
 import 'element-plus/dist/index.css'
 import '~/assets/css/icon.css'
@@ -52,15 +51,8 @@ for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
 }
 
 // 自定义权限指令
-const permission = usePermissionStore();
-app.directive('permission', {
-  mounted(el, binding) {
-    if (!permission.key.includes(String(binding.value))) {
-      // el.parentNode.removeChild(el);
-      // el['hidden'] = true;
-    }
-  },
-})
+app.directive('permission', permission)
+
 //_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
 // mount
 //_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/

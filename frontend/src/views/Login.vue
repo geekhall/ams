@@ -64,7 +64,6 @@
 <script setup lang="ts">
 import { ref, reactive, computed, onMounted } from 'vue'
 import { useTagsStore } from '../stores/tags'
-import { usePermissionStore } from '../stores/permission'
 import { useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus'
 import type { FormInstance, FormRules } from 'element-plus'
@@ -84,8 +83,6 @@ const rules = {
   password: [{ required: true, message: '请输入密码', trigger: 'blur' }]
 }
 const loginForm = ref<FormInstance>()
-const permission = usePermissionStore()
-const login = ref<FormInstance>()
 
 onMounted(() => {
   if (userStore.isLoggedIn) {
