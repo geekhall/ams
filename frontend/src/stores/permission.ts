@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
-import { useAuthStore } from '@/stores/auth'
+import { useUserStore } from '@/stores/user'
 import { useRoute } from 'vue-router'
 
 interface ObjectList {
@@ -25,7 +25,7 @@ export const usePermissionStore = defineStore('permission', () => {
 
   const generateRoutes = () => {
     const route = useRoute()
-    const userStore = useAuthStore()
+    const userStore = useUserStore()
     // const roles = userStore.getRoles()
     // const permissions = userStore.getPermissions()
     const routes = route.matched

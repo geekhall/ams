@@ -102,7 +102,7 @@ import {
   Phone
 } from '@element-plus/icons-vue'
 import { User, RegisterInfo } from '~/types/auth'
-import { useAuthStore } from '@/stores/auth'
+import { useUserStore } from '@/stores/user'
 
 const permission = usePermissionStore()
 const registerForm = ref<FormInstance>()
@@ -190,7 +190,7 @@ const rules: FormRules = {
 }
 const loading = ref(false)
 const message = ref('')
-const authStore = useAuthStore()
+const userStore = useUserStore()
 
 const handleRegister = async () => {
   console.log(' ##### Register.vue handleRegister ##### ')
@@ -207,10 +207,10 @@ const handleRegister = async () => {
       console.log(' ##### Register.vue handleRegister valid ok ##### ')
       try {
         loading.value = true
-        const response = await authStore.register(user)
+        const response = await userStore.register(user)
         // 将保存的密码自动填充到登录表单
         if (param.remember) {
-          authStore.setRememberPassword(param.password)
+          userStore.setRememberPassword(param.password)
         }
 
         ElMessage.success('注册成功')

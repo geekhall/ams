@@ -16,7 +16,7 @@ import messages from "@intlify/unplugin-vue-i18n/messages";
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 
 import { usePermissionStore } from '@/stores/permission'
-import { useAuthStore } from '@/stores/auth'
+import { useUserStore } from '@/stores/user'
 import 'element-plus/dist/index.css'
 import '~/assets/css/icon.css'
 import App from './App.vue'
@@ -26,8 +26,8 @@ const app = createApp(App)
 // 设置Pinia
 const pinia = createPinia()
 app.use(pinia)
-const authStore = useAuthStore()
-authStore.initialize()
+const userStore = useUserStore()
+userStore.initialize()
 
 //_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
 // setting

@@ -207,14 +207,14 @@ import { ElMessage, FormInstance } from 'element-plus'
 import { Camera } from '@element-plus/icons-vue'
 import VueCropper from 'vue-cropperjs'
 import 'cropperjs/dist/cropper.css'
-import { useAuthStore } from '@/stores/auth'
+import { useUserStore } from '@/stores/user'
 import defaultAvatar from '../assets/img/avatar.png'
 
-const authStore = useAuthStore()
+const userStore = useUserStore()
 
 // 用户信息
 const userInfo = reactive({
-  username: authStore.username,
+  username: userStore.username,
   avatar: defaultAvatar,
   bio: '',
   postCount: 0,

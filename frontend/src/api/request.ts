@@ -1,8 +1,8 @@
 // Axios 请求拦截器和响应拦截器
-// 调用顺序：Vue组件 -> Pinia存储模块(store/auth.ts) -> API模块(api/loki.ts) -> Axios
+// 调用顺序：Vue组件 -> Pinia存储模块(store/user.ts) -> API模块(api/loki.ts) -> Axios
 
 import axios, { AxiosInstance, AxiosRequestConfig, InternalAxiosRequestConfig, AxiosResponse } from 'axios';
-import { useAuthStore } from '@/stores/auth';
+import { useUserStore } from '@/stores/user';
 import router from '~/router';
 // axios.defaults.baseURL = '/api'; // 设置默认请求地址
 // const API_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:4000/api"
@@ -36,10 +36,10 @@ class Loki {
         const conf = config as InternalAxiosRequestConfig & RequestConfig;
 
         if (!conf.skipAuth) {
-          const authStore = useAuthStore();
+          const userStore = useUserStore();
 
-          if (authStore.token) {
-            conf.headers.Authorization = `Bearer ${authStore.token}`;
+          if (userStore.token) {
+            conf.headers.Authorization = `Bearer ${userStore.token}`;
           }
         }
         return conf;
@@ -75,7 +75,7 @@ class Loki {
   }
 
   private handleError(error: any) {
-    const authStore = useAuthStore();
+    const userStore = useUserStore();
     const errorMap: Record<number, string> = {
       400: '请求错误',
       401: '未授权，请登录',
@@ -89,7 +89,7 @@ class Loki {
     };
 
     if (error?.response?.status === 401) {
-      authStore.logout();
+      userStore.logout();
       router.push('/login');
     }
 

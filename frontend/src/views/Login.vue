@@ -69,14 +69,14 @@ import { useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus'
 import type { FormInstance, FormRules } from 'element-plus'
 import { Lock, User as UserIcon } from '@element-plus/icons-vue'
-import { useAuthStore } from '@/stores/auth'
+import { useUserStore } from '@/stores/user'
 
 const loading = ref(false)
-const authStore = useAuthStore()
+const userStore = useUserStore()
 const router = useRouter()
 const param = reactive({
-  username: authStore.username,
-  password: authStore.rememberedPassword,
+  username: userStore.username,
+  password: userStore.rememberedPassword,
   rememberMe: false
 })
 const rules = {
@@ -88,7 +88,7 @@ const permission = usePermissionStore()
 const login = ref<FormInstance>()
 
 onMounted(() => {
-  if (authStore.isLoggedIn) {
+  if (userStore.isLoggedIn) {
     console.log('login success onMounted')
     router.push('/dashboard')
   }
@@ -107,7 +107,7 @@ const handleLogin = async () => {
       }
       try {
         loading.value = true
-        const response = await authStore.login(user)
+        const response = await userStore.login(user)
         router.push('/dashboard')
       } catch (error) {
         console.log('login error 001')

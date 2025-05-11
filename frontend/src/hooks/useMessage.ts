@@ -2,7 +2,7 @@ import { ref, computed } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { type MessageDTO, type CreateMessageDTO } from '@/types/message'
 import { getMessageList, sendMessage, updateMessage, deleteMessage } from '@/api/message'
-import { useAuthStore } from '@/stores/auth'
+import { useUserStore } from '@/stores/user'
 import dayjs from 'dayjs'
 
 export const useMessage = () => {
@@ -38,11 +38,11 @@ export const useMessage = () => {
   // 发送/更新消息
   const handleSendMessage = async (form: any) => {
     try {
-      const authStore = useAuthStore()
+      const userStore = useUserStore()
       const newMessage: CreateMessageDTO = {
         title: form.title,
         content: form.content,
-        sender: authStore.$state.user?.username || '系统管理员',
+        sender: userStore.$state.user?.username || '系统管理员',
         send_time: dayjs().format('YYYY-MM-DD HH:mm:ss'),
       }
 

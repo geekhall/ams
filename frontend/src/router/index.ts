@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 import { usePermissionStore } from '@/stores/permission'
 import Home from '@/views/Home.vue'
-import { useAuthStore } from '@/stores/auth'
+import { useUserStore } from '@/stores/user'
 
 // 1. Define route components.
 const Dashboard = () => import('@/views/Dashboard.vue')
@@ -146,20 +146,18 @@ const router = createRouter({
 })
 
 // 4. Add route guards（路由守卫）
-router.beforeEach((to, from, next) => {
+router.beforeEach(async (to, from, next) => {
+
   const publicPages = ['/login', '/register', '/403', '/404', '/500']
   const authRequired = !publicPages.includes(to.path)
-  const authStore = useAuthStore();
-  const token = localStorage.getItem('token') || authStore.$state.token
-
-  // const role = localStorage.getItem('ms_username')
+  const userStore = useUserStore();
+  const token = localStorage.getItem('token') || userStore.$state.token
   const permission = usePermissionStore();
-  // console.log('permission', permission)
-  // console.log('authRequired', authRequired)
-  // console.log('token in route.ts ############# ', token)
-
+  console.log('permission', permission)
+  console.log('authRequired', authRequired)
+  console.log('token in route.ts ############# ', token)
   document.title = `${to.meta.title} | AMS`
-
+  // 如果需要认证且没有token，则重定向到登录页面
   if (authRequired && !token) {
     console.log('no login, redirect to login page.')
     next('/login')

@@ -81,10 +81,10 @@ import { useSidebarStore } from '@/stores/sidebar'
 import { useRouter } from 'vue-router'
 import imgurl from '~/assets/img/avatar.png'
 import { SwitchButton } from '@element-plus/icons-vue'
-import { useAuthStore } from '@/stores/auth'
+import { useUserStore } from '@/stores/user'
 
-const authStore = useAuthStore()
-const username: string | null = authStore.username
+const userStore = useUserStore()
+const username: string | null = userStore.username
 const message: number = 2
 
 const sidebar = useSidebarStore()
@@ -104,7 +104,7 @@ onMounted(() => {
 const router = useRouter()
 const handleCommand = (command: string) => {
   if (command == 'loginout') {
-    authStore.logout()
+    userStore.logout()
     router.push('/login')
   } else if (command == 'profile') {
     router.push('/profile')

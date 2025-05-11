@@ -5,7 +5,7 @@ import { defineStore } from 'pinia'
 import { User, AuthResponse } from '~/types/auth'
 import axios from 'axios'
 import loki from '~/api/loki'
-export const useAuthStore = defineStore('auth', () => {
+export const useUserStore = defineStore('auth', () => {
   // state
   const token = ref<string | null>(localStorage.getItem('token') || null)
   const user = ref<User | null>(null)

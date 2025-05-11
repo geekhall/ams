@@ -1,8 +1,8 @@
 // Axios 请求拦截器和响应拦截器
-// 调用顺序：Vue组件 -> Pinia存储模块(store/auth.ts) -> API模块(api/loki.ts) -> Axios
+// 调用顺序：Vue组件 -> Pinia存储模块(store/user.ts) -> API模块(api/loki.ts) -> Axios
 
 import axios from 'axios';
-import { useAuthStore } from '@/stores/auth';
+import { useUserStore } from '@/stores/user';
 import router from '~/router';
 // axios.defaults.baseURL = '/api'; // 设置默认请求地址
 // const API_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:4000/api"
@@ -25,12 +25,12 @@ loki.interceptors.request.use(
     // Do something before request is sent
     // console.log("####### http.ts interceptors.request #######");
 
-    const authStore = useAuthStore();
-    // console.log('authStore.token', authStore.token);
+    const userStore = useUserStore();
+    // console.log('userStore.token', userStore.token);
     // console.log("baseURL :::::: " + config.baseURL);
 
-    if (authStore.token) {
-      config.headers.Authorization = `Bearer ${authStore.token}`;
+    if (userStore.token) {
+      config.headers.Authorization = `Bearer ${userStore.token}`;
     }
     return config;
   },
@@ -64,7 +64,7 @@ loki.interceptors.response.use(
   },
   (error) => {
     // 状态码范围为非2xx时，调用此函数
-    const authStore = useAuthStore();
+    const userStore = useUserStore();
     if (error?.response) {
       switch (error.response.status) {
         case 400:
@@ -72,7 +72,7 @@ loki.interceptors.response.use(
           break;
         case 401:
           error.message = '未授权，请登录';
-          authStore.logout();
+          userStore.logout();
           router.push('/login');
           break;
         case 403:
