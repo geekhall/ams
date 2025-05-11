@@ -9,7 +9,7 @@
     >
       <template v-for="item in items">
         <template v-if="item.subs">
-          <el-sub-menu :index="item.index" :key="item.index" v-permission="item.permission">
+          <el-sub-menu :index="item.index" :key="item.index">
             <template #title>
               <el-icon>
                 <component :is="item.icon"></component>
@@ -17,12 +17,7 @@
               <span>{{ item.title }}</span>
             </template>
             <template v-for="subItem in item.subs">
-              <el-sub-menu
-                v-if="subItem.subs"
-                :index="subItem.index"
-                :key="subItem.index"
-                v-permission="item.permission"
-              >
+              <el-sub-menu v-if="subItem.subs" :index="subItem.index" :key="subItem.index">
                 <template #title>{{ subItem.title }}</template>
                 <el-menu-item
                   v-for="(threeItem, i) in subItem.subs"
@@ -32,14 +27,14 @@
                   {{ threeItem.title }}
                 </el-menu-item>
               </el-sub-menu>
-              <el-menu-item v-else :index="subItem.index" v-permission="item.permission">
+              <el-menu-item v-else :index="subItem.index">
                 {{ subItem.title }}
               </el-menu-item>
             </template>
           </el-sub-menu>
         </template>
         <template v-else>
-          <el-menu-item :index="item.index" :key="item.index" v-permission="item.permission">
+          <el-menu-item :index="item.index" :key="item.index">
             <el-icon>
               <component :is="item.icon"></component>
             </el-icon>
