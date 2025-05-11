@@ -129,8 +129,7 @@ export const useUserStore = defineStore('user', () => {
       const response = await getUserInfo(username)
       console.log('response in fetchUserInfo ::::: ', response)
       userInfo.value = response.data
-      ElMessage.error(response.message || '获取用户信息失败')
-      return false
+      return true
     } catch (error) {
       console.error('Error fetching user info:', error)
       ElMessage.error('获取用户信息失败')
