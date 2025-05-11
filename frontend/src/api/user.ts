@@ -2,6 +2,7 @@ import loki from "./loki";
 import { UserListResponse, UserDTO } from "@/types/user";
 import { ApiResponse } from "@/types/index";
 import { AxiosRequestConfig } from "axios";
+import request from '@/utils/request'
 
 // 用户注册
 export const userRegister = async (params: any) => {
@@ -51,6 +52,38 @@ export const userLogin = async (params: any) => {
     throw error;  // 将错误抛出，交由调用者处理
   }
 };
+// 登录
+export function login(username: string, password: string) {
+  return request({
+    url: '/user/login',
+    method: 'post',
+    data: {
+      username,
+      password
+    }
+  })
+}
+// 获取用户信息
+// export function getUserInfo() {
+//   return request({
+//     url: '/user/info',
+//     method: 'get'
+//   })
+// }
+// 获取当前用户信息
+export const getUserInfo = async () => {
+  return await loki.request({
+    url: "/user/info",
+    method: "get",
+  });
+};
+// 登出
+export function logout() {
+  return request({
+    url: '/user/logout',
+    method: 'post'
+  })
+}
 
 // 用户退出登录
 export const userLogout = async () => {
@@ -65,14 +98,6 @@ export const getCurrentUser = async () => {
   return await loki.request({
     url: "/api/user/current",
     method: "GET",
-  });
-};
-
-// 获取当前用户信息
-export const getUserInfo = async () => {
-  return await loki.request({
-    url: "/user/info",
-    method: "get",
   });
 };
 
@@ -114,7 +139,6 @@ export const updateUser = async (
     },
   } as AxiosRequestConfig);
 };
-
 
 // 删除用户
 export const deleteUser = async (id: string): Promise<ApiResponse<any>> => {
