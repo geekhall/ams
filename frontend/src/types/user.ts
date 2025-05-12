@@ -85,8 +85,12 @@ export enum PermissionType {
   SYSTEM_MANAGE = 'system:manage',
 
   // Budget permissions
-  BUDGET_VIEW = 'budget:view',
-  BUDGET_MANAGE = 'budget:manage',
+  BUDGET_BOARD_VIEW = 'budget:board:view',
+  BUDGET_BOARD_MANAGE = 'budget:board:manage',
+  BUDGET_DETAIL_VIEW = 'budget:detail:view',
+  BUDGET_DETAIL_MANAGE = 'budget:detail:manage',
+  BUDGET_QUOTA_VIEW = 'budget:quota:view',
+  BUDGET_QUOTA_MANAGE = 'budget:quota:manage',
 
   // Message permissions
   MESSAGE_VIEW = 'message:view',
@@ -102,8 +106,12 @@ export const rolePermissions: Record<UserRole, PermissionType[]> = {
     PermissionType.ASSET_MANAGE,
     PermissionType.SYSTEM_VIEW,
     PermissionType.SYSTEM_MANAGE,
-    PermissionType.BUDGET_VIEW,
-    PermissionType.BUDGET_MANAGE,
+    PermissionType.BUDGET_BOARD_VIEW,
+    PermissionType.BUDGET_BOARD_MANAGE,
+    PermissionType.BUDGET_DETAIL_VIEW,
+    PermissionType.BUDGET_DETAIL_MANAGE,
+    PermissionType.BUDGET_QUOTA_VIEW,
+    PermissionType.BUDGET_QUOTA_MANAGE,
     PermissionType.MESSAGE_VIEW,
     PermissionType.MESSAGE_MANAGE
   ],
@@ -111,7 +119,9 @@ export const rolePermissions: Record<UserRole, PermissionType[]> = {
     PermissionType.DASHBOARD_VIEW,
     PermissionType.ASSET_VIEW,
     PermissionType.SYSTEM_VIEW,
-    PermissionType.BUDGET_VIEW,
+    // PermissionType.BUDGET_BOARD_VIEW,
+    // PermissionType.BUDGET_DETAIL_VIEW,
+    // PermissionType.BUDGET_QUOTA_VIEW,
     PermissionType.MESSAGE_VIEW
   ]
 }

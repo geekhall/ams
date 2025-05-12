@@ -37,7 +37,7 @@ export const hasRoutePermission = (userInfo: UserDTO, route: RouteLocationNormal
 
 // Get all permissions for a role
 export const getRolePermissions = (roles: UserRole[]): PermissionType[] => {
-  return rolePermissions[roles[0]] || []
+  return rolePermissions[roles[0]] || [] // TODO: 需要根据角色获取权限
 }
 
 // Check if user has any of the required permissions
