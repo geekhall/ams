@@ -49,3 +49,36 @@ export interface AssetSummary {
 }
 
 export type AssetSummaryResponse = ApiResponse<AssetSummary>
+
+// 资产领用记录
+export interface AssetBorrowRecord {
+  id: string
+  name: string
+  code: string
+  type: string
+  borrowDepartment: string
+  borrower: string
+  borrowCount: number
+  borrowDate: string
+  expectedReturnDate: string
+  actualReturnDate?: string
+  status: 'using' | 'returned' | 'overdue'
+  reason: string
+  returnNote?: string
+}
+
+export interface AssetBorrowListResponse {
+  items: AssetBorrowRecord[]
+  total: number
+}
+
+// 资产领用
+export interface BorrowAssetParams {
+  assetId: string
+  borrowCount: number
+  borrowDepartment: string
+  borrower: string
+  borrowDate: string
+  expectedReturnDate: string
+  reason: string
+}

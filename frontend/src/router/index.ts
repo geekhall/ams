@@ -31,87 +31,87 @@ const routes: RouteRecordRaw[] = [
     path: '/', name: "home", component: Home, children: [
       {
         path: '/dashboard', name: "dashboard",
-        meta: { title: '首页', permission: 'dashboard' },
+        meta: { title: '首页', permission: 'dashboard:view' },
         component: Dashboard
       },
       {
         path: '/asset', name: "asset",
-        meta: { title: '资产管理', permission: 'asset' },
+        meta: { title: '资产管理', permission: 'asset:view' },
         component: Asset
       },
       {
         path: '/budget', name: "budget",
-        meta: { title: '预算管理', permission: 'budget' },
+        meta: { title: '预算管理', permission: 'budget:view' },
         component: BudgetBoard,
       },
       {
         path: '/budget/board', name: "budgetBoard",
-        meta: { title: '预算概览', permission: 'budget' },
+        meta: { title: '预算概览', permission: 'budget:board:view' },
         component: BudgetBoard,
       },
       {
         path: '/budget/quota', name: "budgetQuota",
-        meta: { title: '部门额度', permission: 'budget' },
+        meta: { title: '部门额度', permission: 'budget:quota:view' },
         component: BudgetQuota,
       },
       {
         path: '/budget/detail', name: "budgetDetail",
-        meta: { title: '预算明细', permission: 'budget' },
+        meta: { title: '预算明细', permission: 'budget:detail:view' },
         component: BudgetDetail,
       },
       {
         path: '/project', name: "project",
-        meta: { title: '项目清单', permission: 'project' },
+        meta: { title: '项目清单', permission: 'project:view' },
         component: Project
       },
       {
         path: '/system', name: "system",
-        meta: { title: '系统清单', permission: 'system' },
+        meta: { title: '系统清单', permission: 'system:view' },
         component: System
       },
       {
         path: '/duty', name: "duty",
-        meta: { title: '值班管理', permission: 'duty' },
+        meta: { title: '值班管理', permission: 'duty:view' },
         component: Duty
       },
       {
         path: '/user', name: "userManagement",
-        meta: { title: '用户管理', permission: 'userManagement' },
+        meta: { title: '用户管理', permission: 'user:view' },
         component: UserManagement
       },
       {
         path: '/setting', name: "setting",
-        meta: { title: '系统设置', permission: 'setting' },
+        meta: { title: '系统设置', permission: 'setting:view' },
         component: Setting
       },
       {
         path: '/profile', name: "profile",
-        meta: { title: '个人中心', permission: 'profile' },
+        meta: { title: '个人中心', permission: 'profile:view' },
         component: Profile
       },
       {
         path: '/setting', name: "setting",
-        meta: { title: '设置', permission: 'setting' },
+        meta: { title: '设置', permission: 'setting:view' },
         component: Setting
       },
       {
         path: '/about', name: "about",
-        meta: { title: '关于', permission: 'about' },
+        meta: { title: '关于', permission: 'about:view' },
         component: About
       },
       {
         path: '/tabs', name: "tabs",
-        meta: { title: '消息', permission: 'tabs' },
+        meta: { title: '消息', permission: 'tabs:view' },
         component: Tabs
       },
       {
         path: '/message', name: "message",
-        meta: { title: '消息管理', permission: 'message' },
+        meta: { title: '消息管理', permission: 'message:view' },
         component: Message
       },
       {
         path: '/icon', name: "iconSample",
-        meta: { title: 'icon', permission: 'icon' },
+        meta: { title: 'icon', permission: 'icon:view' },
         component: IconSample
       },
     ]

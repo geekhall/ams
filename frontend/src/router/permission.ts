@@ -21,7 +21,15 @@ export function setupPermissionGuard(router: Router) {
 
     // Fetch user info if not already loaded
     if (!userStore.userInfo.id) {
-      const success = await userStore.fetchUserInfo()
+      console.log('fetchUserInfo')
+      const username = localStorage.getItem('username')
+      if (username) {
+        userStore.userInfo.username = username
+      } else {
+        next('/login')
+        return
+      }
+      const success = await userStore.fetchUserInfo(username)
       if (!success) {
         next('/login')
         return

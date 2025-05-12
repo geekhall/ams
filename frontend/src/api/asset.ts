@@ -8,7 +8,7 @@ import {
   AssetTypeListResponse,
   AssetSummaryResponse
 } from "~/types/asset";
-
+import { BorrowAssetParams, AssetBorrowListResponse } from "~/types/asset";
 
 // 获取资产列表（支持分页和按名称查询）
 export const getAssetList = async (
@@ -22,6 +22,7 @@ export const getAssetList = async (
   } as AxiosRequestConfig);
 
 };
+
 // 添加资产
 export const addAsset = async (
   asset: AssetDTO
@@ -47,6 +48,7 @@ export const updateAsset = async (
     },
   } as AxiosRequestConfig);
 };
+
 // 按照资产ID删除资产
 export const deleteAssetById = async (
   id: string
@@ -56,6 +58,7 @@ export const deleteAssetById = async (
     method: "DELETE",
   } as AxiosRequestConfig);
 };
+
 // 按照资产ID获取资产信息
 export const getAssetById = async (
   id: string
@@ -68,7 +71,6 @@ export const getAssetById = async (
     },
   } as AxiosRequestConfig);
 };
-
 
 // 批量删除资产
 export const deleteAssets = async (
@@ -112,16 +114,6 @@ export const getAssetTypeList = async (): Promise<AssetTypeListResponse> => {
   } as AxiosRequestConfig);
 };
 
-// 资产领用
-export interface BorrowAssetParams {
-  assetId: string
-  borrowCount: number
-  borrowDepartment: string
-  borrower: string
-  borrowDate: string
-  expectedReturnDate: string
-  reason: string
-}
 
 export const borrowAsset = (data: BorrowAssetParams) => {
   return loki.request({
@@ -129,28 +121,6 @@ export const borrowAsset = (data: BorrowAssetParams) => {
     method: 'post',
     data
   })
-}
-
-// 资产领用记录
-export interface AssetBorrowRecord {
-  id: string
-  name: string
-  code: string
-  type: string
-  borrowDepartment: string
-  borrower: string
-  borrowCount: number
-  borrowDate: string
-  expectedReturnDate: string
-  actualReturnDate?: string
-  status: 'using' | 'returned' | 'overdue'
-  reason: string
-  returnNote?: string
-}
-
-export interface AssetBorrowListResponse {
-  items: AssetBorrowRecord[]
-  total: number
 }
 
 // 获取资产领用记录

@@ -29,19 +29,7 @@
 <script setup lang="ts">
 import { ref, reactive, watch } from 'vue'
 import type { FormInstance, FormRules } from 'element-plus'
-
-interface Message {
-  id: number
-  title: string
-  content: string
-  sender: string
-  send_time: string
-}
-
-interface MessageForm {
-  title: string
-  content: string
-}
+import type { Message, MessageForm } from '~/types/message'
 
 const props = defineProps<{
   visible: boolean
