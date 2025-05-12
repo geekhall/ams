@@ -10,7 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
@@ -36,7 +35,7 @@ public class AssetController {
      * @return Asset
      */
     @RequestMapping("/all")
-    @PreAuthorize("hasRole('USER') || hasAuthority('user:asset:list')")
+    @PreAuthorize("hasRole('USER') || hasAuthority('asset:view')")
     public ResponseEntity<?> all() {
         return ResponseUtil.success(assetService.all());
     }
@@ -47,7 +46,7 @@ public class AssetController {
      * @return ResponseEntity
      */
     @PostMapping("/count")
-    @PreAuthorize("hasRole('USER') || hasAuthority('user:asset:count')")
+    @PreAuthorize("hasRole('USER') || hasAuthority('asset:view')")
     public ResponseEntity<?> getAssetCount() {
         try {
             Long total = assetService.countAssets(null);
@@ -64,7 +63,7 @@ public class AssetController {
      * @return ResponseEntity
      */
     @PostMapping("/summary")
-    @PreAuthorize("hasRole('USER') || hasAuthority('user:asset:summary')")
+    @PreAuthorize("hasRole('USER') || hasAuthority('asset:view')")
     public ResponseEntity<?> getAssetSummary() {
         try {
             AssetSummaryDTO assetSummaryDTO = assetService.getSummary();
@@ -83,11 +82,11 @@ public class AssetController {
      */
     @CrossOrigin
     @RequestMapping("/list")
-    @PreAuthorize("hasRole('USER') || hasAuthority('user:asset:list')")
+    @PreAuthorize("hasRole('USER') || hasAuthority('asset:view')")
     public ResponseEntity<?> getAssetList(@RequestBody(required = false) String requestBody) {
         String name = null;
-        Integer pageIndex = 1;
-        Integer pageSize = 10;
+        int pageIndex = 1;
+        int pageSize = 10;
         if (requestBody != null && !requestBody.isEmpty()) {
             try {
                 Map<String, Object> requestMap = new ObjectMapper().readValue(requestBody,
@@ -118,7 +117,7 @@ public class AssetController {
      * @return ResponseEntity
      */
     @DeleteMapping("/delete/{id}")
-    @PreAuthorize("hasRole('USER') || hasAuthority('user:asset:delete')")
+    @PreAuthorize("hasRole('USER') || hasAuthority('asset:manage')")
     public ResponseEntity<?> deleteAsset(@PathVariable Long id) {
         return assetService.deleteAsset(id)
                 ? ResponseUtil.success(id)
@@ -132,7 +131,7 @@ public class AssetController {
      * @return ResponseEntity
      */
     @PostMapping("/create")
-    @PreAuthorize("hasRole('USER') || hasAuthority('user:asset:create')")
+    @PreAuthorize("hasRole('USER') || hasAuthority('asset:manage')")
     public ResponseEntity<?> createAsset(@RequestBody AssetDTO assetDTO) {
         if (assetDTO.getName() == null || assetDTO.getName().isEmpty()) {
             return ResponseUtil.error(400, "资产名称不能为空");
@@ -163,7 +162,7 @@ public class AssetController {
      * @return ResponseEntity
      */
     @PostMapping("/update")
-    @PreAuthorize("hasRole('USER') || hasAuthority('user:asset:update')")
+    @PreAuthorize("hasRole('USER') || hasAuthority('asset:manage')")
     public ResponseEntity<?> updateAsset(@RequestBody AssetDTO assetDTO) {
         System.out.println("【Asset】 controller 【update】 method called ...");
         if (assetDTO.getId() == null) {

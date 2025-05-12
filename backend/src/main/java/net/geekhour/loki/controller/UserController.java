@@ -33,7 +33,7 @@ public class UserController {
      * @return
      */
     @RequestMapping("/all")
-    @PreAuthorize("hasRole('ADMIN') || hasAuthority('system:user:all')")
+    @PreAuthorize("hasRole('ADMIN') || hasAuthority('user:manage')")
     public ResponseEntity<?> all() {
         return ResponseUtil.success(userService.all());
     }
@@ -44,7 +44,7 @@ public class UserController {
      * @return 分页后的用户列表
      */
     @RequestMapping("/list")
-    @PreAuthorize("hasRole('ADMIN') || hasAuthority('system:user:list')")
+    @PreAuthorize("hasRole('ADMIN') || hasAuthority('user:manage')")
     public ResponseEntity<?> getUserList(@RequestBody(required = false) String requestBody) {
         if (requestBody == null || requestBody.isEmpty()) {
             return ResponseUtil.error(400, "参数不能为空");
@@ -85,7 +85,7 @@ public class UserController {
 
     }
     @PostMapping("/update")
-    @PreAuthorize("hasRole('ADMIN') || hasAuthority('system:user:update')")
+    @PreAuthorize("hasRole('ADMIN') || hasAuthority('user:manage')")
     public ResponseEntity<?> updateUser(@RequestBody UserDTO userDTO) {
         System.out.println("updateUser: " + userDTO);
         if (userDTO.getId() == null) {
@@ -104,7 +104,7 @@ public class UserController {
     }
 
     @PostMapping("/add")
-    @PreAuthorize("hasRole('ADMIN') || hasAuthority('system:user:add')")
+    @PreAuthorize("hasRole('ADMIN') || hasAuthority('user:manage')")
     public ResponseEntity<?> addUser(@RequestBody UserDTO userDTO) {
         System.out.println("addUser: " + userDTO);
         try {
@@ -123,7 +123,7 @@ public class UserController {
      * @return 删除结果
      */
     @DeleteMapping("/delete/{id}")
-    @PreAuthorize("hasRole('ADMIN') || hasAuthority('system:user:delete')")
+    @PreAuthorize("hasRole('ADMIN') || hasAuthority('user:manage')")
     public ResponseEntity<?> deleteUser(@PathVariable Long id) {
         try {
             return userService.removeById(id)

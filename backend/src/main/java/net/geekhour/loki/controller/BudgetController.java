@@ -36,7 +36,7 @@ public class BudgetController {
      * @return List of budgets
      */
     @RequestMapping("/all")
-    @PreAuthorize("hasRole('USER') || hasAuthority('user:budget:list')")
+    @PreAuthorize("hasRole('USER') || hasAuthority('budget:view')")
     public ResponseEntity<?> all() {
         return ResponseUtil.success(budgetService.all());
     }
@@ -48,7 +48,7 @@ public class BudgetController {
      * @return Paginated list of budgets
      */
     @RequestMapping("/list")
-    @PreAuthorize("hasRole('USER') || hasAuthority('user:budget:list')")
+    @PreAuthorize("hasRole('USER') || hasAuthority('budget:view')")
     public ResponseEntity<?> getBudgetList(@RequestBody(required = false) String requestBody) {
         if (requestBody == null || requestBody.isEmpty()) {
             return ResponseUtil.error(400, "参数不能为空");
@@ -69,9 +69,9 @@ public class BudgetController {
             }
             // ← 新增：从请求中取 departmentName
             String departmentName = (String) requestMap.get("departmentName");
-            Integer pageIndex = requestMap.get("pageIndex") == null ? 1
+            int pageIndex = requestMap.get("pageIndex") == null ? 1
                     : Integer.parseInt(requestMap.get("pageIndex").toString());
-            Integer pageSize = requestMap.get("pageSize") == null ? 10
+            int pageSize = requestMap.get("pageSize") == null ? 10
                     : Integer.parseInt(requestMap.get("pageSize").toString());
             Integer offset = (pageIndex - 1) * pageSize;
             List<BudgetDTO> budgetList = budgetService.getBudgetList(year, budgetType, budgetCategory, innovation, name, tech, departmentName, offset, pageSize);
@@ -92,7 +92,7 @@ public class BudgetController {
      * @return ResponseEntity
      */
     @PostMapping("/create")
-    @PreAuthorize("hasRole('USER') || hasAuthority('user:budget:create')")
+    @PreAuthorize("hasRole('USER') || hasAuthority('budget:manage')")
     public ResponseEntity<?> createBudget(@RequestBody BudgetDTO budgetDTO) {
         System.out.println("BudgetController createBudget: " + budgetDTO);
         if (budgetDTO.getName() == null || budgetDTO.getName().isEmpty()) {
@@ -119,7 +119,7 @@ public class BudgetController {
      */
     @CrossOrigin
     @PostMapping("/update")
-    @PreAuthorize("hasRole('USER') || hasAuthority('user:budget:update')")
+    @PreAuthorize("hasRole('USER') || hasAuthority('budget:manage')")
     public ResponseEntity<?> updateBudget(@RequestBody BudgetDTO budgetDTO) {
         if (budgetDTO.getId() == null) {
             return ResponseUtil.error(400, "Budget ID cannot be null");
@@ -141,7 +141,7 @@ public class BudgetController {
      * @return ResponseEntity
      */
     @DeleteMapping("/delete/{id}")
-    @PreAuthorize("hasRole('USER') || hasAuthority('user:budget:delete')")
+    @PreAuthorize("hasRole('USER') || hasAuthority('budget:manage')")
     public ResponseEntity<?> deleteBudget(@PathVariable Long id) {
         return budgetService.removeById(id)
                 ? ResponseUtil.success(id)
@@ -149,7 +149,7 @@ public class BudgetController {
     }
 
     @RequestMapping("/export")
-    @PreAuthorize("hasRole('USER') || hasAuthority('user:budget:export')")
+    @PreAuthorize("hasRole('USER') || hasAuthority('budget:view')")
     public void exportToExcel(@RequestBody(required = false) String requestBody, HttpServletResponse response) {
         try {
             // 解析查询条件

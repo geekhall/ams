@@ -29,7 +29,7 @@ public class TeamController {
 
     // List all team names
     @RequestMapping("/names")
-    @PreAuthorize("hasRole('USER') || hasAuthority('system:team:all')")
+    @PreAuthorize("hasRole('ADMIN') || hasRole('MANAGER') || hasRole('USER') || hasAuthority('team:view')")
     public ResponseEntity<?> names() {
         List<String> teamNames = teamService.list().stream()
                 .map(Team::getName)
@@ -42,7 +42,7 @@ public class TeamController {
 
     // List all teams
     @RequestMapping("/list")
-    @PreAuthorize("hasRole('USER') || hasAuthority('system:team:list')")
+    @PreAuthorize("hasRole('ADMIN') || hasRole('MANAGER') || hasRole('USER') || hasAuthority('team:view')")
     public ResponseEntity<?> list() {
         try {
             return ResponseUtil.success(teamService.list());
@@ -54,7 +54,7 @@ public class TeamController {
 
     // Create a new team
     @PostMapping("/create")
-    @PreAuthorize("hasRole('ADMIN') || hasAuthority('system:team:create')")
+    @PreAuthorize("hasRole('ADMIN') || hasRole('MANAGER') || hasAuthority('team:manage')")
     public ResponseEntity<?> create(@RequestBody Team team) {
         if (team.getName() == null || team.getName().isEmpty()) {
             return ResponseUtil.error(400, "团队名称不能为空");
@@ -71,7 +71,7 @@ public class TeamController {
 
     // Update an existing team
     @PostMapping("/update")
-    @PreAuthorize("hasRole('ADMIN') || hasAuthority('system:team:update')")
+    @PreAuthorize("hasRole('ADMIN') || hasRole('MANAGER') || hasAuthority('team:manage')")
     public ResponseEntity<?> update(@RequestBody Team team) {
         if (team.getId() == null) {
             return ResponseUtil.error(400, "团队ID不能为空");
@@ -88,7 +88,7 @@ public class TeamController {
 
     // Delete a team by ID
     @DeleteMapping("/delete/{id}")
-    @PreAuthorize("hasRole('ADMIN') || hasAuthority('system:team:delete')")
+    @PreAuthorize("hasRole('ADMIN') || hasRole('MANAGER') || hasAuthority('team:manage')")
     public ResponseEntity<?> delete(@PathVariable Long id) {
         if (id == null || id <= 0) {
             return ResponseUtil.error(400, "团队ID不能为空");
@@ -105,7 +105,7 @@ public class TeamController {
 
     // Check if a team exists by name
     @PostMapping("/exists")
-    @PreAuthorize("hasRole('USER') || hasAuthority('system:team:exists')")
+    @PreAuthorize("hasRole('ADMIN') || hasRole('MANAGER') || hasRole('USER') || hasAuthority('team:view')")
     public ResponseEntity<?> existsByName(@RequestBody Team team) {
         if (team.getName() == null || team.getName().isEmpty()) {
             return ResponseUtil.error(400, "团队名称不能为空");

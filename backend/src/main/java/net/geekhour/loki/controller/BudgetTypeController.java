@@ -29,7 +29,7 @@ public class BudgetTypeController {
 
     // List all budget type names
     @RequestMapping("/names")
-    @PreAuthorize("hasRole('USER') || hasAuthority('system:budget:all')")
+    @PreAuthorize("hasRole('USER') || hasAuthority('budget:view')")
     public ResponseEntity<?> names() {
         List<String> budgetTypeNames = budgetTypeService.list().stream()
                 .map(BudgetType::getName)
@@ -42,7 +42,7 @@ public class BudgetTypeController {
 
     // List all budget types
     @RequestMapping("/list")
-    @PreAuthorize("hasRole('USER') || hasAuthority('system:budget:list')")
+    @PreAuthorize("hasRole('USER') || hasAuthority('budget:view')")
     public ResponseEntity<?> list() {
         try {
             return ResponseUtil.success(budgetTypeService.list());
@@ -54,7 +54,7 @@ public class BudgetTypeController {
 
     // Create a new budget type
     @PostMapping("/create")
-    @PreAuthorize("hasRole('ADMIN') || hasAuthority('system:budget:create')")
+    @PreAuthorize("hasRole('ADMIN') || hasAuthority('budget:manage')")
     public ResponseEntity<?> create(@RequestBody BudgetType budgetType) {
         if (budgetType.getName() == null || budgetType.getName().isEmpty()) {
             return ResponseUtil.error(400, "项目类型不能为空");
@@ -71,7 +71,7 @@ public class BudgetTypeController {
 
     // Update an existing budget type
     @PostMapping("/update")
-    @PreAuthorize("hasRole('ADMIN') || hasAuthority('system:budget:update')")
+    @PreAuthorize("hasRole('ADMIN') || hasAuthority('budget:manage')")
     public ResponseEntity<?> update(@RequestBody BudgetType budgetType) {
         if (budgetType.getId() == null) {
             return ResponseUtil.error(400, "项目类型ID不能为空");
@@ -88,7 +88,7 @@ public class BudgetTypeController {
 
     // Delete a budget type by ID
     @DeleteMapping("/delete/{id}")
-    @PreAuthorize("hasRole('ADMIN') || hasAuthority('system:budget:delete')")
+    @PreAuthorize("hasRole('ADMIN') || hasAuthority('budget:manage')")
     public ResponseEntity<?> delete(@PathVariable Long id) {
         if (id == null || id <= 0) {
             return ResponseUtil.error(400, "项目类型ID不能为空");
@@ -106,7 +106,7 @@ public class BudgetTypeController {
 
     // Check if a budget type exists by name
     @PostMapping("/exists")
-    @PreAuthorize("hasRole('USER') || hasAuthority('system:budget:exists')")
+    @PreAuthorize("hasRole('USER') || hasAuthority('budget:view')")
     public ResponseEntity<?> existsByName(@RequestBody BudgetType budgetType) {
         if (budgetType.getName() == null || budgetType.getName().isEmpty()) {
             return ResponseUtil.error(400, "项目类型不能为空");

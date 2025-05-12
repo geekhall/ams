@@ -29,7 +29,7 @@ public class DepartmentController {
 
     // List all department names
     @RequestMapping("/names")
-    @PreAuthorize("hasRole('USER') || hasAuthority('system:department:all')")
+    @PreAuthorize("hasRole('USER') || hasAuthority('department:view')")
     public ResponseEntity<?> names() {
         List<String> departmentNames = departmentService.list().stream()
                 .map(Department::getName)
@@ -43,14 +43,14 @@ public class DepartmentController {
 
     // List all departments
     @RequestMapping("/list")
-    @PreAuthorize("hasRole('USER') || hasAuthority('system:department:list')")
+    @PreAuthorize("hasRole('USER') || hasAuthority('department:view')")
     public ResponseEntity<?> list(@RequestBody(required = false) String requestBody) {
         return ResponseUtil.success(departmentService.list());
     }
 
     // Create a new department
     @PostMapping("/create")
-    @PreAuthorize("hasRole('ADMIN') || hasAuthority('system:department:create')")
+    @PreAuthorize("hasRole('ADMIN') || hasAuthority('department:manage')")
     public ResponseEntity<?> create(@RequestBody Department department) {
         if (department.getName() == null || department.getName().isEmpty()) {
             return ResponseUtil.error(400, "部门名称不能为空");
@@ -67,7 +67,7 @@ public class DepartmentController {
 
     // Update an existing department
     @PostMapping("/update")
-    @PreAuthorize("hasRole('ADMIN') || hasAuthority('system:department:update')")
+    @PreAuthorize("hasRole('ADMIN') || hasAuthority('department:manage')")
     public ResponseEntity<?> update(@RequestBody Department department) {
         if (department.getId() == null) {
             return ResponseEntity.badRequest().body(Map.of(
@@ -87,7 +87,7 @@ public class DepartmentController {
 
     // Delete a department by ID
     @DeleteMapping("/delete/{id}")
-    @PreAuthorize("hasRole('ADMIN') || hasAuthority('system:department:delete')")
+    @PreAuthorize("hasRole('ADMIN') || hasAuthority('department:manage')")
     public ResponseEntity<?> delete(@PathVariable Long id) {
         try {
             return departmentService.removeById(id)
@@ -100,7 +100,7 @@ public class DepartmentController {
 
     // Check if a department exists by name
     @PostMapping("/exists")
-    @PreAuthorize("hasRole('USER') || hasAuthority('system:department:exists')")
+    @PreAuthorize("hasRole('USER') || hasAuthority('department:view')")
     public ResponseEntity<?> existsByName(@RequestBody Department department) {
         if (department.getName() == null || department.getName().isEmpty()) {
             return ResponseUtil.error(400, "部门名称不能为空");

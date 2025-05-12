@@ -34,7 +34,7 @@ public class MessageController {
 
   @PostMapping("/list")
   @ApiOperation("获取消息列表")
-  @PreAuthorize("hasRole('USER') || hasAuthority('user:message:list')")
+  @PreAuthorize("hasRole('USER') || hasAuthority('message:view')")
   public ResponseEntity<?> getMessageList(@RequestBody Map<String, Object> params) {
     if (params == null || params.isEmpty()) {
       return ResponseUtil.error(400, "参数不能为空");
@@ -54,7 +54,7 @@ public class MessageController {
 
   @PostMapping("/send")
   @ApiOperation("发送消息")
-  @PreAuthorize("hasRole('ADMIN') || hasAuthority('admin:message:send')")
+  @PreAuthorize("hasRole('ADMIN') || hasAuthority('message:manage')")
   public ResponseEntity<?> sendMessage(@RequestBody MessageDTO messageDTO) {
     try {
       boolean success = messageService.sendMessage(messageDTO);
@@ -66,7 +66,7 @@ public class MessageController {
 
   @PostMapping("/update")
   @ApiOperation("更新消息")
-  @PreAuthorize("hasRole('USER') || hasAuthority('user:message:send')")
+  @PreAuthorize("hasRole('USER') || hasAuthority('message:manage')")
   public ResponseEntity<?> updateMessage(@RequestBody MessageDTO messageDTO) {
     try {
       boolean success = messageService.updateMessage(messageDTO);
@@ -78,7 +78,7 @@ public class MessageController {
 
   @DeleteMapping("/delete/{id}")
   @ApiOperation("删除消息")
-  @PreAuthorize("hasRole('USER') || hasAuthority('user:message:delete')")
+  @PreAuthorize("hasRole('USER') || hasAuthority('message:manage')")
   @Transactional
   public ResponseEntity<?> deleteMessage(@PathVariable Long id) {
     try {

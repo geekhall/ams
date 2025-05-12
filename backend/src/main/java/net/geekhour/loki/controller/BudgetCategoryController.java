@@ -28,7 +28,7 @@ public class BudgetCategoryController {
 
     // List all budget categories
     @RequestMapping("/list")
-    @PreAuthorize("hasRole('USER') || hasAuthority('system:budget:list')")
+    @PreAuthorize("hasRole('USER') || hasAuthority('budget:view')")
     public ResponseEntity<?> list() {
         try {
             List<BudgetCategory> categories = budgetCategoryService.list();
@@ -41,7 +41,7 @@ public class BudgetCategoryController {
 
     // Create a new budget category
     @PostMapping("/create")
-    @PreAuthorize("hasRole('ADMIN') || hasAuthority('system:budget:create')")
+    @PreAuthorize("hasRole('ADMIN') || hasAuthority('budget:manage')")
     public ResponseEntity<?> create(@RequestBody BudgetCategory budgetCategory) {
         if (budgetCategory.getName() == null || budgetCategory.getName().isEmpty()) {
             return ResponseUtil.error(400, "预算分类名称不能为空");
@@ -58,7 +58,7 @@ public class BudgetCategoryController {
 
     // Update an existing budget category
     @PostMapping("/update")
-    @PreAuthorize("hasRole('ADMIN') || hasAuthority('system:budget:update')")
+    @PreAuthorize("hasRole('ADMIN') || hasAuthority('budget:manage')")
     public ResponseEntity<?> update(@RequestBody BudgetCategory budgetCategory) {
         if (budgetCategory.getId() == null) {
             return ResponseUtil.error(400, "预算分类ID不能为空");
@@ -75,7 +75,7 @@ public class BudgetCategoryController {
 
     // Delete a budget category by ID
     @DeleteMapping("/delete/{id}")
-    @PreAuthorize("hasRole('ADMIN') || hasAuthority('system:budget:delete')")
+    @PreAuthorize("hasRole('ADMIN') || hasAuthority('budget:manage')")
     public ResponseEntity<?> delete(@PathVariable Long id) {
         if (id == null || id <= 0) {
             return ResponseUtil.error(400, "预算分类ID不能为空");
@@ -92,7 +92,7 @@ public class BudgetCategoryController {
 
     // Check if a budget category exists by name
     @PostMapping("/exists")
-    @PreAuthorize("hasRole('USER') || hasAuthority('system:budget:exists')")
+    @PreAuthorize("hasRole('USER') || hasAuthority('budget:view')")
     public ResponseEntity<?> existsByName(@RequestBody BudgetCategory budgetCategory) {
         if (budgetCategory.getName() == null || budgetCategory.getName().isEmpty()) {
             return ResponseUtil.error(400, "预算分类名称不能为空");

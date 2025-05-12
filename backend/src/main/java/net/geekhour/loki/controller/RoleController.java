@@ -28,7 +28,7 @@ public class RoleController {
 
     // 获取所有角色
     @PostMapping("/list")
-    @PreAuthorize("hasRole('ADMIN') || hasAuthority('system:role:list')")
+    @PreAuthorize("hasRole('ADMIN') || hasAuthority('role:view')")
     public ResponseEntity<?> list() {
         List<Role> roles = roleService.list();
         return ResponseUtil.success(roles);
@@ -36,7 +36,7 @@ public class RoleController {
 
     // 创建新角色
     @PostMapping("/create")
-    @PreAuthorize("hasRole('ADMIN') || hasAuthority('system:role:create')")
+    @PreAuthorize("hasRole('ADMIN') || hasAuthority('role:manage')")
     public ResponseEntity<?> create(@RequestBody Role role) {
         if (role.getName() == null || role.getName().isEmpty()) {
             return ResponseUtil.error(400, "角色名称不能为空");
@@ -53,7 +53,7 @@ public class RoleController {
 
     // 更新角色
     @PostMapping("/update")
-    @PreAuthorize("hasRole('ADMIN') || hasAuthority('system:role:update')")
+    @PreAuthorize("hasRole('ADMIN') || hasAuthority('role:manage')")
     public ResponseEntity<?> update(@RequestBody Role role) {
         if (role.getId() == null) {
             return ResponseUtil.error(400, "角色ID不能为空");
@@ -70,7 +70,7 @@ public class RoleController {
 
     // 删除角色
     @DeleteMapping("/delete/{id}")
-    @PreAuthorize("hasRole('ADMIN') || hasAuthority('system:role:delete')")
+    @PreAuthorize("hasRole('ADMIN') || hasAuthority('role:manage')")
     public ResponseEntity<?> delete(@PathVariable Long id) {
         if (id == null || id <= 0) {
             return ResponseUtil.error(400, "角色ID不能为空");
@@ -87,7 +87,7 @@ public class RoleController {
 
     // 检查角色是否存在
     @PostMapping("/exists")
-    @PreAuthorize("hasRole('USER') || hasAuthority('system:role:exists')")
+    @PreAuthorize("hasRole('USER') || hasAuthority('role:view')")
     public ResponseEntity<?> existsByName(@RequestBody Role role) {
         if (role.getName() == null || role.getName().isEmpty()) {
             return ResponseUtil.error(400, "角色名称不能为空");

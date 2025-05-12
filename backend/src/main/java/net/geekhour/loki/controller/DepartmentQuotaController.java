@@ -37,7 +37,7 @@ public class DepartmentQuotaController {
      * @return ResponseEntity
      */
     @RequestMapping("/all")
-    @PreAuthorize("hasRole('USER') || hasAuthority('user:quota:list')")
+    @PreAuthorize("hasRole('USER') || hasAuthority('department:view')")
     public ResponseEntity<?> all() {
         return ResponseUtil.success(departmentQuotaService.all());
     }
@@ -48,7 +48,7 @@ public class DepartmentQuotaController {
      * @return ResponseEntity
      */
     @RequestMapping("/list")
-    @PreAuthorize("hasRole('USER') || hasAuthority('user:quota:list')")
+    @PreAuthorize("hasRole('USER') || hasAuthority('department:view')")
     public ResponseEntity<?> getQuotaList(@RequestBody(required = false) String requestBody) {
         String name = null;
         // 获取当前年份
@@ -90,7 +90,7 @@ public class DepartmentQuotaController {
      * @return ResponseEntity
      */
     @PostMapping("/create")
-    @PreAuthorize("hasRole('USER') || hasAuthority('user:quota:create')")
+    @PreAuthorize("hasRole('USER') || hasAuthority('department:manage')")
     public ResponseEntity<?> createQuota(@RequestBody DepartmentQuotaDTO quotaDTO) {
         if (quotaDTO.getDepartmentName() == null || quotaDTO.getDepartmentName().isEmpty()) {
             return ResponseUtil.error(400, "部门名称不能为空");
@@ -117,7 +117,7 @@ public class DepartmentQuotaController {
      * @return ResponseEntity
      */
     @PostMapping("/update")
-    @PreAuthorize("hasRole('USER') || hasAuthority('user:quota:update')")
+    @PreAuthorize("hasRole('USER') || hasAuthority('department:manage')")
     public ResponseEntity<?> updateQuota(@RequestBody DepartmentQuotaDTO quotaDTO) {
         if (quotaDTO.getId() == null) {
             return ResponseUtil.error(400,"部门预算ID不能为空");
@@ -138,7 +138,7 @@ public class DepartmentQuotaController {
      * @return ResponseEntity
      */
     @DeleteMapping("/delete/{id}")
-    @PreAuthorize("hasRole('USER') || hasAuthority('user:quota:delete')")
+    @PreAuthorize("hasRole('USER') || hasAuthority('department:manage')")
     public ResponseEntity<?> deleteQuota(@PathVariable Long id) {
         try {
             return departmentQuotaService.deleteQuota(id) ?

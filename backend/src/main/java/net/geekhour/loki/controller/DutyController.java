@@ -32,7 +32,7 @@ public class DutyController {
      * @return Duty 列表
      */
     @RequestMapping("/all")
-    @PreAuthorize("hasRole('USER') || hasAuthority('user:duty:list')")
+    @PreAuthorize("hasRole('USER') || hasAuthority('duty:view')")
     public ResponseEntity<?> all() {
         return ResponseUtil.success(dutyService.all());
     }
@@ -44,7 +44,7 @@ public class DutyController {
      * @return 分页后的 Duty 列表
      */
     @RequestMapping("/list")
-    @PreAuthorize("hasRole('USER') || hasAuthority('user:duty:list')")
+    @PreAuthorize("hasRole('USER') || hasAuthority('duty:view')")
     public ResponseEntity<?> getDutyList(@RequestBody(required = false) String requestBody) {
         if (requestBody == null || requestBody.isEmpty()) {
             return ResponseUtil.error(400, "参数不能为空");
@@ -76,7 +76,7 @@ public class DutyController {
      * @return ResponseEntity
      */
     @PostMapping("/update")
-    @PreAuthorize("hasRole('USER') || hasAuthority('user:duty:update')")
+    @PreAuthorize("hasRole('USER') || hasAuthority('duty:manage')")
     public ResponseEntity<?> updateDuty(@RequestBody DutyDTO dutyDTO) {
         if (dutyDTO.getId() == null) {
             return ResponseUtil.error(400, "Duty ID 不能为空");
@@ -98,7 +98,7 @@ public class DutyController {
      * @return ResponseEntity
      */
     @DeleteMapping("/delete/{id}")
-    @PreAuthorize("hasRole('USER') || hasAuthority('user:duty:delete')")
+    @PreAuthorize("hasRole('USER') || hasAuthority('duty:manage')")
     public ResponseEntity<?> deleteDuty(@PathVariable Long id) {
         return dutyService.removeById(id)
                 ? ResponseUtil.success(id)

@@ -27,7 +27,7 @@ public class AssetTypeController {
     IAssetTypeService assetTypeService;
 
     @RequestMapping("/names")
-    @PreAuthorize("hasRole('USER') || hasAuthority('system:asset:all')")
+    @PreAuthorize("hasRole('USER') || hasAuthority('asset:view')")
     public ResponseEntity<?> names() {
         List<String> assetTypes = assetTypeService.list().stream()
                 .map(AssetType::getName)
@@ -37,14 +37,14 @@ public class AssetTypeController {
     }
 
     @RequestMapping("/list")
-    @PreAuthorize("hasRole('USER') || hasAuthority('system:user:list')")
+    @PreAuthorize("hasRole('USER') || hasAuthority('asset:view')")
     public ResponseEntity<?> list() {
         return ResponseUtil.success(assetTypeService.list());
     }
 
     // Create a new AssetType
     @PostMapping("/create")
-    @PreAuthorize("hasRole('ADMIN') || hasAuthority('system:asset:create')")
+    @PreAuthorize("hasRole('ADMIN') || hasAuthority('asset:manage')")
     public ResponseEntity<?> create(@RequestBody AssetType assetType) {
         if (assetType.getName() == null || assetType.getName().isEmpty()) {
             return ResponseUtil.error(400, "资产类型名不能为空");
@@ -61,7 +61,7 @@ public class AssetTypeController {
 
     // Update an existing AssetType
     @PostMapping("/update")
-    @PreAuthorize("hasRole('ADMIN') || hasAuthority('system:asset:update')")
+    @PreAuthorize("hasRole('ADMIN') || hasAuthority('asset:manage')")
     public ResponseEntity<?> update(@RequestBody AssetType assetType) {
         if (assetType.getId() == null) {
             return ResponseUtil.error(400, "资产类型ID不能为空");
@@ -78,7 +78,7 @@ public class AssetTypeController {
 
     // Delete an AssetType by ID
     @DeleteMapping("/delete/{id}")
-    @PreAuthorize("hasRole('ADMIN') || hasAuthority('system:asset:delete')")
+    @PreAuthorize("hasRole('ADMIN') || hasAuthority('asset:manage')")
     public ResponseEntity<?> delete(@PathVariable Long id) {
         return assetTypeService.deleteAssetType(id)
                 ? ResponseUtil.success(id)
@@ -86,7 +86,7 @@ public class AssetTypeController {
     }
     // check if AssetType is exists
     @PostMapping("/exists")
-    @PreAuthorize("hasRole('USER') || hasAuthority('system:asset:exists')")
+    @PreAuthorize("hasRole('USER') || hasAuthority('asset:view')")
     public ResponseEntity<?> existsByName(@RequestBody AssetType assetType) {
         if (assetType.getName() == null || assetType.getName().isEmpty()) {
             return ResponseUtil.error(400, "资产类型名不能为空");
