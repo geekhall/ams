@@ -56,19 +56,10 @@
       </template>
       <el-table-column label="操作" width="300" align="center">
         <template #default="scope">
-          <el-button
-            text
-            :icon="Edit"
-            @click="handleEditWithFetch(scope.$index, scope.row)"
-          >
+          <el-button text :icon="Edit" @click="handleEditWithFetch(scope.$index, scope.row)">
             编辑
           </el-button>
-          <el-button
-            text
-            :icon="Delete"
-            class="red"
-            @click="handleDelete(scope.$index)"
-          >
+          <el-button text :icon="Delete" class="red" @click="handleDelete(scope.$index)">
             删除
           </el-button>
           <el-button
