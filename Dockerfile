@@ -6,9 +6,9 @@
 FROM node:18 AS frontend-build
 WORKDIR /app/frontend
 COPY frontend/package*.json ./
-RUN npm install
+RUN pnpm install
 COPY frontend/ ./
-RUN npm run build
+RUN pnpm run build
 
 # 构建后端
 FROM maven:3.9.4-eclipse-temurin-17 AS backend-build
