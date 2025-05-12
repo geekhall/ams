@@ -60,7 +60,6 @@
             text
             :icon="Edit"
             @click="handleEditWithFetch(scope.$index, scope.row)"
-            v-permission="15"
           >
             编辑
           </el-button>
@@ -69,7 +68,6 @@
             :icon="Delete"
             class="red"
             @click="handleDelete(scope.$index)"
-            v-permission="16"
           >
             删除
           </el-button>
