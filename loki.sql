@@ -705,16 +705,109 @@ CREATE TABLE `h_permission` (
 -- Records of h_permission
 -- ----------------------------
 BEGIN;
-INSERT INTO `h_permission` VALUES (1, '用户管理', 'user', 'user', 0, 0, 'user:manage', 1, '#', '用户管理', '0001', 1, 1, 20230304112742, NULL, 0);
-INSERT INTO `h_permission` VALUES (2, '文章管理', 'article', 'article', 0, 0, 'article:manage', 1, '#', '文章管理', '0002', 2, 1, 20230304112742, NULL, 0);
-INSERT INTO `h_permission` VALUES (3, '评论管理', 'comment', 'comment', 0, 0, 'comment:manage', 1, '#', '评论管理', '0003', 3, 1, 20230304112742, NULL, 0);
-INSERT INTO `h_permission` VALUES (4, '消息管理', 'message', 'message', 0, 0, 'message:manage', 1, '#', '消息管理', '0004', 4, 1, 20230304112742, NULL, 0);
-INSERT INTO `h_permission` VALUES (5, '资产管理', 'asset', 'asset', 0, 0, 'asset:manage', 1, '#', '资产管理', '0005', 5, 1, 20230304112742, NULL, 0);
-INSERT INTO `h_permission` VALUES (6, '系统清单', 'asset', 'system', 0, 0, 'system:manage', 1, '#', '系统清单', '0006', 6, 1, 20230304112742, NULL, 0);
-INSERT INTO `h_permission` VALUES (7, '预算概览', 'budget/board', 'budget/board', 0, 0, 'budget:board:view', 1, '#', '预算概览', '0007', 7, 1, 20230304112742, NULL, 0);
-INSERT INTO `h_permission` VALUES (8, '预算额度', 'budget/quota', 'budget/quota', 0, 0, 'budget:quota:view', 1, '#', '预算额度', '0008', 8, 1, 20230304112742, NULL, 0);
-INSERT INTO `h_permission` VALUES (9, '预算明细', 'budget/detail', 'budget/detail', 0, 0, 'budget:detail:view', 1, '#', '预算明细', '0009', 9, 1, 20230304112742, NULL, 0);
+INSERT INTO `h_permission` (`id`, `name`, `path`, `component`, `visible`, `status`, `permission`, `type`, `icon`, `description`, `code`, `sort`, `version`, `create_time`, `update_time`, `deleted`) VALUES (1, '查看资产', 'asset', 'asset', 0, 0, 'asset:view', 1, '#', '查看资产', '0001', 1, 1, 20230304112742, NULL, 0);
+INSERT INTO `h_permission` (`id`, `name`, `path`, `component`, `visible`, `status`, `permission`, `type`, `icon`, `description`, `code`, `sort`, `version`, `create_time`, `update_time`, `deleted`) VALUES (2, '管理资产', 'asset', 'asset', 0, 0, 'asset:manage', 1, '#', '管理资产', '0002', 2, 1, 20230304112742, NULL, 0);
+INSERT INTO `h_permission` (`id`, `name`, `path`, `component`, `visible`, `status`, `permission`, `type`, `icon`, `description`, `code`, `sort`, `version`, `create_time`, `update_time`, `deleted`) VALUES (3, '查看预算', 'budget', 'budget', 0, 0, 'budget:view', 1, '#', '查看预算', '0003', 3, 1, 20230304112742, NULL, 0);
+INSERT INTO `h_permission` (`id`, `name`, `path`, `component`, `visible`, `status`, `permission`, `type`, `icon`, `description`, `code`, `sort`, `version`, `create_time`, `update_time`, `deleted`) VALUES (4, '管理预算', 'budget', 'budget', 0, 0, 'budget:manage', 1, '#', '管理预算', '0004', 4, 1, 20230304112742, NULL, 0);
+INSERT INTO `h_permission` (`id`, `name`, `path`, `component`, `visible`, `status`, `permission`, `type`, `icon`, `description`, `code`, `sort`, `version`, `create_time`, `update_time`, `deleted`) VALUES (5, '查看部门', 'department', 'department', 0, 0, 'department:view', 1, '#', '查看部门', '0005', 5, 1, 20230304112742, NULL, 0);
+INSERT INTO `h_permission` (`id`, `name`, `path`, `component`, `visible`, `status`, `permission`, `type`, `icon`, `description`, `code`, `sort`, `version`, `create_time`, `update_time`, `deleted`) VALUES (6, '管理部门', 'department', 'department', 0, 0, 'department:manage', 1, '#', '管理部门', '0006', 6, 1, 20230304112742, NULL, 0);
+INSERT INTO `h_permission` (`id`, `name`, `path`, `component`, `visible`, `status`, `permission`, `type`, `icon`, `description`, `code`, `sort`, `version`, `create_time`, `update_time`, `deleted`) VALUES (7, '查看值班', 'duty', 'duty', 0, 0, 'duty:view', 1, '#', '查看值班', '0007', 7, 1, 20230304112742, NULL, 0);
+INSERT INTO `h_permission` (`id`, `name`, `path`, `component`, `visible`, `status`, `permission`, `type`, `icon`, `description`, `code`, `sort`, `version`, `create_time`, `update_time`, `deleted`) VALUES (8, '管理值班', 'duty', 'duty', 0, 0, 'duty:manage', 1, '#', '管理值班', '0008', 8, 1, 20230304112742, NULL, 0);
+INSERT INTO `h_permission` (`id`, `name`, `path`, `component`, `visible`, `status`, `permission`, `type`, `icon`, `description`, `code`, `sort`, `version`, `create_time`, `update_time`, `deleted`) VALUES (9, '查看消息', 'message', 'message', 0, 0, 'message:view', 1, '#', '查看消息', '0009', 9, 1, 20230304112742, NULL, 0);
+INSERT INTO `h_permission` (`id`, `name`, `path`, `component`, `visible`, `status`, `permission`, `type`, `icon`, `description`, `code`, `sort`, `version`, `create_time`, `update_time`, `deleted`) VALUES (10, '管理消息', 'message', 'message', 0, 0, 'message:manage', 1, '#', '管理消息', '0010', 10, 1, 20230304112742, NULL, 0);
+INSERT INTO `h_permission` (`id`, `name`, `path`, `component`, `visible`, `status`, `permission`, `type`, `icon`, `description`, `code`, `sort`, `version`, `create_time`, `update_time`, `deleted`) VALUES (11, '查看角色', 'role', 'role', 0, 0, 'role:view', 1, '#', '查看角色', '0011', 11, 1, 20230304112742, NULL, 0);
+INSERT INTO `h_permission` (`id`, `name`, `path`, `component`, `visible`, `status`, `permission`, `type`, `icon`, `description`, `code`, `sort`, `version`, `create_time`, `update_time`, `deleted`) VALUES (12, '管理角色', 'role', 'role', 0, 0, 'role:manage', 1, '#', '管理角色', '0012', 12, 1, 20230304112742, NULL, 0);
+INSERT INTO `h_permission` (`id`, `name`, `path`, `component`, `visible`, `status`, `permission`, `type`, `icon`, `description`, `code`, `sort`, `version`, `create_time`, `update_time`, `deleted`) VALUES (13, '查看团队', 'team', 'team', 0, 0, 'team:view', 1, '#', '查看团队', '0013', 13, 1, 20230304112742, NULL, 0);
+INSERT INTO `h_permission` (`id`, `name`, `path`, `component`, `visible`, `status`, `permission`, `type`, `icon`, `description`, `code`, `sort`, `version`, `create_time`, `update_time`, `deleted`) VALUES (14, '管理团队', 'team', 'team', 0, 0, 'team:manage', 1, '#', '管理团队', '0014', 14, 1, 20230304112742, NULL, 0);
+INSERT INTO `h_permission` (`id`, `name`, `path`, `component`, `visible`, `status`, `permission`, `type`, `icon`, `description`, `code`, `sort`, `version`, `create_time`, `update_time`, `deleted`) VALUES (15, '查看用户', 'user', 'user', 0, 0, 'user:view', 1, '#', '查看用户', '0015', 15, 1, 20230304112742, NULL, 0);
+INSERT INTO `h_permission` (`id`, `name`, `path`, `component`, `visible`, `status`, `permission`, `type`, `icon`, `description`, `code`, `sort`, `version`, `create_time`, `update_time`, `deleted`) VALUES (16, '管理用户', 'user', 'user', 0, 0, 'user:manage', 1, '#', '管理用户', '0016', 16, 1, 20230304112742, NULL, 0);
+INSERT INTO `h_permission` (`id`, `name`, `path`, `component`, `visible`, `status`, `permission`, `type`, `icon`, `description`, `code`, `sort`, `version`, `create_time`, `update_time`, `deleted`) VALUES (17, '查看看板', 'dashboard', 'dashboard', 0, 0, 'dashboard:view', 1, '#', '查看看板', '0017', 17, 1, 20230304112742, NULL, 0);
+INSERT INTO `h_permission` (`id`, `name`, `path`, `component`, `visible`, `status`, `permission`, `type`, `icon`, `description`, `code`, `sort`, `version`, `create_time`, `update_time`, `deleted`) VALUES (18, '管理看板', 'dashboard', 'dashboard', 0, 0, 'dashboard:manage', 1, '#', '管理看板', '0018', 18, 1, 20230304112742, NULL, 0);
+INSERT INTO `h_permission` (`id`, `name`, `path`, `component`, `visible`, `status`, `permission`, `type`, `icon`, `description`, `code`, `sort`, `version`, `create_time`, `update_time`, `deleted`) VALUES (19, '查看系统', 'system', 'system', 0, 0, 'system:view', 1, '#', '查看系统', '0019', 19, 1, 20230304112742, NULL, 0);
+INSERT INTO `h_permission` (`id`, `name`, `path`, `component`, `visible`, `status`, `permission`, `type`, `icon`, `description`, `code`, `sort`, `version`, `create_time`, `update_time`, `deleted`) VALUES (20, '管理系统', 'system', 'system', 0, 0, 'system:manage', 1, '#', '管理系统', '0020', 20, 1, 20230304112742, NULL, 0);
+INSERT INTO `h_permission` (`id`, `name`, `path`, `component`, `visible`, `status`, `permission`, `type`, `icon`, `description`, `code`, `sort`, `version`, `create_time`, `update_time`, `deleted`) VALUES (21, '查看设置', 'setting', 'setting', 0, 0, 'setting:view', 1, '#', '查看设置', '0021', 21, 1, 20230304112742, NULL, 0);
+INSERT INTO `h_permission` (`id`, `name`, `path`, `component`, `visible`, `status`, `permission`, `type`, `icon`, `description`, `code`, `sort`, `version`, `create_time`, `update_time`, `deleted`) VALUES (22, '管理设置', 'setting', 'setting', 0, 0, 'setting:manage', 1, '#', '管理设置', '0022', 22, 1, 20230304112742, NULL, 0);
+
+
 COMMIT;
+
+INSERT INTO `h_role_permission` (`id`, `role_id`, `permission_id`, `version`, `create_time`, `update_time`, `deleted`) VALUES (1, 1, 1, 1, 20230304112751, NULL, 0);
+INSERT INTO `h_role_permission` (`id`, `role_id`, `permission_id`, `version`, `create_time`, `update_time`, `deleted`) VALUES (2, 1, 2, 1, 20230304112751, NULL, 0);
+INSERT INTO `h_role_permission` (`id`, `role_id`, `permission_id`, `version`, `create_time`, `update_time`, `deleted`) VALUES (3, 1, 3, 1, 20230304112751, NULL, 0);
+INSERT INTO `h_role_permission` (`id`, `role_id`, `permission_id`, `version`, `create_time`, `update_time`, `deleted`) VALUES (4, 1, 4, 1, 20230304112751, NULL, 0);
+INSERT INTO `h_role_permission` (`id`, `role_id`, `permission_id`, `version`, `create_time`, `update_time`, `deleted`) VALUES (5, 1, 5, 1, 20230304112751, NULL, 0);
+INSERT INTO `h_role_permission` (`id`, `role_id`, `permission_id`, `version`, `create_time`, `update_time`, `deleted`) VALUES (6, 1, 6, 1, 20230304112751, NULL, 0);
+INSERT INTO `h_role_permission` (`id`, `role_id`, `permission_id`, `version`, `create_time`, `update_time`, `deleted`) VALUES (7, 1, 7, 1, 20230304112751, NULL, 0);
+INSERT INTO `h_role_permission` (`id`, `role_id`, `permission_id`, `version`, `create_time`, `update_time`, `deleted`) VALUES (8, 1, 8, 1, 20230304112751, NULL, 0);
+INSERT INTO `h_role_permission` (`id`, `role_id`, `permission_id`, `version`, `create_time`, `update_time`, `deleted`) VALUES (9, 1, 9, 1, 20230304112751, NULL, 0);
+INSERT INTO `h_role_permission` (`id`, `role_id`, `permission_id`, `version`, `create_time`, `update_time`, `deleted`) VALUES (10, 1, 10, 1, 20230304112751, NULL, 0);
+INSERT INTO `h_role_permission` (`id`, `role_id`, `permission_id`, `version`, `create_time`, `update_time`, `deleted`) VALUES (11, 1, 11, 1, 20230304112751, NULL, 0);
+INSERT INTO `h_role_permission` (`id`, `role_id`, `permission_id`, `version`, `create_time`, `update_time`, `deleted`) VALUES (12, 1, 12, 1, 20230304112751, NULL, 0);
+INSERT INTO `h_role_permission` (`id`, `role_id`, `permission_id`, `version`, `create_time`, `update_time`, `deleted`) VALUES (13, 1, 13, 1, 20230304112751, NULL, 0);
+INSERT INTO `h_role_permission` (`id`, `role_id`, `permission_id`, `version`, `create_time`, `update_time`, `deleted`) VALUES (14, 1, 14, 1, 20230304112751, NULL, 0);
+INSERT INTO `h_role_permission` (`id`, `role_id`, `permission_id`, `version`, `create_time`, `update_time`, `deleted`) VALUES (15, 1, 15, 1, 20230304112751, NULL, 0);
+INSERT INTO `h_role_permission` (`id`, `role_id`, `permission_id`, `version`, `create_time`, `update_time`, `deleted`) VALUES (16, 1, 16, 1, 20230304112751, NULL, 0);
+INSERT INTO `h_role_permission` (`id`, `role_id`, `permission_id`, `version`, `create_time`, `update_time`, `deleted`) VALUES (17, 1, 17, 1, 20230304112751, NULL, 0);
+INSERT INTO `h_role_permission` (`id`, `role_id`, `permission_id`, `version`, `create_time`, `update_time`, `deleted`) VALUES (18, 1, 18, 1, 20230304112751, NULL, 0);
+INSERT INTO `h_role_permission` (`id`, `role_id`, `permission_id`, `version`, `create_time`, `update_time`, `deleted`) VALUES (19, 1, 19, 1, 20230304112751, NULL, 0);
+INSERT INTO `h_role_permission` (`id`, `role_id`, `permission_id`, `version`, `create_time`, `update_time`, `deleted`) VALUES (20, 1, 20, 1, 20230304112751, NULL, 0);
+INSERT INTO `h_role_permission` (`id`, `role_id`, `permission_id`, `version`, `create_time`, `update_time`, `deleted`) VALUES (21, 1, 21, 1, 20230304112751, NULL, 0);
+INSERT INTO `h_role_permission` (`id`, `role_id`, `permission_id`, `version`, `create_time`, `update_time`, `deleted`) VALUES (22, 1, 22, 1, 20230304112751, NULL, 0);
+INSERT INTO `h_role_permission` (`id`, `role_id`, `permission_id`, `version`, `create_time`, `update_time`, `deleted`) VALUES (23, 2, 1, 1, 20230304112751, NULL, 0);
+INSERT INTO `h_role_permission` (`id`, `role_id`, `permission_id`, `version`, `create_time`, `update_time`, `deleted`) VALUES (24, 2, 2, 1, 20230304112751, NULL, 0);
+INSERT INTO `h_role_permission` (`id`, `role_id`, `permission_id`, `version`, `create_time`, `update_time`, `deleted`) VALUES (25, 2, 3, 1, 20230304112751, NULL, 0);
+INSERT INTO `h_role_permission` (`id`, `role_id`, `permission_id`, `version`, `create_time`, `update_time`, `deleted`) VALUES (26, 2, 4, 1, 20230304112751, NULL, 0);
+INSERT INTO `h_role_permission` (`id`, `role_id`, `permission_id`, `version`, `create_time`, `update_time`, `deleted`) VALUES (27, 2, 5, 1, 20230304112751, NULL, 0);
+INSERT INTO `h_role_permission` (`id`, `role_id`, `permission_id`, `version`, `create_time`, `update_time`, `deleted`) VALUES (28, 2, 6, 1, 20230304112751, NULL, 0);
+INSERT INTO `h_role_permission` (`id`, `role_id`, `permission_id`, `version`, `create_time`, `update_time`, `deleted`) VALUES (29, 2, 7, 1, 20230304112751, NULL, 0);
+INSERT INTO `h_role_permission` (`id`, `role_id`, `permission_id`, `version`, `create_time`, `update_time`, `deleted`) VALUES (30, 2, 8, 1, 20230304112751, NULL, 0);
+INSERT INTO `h_role_permission` (`id`, `role_id`, `permission_id`, `version`, `create_time`, `update_time`, `deleted`) VALUES (31, 2, 9, 1, 20230304112751, NULL, 0);
+INSERT INTO `h_role_permission` (`id`, `role_id`, `permission_id`, `version`, `create_time`, `update_time`, `deleted`) VALUES (32, 2, 10, 1, 20230304112751, NULL, 0);
+INSERT INTO `h_role_permission` (`id`, `role_id`, `permission_id`, `version`, `create_time`, `update_time`, `deleted`) VALUES (33, 2, 11, 1, 20230304112751, NULL, 0);
+INSERT INTO `h_role_permission` (`id`, `role_id`, `permission_id`, `version`, `create_time`, `update_time`, `deleted`) VALUES (34, 2, 12, 1, 20230304112751, NULL, 0);
+INSERT INTO `h_role_permission` (`id`, `role_id`, `permission_id`, `version`, `create_time`, `update_time`, `deleted`) VALUES (35, 2, 13, 1, 20230304112751, NULL, 0);
+INSERT INTO `h_role_permission` (`id`, `role_id`, `permission_id`, `version`, `create_time`, `update_time`, `deleted`) VALUES (36, 2, 14, 1, 20230304112751, NULL, 0);
+INSERT INTO `h_role_permission` (`id`, `role_id`, `permission_id`, `version`, `create_time`, `update_time`, `deleted`) VALUES (37, 2, 15, 1, 20230304112751, NULL, 0);
+INSERT INTO `h_role_permission` (`id`, `role_id`, `permission_id`, `version`, `create_time`, `update_time`, `deleted`) VALUES (38, 2, 16, 1, 20230304112751, NULL, 0);
+INSERT INTO `h_role_permission` (`id`, `role_id`, `permission_id`, `version`, `create_time`, `update_time`, `deleted`) VALUES (39, 2, 17, 1, 20230304112751, NULL, 0);
+INSERT INTO `h_role_permission` (`id`, `role_id`, `permission_id`, `version`, `create_time`, `update_time`, `deleted`) VALUES (40, 2, 18, 1, 20230304112751, NULL, 0);
+INSERT INTO `h_role_permission` (`id`, `role_id`, `permission_id`, `version`, `create_time`, `update_time`, `deleted`) VALUES (41, 2, 19, 1, 20230304112751, NULL, 0);
+INSERT INTO `h_role_permission` (`id`, `role_id`, `permission_id`, `version`, `create_time`, `update_time`, `deleted`) VALUES (42, 2, 20, 1, 20230304112751, NULL, 0);
+INSERT INTO `h_role_permission` (`id`, `role_id`, `permission_id`, `version`, `create_time`, `update_time`, `deleted`) VALUES (43, 2, 21, 1, 20230304112751, NULL, 0);
+INSERT INTO `h_role_permission` (`id`, `role_id`, `permission_id`, `version`, `create_time`, `update_time`, `deleted`) VALUES (44, 2, 22, 1, 20230304112751, NULL, 0);
+INSERT INTO `h_role_permission` (`id`, `role_id`, `permission_id`, `version`, `create_time`, `update_time`, `deleted`) VALUES (45, 4, 1, 1, 20230304112751, NULL, 0);
+INSERT INTO `h_role_permission` (`id`, `role_id`, `permission_id`, `version`, `create_time`, `update_time`, `deleted`) VALUES (46, 4, 2, 1, 20230304112751, NULL, 0);
+INSERT INTO `h_role_permission` (`id`, `role_id`, `permission_id`, `version`, `create_time`, `update_time`, `deleted`) VALUES (47, 4, 3, 1, 20230304112751, NULL, 0);
+INSERT INTO `h_role_permission` (`id`, `role_id`, `permission_id`, `version`, `create_time`, `update_time`, `deleted`) VALUES (48, 4, 5, 1, 20230304112751, NULL, 0);
+INSERT INTO `h_role_permission` (`id`, `role_id`, `permission_id`, `version`, `create_time`, `update_time`, `deleted`) VALUES (49, 4, 7, 1, 20230304112751, NULL, 0);
+INSERT INTO `h_role_permission` (`id`, `role_id`, `permission_id`, `version`, `create_time`, `update_time`, `deleted`) VALUES (50, 4, 9, 1, 20230304112751, NULL, 0);
+INSERT INTO `h_role_permission` (`id`, `role_id`, `permission_id`, `version`, `create_time`, `update_time`, `deleted`) VALUES (51, 4, 11, 1, 20230304112751, NULL, 0);
+INSERT INTO `h_role_permission` (`id`, `role_id`, `permission_id`, `version`, `create_time`, `update_time`, `deleted`) VALUES (52, 4, 13, 1, 20230304112751, NULL, 0);
+INSERT INTO `h_role_permission` (`id`, `role_id`, `permission_id`, `version`, `create_time`, `update_time`, `deleted`) VALUES (53, 4, 15, 1, 20230304112751, NULL, 0);
+INSERT INTO `h_role_permission` (`id`, `role_id`, `permission_id`, `version`, `create_time`, `update_time`, `deleted`) VALUES (54, 4, 17, 1, 20230304112751, NULL, 0);
+INSERT INTO `h_role_permission` (`id`, `role_id`, `permission_id`, `version`, `create_time`, `update_time`, `deleted`) VALUES (55, 4, 19, 1, 20230304112751, NULL, 0);
+INSERT INTO `h_role_permission` (`id`, `role_id`, `permission_id`, `version`, `create_time`, `update_time`, `deleted`) VALUES (56, 4, 21, 1, 20230304112751, NULL, 0);
+INSERT INTO `h_role_permission` (`id`, `role_id`, `permission_id`, `version`, `create_time`, `update_time`, `deleted`) VALUES (57, 8, 1, 1, 20230304112751, NULL, 0);
+INSERT INTO `h_role_permission` (`id`, `role_id`, `permission_id`, `version`, `create_time`, `update_time`, `deleted`) VALUES (58, 8, 2, 1, 20230304112751, NULL, 0);
+INSERT INTO `h_role_permission` (`id`, `role_id`, `permission_id`, `version`, `create_time`, `update_time`, `deleted`) VALUES (59, 8, 3, 1, 20230304112751, NULL, 0);
+INSERT INTO `h_role_permission` (`id`, `role_id`, `permission_id`, `version`, `create_time`, `update_time`, `deleted`) VALUES (60, 8, 5, 1, 20230304112751, NULL, 0);
+INSERT INTO `h_role_permission` (`id`, `role_id`, `permission_id`, `version`, `create_time`, `update_time`, `deleted`) VALUES (61, 8, 7, 1, 20230304112751, NULL, 0);
+INSERT INTO `h_role_permission` (`id`, `role_id`, `permission_id`, `version`, `create_time`, `update_time`, `deleted`) VALUES (62, 8, 9, 1, 20230304112751, NULL, 0);
+INSERT INTO `h_role_permission` (`id`, `role_id`, `permission_id`, `version`, `create_time`, `update_time`, `deleted`) VALUES (63, 8, 11, 1, 20230304112751, NULL, 0);
+INSERT INTO `h_role_permission` (`id`, `role_id`, `permission_id`, `version`, `create_time`, `update_time`, `deleted`) VALUES (64, 8, 13, 1, 20230304112751, NULL, 0);
+INSERT INTO `h_role_permission` (`id`, `role_id`, `permission_id`, `version`, `create_time`, `update_time`, `deleted`) VALUES (65, 8, 15, 1, 20230304112751, NULL, 0);
+INSERT INTO `h_role_permission` (`id`, `role_id`, `permission_id`, `version`, `create_time`, `update_time`, `deleted`) VALUES (66, 8, 17, 1, 20230304112751, NULL, 0);
+INSERT INTO `h_role_permission` (`id`, `role_id`, `permission_id`, `version`, `create_time`, `update_time`, `deleted`) VALUES (67, 8, 19, 1, 20230304112751, NULL, 0);
+INSERT INTO `h_role_permission` (`id`, `role_id`, `permission_id`, `version`, `create_time`, `update_time`, `deleted`) VALUES (68, 8, 21, 1, 20230304112751, NULL, 0);
+INSERT INTO `h_role_permission` (`id`, `role_id`, `permission_id`, `version`, `create_time`, `update_time`, `deleted`) VALUES (69, 16, 1, 1, 20230304112751, NULL, 0);
+INSERT INTO `h_role_permission` (`id`, `role_id`, `permission_id`, `version`, `create_time`, `update_time`, `deleted`) VALUES (70, 16, 3, 1, 20230304112751, NULL, 0);
+INSERT INTO `h_role_permission` (`id`, `role_id`, `permission_id`, `version`, `create_time`, `update_time`, `deleted`) VALUES (71, 16, 9, 1, 20230304112751, NULL, 0);
+INSERT INTO `h_role_permission` (`id`, `role_id`, `permission_id`, `version`, `create_time`, `update_time`, `deleted`) VALUES (72, 16, 11, 1, 20230304112751, NULL, 0);
+INSERT INTO `h_role_permission` (`id`, `role_id`, `permission_id`, `version`, `create_time`, `update_time`, `deleted`) VALUES (73, 16, 13, 1, 20230304112751, NULL, 0);
+INSERT INTO `h_role_permission` (`id`, `role_id`, `permission_id`, `version`, `create_time`, `update_time`, `deleted`) VALUES (74, 16, 15, 1, 20230304112751, NULL, 0);
+INSERT INTO `h_role_permission` (`id`, `role_id`, `permission_id`, `version`, `create_time`, `update_time`, `deleted`) VALUES (75, 16, 17, 1, 20230304112751, NULL, 0);
+
+update h_role_permission set deleted = 1 where id = 59
 
 -- ----------------------------
 -- Table structure for h_role
