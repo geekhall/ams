@@ -8,7 +8,6 @@ import {
   AssetTypeListResponse,
   AssetSummaryResponse
 } from "~/types/asset";
-import request from '@/utils/request'
 
 
 // 获取资产列表（支持分页和按名称查询）
@@ -125,7 +124,7 @@ export interface BorrowAssetParams {
 }
 
 export const borrowAsset = (data: BorrowAssetParams) => {
-  return request({
+  return loki.request({
     url: '/asset/borrow',
     method: 'post',
     data
@@ -161,7 +160,7 @@ export const getAssetBorrowRecords = (params: {
   pageIndex: number
   pageSize: number
 }) => {
-  return request<AssetBorrowListResponse>({
+  return loki.request<AssetBorrowListResponse>({
     url: '/asset/borrow/records',
     method: 'get',
     params
@@ -174,7 +173,7 @@ export const returnAsset = (data: {
   returnDate: string
   returnNote?: string
 }) => {
-  return request<{ code: number; message: string }>({
+  return loki.request<{ code: number; message: string }>({
     url: '/asset/return',
     method: 'post',
     data

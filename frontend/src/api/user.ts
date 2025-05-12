@@ -2,7 +2,6 @@ import loki from "./loki";
 import { UserListResponse, UserDTO, AuthResponse } from "@/types/user";
 import { ApiResponse } from "@/types/index";
 import { AxiosRequestConfig } from "axios";
-import request from '@/utils/request'
 
 // 用户注册
 export const userRegister = async (params: any) => {
