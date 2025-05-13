@@ -728,7 +728,6 @@ INSERT INTO `h_permission` (`id`, `name`, `path`, `component`, `visible`, `statu
 INSERT INTO `h_permission` (`id`, `name`, `path`, `component`, `visible`, `status`, `permission`, `type`, `icon`, `description`, `code`, `sort`, `version`, `create_time`, `update_time`, `deleted`) VALUES (21, '查看设置', 'setting', 'setting', 0, 0, 'setting:view', 1, '#', '查看设置', '0021', 21, 1, 20230304112742, NULL, 0);
 INSERT INTO `h_permission` (`id`, `name`, `path`, `component`, `visible`, `status`, `permission`, `type`, `icon`, `description`, `code`, `sort`, `version`, `create_time`, `update_time`, `deleted`) VALUES (22, '管理设置', 'setting', 'setting', 0, 0, 'setting:manage', 1, '#', '管理设置', '0022', 22, 1, 20230304112742, NULL, 0);
 
-
 COMMIT;
 
 -- ----------------------------
@@ -1000,5 +999,14 @@ INSERT INTO `h_user_role` VALUES (8990838681356496543, 1908471088071897089, 8, 1
 INSERT INTO `h_user_role` VALUES (8990838681356496544, 6119170176878989095, 8, 1, NULL, NULL, 0);
 INSERT INTO `h_user_role` VALUES (9073155160205823331, 1921512565949644801, 8, 1, 1746959270362, NULL, 0);
 COMMIT;
+
+-- ----------------------------
+select a.username, b.role_id, c.name, c.description, e.name, e.path, e.component, e.permission, e.description from h_user a
+left join h_user_role b on a.id = b.user_id
+left join h_role c on b.role_id = c.id
+left join h_role_permission d on b.role_id = d.role_id
+left join h_permission e on d.permission_id = e.id
+where a.username='user';
+-- ----------------------------
 
 SET FOREIGN_KEY_CHECKS = 1;
