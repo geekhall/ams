@@ -731,6 +731,55 @@ INSERT INTO `h_permission` (`id`, `name`, `path`, `component`, `visible`, `statu
 
 COMMIT;
 
+-- ----------------------------
+-- Table structure for h_role
+-- ----------------------------
+DROP TABLE IF EXISTS `h_role`;
+CREATE TABLE `h_role` (
+  `id` bigint NOT NULL COMMENT '角色ID',
+  `name` varchar(30) DEFAULT NULL COMMENT '角色名称',
+  `description` varchar(255) DEFAULT NULL COMMENT '角色描述',
+  `code` varchar(30) DEFAULT NULL COMMENT '角色编码',
+  `sort` int unsigned NOT NULL DEFAULT '0' COMMENT '显示排序',
+  `version` int DEFAULT '1' COMMENT '版本号',
+  `create_time` bigint DEFAULT NULL COMMENT '创建时间',
+  `update_time` bigint DEFAULT NULL COMMENT '修改时间',
+  `deleted` tinyint unsigned NOT NULL DEFAULT '0' COMMENT '逻辑删除',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='角色';
+
+-- ----------------------------
+-- Records of h_role
+-- ----------------------------
+BEGIN;
+INSERT INTO `h_role` VALUES (1, 'ROLE_ADMIN', '超级管理员', '0001', 1, 1, 20230206125545, NULL, 0);
+INSERT INTO `h_role` VALUES (2, 'ROLE_MANAGER', '管理员', '0002', 2, 1, 20230206125545, NULL, 0);
+INSERT INTO `h_role` VALUES (4, 'ROLE_VIP', 'VIP', '0004', 4, 1, 20230206125545, NULL, 0);
+INSERT INTO `h_role` VALUES (8, 'ROLE_USER', '普通用户', '0008', 8, 1, 20230206125545, NULL, 0);
+INSERT INTO `h_role` VALUES (16, 'ROLE_DEV', '开发用户', '0016', 16, 1, 20230206125545, NULL, 0);
+INSERT INTO `h_role` VALUES (32, 'ROLE_TEST', '测试用户', '0032', 32, 1, 20230206125545, NULL, 0);
+INSERT INTO `h_role` VALUES (64, 'ROLE_GUEST', '游客', '0064', 64, 1, 20230206125545, NULL, 0);
+COMMIT;
+
+-- ----------------------------
+-- Table structure for h_role_permission
+-- ----------------------------
+DROP TABLE IF EXISTS `h_role_permission`;
+CREATE TABLE `h_role_permission` (
+  `id` bigint NOT NULL COMMENT '角色权限关联ID',
+  `role_id` bigint DEFAULT NULL COMMENT '角色ID',
+  `permission_id` bigint DEFAULT NULL COMMENT '权限ID',
+  `version` int DEFAULT '1' COMMENT '版本号',
+  `create_time` bigint DEFAULT NULL COMMENT '创建时间',
+  `update_time` bigint DEFAULT NULL COMMENT '修改时间',
+  `deleted` tinyint unsigned NOT NULL DEFAULT '0' COMMENT '逻辑删除',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='角色权限关联';
+
+-- ----------------------------
+-- Records of h_role_permission
+-- ----------------------------
+BEGIN;
 INSERT INTO `h_role_permission` (`id`, `role_id`, `permission_id`, `version`, `create_time`, `update_time`, `deleted`) VALUES (1, 1, 1, 1, 20230304112751, NULL, 0);
 INSERT INTO `h_role_permission` (`id`, `role_id`, `permission_id`, `version`, `create_time`, `update_time`, `deleted`) VALUES (2, 1, 2, 1, 20230304112751, NULL, 0);
 INSERT INTO `h_role_permission` (`id`, `role_id`, `permission_id`, `version`, `create_time`, `update_time`, `deleted`) VALUES (3, 1, 3, 1, 20230304112751, NULL, 0);
@@ -807,81 +856,6 @@ INSERT INTO `h_role_permission` (`id`, `role_id`, `permission_id`, `version`, `c
 INSERT INTO `h_role_permission` (`id`, `role_id`, `permission_id`, `version`, `create_time`, `update_time`, `deleted`) VALUES (74, 16, 15, 1, 20230304112751, NULL, 0);
 INSERT INTO `h_role_permission` (`id`, `role_id`, `permission_id`, `version`, `create_time`, `update_time`, `deleted`) VALUES (75, 16, 17, 1, 20230304112751, NULL, 0);
 
-update h_role_permission set deleted = 1 where id = 59
-
--- ----------------------------
--- Table structure for h_role
--- ----------------------------
-DROP TABLE IF EXISTS `h_role`;
-CREATE TABLE `h_role` (
-  `id` bigint NOT NULL COMMENT '角色ID',
-  `name` varchar(30) DEFAULT NULL COMMENT '角色名称',
-  `description` varchar(255) DEFAULT NULL COMMENT '角色描述',
-  `code` varchar(30) DEFAULT NULL COMMENT '角色编码',
-  `sort` int unsigned NOT NULL DEFAULT '0' COMMENT '显示排序',
-  `version` int DEFAULT '1' COMMENT '版本号',
-  `create_time` bigint DEFAULT NULL COMMENT '创建时间',
-  `update_time` bigint DEFAULT NULL COMMENT '修改时间',
-  `deleted` tinyint unsigned NOT NULL DEFAULT '0' COMMENT '逻辑删除',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='角色';
-
--- ----------------------------
--- Records of h_role
--- ----------------------------
-BEGIN;
-INSERT INTO `h_role` VALUES (1, 'ROLE_ADMIN', '超级管理员', '0001', 1, 1, 20230206125545, NULL, 0);
-INSERT INTO `h_role` VALUES (2, 'ROLE_MANAGER', '管理员', '0002', 2, 1, 20230206125545, NULL, 0);
-INSERT INTO `h_role` VALUES (4, 'ROLE_VIP', 'VIP', '0004', 4, 1, 20230206125545, NULL, 0);
-INSERT INTO `h_role` VALUES (8, 'ROLE_USER', '普通用户', '0008', 8, 1, 20230206125545, NULL, 0);
-INSERT INTO `h_role` VALUES (16, 'ROLE_DEV', '开发用户', '0016', 16, 1, 20230206125545, NULL, 0);
-INSERT INTO `h_role` VALUES (32, 'ROLE_TEST', '测试用户', '0032', 32, 1, 20230206125545, NULL, 0);
-INSERT INTO `h_role` VALUES (64, 'ROLE_GUEST', '游客', '0064', 64, 1, 20230206125545, NULL, 0);
-COMMIT;
-
--- ----------------------------
--- Table structure for h_role_permission
--- ----------------------------
-DROP TABLE IF EXISTS `h_role_permission`;
-CREATE TABLE `h_role_permission` (
-  `id` bigint NOT NULL COMMENT '角色权限关联ID',
-  `role_id` bigint DEFAULT NULL COMMENT '角色ID',
-  `permission_id` bigint DEFAULT NULL COMMENT '权限ID',
-  `version` int DEFAULT '1' COMMENT '版本号',
-  `create_time` bigint DEFAULT NULL COMMENT '创建时间',
-  `update_time` bigint DEFAULT NULL COMMENT '修改时间',
-  `deleted` tinyint unsigned NOT NULL DEFAULT '0' COMMENT '逻辑删除',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='角色权限关联';
-
--- ----------------------------
--- Records of h_role_permission
--- ----------------------------
-BEGIN;
-INSERT INTO `h_role_permission` VALUES (1, 1, 1, 1, 20230304112751, NULL, 0);
-INSERT INTO `h_role_permission` VALUES (2, 1, 2, 1, 20230304112751, NULL, 0);
-INSERT INTO `h_role_permission` VALUES (3, 1, 3, 1, 20230304112751, NULL, 0);
-INSERT INTO `h_role_permission` VALUES (4, 1, 4, 1, 20230304112751, NULL, 0);
-INSERT INTO `h_role_permission` VALUES (5, 1, 5, 1, 20230304112751, NULL, 0);
-INSERT INTO `h_role_permission` VALUES (6, 1, 6, 1, 20230304112751, NULL, 0);
-INSERT INTO `h_role_permission` VALUES (7, 1, 7, 1, 20230304112751, NULL, 0);
-INSERT INTO `h_role_permission` VALUES (8, 1, 8, 1, 20230304112751, NULL, 1);
-INSERT INTO `h_role_permission` VALUES (9, 1, 9, 1, 20230304112751, NULL, 0);
-INSERT INTO `h_role_permission` VALUES (10, 2, 1, 1, 20230304112751, NULL, 0);
-INSERT INTO `h_role_permission` VALUES (11, 2, 2, 1, 20230304112751, NULL, 0);
-INSERT INTO `h_role_permission` VALUES (12, 2, 3, 1, 20230304112751, NULL, 0);
-INSERT INTO `h_role_permission` VALUES (13, 2, 4, 1, 20230304112751, NULL, 0);
-INSERT INTO `h_role_permission` VALUES (14, 2, 5, 1, 20230304112751, NULL, 0);
-INSERT INTO `h_role_permission` VALUES (15, 4, 5, 1, 20230304112751, NULL, 0);
-INSERT INTO `h_role_permission` VALUES (16, 4, 6, 1, 20230304112751, NULL, 0);
-INSERT INTO `h_role_permission` VALUES (17, 4, 7, 1, 20230304112751, NULL, 0);
-INSERT INTO `h_role_permission` VALUES (18, 4, 8, 1, 20230304112751, NULL, 0);
-INSERT INTO `h_role_permission` VALUES (19, 4, 9, 1, 20230304112751, NULL, 0);
-INSERT INTO `h_role_permission` VALUES (20, 8, 5, 1, 20230304112751, NULL, 0);
-INSERT INTO `h_role_permission` VALUES (21, 8, 6, 1, 20230304112751, NULL, 0);
-INSERT INTO `h_role_permission` VALUES (22, 8, 7, 1, 20230304112751, NULL, 0);
-INSERT INTO `h_role_permission` VALUES (23, 8, 8, 1, 20230304112751, NULL, 0);
-INSERT INTO `h_role_permission` VALUES (24, 8, 9, 1, 20230304112751, NULL, 0);
 COMMIT;
 
 -- ----------------------------
