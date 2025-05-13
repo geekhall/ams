@@ -320,7 +320,7 @@ const carouselItems = [
   {
     id: 2,
     title: '资产盘点通知',
-    description: '2024年第一季度资产盘点工作即将开始，请各部门做好准备',
+    description: '2025年第一季度资产盘点工作即将开始，请各部门做好准备',
     image: imgurl2
   },
   {
