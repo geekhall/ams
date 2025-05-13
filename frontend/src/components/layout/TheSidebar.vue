@@ -7,17 +7,17 @@
       :router="true"
       :unique-opened="true"
     >
-      <template v-for="item in items">
+      <template v-for="item in filteredMenuItems" :key="item.index">
         <template v-if="item.subs">
-          <el-sub-menu :index="item.index" :key="item.index">
+          <el-sub-menu :index="item.index">
             <template #title>
               <el-icon>
                 <component :is="item.icon"></component>
               </el-icon>
               <span>{{ item.title }}</span>
             </template>
-            <template v-for="subItem in item.subs">
-              <el-sub-menu v-if="subItem.subs" :index="subItem.index" :key="subItem.index">
+            <template v-for="subItem in item.subs" :key="subItem.index">
+              <el-sub-menu v-if="subItem.subs" :index="subItem.index">
                 <template #title>{{ subItem.title }}</template>
                 <el-menu-item
                   v-for="(threeItem, i) in subItem.subs"
@@ -34,7 +34,7 @@
           </el-sub-menu>
         </template>
         <template v-else>
-          <el-menu-item :index="item.index" :key="item.index">
+          <el-menu-item :index="item.index">
             <el-icon>
               <component :is="item.icon"></component>
             </el-icon>
@@ -51,6 +51,8 @@ import { computed } from 'vue'
 import { useSidebarStore } from '@/stores/sidebar'
 import { useRoute } from 'vue-router'
 import { PermissionType } from '@/types/user'
+import { useUserStore } from '@/stores/user'
+import { hasPermission } from '@/utils/permission'
 
 interface MenuItem {
   icon: string
@@ -59,6 +61,7 @@ interface MenuItem {
   subs?: MenuItem[]
   permission?: PermissionType | PermissionType[]
 }
+
 const items: MenuItem[] = [
   {
     icon: 'HomeFilled',
@@ -78,12 +81,7 @@ const items: MenuItem[] = [
         title: '固定资产',
         permission: [PermissionType.ASSET_VIEW, PermissionType.ASSET_MANAGE]
       },
-      // {
-      //   icon: 'List',
-      //   index: '/project',
-      //   title: '项目清单',
-      //   permission: 'project'
-      // },
+
       {
         icon: 'Platform',
         index: '/system',
@@ -118,12 +116,6 @@ const items: MenuItem[] = [
       }
     ]
   },
-  // {
-  //   icon: 'Calendar',
-  //   index: '/duty',
-  //   title: '值班管理',
-  //   permission: 'duty'
-  // },
   {
     icon: 'Message',
     index: '/message',
@@ -143,12 +135,38 @@ const items: MenuItem[] = [
     permission: PermissionType.SETTING_MANAGE
   }
 ]
+
 const route = useRoute()
 const onRoutes = computed(() => {
   return route.path
 })
 
 const sidebar = useSidebarStore()
+const userStore = useUserStore()
+
+// Filter menu items based on user permissions
+const filteredMenuItems = computed(() => {
+  return items.filter((item) => {
+    // If item has no permission requirement, show it
+    if (!item.permission) return true
+
+    // Check if user has permission for this item
+    const hasItemPermission = hasPermission(userStore.userInfo, item.permission)
+    if (!hasItemPermission) return false
+
+    // If item has subs, filter them based on permissions
+    if (item.subs) {
+      item.subs = item.subs.filter((subItem) => {
+        if (!subItem.permission) return true
+        return hasPermission(userStore.userInfo, subItem.permission)
+      })
+      // Only show parent item if it has visible subs
+      return item.subs.length > 0
+    }
+
+    return true
+  })
+})
 </script>
 
 <style lang="less" scoped>
