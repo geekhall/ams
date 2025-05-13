@@ -6,6 +6,8 @@ import { userLogin, getUserInfo, userLogout } from '@/api/user'
 import { ElMessage } from 'element-plus'
 import loki from '~/api/loki'
 import { getRolePermissions } from '@/utils/permission'
+import { ApiResponse } from "@/types/index";
+
 // import { getUserList } from '~/api/user'
 
 export const useUserStore = defineStore('user', () => {
@@ -126,9 +128,10 @@ export const useUserStore = defineStore('user', () => {
 
   async function fetchUserInfo(username: string) {
     try {
-      const response = await getUserInfo(username)
-      console.log('response in fetchUserInfo ::::: ', response)
+      const response: ApiResponse<UserDTO> = await getUserInfo(username)
+      // console.log('response in fetchUserInfo ::::: ', response)
       userInfo.value = response.data
+      // console.log('userInfo in fetchUserInfo ::::: ', userInfo.value)
       return true
     } catch (error) {
       console.error('Error fetching user info:', error)

@@ -30,18 +30,18 @@ export const userLogin = async (credentials: { username: string; password: strin
 // 获取当前用户信息
 export const getUserInfo = async (username: string): Promise<ApiResponse<UserDTO>> => {
   console.log('username in getUserInfo ::::: ', username)
-  const response = await loki.request({
+  const response: ApiResponse<UserDTO> = await loki.request({
     url: "/user/info",
     method: "POST",
     data: { username },
   });
-  console.log('response in getUserInfo ::::: ', response)
-  return response.data;
+  // console.log('response in getUserInfo ::::: ', response)
+  return response;
 };
 
 // 用户退出登录
 export const userLogout = async (): Promise<ApiResponse<void>> => {
-  console.log('userLogout in user.ts ::::: ');
+  // console.log('userLogout in user.ts ::::: ');
 
   const response = await loki.request({
     url: "/user/logout",

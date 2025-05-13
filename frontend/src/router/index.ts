@@ -1,6 +1,9 @@
-import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
+import { createRouter, createWebHistory, RouteRecordRaw, RouteLocationNormalized } from 'vue-router'
 import Home from '@/views/Home.vue'
 import { useUserStore } from '@/stores/user'
+import { ElMessage } from 'element-plus'
+import { hasRoutePermission, hasPermission } from '@/utils/permission'
+import type { PermissionType } from '@/types/user'
 
 // 1. Define route components.
 const Dashboard = () => import('@/views/Dashboard.vue')
@@ -23,6 +26,15 @@ const Setting = () => import('@/views/Setting.vue')
 const Tabs = () => import('@/views/Tabs.vue')
 const Message = () => import('@/views/message/Message.vue')
 const IconSample = () => import('@/views/IconSample.vue')
+
+// 白名单路由
+const whiteList = ['/login', '/register', '/403', '/404', '/500']
+
+// 需要重定向的路由
+const redirectRoutes: Record<string, string> = {
+  '/': '/dashboard',
+  '/index': '/dashboard'
+}
 
 // 2. Define some routes
 const routes: RouteRecordRaw[] = [
@@ -145,27 +157,90 @@ const router = createRouter({
 })
 
 // 4. Add route guards（路由守卫）
-router.beforeEach(async (to, from, next) => {
+router.beforeEach(async (to: RouteLocationNormalized, from: RouteLocationNormalized, next) => {
 
   const publicPages = ['/login', '/register', '/403', '/404', '/500']
   const authRequired = !publicPages.includes(to.path)
   const userStore = useUserStore();
-  const token = localStorage.getItem('token') || userStore.$state.token
-
+  const token = localStorage.getItem('token') || userStore.token
   // console.log('authRequired', authRequired)
   // console.log('token in route.ts ############# ', token)
-  document.title = `${to.meta.title} | AMS`
+
+  // 设置页面标题
+  document.title = `${to.meta.title || 'AMS'}`
+
+  // 处理重定向
+  const redirectPath = redirectRoutes[to.path]
+  if (redirectPath) {
+    next(redirectPath)
+    return
+  }
+
+  // 白名单路由直接放行
+  if (whiteList.includes(to.path)) {
+    next()
+    return
+  }
+
+  // 检查登录状态
   // 如果需要认证且没有token，则重定向到登录页面
   if (authRequired && !token) {
-    console.log('no login, redirect to login page.')
-    next('/login')
-    // TODO: Permission check
-    // } else if (to.meta.permission && !permission.key.includes(to.meta.permission)) {
-    //   // no permission, redirect to 403 page.
-    //   console.log('no permission, redirect to 403 page.')
-    //   next('/403')
-  } else {
+    // 保存原始目标路由
+    next({
+      path: '/login',
+      query: { redirect: to.fullPath }
+    })
+    return
+  }
+
+  try {
+    // 获取用户信息
+    if (!userStore.userInfo.id) {
+      const username = localStorage.getItem('username')
+      if (!username) {
+        ElMessage.error('用户信息已失效，请重新登录')
+        next('/login')
+        return
+      }
+
+      const success = await userStore.fetchUserInfo(username)
+      if (!success) {
+        ElMessage.error('获取用户信息失败，请重新登录')
+        next('/login')
+        return
+      }
+    }
+
+    // 检查路由权限
+    if (!hasRoutePermission(userStore.userInfo, to)) {
+      // 检查是否有meta.permission
+      if (to.meta.permission) {
+        const permission = to.meta.permission as PermissionType | PermissionType[]
+        if (!hasPermission(userStore.userInfo, permission)) {
+          ElMessage.error('您没有权限访问该页面')
+          next('/403')
+          return
+        }
+      } else {
+        ElMessage.error('您没有权限访问该页面')
+        next('/403')
+        return
+      }
+    }
+
+    // 检查token是否过期
+    const tokenExp = localStorage.getItem('tokenExp')
+    if (tokenExp && Date.now() > parseInt(tokenExp)) {
+      ElMessage.error('登录已过期，请重新登录')
+      next('/login')
+      return
+    }
+
     next()
+  } catch (error) {
+    console.error('Route guard error:', error)
+    ElMessage.error('系统错误，请稍后重试')
+    next('/500')
   }
 })
 

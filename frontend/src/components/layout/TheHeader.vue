@@ -84,7 +84,7 @@ import { SwitchButton } from '@element-plus/icons-vue'
 import { useUserStore } from '@/stores/user'
 
 const userStore = useUserStore()
-const username: string | null = userStore.username
+const username = computed(() => userStore.userInfo.username)
 const message: number = 2
 
 const sidebar = useSidebarStore()
