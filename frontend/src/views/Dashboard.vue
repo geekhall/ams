@@ -88,31 +88,20 @@
       </el-col>
     </el-row>
 
-    <!-- 图表区域 -->
-    <el-row :gutter="24" class="chart-section">
-      <el-col :xs="24" :lg="16">
-        <el-card shadow="hover" class="chart-card">
-          <template #header>
-            <div class="card-header">
-              <span class="header-title">资产趋势</span>
-              <el-radio-group v-model="chartTimeRange" size="small">
-                <el-radio-button value="week">本周</el-radio-button>
-                <el-radio-button value="month">本月</el-radio-button>
-                <el-radio-button value="year">全年</el-radio-button>
-              </el-radio-group>
-            </div>
-          </template>
-          <line-chart class="chart" />
-        </el-card>
-      </el-col>
-      <el-col :xs="24" :lg="8">
-        <el-card shadow="hover" class="chart-card">
-          <template #header>
-            <div class="card-header">
-              <span class="header-title">资产分类</span>
-            </div>
-          </template>
-          <random-chart class="chart" />
+    <!-- 轮播图区域 -->
+    <el-row :gutter="24" class="carousel-section">
+      <el-col :span="24">
+        <el-card shadow="hover" class="carousel-card">
+          <el-carousel :interval="4000" type="card" height="300px">
+            <el-carousel-item v-for="item in carouselItems" :key="item.id">
+              <div class="carousel-content" :style="{ backgroundImage: `url(${item.image})` }">
+                <div class="carousel-info">
+                  <h3 class="carousel-title">{{ item.title }}</h3>
+                  <p class="carousel-desc">{{ item.description }}</p>
+                </div>
+              </div>
+            </el-carousel-item>
+          </el-carousel>
         </el-card>
       </el-col>
     </el-row>
@@ -197,6 +186,10 @@
 <script lang="ts" setup>
 import { ref, reactive, onMounted } from 'vue'
 import imgurl from '~/assets/img/avatar.png'
+import imgurl1 from '@/assets/img/1111.png'
+import imgurl2 from '@/assets/img/2222.png'
+import imgurl3 from '@/assets/img/3333.png'
+import imgurl4 from '@/assets/img/4444.png'
 import { useMessage } from '@/hooks/useMessage'
 import { getAssetSummary } from '@/api/asset'
 import { AssetSummaryResponse } from '@/types/asset'
@@ -221,7 +214,6 @@ const role: string = name === 'admin' ? '超级管理员' : '普通用户'
 
 const { getMessageCount } = useMessage()
 const totalMessage = ref(0)
-const chartTimeRange = ref('month')
 
 // 资产统计数据
 const assetStats = reactive({
@@ -317,6 +309,33 @@ const quickActions = reactive([
     bgColor: 'var(--el-color-primary-light-8)'
   }
 ])
+// 轮播图数据
+const carouselItems = [
+  {
+    id: 1,
+    title: '资产管理系统升级',
+    description: '新版本带来更强大的资产管理功能和更直观的数据分析',
+    image: imgurl1
+  },
+  {
+    id: 2,
+    title: '资产盘点通知',
+    description: '2024年第一季度资产盘点工作即将开始，请各部门做好准备',
+    image: imgurl2
+  },
+  {
+    id: 3,
+    title: '新功能上线',
+    description: '新增资产价值评估和折旧计算功能，助力资产全生命周期管理',
+    image: imgurl3
+  },
+  {
+    id: 4,
+    title: '系统使用指南',
+    description: '查看最新的系统使用指南，了解各项功能的使用方法',
+    image: imgurl4
+  }
+]
 
 // 格式化数字
 const formatNumber = (num: number) => {
@@ -458,6 +477,59 @@ onMounted(async () => {
   .chart {
     height: 350px;
     padding: 20px;
+  }
+}
+
+// 轮播图区域样式
+.carousel-section {
+  margin-bottom: 24px;
+
+  .carousel-card {
+    .el-carousel {
+      .el-carousel__item {
+        .carousel-content {
+          height: 100%;
+          background-size: cover;
+          background-position: center;
+          border-radius: 8px;
+          position: relative;
+          overflow: hidden;
+
+          &::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(to right, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.3));
+          }
+
+          .carousel-info {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 24px;
+            color: #fff;
+
+            .carousel-title {
+              font-size: 24px;
+              font-weight: 600;
+              margin-bottom: 12px;
+              text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+            }
+
+            .carousel-desc {
+              font-size: 16px;
+              line-height: 1.5;
+              opacity: 0.9;
+              text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+            }
+          }
+        }
+      }
+    }
   }
 }
 

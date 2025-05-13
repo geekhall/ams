@@ -2,6 +2,34 @@
   <div id="budgetBoardPage" class="content-container">
     <h1>预算概览</h1>
     <div class="chart-container">
+      <!-- 图表区域 -->
+      <el-row :gutter="24" class="chart-section">
+        <el-col :xs="24" :lg="16">
+          <el-card shadow="hover" class="chart-card">
+            <template #header>
+              <div class="card-header">
+                <span class="header-title">资产趋势</span>
+                <el-radio-group v-model="chartTimeRange" size="small">
+                  <el-radio-button value="week">本周</el-radio-button>
+                  <el-radio-button value="month">本月</el-radio-button>
+                  <el-radio-button value="year">全年</el-radio-button>
+                </el-radio-group>
+              </div>
+            </template>
+            <line-chart class="chart" />
+          </el-card>
+        </el-col>
+        <el-col :xs="24" :lg="8">
+          <el-card shadow="hover" class="chart-card">
+            <template #header>
+              <div class="card-header">
+                <span class="header-title">资产分类</span>
+              </div>
+            </template>
+            <random-chart class="chart" />
+          </el-card>
+        </el-col>
+      </el-row>
       <el-row :gutter="20">
         <el-col :span="12">
           <el-card shadow="hover">
@@ -66,7 +94,7 @@ onMounted(() => {
 onBeforeUnmount(() => {
   window.removeEventListener('resize', updateTableWidth)
 })
-
+const chartTimeRange = ref('month')
 // 获取预算数据
 const budgetData = ref<Budget[]>([])
 
