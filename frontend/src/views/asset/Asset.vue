@@ -62,15 +62,6 @@
           <el-button text :icon="Delete" class="red" @click="handleDelete(scope.$index)">
             删除
           </el-button>
-          <el-button
-            text
-            :icon="Memo"
-            type="primary"
-            @click="handleBorrow(scope.row)"
-            :disabled="scope.row.status !== '正常'"
-          >
-            领用
-          </el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -92,14 +83,6 @@
       v-model:visible="dialogVisible"
       :mode="dialogMode"
       :asset-types="assetTypes"
-      :departments="departments"
-      :asset="currentAsset"
-      @success="handleSuccess"
-    />
-
-    <!-- 使用领用对话框组件 -->
-    <AssetBorrowDialog
-      v-model:visible="borrowVisible"
       :departments="departments"
       :asset="currentAsset"
       @success="handleSuccess"
@@ -141,7 +124,6 @@ const {
   handleAdd,
   handleEdit,
   handleDelete,
-  handleBorrow,
   handleSuccess
 } = useAsset()
 
