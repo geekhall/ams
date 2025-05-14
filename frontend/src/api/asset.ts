@@ -114,6 +114,31 @@ export const getAssetTypeList = async (): Promise<AssetTypeListResponse> => {
   } as AxiosRequestConfig);
 };
 
+// 添加资产类型
+export const addAssetType = async (name: string): Promise<AssetTypeListResponse> => {
+  return await loki.request({
+    url: "/at/create",
+    method: "POST",
+    data: { name },
+  } as AxiosRequestConfig);
+};
+
+// 更新资产类型
+export const updateAssetType = async (id: string, name: string): Promise<AssetTypeListResponse> => {
+  return await loki.request({
+    url: "/at/update",
+    method: "POST",
+    data: { id, name },
+  } as AxiosRequestConfig);
+};
+
+// 删除资产类型
+export const deleteAssetType = async (id: string): Promise<AssetTypeListResponse> => {
+  return await loki.request({
+    url: "/at/delete/" + id,
+    method: "DELETE",
+  } as AxiosRequestConfig);
+};
 
 export const borrowAsset = (data: BorrowAssetParams) => {
   return loki.request({

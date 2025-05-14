@@ -10,7 +10,8 @@
       ></el-input>
       <el-button type="primary" :icon="Search" @click="handleSearch">搜索</el-button>
       <el-button type="primary" :icon="Plus" @click="handleAddWithFetch"> 新增 </el-button>
-      <el-button type="warning" :icon="Setting" @click="showColumnSettings">列设置</el-button>
+      <el-button type="success" :icon="Setting" @click="showColumnSettings">列设置</el-button>
+      <el-button type="success" :icon="Setting" @click="showAssetTypeDialog">类型管理</el-button>
     </div>
     <el-table
       :data="tableData"
@@ -94,19 +95,84 @@
       :visibleColumns="visibleColumns"
       @updateVisibleColumns="updateVisibleColumns"
     />
+
+    <!-- 资产类型管理对话框 -->
+    <el-dialog v-model="assetTypeDialogVisible" title="资产类型管理" width="800px" destroy-on-close>
+      <div class="handle-box">
+        <el-input
+          v-model="assetTypeQuery.name"
+          placeholder="输入类型名称"
+          class="handle-input mr10"
+          @keyup.enter.native="handleAssetTypeSearch"
+        ></el-input>
+        <el-button type="primary" :icon="Search" @click="handleAssetTypeSearch">搜索</el-button>
+        <el-button type="primary" :icon="Plus" @click="handleAssetTypeAdd">新增</el-button>
+      </div>
+
+      <el-table
+        :data="assetTypeTableData"
+        border
+        class="table"
+        header-cell-class-name="table-header"
+      >
+        <el-table-column
+          type="index"
+          label="序号"
+          width="80"
+          align="center"
+          :index="(index:number) => index + 1 + (assetTypeQuery.pageIndex - 1) * assetTypeQuery.pageSize"
+        ></el-table-column>
+        <el-table-column prop="name" label="类型名称" align="center"></el-table-column>
+        <el-table-column label="操作" width="200" align="center">
+          <template #default="scope">
+            <el-button text :icon="Edit" @click="handleAssetTypeEdit(scope.row)">编辑</el-button>
+            <el-button text :icon="Delete" class="red" @click="handleAssetTypeDelete(scope.row)">
+              删除
+            </el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+
+      <div class="pagination">
+        <el-pagination
+          background
+          layout="total, sizes, prev, pager, next"
+          :current-page="assetTypeQuery.pageIndex"
+          :page-size="assetTypeQuery.pageSize"
+          :total="assetTypeTotal"
+          :page-sizes="[10, 20, 50, 100]"
+          @size-change="handleAssetTypeSizeChange"
+          @current-change="handleAssetTypeCurrentChange"
+        ></el-pagination>
+      </div>
+
+      <!-- 资产类型编辑对话框 -->
+      <AssetTypeDialog
+        v-model:visible="assetTypeEditDialogVisible"
+        :mode="assetTypeDialogMode"
+        :asset-type="currentAssetType"
+        @success="handleAssetTypeSuccess"
+      />
+    </el-dialog>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { onMounted, ref, computed } from 'vue'
+import { onMounted, ref, computed, reactive } from 'vue'
 import { useAssetType } from '@/hooks/useAssetType'
 import { useDepartment } from '@/hooks/useDepartment'
 import { Delete, Edit, Search, Plus, Memo, Setting } from '@element-plus/icons-vue'
 import { useAsset } from '@/hooks/useAsset'
+import { ElMessage, ElMessageBox } from 'element-plus'
+import { useRouter } from 'vue-router'
 import AssetDialog from '@/components/asset/AssetDialog.vue'
 import AssetBorrowDialog from '@/components/asset/AssetBorrowDialog.vue'
 import ColumnSettings from '@/components/asset/ColumnSettings.vue'
+import AssetTypeDialog from '@/components/asset/AssetTypeDialog.vue'
+import { getAssetTypeList, deleteAssetType } from '@/api/asset'
+import type { AssetType } from '@/types/asset'
 
+const router = useRouter()
 const { assetTypes, fetchAssetTypes } = useAssetType()
 const { departments, fetchDepartments } = useDepartment()
 const {
@@ -229,6 +295,117 @@ const handleEditWithFetch = async (index: number, row: any) => {
   await fetchAssetTypes()
   await fetchDepartments()
   await handleEdit(index, row)
+}
+
+// 跳转到资产类型管理页面
+const handleAssetType = () => {
+  router.push('/asset/type')
+}
+
+// 资产类型管理相关
+const assetTypeDialogVisible = ref(false)
+const assetTypeEditDialogVisible = ref(false)
+const assetTypeDialogMode = ref<'add' | 'edit'>('add')
+const currentAssetType = ref<AssetType | null>(null)
+const assetTypeTableData = ref<AssetType[]>([])
+const assetTypeTotal = ref(0)
+const assetTypeQuery = reactive({
+  pageIndex: 1,
+  pageSize: 10,
+  name: ''
+})
+
+// 显示资产类型管理对话框
+const showAssetTypeDialog = async () => {
+  assetTypeDialogVisible.value = true
+  await getAssetTypeData()
+}
+
+// 获取资产类型数据
+const getAssetTypeData = async () => {
+  try {
+    const res = await getAssetTypeList()
+    if (res.code === 200) {
+      // 根据分页参数过滤数据
+      const filteredData = assetTypeQuery.name
+        ? res.data.filter((item) => item.name.includes(assetTypeQuery.name))
+        : res.data
+
+      // 计算总数
+      assetTypeTotal.value = filteredData.length
+
+      // 分页处理
+      const start = (assetTypeQuery.pageIndex - 1) * assetTypeQuery.pageSize
+      const end = start + assetTypeQuery.pageSize
+      assetTypeTableData.value = filteredData.slice(start, end)
+    } else {
+      ElMessage.error(res.message)
+    }
+  } catch (error) {
+    ElMessage.error('获取资产类型列表失败')
+  }
+}
+
+// 资产类型搜索
+const handleAssetTypeSearch = () => {
+  assetTypeQuery.pageIndex = 1
+  getAssetTypeData()
+}
+
+// 资产类型新增
+const handleAssetTypeAdd = () => {
+  assetTypeDialogMode.value = 'add'
+  currentAssetType.value = null
+  assetTypeEditDialogVisible.value = true
+}
+
+// 资产类型编辑
+const handleAssetTypeEdit = (row: AssetType) => {
+  assetTypeDialogMode.value = 'edit'
+  currentAssetType.value = row
+  assetTypeEditDialogVisible.value = true
+}
+
+// 资产类型删除
+const handleAssetTypeDelete = (row: AssetType) => {
+  ElMessageBox.confirm('确定要删除该资产类型吗？', '提示', {
+    confirmButtonText: '确定',
+    cancelButtonText: '取消',
+    type: 'warning'
+  }).then(async () => {
+    try {
+      const res = await deleteAssetType(row.id)
+      if (res.code === 200) {
+        ElMessage.success('删除成功')
+        getAssetTypeData()
+        // 刷新资产类型列表
+        fetchAssetTypes()
+      } else {
+        ElMessage.error(res.message)
+      }
+    } catch (error) {
+      ElMessage.error('删除失败')
+    }
+  })
+}
+
+// 资产类型操作成功回调
+const handleAssetTypeSuccess = () => {
+  getAssetTypeData()
+  // 刷新资产类型列表
+  fetchAssetTypes()
+}
+
+// 资产类型分页大小改变
+const handleAssetTypeSizeChange = (val: number) => {
+  assetTypeQuery.pageSize = val
+  getAssetTypeData()
+}
+
+// 资产类型页码改变
+const handleAssetTypeCurrentChange = (val: number) => {
+  assetTypeQuery.pageIndex = val
+  getAssetTypeData()
 }
 </script>
 
