@@ -123,10 +123,38 @@
           :index="(index:number) => index + 1 + (assetTypeQuery.pageIndex - 1) * assetTypeQuery.pageSize"
         ></el-table-column>
         <el-table-column prop="name" label="类型名称" align="center"></el-table-column>
-        <el-table-column label="操作" width="200" align="center">
+        <el-table-column prop="assetCount" label="关联资产数" align="center" width="100">
+          <template #default="scope">
+            <el-tag :type="scope.row.assetCount > 0 ? 'warning' : 'info'">
+              {{ scope.row.assetCount || 0 }}
+            </el-tag>
+          </template>
+        </el-table-column>
+        <el-table-column prop="status" label="状态" align="center" width="100">
+          <template #default="scope">
+            <el-tag :type="scope.row.status === 'active' ? 'success' : 'info'">
+              {{ scope.row.status === 'active' ? '启用' : '停用' }}
+            </el-tag>
+          </template>
+        </el-table-column>
+        <el-table-column label="操作" width="280" align="center">
           <template #default="scope">
             <el-button text :icon="Edit" @click="handleAssetTypeEdit(scope.row)">编辑</el-button>
-            <el-button text :icon="Delete" class="red" @click="handleAssetTypeDelete(scope.row)">
+            <el-button
+              text
+              :type="scope.row.status === 'active' ? 'warning' : 'success'"
+              :icon="scope.row.status === 'active' ? 'Close' : 'Check'"
+              @click="handleAssetTypeStatusChange(scope.row)"
+            >
+              {{ scope.row.status === 'active' ? '停用' : '启用' }}
+            </el-button>
+            <el-button
+              text
+              :icon="Delete"
+              class="red"
+              :disabled="scope.row.assetCount > 0"
+              @click="handleAssetTypeDelete(scope.row)"
+            >
               删除
             </el-button>
           </template>
@@ -161,15 +189,14 @@
 import { onMounted, ref, computed, reactive } from 'vue'
 import { useAssetType } from '@/hooks/useAssetType'
 import { useDepartment } from '@/hooks/useDepartment'
-import { Delete, Edit, Search, Plus, Memo, Setting } from '@element-plus/icons-vue'
+import { Delete, Edit, Search, Plus, Memo, Setting, Close, Check } from '@element-plus/icons-vue'
 import { useAsset } from '@/hooks/useAsset'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { useRouter } from 'vue-router'
 import AssetDialog from '@/components/asset/AssetDialog.vue'
-import AssetBorrowDialog from '@/components/asset/AssetBorrowDialog.vue'
 import ColumnSettings from '@/components/asset/ColumnSettings.vue'
 import AssetTypeDialog from '@/components/asset/AssetTypeDialog.vue'
-import { getAssetTypeList, deleteAssetType } from '@/api/asset'
+import { getAssetTypeList, deleteAssetType, updateAssetType } from '@/api/asset'
 import type { AssetType } from '@/types/asset'
 
 const router = useRouter()
@@ -182,7 +209,6 @@ const {
   dialogVisible,
   dialogMode,
   currentAsset,
-  borrowVisible,
   getData,
   handleSearch,
   handleSizeChange,
@@ -366,8 +392,45 @@ const handleAssetTypeEdit = (row: AssetType) => {
   assetTypeEditDialogVisible.value = true
 }
 
+// 资产类型状态变更
+const handleAssetTypeStatusChange = (row: AssetType) => {
+  const newStatus = row.status === 'active' ? 'inactive' : 'active'
+  const actionText = newStatus === 'active' ? '启用' : '停用'
+
+  ElMessageBox.confirm(
+    `确定要${actionText}该资产类型吗？${
+      newStatus === 'inactive' ? '停用后，该类型将不再出现在新增资产时的类型选择列表中。' : ''
+    }`,
+    '提示',
+    {
+      confirmButtonText: '确定',
+      cancelButtonText: '取消',
+      type: 'warning'
+    }
+  ).then(async () => {
+    try {
+      const res = await updateAssetType(row.id, row.name, newStatus)
+      if (res.code === 200) {
+        ElMessage.success(`${actionText}成功`)
+        getAssetTypeData()
+        // 刷新资产类型列表
+        fetchAssetTypes()
+      } else {
+        ElMessage.error(res.message)
+      }
+    } catch (error) {
+      ElMessage.error(`${actionText}失败`)
+    }
+  })
+}
+
 // 资产类型删除
 const handleAssetTypeDelete = (row: AssetType) => {
+  if ((row.assetCount ?? 0) > 0) {
+    ElMessage.warning('该类型下存在关联资产，无法删除')
+    return
+  }
+
   ElMessageBox.confirm('确定要删除该资产类型吗？', '提示', {
     confirmButtonText: '确定',
     cancelButtonText: '取消',
@@ -477,6 +540,7 @@ const handleAssetTypeCurrentChange = (val: number) => {
   color: #606266;
 }
 
+/* 响应式布局 */
 @media screen and (max-width: 1200px) {
   .expand-item {
     width: calc(50% - 1px);
@@ -486,6 +550,35 @@ const handleAssetTypeCurrentChange = (val: number) => {
 @media screen and (max-width: 768px) {
   .expand-item {
     width: 100%;
+  }
+}
+
+/* 资产类型管理对话框按钮样式 */
+:deep(.el-table .cell) {
+  white-space: nowrap;
+}
+
+:deep(.el-table .el-button) {
+  padding: 4px 8px;
+  margin: 0 2px;
+}
+
+:deep(.el-table .el-button + .el-button) {
+  margin-left: 2px;
+}
+
+@media screen and (max-width: 576px) {
+  :deep(.el-table .cell) {
+    padding: 8px;
+  }
+
+  :deep(.el-table .el-button) {
+    padding: 2px 4px;
+    font-size: 12px;
+  }
+
+  :deep(.el-table .el-button [class*='el-icon'] + span) {
+    display: none;
   }
 }
 </style>

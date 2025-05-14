@@ -82,12 +82,6 @@ const items: MenuItem[] = [
         permission: [PermissionType.ASSET_VIEW, PermissionType.ASSET_MANAGE]
       },
       {
-        icon: 'DocumentCopy',
-        index: '/asset',
-        title: '固定资产',
-        permission: [PermissionType.ASSET_VIEW, PermissionType.ASSET_MANAGE]
-      },
-      {
         icon: 'Platform',
         index: '/system',
         title: '系统清单',

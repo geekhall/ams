@@ -124,11 +124,11 @@ export const addAssetType = async (name: string): Promise<AssetTypeListResponse>
 };
 
 // 更新资产类型
-export const updateAssetType = async (id: string, name: string): Promise<AssetTypeListResponse> => {
+export const updateAssetType = async (id: string, name: string, status: 'active' | 'inactive'): Promise<AssetTypeListResponse> => {
   return await loki.request({
     url: "/at/update",
     method: "POST",
-    data: { id, name },
+    data: { id, name, status },
   } as AxiosRequestConfig);
 };
 
