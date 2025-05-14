@@ -131,7 +131,10 @@ const getData = async () => {
       // 分页处理
       const start = (query.pageIndex - 1) * query.pageSize
       const end = start + query.pageSize
-      tableData.value = filteredData.slice(start, end)
+      tableData.value = filteredData.slice(start, end).map((item) => ({
+        ...item,
+        assetCount: item.assetCount || 0
+      }))
     } else {
       ElMessage.error(res.message)
     }

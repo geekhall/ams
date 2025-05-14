@@ -2,6 +2,7 @@ package net.geekhour.loki.controller;
 
 import net.geekhour.loki.common.ResponseUtil;
 import net.geekhour.loki.entity.AssetType;
+import net.geekhour.loki.entity.dto.AssetTypeSummaryDTO;
 import net.geekhour.loki.service.IAssetTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -9,6 +10,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -42,7 +44,17 @@ public class AssetTypeController {
         return ResponseUtil.success(assetTypeService.list());
     }
 
-    // Create a new AssetType
+    @PostMapping("/summary")
+    @PreAuthorize("hasRole('USER') || hasAuthority('asset:view')")
+    public ResponseEntity<?> summary() {
+        try {
+            return ResponseUtil.success(assetTypeService.getSummary());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseUtil.error(500, e.getMessage());
+        }
+    }
+
     @PostMapping("/create")
     @PreAuthorize("hasRole('ADMIN') || hasAuthority('asset:manage')")
     public ResponseEntity<?> create(@RequestBody AssetType assetType) {

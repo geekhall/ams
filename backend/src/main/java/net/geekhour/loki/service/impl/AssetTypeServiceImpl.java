@@ -2,12 +2,14 @@ package net.geekhour.loki.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import net.geekhour.loki.entity.AssetType;
+import net.geekhour.loki.mapper.AssetMapper;
 import net.geekhour.loki.mapper.AssetTypeMapper;
 import net.geekhour.loki.service.IAssetTypeService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import net.geekhour.loki.entity.dto.AssetTypeSummaryDTO;
 
 import java.util.Collection;
 import java.util.List;
@@ -25,6 +27,9 @@ public class AssetTypeServiceImpl extends ServiceImpl<AssetTypeMapper, AssetType
 
     @Autowired
     AssetTypeMapper assetTypeMapper;
+
+    @Autowired
+    AssetMapper assetMapper;
 
     @Override
     public List<AssetType> list() {
@@ -47,6 +52,11 @@ public class AssetTypeServiceImpl extends ServiceImpl<AssetTypeMapper, AssetType
     @Override
     public Long countAssetType() {
         return assetTypeMapper.selectCount(null);
+    }
+
+    @Override
+    public List<AssetTypeSummaryDTO> getSummary() {
+        return assetTypeMapper.getSummary();
     }
 
 }
