@@ -17,6 +17,7 @@ declare module 'vue' {
     AssetDialog: typeof import('./src/components/asset/AssetDialog.vue')['default']
     AssetType: typeof import('./src/views/asset/AssetType.vue')['default']
     AssetTypeDialog: typeof import('./src/components/asset/AssetTypeDialog.vue')['default']
+    AssetTypeManagement: typeof import('./src/components/asset/AssetTypeManagement.vue')['default']
     BarChart: typeof import('./src/components/charts/BarChart.vue')['default']
     BorrowRecords: typeof import('./src/components/asset/BorrowRecords.vue')['default']
     Breadcrumb: typeof import('./src/components/layout/Breadcrumb.vue')['default']
