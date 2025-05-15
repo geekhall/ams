@@ -88,20 +88,26 @@
       </el-col>
     </el-row>
 
-    <!-- 轮播图区域 -->
-    <el-row :gutter="24" class="carousel-section">
-      <el-col :span="24">
-        <el-card shadow="hover" class="carousel-card">
-          <el-carousel :interval="4000" type="card" height="300px">
-            <el-carousel-item v-for="item in carouselItems" :key="item.id">
-              <div class="carousel-content" :style="{ backgroundImage: `url(${item.image})` }">
-                <div class="carousel-info">
-                  <h3 class="carousel-title">{{ item.title }}</h3>
-                  <p class="carousel-desc">{{ item.description }}</p>
-                </div>
-              </div>
-            </el-carousel-item>
-          </el-carousel>
+    <!-- 图表区域 -->
+    <el-row :gutter="24" class="chart-section">
+      <el-col :xs="24" :lg="12">
+        <el-card shadow="hover" class="chart-card">
+          <template #header>
+            <div class="card-header">
+              <span class="header-title">资产类型分布</span>
+            </div>
+          </template>
+          <div ref="typeChartRef" class="chart"></div>
+        </el-card>
+      </el-col>
+      <el-col :xs="24" :lg="12">
+        <el-card shadow="hover" class="chart-card">
+          <template #header>
+            <div class="card-header">
+              <span class="header-title">资产部门分布</span>
+            </div>
+          </template>
+          <div ref="statusChartRef" class="chart"></div>
         </el-card>
       </el-col>
     </el-row>
@@ -184,33 +190,12 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, reactive, onMounted } from 'vue'
-import imgurl from '~/assets/img/avatar.png'
-import imgurl1 from '@/assets/img/1111.png'
-import imgurl2 from '@/assets/img/2222.png'
-import imgurl3 from '@/assets/img/3333.png'
-import imgurl4 from '@/assets/img/4444.png'
+import { ref, reactive, onMounted, onUnmounted } from 'vue'
+import * as echarts from 'echarts'
 import { useMessage } from '@/hooks/useMessage'
-import { getAssetSummary } from '@/api/asset'
-import { AssetSummaryResponse } from '@/types/asset'
-import {
-  Box,
-  Money,
-  Warning,
-  Bell,
-  ArrowUp,
-  ArrowDown,
-  Plus,
-  Document,
-  Setting,
-  User,
-  List,
-  Search,
-  Upload
-} from '@element-plus/icons-vue'
-
-const name = localStorage.getItem('ms_username')
-const role: string = name === 'admin' ? '超级管理员' : '普通用户'
+import { getAssetSummary, getAssetTypeSummaryList } from '@/api/asset'
+import { AssetSummaryResponse, AssetTypeSummary } from '@/types/asset'
+import { Box, Money, Warning, Bell, ArrowUp, ArrowDown, Plus } from '@element-plus/icons-vue'
 
 const { getMessageCount } = useMessage()
 const totalMessage = ref(0)
@@ -273,6 +258,13 @@ const notices = reactive([
     type: 'info',
     tag: '工作通知',
     time: '2024-03-18'
+  },
+  {
+    id: 4,
+    title: '系统功能优化公告',
+    type: 'success',
+    tag: '更新通知',
+    time: '2025-03-18'
   }
 ])
 
@@ -309,33 +301,216 @@ const quickActions = reactive([
     bgColor: 'var(--el-color-primary-light-8)'
   }
 ])
-// 轮播图数据
-const carouselItems = [
-  {
-    id: 1,
-    title: '资产管理系统升级',
-    description: '新版本带来更强大的资产管理功能和更直观的数据分析',
-    image: imgurl1
-  },
-  {
-    id: 2,
-    title: '资产盘点通知',
-    description: '2025年第一季度资产盘点工作即将开始，请各部门做好准备',
-    image: imgurl2
-  },
-  {
-    id: 3,
-    title: '新功能上线',
-    description: '新增资产价值评估和折旧计算功能，助力资产全生命周期管理',
-    image: imgurl3
-  },
-  {
-    id: 4,
-    title: '系统使用指南',
-    description: '查看最新的系统使用指南，了解各项功能的使用方法',
-    image: imgurl4
+
+// 图表相关
+const typeChartRef = ref<HTMLElement>()
+const statusChartRef = ref<HTMLElement>()
+const valueChartRef = ref<HTMLElement>()
+let typeChart: echarts.ECharts | null = null
+let statusChart: echarts.ECharts | null = null
+let valueChart: echarts.ECharts | null = null
+
+// 初始化资产类型分布图表
+const initTypeChart = (data: AssetTypeSummary[]) => {
+  if (!typeChartRef.value) return
+
+  typeChart = echarts.init(typeChartRef.value)
+  const option = {
+    tooltip: {
+      trigger: 'item',
+      formatter: '{b}: {c} ({d}%)'
+    },
+    legend: {
+      orient: 'vertical',
+      left: '5%',
+      top: 'center',
+      itemWidth: 12,
+      itemHeight: 12,
+      textStyle: {
+        fontSize: 13,
+        color: '#606266'
+      },
+      itemGap: 15
+    },
+    series: [
+      {
+        type: 'pie',
+        radius: ['40%', '65%'],
+        center: ['65%', '50%'],
+        avoidLabelOverlap: false,
+        itemStyle: {
+          borderRadius: 8,
+          borderColor: '#fff',
+          borderWidth: 2
+        },
+        label: {
+          show: true,
+          position: 'outside',
+          formatter: '{b}\n{d}%',
+          fontSize: 13,
+          color: '#606266',
+          lineHeight: 18
+        },
+        emphasis: {
+          scale: true,
+          scaleSize: 5,
+          label: {
+            show: true,
+            fontSize: 14,
+            fontWeight: 'bold',
+            color: '#303133'
+          }
+        },
+        data: data.map((item) => ({
+          name: item.name,
+          value: item.assetCount || 0
+        }))
+      }
+    ]
   }
-]
+  typeChart.setOption(option)
+}
+
+// 初始化资产状态分布图表
+const initStatusChart = () => {
+  if (!statusChartRef.value) return
+
+  statusChart = echarts.init(statusChartRef.value)
+  const option = {
+    tooltip: {
+      trigger: 'axis',
+      axisPointer: {
+        type: 'shadow'
+      },
+      formatter: '{b}: {c} 台'
+    },
+    grid: {
+      left: '3%',
+      right: '4%',
+      bottom: '8%',
+      top: '8%',
+      containLabel: true
+    },
+    xAxis: {
+      type: 'category',
+      data: ['研发部', '市场部', '财务部', '人事部', '行政部'],
+      axisLabel: {
+        interval: 0,
+        rotate: 30,
+        fontSize: 13,
+        color: '#606266'
+      },
+      axisLine: {
+        lineStyle: {
+          color: '#DCDFE6'
+        }
+      }
+    },
+    yAxis: {
+      type: 'value',
+      name: '资产数量',
+      nameTextStyle: {
+        fontSize: 13,
+        color: '#606266',
+        padding: [0, 0, 0, 40]
+      },
+      axisLabel: {
+        fontSize: 13,
+        color: '#606266'
+      },
+      splitLine: {
+        lineStyle: {
+          color: '#EBEEF5'
+        }
+      }
+    },
+    series: [
+      {
+        type: 'bar',
+        data: [45, 32, 28, 15, 20],
+        barWidth: '40%',
+        itemStyle: {
+          color: function (params: any) {
+            const colors = ['#409EFF', '#67C23A', '#E6A23C', '#F56C6C', '#909399']
+            return colors[params.dataIndex]
+          },
+          borderRadius: [4, 4, 0, 0]
+        },
+        label: {
+          show: true,
+          position: 'top',
+          fontSize: 13,
+          color: '#606266',
+          formatter: '{c} 台'
+        }
+      }
+    ]
+  }
+  statusChart.setOption(option)
+}
+
+// 初始化资产价值趋势图表
+const initValueChart = () => {
+  if (!valueChartRef.value) return
+
+  valueChart = echarts.init(valueChartRef.value)
+  const option = {
+    tooltip: {
+      trigger: 'axis'
+    },
+    grid: {
+      left: '3%',
+      right: '4%',
+      bottom: '3%',
+      containLabel: true
+    },
+    xAxis: {
+      type: 'category',
+      boundaryGap: false,
+      data: ['1月', '2月', '3月', '4月', '5月', '6月']
+    },
+    yAxis: {
+      type: 'value',
+      axisLabel: {
+        formatter: '{value} 万'
+      }
+    },
+    series: [
+      {
+        name: '资产总值',
+        type: 'line',
+        smooth: true,
+        data: [150, 230, 224, 218, 135, 147],
+        areaStyle: {
+          opacity: 0.1
+        },
+        itemStyle: {
+          color: '#409EFF'
+        }
+      }
+    ]
+  }
+  valueChart.setOption(option)
+}
+
+// 获取资产类型数据并更新图表
+const fetchAssetTypeData = async () => {
+  try {
+    const res = await getAssetTypeSummaryList()
+    if (res.code === 200) {
+      initTypeChart(res.data)
+    }
+  } catch (error) {
+    console.error('获取资产类型数据失败:', error)
+  }
+}
+
+// 监听窗口大小变化
+const handleResize = () => {
+  typeChart?.resize()
+  statusChart?.resize()
+  valueChart?.resize()
+}
 
 // 格式化数字
 const formatNumber = (num: number) => {
@@ -373,8 +548,20 @@ const handleQuickAction = (action: any) => {
 onMounted(async () => {
   await Promise.all([
     getMessageCount().then((count) => (totalMessage.value = count)),
-    fetchAssetSummary()
+    fetchAssetSummary(),
+    fetchAssetTypeData()
   ])
+
+  initStatusChart()
+  initValueChart()
+  window.addEventListener('resize', handleResize)
+})
+
+onUnmounted(() => {
+  window.removeEventListener('resize', handleResize)
+  typeChart?.dispose()
+  statusChart?.dispose()
+  valueChart?.dispose()
 })
 </script>
 
