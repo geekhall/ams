@@ -103,7 +103,7 @@
           <div class="expand-content">
             <div class="expand-grid">
               <template v-for="field in expandFields" :key="field.value">
-                <div class="expand-item">
+                <div class="expand-item" :class="{ 'full-row': field.value === 'description' }">
                   <div class="expand-label">{{ field.label }}</div>
                   <div class="expand-value">
                     {{
@@ -937,6 +937,10 @@ const allFields = [
   display: flex;
   width: calc(33.33% - 1px);
   background-color: #fff;
+}
+.expand-item.full-row {
+  width: 100%;
+  min-height: 88px; /* 正常高度的2倍 */
 }
 
 .expand-label {
