@@ -37,6 +37,8 @@ export type AssetNamesResponse = ApiResponse<{
 export interface AssetType {
   id: string
   name: string
+  status: 'active' | 'inactive'
+  assetCount?: number  // 关联的资产数量
 }
 
 export type AssetTypeListResponse = ApiResponse<AssetType[]>

@@ -1,7 +1,7 @@
 package net.geekhour.loki.service;
 
-import net.geekhour.loki.entity.Asset;
 import net.geekhour.loki.entity.AssetType;
+import net.geekhour.loki.entity.dto.AssetTypeSummaryDTO;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 import java.util.List;
@@ -22,4 +22,6 @@ public interface IAssetTypeService extends IService<AssetType> {
     boolean existsByName(String name);
 
     Long countAssetType();
+
+    List<AssetTypeSummaryDTO> getSummary();
 }

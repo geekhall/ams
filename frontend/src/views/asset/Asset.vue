@@ -9,8 +9,9 @@
         @keyup.enter.native="handleSearch"
       ></el-input>
       <el-button type="primary" :icon="Search" @click="handleSearch">搜索</el-button>
-      <el-button type="primary" :icon="Plus" @click="handleAddWithFetch"> 新增 </el-button>
-      <el-button type="warning" :icon="Setting" @click="showColumnSettings">列设置</el-button>
+      <el-button type="primary" :icon="Plus" @click="handleAdd">新增</el-button>
+      <el-button type="success" :icon="Setting" @click="showColumnSettings">列设置</el-button>
+      <el-button type="success" :icon="Setting" @click="handleTypeManagement">类型管理</el-button>
     </div>
     <el-table
       :data="tableData"
@@ -59,7 +60,7 @@
           <el-button text :icon="Edit" @click="handleEditWithFetch(scope.$index, scope.row)">
             编辑
           </el-button>
-          <el-button text :icon="Delete" class="red" @click="handleDelete(scope.$index)">
+          <el-button text :icon="Delete" class="red" @click="handleDelete(scope.row)">
             删除
           </el-button>
         </template>
@@ -94,19 +95,30 @@
       :visibleColumns="visibleColumns"
       @updateVisibleColumns="updateVisibleColumns"
     />
+
+    <!-- 资产类型管理对话框 -->
+    <AssetTypeManagement
+      v-model:visible="typeManagementVisible"
+      @success="handleTypeManagementSuccess"
+    />
   </div>
 </template>
 
 <script lang="ts" setup>
-import { onMounted, ref, computed } from 'vue'
+import { onMounted, ref, computed, reactive } from 'vue'
 import { useAssetType } from '@/hooks/useAssetType'
 import { useDepartment } from '@/hooks/useDepartment'
-import { Delete, Edit, Search, Plus, Memo, Setting } from '@element-plus/icons-vue'
+import { Delete, Edit, Search, Plus, Setting } from '@element-plus/icons-vue'
 import { useAsset } from '@/hooks/useAsset'
+import { ElMessage, ElMessageBox } from 'element-plus'
+import { useRouter } from 'vue-router'
 import AssetDialog from '@/components/asset/AssetDialog.vue'
-import AssetBorrowDialog from '@/components/asset/AssetBorrowDialog.vue'
 import ColumnSettings from '@/components/asset/ColumnSettings.vue'
+import AssetTypeManagement from '@/components/asset/AssetTypeManagement.vue'
+import { getAssetList, deleteAssets } from '@/api/asset'
+import type { Asset } from '@/types/asset'
 
+const router = useRouter()
 const { assetTypes, fetchAssetTypes } = useAssetType()
 const { departments, fetchDepartments } = useDepartment()
 const {
@@ -116,7 +128,6 @@ const {
   dialogVisible,
   dialogMode,
   currentAsset,
-  borrowVisible,
   getData,
   handleSearch,
   handleSizeChange,
@@ -230,6 +241,19 @@ const handleEditWithFetch = async (index: number, row: any) => {
   await fetchDepartments()
   await handleEdit(index, row)
 }
+
+// 资产类型管理相关
+const typeManagementVisible = ref(false)
+
+// 打开资产类型管理对话框
+const handleTypeManagement = () => {
+  typeManagementVisible.value = true
+}
+
+// 资产类型管理成功回调
+const handleTypeManagementSuccess = () => {
+  getData()
+}
 </script>
 
 <style scoped>
@@ -300,6 +324,7 @@ const handleEditWithFetch = async (index: number, row: any) => {
   color: #606266;
 }
 
+/* 响应式布局 */
 @media screen and (max-width: 1200px) {
   .expand-item {
     width: calc(50% - 1px);
@@ -310,6 +335,20 @@ const handleEditWithFetch = async (index: number, row: any) => {
   .expand-item {
     width: 100%;
   }
+}
+
+/* 资产类型管理对话框按钮样式 */
+:deep(.el-table .cell) {
+  white-space: nowrap;
+}
+
+:deep(.el-table .el-button) {
+  padding: 4px 8px;
+  margin: 0 2px;
+}
+
+:deep(.el-table .el-button + .el-button) {
+  margin-left: 2px;
 }
 </style>
 
