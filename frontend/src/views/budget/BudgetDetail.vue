@@ -71,6 +71,7 @@
               >搜索</el-button
             >
             <el-button type="primary" :icon="Refresh" @click="handleClear">清空</el-button>
+            <el-button type="success" :icon="Setting" @click="showColumnSettings">列设置</el-button>
           </el-form>
         </div>
       </div>
@@ -78,7 +79,6 @@
         <el-button type="primary" :icon="Plus" @click="handleAdd"> 新增 </el-button>
         <el-button type="primary" :icon="Upload" @click="handleImport">导入</el-button>
         <el-button type="primary" :icon="Download" @click="handleExport">导出</el-button>
-        <el-button type="success" :icon="Setting" @click="showColumnSettings">列设置</el-button>
       </div>
     </div>
     <div></div>
@@ -318,6 +318,8 @@ import dayjs from 'dayjs'
 import { hasPermission } from '@/utils/permission'
 import BudgetDialog from '@/components/budget/BudgetDialog.vue'
 import ColumnSettings from '@/components/budget/ColumnSettings.vue'
+import { useUserStore } from '@/stores/user'
+import { PermissionType } from '@/types/user'
 
 const { departments, fetchDepartments } = useDepartment()
 const { budgetTypes, fetchBudgetTypes } = useBudgetType()
@@ -388,6 +390,8 @@ const pageTotal = ref(0)
 const dialogVisible = ref(false)
 const dialogMode = ref<'add' | 'edit'>('add')
 const currentBudget = ref<Budget | null>(null)
+
+const userStore = useUserStore()
 
 // 获取表格数据
 const getData = async () => {
@@ -579,7 +583,7 @@ const changesData = computed(() => {
 
 // 修改保存编辑操作
 const saveEdit = async () => {
-  if (!hasPermission(15)) {
+  if (!hasPermission(userStore.userInfo, PermissionType.BUDGET_EDIT)) {
     // 如果没有编辑权限，打开审批抽屉
     approvalForm.projectName = currentBudget.value?.name || ''
     approvalForm.projectId = currentBudget.value?.id || ''

@@ -83,7 +83,7 @@
     <AssetDialog
       v-model:visible="dialogVisible"
       :mode="dialogMode"
-      :asset-types="assetTypes"
+      :asset-types="assetTypesList"
       :departments="departments"
       :asset="currentAsset"
       @success="handleSuccess"
@@ -110,15 +110,11 @@ import { useAssetType } from '@/hooks/useAssetType'
 import { useDepartment } from '@/hooks/useDepartment'
 import { Delete, Edit, Search, Plus, Setting } from '@element-plus/icons-vue'
 import { useAsset } from '@/hooks/useAsset'
-import { ElMessage, ElMessageBox } from 'element-plus'
 import { useRouter } from 'vue-router'
 import AssetDialog from '@/components/asset/AssetDialog.vue'
 import ColumnSettings from '@/components/asset/ColumnSettings.vue'
 import AssetTypeManagement from '@/components/asset/AssetTypeManagement.vue'
-import { getAssetList, deleteAssets } from '@/api/asset'
-import type { Asset } from '@/types/asset'
 
-const router = useRouter()
 const { assetTypes, fetchAssetTypes } = useAssetType()
 const { departments, fetchDepartments } = useDepartment()
 const {
@@ -254,6 +250,9 @@ const handleTypeManagement = () => {
 const handleTypeManagementSuccess = () => {
   getData()
 }
+
+// 确保 assetTypes 不为 undefined
+const assetTypesList = computed(() => assetTypes.value || [])
 </script>
 
 <style scoped>
