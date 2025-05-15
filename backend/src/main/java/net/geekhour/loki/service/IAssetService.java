@@ -4,6 +4,7 @@ import net.geekhour.loki.entity.Asset;
 import com.baomidou.mybatisplus.extension.service.IService;
 import net.geekhour.loki.entity.dto.AssetDTO;
 import net.geekhour.loki.entity.dto.AssetSummaryDTO;
+import net.geekhour.loki.entity.dto.DepartmentAssetSummaryDTO;
 import org.springframework.http.ResponseEntity;
 
 import java.math.BigDecimal;
@@ -40,4 +41,7 @@ public interface IAssetService extends IService<Asset> {
     BigDecimal calculateTotalAmount();
 
     AssetSummaryDTO getSummary();
+
+    List<DepartmentAssetSummaryDTO> getDepartmentSummary();
+
 }

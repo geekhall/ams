@@ -5,6 +5,7 @@ import net.geekhour.loki.entity.Asset;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import net.geekhour.loki.entity.dto.AssetDTO;
 import net.geekhour.loki.entity.dto.AssetSummaryDTO;
+import net.geekhour.loki.entity.dto.DepartmentAssetSummaryDTO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
@@ -94,4 +95,15 @@ public interface AssetMapper extends BaseMapper<Asset> {
             "        ) AS previous_value" +
             ") AS counts;")
     AssetSummaryDTO getAssetSummary();
+
+
+    @Select("select x.id as id, x.name as name, COALESCE(y.asset_count,0) as asset_count from h_department x " +
+            "left join ( " +
+            "  select b.id, b.name, count(*) as asset_count from h_asset a " +
+            "  left join h_department b " +
+            "  on a.department_id = b.id " +
+            "  group by b.id, b.`name`) y " +
+            "on x.id = y.id " +
+            "order by y.asset_count desc ")
+    List<DepartmentAssetSummaryDTO> getDepartmentSummary();
 }
