@@ -187,54 +187,72 @@ const pageTotal = ref(0)
 // 获取表格数据
 const getData = async () => {
   try {
-    const res = await getUserList({
-      username: query.name,
-      pageIndex: query.pageIndex,
-      pageSize: query.pageSize
-    })
+    // 确保查询参数正确
+    const params = {
+      username: query.name || undefined,
+      pageIndex: query.pageIndex || 1,
+      pageSize: query.pageSize || 10
+    }
 
-    if (res.code === 200) {
-      // console.log('#### res.data.items', res.data.items)
-      tableData.value = res.data.items
-      pageTotal.value = res.data.total
+    const res = await getUserList(params)
+
+    if (res.code === 200 && res.data) {
+      tableData.value = res.data.items || []
+      pageTotal.value = res.data.total || 0
     } else {
-      // console.log('#### res.code', res.code)
-      // console.log('#### res.message', res.message)
-      // console.log('#### res.data', res.data)
-      ElMessage.error(res.message)
+      ElMessage.error(res.message || '获取用户列表失败')
+      tableData.value = []
+      pageTotal.value = 0
     }
   } catch (error) {
-    ElMessage.error(error instanceof Error ? error.message : '获取数据失败')
+    console.error('获取用户列表失败:', error)
+    ElMessage.error('获取用户列表失败')
+    tableData.value = []
+    pageTotal.value = 0
   }
 }
 
-onMounted(() => {
-  const pageIndex = localStorage.getItem('AMSCurentUserManagementPageIndex')
-  if (pageIndex) {
-    query.pageIndex = Number(pageIndex)
+onMounted(async () => {
+  try {
+    // 从 localStorage 获取保存的页码
+    const savedPageIndex = localStorage.getItem('AMSCurentUserManagementPageIndex')
+    if (savedPageIndex) {
+      query.pageIndex = parseInt(savedPageIndex, 10)
+    }
+    // 确保页码有效
+    if (isNaN(query.pageIndex) || query.pageIndex < 1) {
+      query.pageIndex = 1
+    }
+    await getData()
+  } catch (error) {
+    console.error('初始化数据失败:', error)
+    ElMessage.error('初始化数据失败')
   }
-  getData()
 })
 
 // 搜索操作
 const handleSearch = async () => {
-  query.pageIndex = 1
   try {
+    query.pageIndex = 1
     await getData()
   } catch (error) {
-    ElMessage.error(error instanceof Error ? error.message : '获取数据失败')
+    console.error('搜索失败:', error)
+    ElMessage.error('搜索失败')
   }
 }
 
 // 分页导航
 const handlePageChange = async (val: number) => {
-  query.pageIndex = val
-  localStorage.setItem('AMSCurentUserManagementPageIndex', val.toString())
-
   try {
+    if (val < 1) {
+      val = 1
+    }
+    query.pageIndex = val
+    localStorage.setItem('AMSCurentUserManagementPageIndex', val.toString())
     await getData()
   } catch (error) {
-    ElMessage.error(error instanceof Error ? error.message : '获取数据失败')
+    console.error('切换页码失败:', error)
+    ElMessage.error('切换页码失败')
   }
 }
 
