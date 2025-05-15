@@ -201,21 +201,63 @@ const fetchBudgetData = async () => {
 }
 
 // 使用部门预算 hook
-const { departmentPieData, pieChartOptions } = useDepartmentBudget(budgetData.value)
+const { departmentPieData, pieChartOptions } = useDepartmentBudget(budgetData)
 
 // 按项目类型预算分布图表数据
-const typeChartData = computed(() => {
+const budgetTypeData = computed(() => {
+  if (!budgetData.value || budgetData.value.length === 0) {
+    return {
+      labels: ['暂无数据'],
+      datasets: [
+        {
+          backgroundColor: ['#909399'],
+          data: [1]
+        }
+      ]
+    }
+  }
+
   const typeMap = new Map<string, number>()
   budgetData.value.forEach((item) => {
-    const amount = typeMap.get(item.budgetType) || 0
-    typeMap.set(item.budgetType, amount + item.amount)
+    if (item.budgetType && item.amount) {
+      const amount = typeMap.get(item.budgetType) || 0
+      typeMap.set(item.budgetType, amount + item.amount)
+    }
   })
+
+  const filteredData = Array.from(typeMap.entries())
+    .filter(([_, amount]) => amount > 0)
+    .sort((a, b) => b[1] - a[1])
+
+  if (filteredData.length === 0) {
+    return {
+      labels: ['暂无数据'],
+      datasets: [
+        {
+          backgroundColor: ['#909399'],
+          data: [1]
+        }
+      ]
+    }
+  }
+
   return {
-    labels: Array.from(typeMap.keys()),
+    labels: filteredData.map(([name]) => name),
     datasets: [
       {
-        backgroundColor: ['#41B883', '#E46651', '#00D8FF', '#DD1B16', '#7C8CF8'],
-        data: Array.from(typeMap.values())
+        backgroundColor: [
+          '#409EFF',
+          '#67C23A',
+          '#E6A23C',
+          '#F56C6C',
+          '#909399',
+          '#8E44AD',
+          '#16A085',
+          '#D35400',
+          '#2C3E50',
+          '#7F8C8D'
+        ],
+        data: filteredData.map(([_, amount]) => amount)
       }
     ]
   }
@@ -275,29 +317,6 @@ const yearlyExecutionData = computed(() => {
         backgroundColor: 'rgba(103, 194, 58, 0.1)',
         data: actualData,
         fill: true
-      }
-    ]
-  }
-})
-
-// 预算类型分布数据
-const budgetTypeData = computed(() => {
-  const typeMap = new Map<string, number>()
-  budgetData.value.forEach((item) => {
-    const amount = typeMap.get(item.budgetType) || 0
-    typeMap.set(item.budgetType, amount + item.amount)
-  })
-
-  const filteredData = Array.from(typeMap.entries())
-    .filter(([_, amount]) => amount > 0)
-    .sort((a, b) => b[1] - a[1])
-
-  return {
-    labels: filteredData.map(([name]) => name),
-    datasets: [
-      {
-        backgroundColor: ['#409EFF', '#67C23A', '#E6A23C', '#F56C6C', '#909399'],
-        data: filteredData.map(([_, amount]) => amount)
       }
     ]
   }
@@ -402,12 +421,6 @@ const areaChartOptions = {
       borderWidth: 2
     }
   }
-}
-
-// 图表通用配置
-const chartOptions = {
-  responsive: true,
-  maintainAspectRatio: false
 }
 </script>
 

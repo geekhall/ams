@@ -10,7 +10,6 @@ ChartJS.register(ArcElement, Tooltip, Legend)
 
 const props = defineProps<{
   data?: {
-    title?: string
     labels: string[]
     datasets: {
       backgroundColor: string[]
@@ -19,23 +18,39 @@ const props = defineProps<{
   }
   options?: {
     responsive?: boolean
-    [key: string]: any
+    maintainAspectRatio?: boolean
+    plugins?: {
+      legend?: {
+        position?: string
+        labels?: {
+          padding?: number
+          font?: {
+            size?: number
+          }
+        }
+      }
+      tooltip?: {
+        callbacks?: {
+          label?: (context: any) => string
+        }
+      }
+    }
   }
 }>()
 
 const chartData = props.data || {
-  title: 'Pie Chart',
-  labels: ['VueJs', 'EmberJs', 'ReactJs', 'AngularJs'],
+  labels: ['部门A', '部门B', '部门C'],
   datasets: [
     {
-      backgroundColor: ['#41B883', '#E46651', '#00D8FF', '#DD1B16'],
-      data: [40, 20, 80, 10]
+      backgroundColor: ['#409EFF', '#67C23A', '#E6A23C'],
+      data: [300, 200, 100]
     }
   ]
 }
 
 const chartOptions = props.options || {
-  responsive: true
+  responsive: true,
+  maintainAspectRatio: false
 }
 </script>
 

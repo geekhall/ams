@@ -85,7 +85,6 @@
 import { ref, reactive, onMounted } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { Delete, Edit, Search, Plus } from '@element-plus/icons-vue'
-import { useUserStore } from '@/stores/user'
 
 interface TableItem {
   id: number
@@ -104,7 +103,6 @@ const query = reactive({
 })
 const tableData = ref<TableItem[]>([])
 const pageTotal = ref(0)
-const userStore = useUserStore()
 
 // 获取表格数据
 const getData = () => {}

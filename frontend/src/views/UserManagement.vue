@@ -198,9 +198,9 @@ const getData = async () => {
       tableData.value = res.data.items
       pageTotal.value = res.data.total
     } else {
-      console.log('#### res.code', res.code)
-      console.log('#### res.message', res.message)
-      console.log('#### res.data', res.data)
+      // console.log('#### res.code', res.code)
+      // console.log('#### res.message', res.message)
+      // console.log('#### res.data', res.data)
       ElMessage.error(res.message)
     }
   } catch (error) {

@@ -110,7 +110,6 @@ import { useAssetType } from '@/hooks/useAssetType'
 import { useDepartment } from '@/hooks/useDepartment'
 import { Delete, Edit, Search, Plus, Setting } from '@element-plus/icons-vue'
 import { useAsset } from '@/hooks/useAsset'
-import { useRouter } from 'vue-router'
 import AssetDialog from '@/components/asset/AssetDialog.vue'
 import ColumnSettings from '@/components/asset/ColumnSettings.vue'
 import AssetTypeManagement from '@/components/asset/AssetTypeManagement.vue'
@@ -223,13 +222,6 @@ onMounted(() => {
   getData()
   fetchDepartments()
 })
-
-// 新增操作
-const handleAddWithFetch = async () => {
-  await fetchAssetTypes()
-  await fetchDepartments()
-  await handleAdd()
-}
 
 // 编辑操作
 const handleEditWithFetch = async (index: number, row: any) => {

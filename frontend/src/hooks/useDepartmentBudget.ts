@@ -1,18 +1,44 @@
-import { computed } from 'vue'
+import { computed, type Ref } from 'vue'
 import type { Budget } from '@/types/budget'
 
-export const useDepartmentBudget = (budgetData: Budget[]) => {
+export const useDepartmentBudget = (budgetData: Ref<Budget[]>) => {
   // 部门预算分布数据
   const departmentPieData = computed(() => {
+    if (!budgetData.value || budgetData.value.length === 0) {
+      return {
+        labels: ['暂无数据'],
+        datasets: [
+          {
+            backgroundColor: ['#909399'],
+            data: [1]
+          }
+        ]
+      }
+    }
+
     const departmentMap = new Map<string, number>()
-    budgetData.forEach((item) => {
-      const amount = departmentMap.get(item.departmentName) || 0
-      departmentMap.set(item.departmentName, amount + item.amount)
+    budgetData.value.forEach((item) => {
+      if (item.departmentName && item.amount) {
+        const amount = departmentMap.get(item.departmentName) || 0
+        departmentMap.set(item.departmentName, amount + item.amount)
+      }
     })
 
     const filteredData = Array.from(departmentMap.entries())
       .filter(([_, amount]) => amount > 0)
       .sort((a, b) => b[1] - a[1])
+
+    if (filteredData.length === 0) {
+      return {
+        labels: ['暂无数据'],
+        datasets: [
+          {
+            backgroundColor: ['#909399'],
+            data: [1]
+          }
+        ]
+      }
+    }
 
     return {
       labels: filteredData.map(([name]) => name),
@@ -42,7 +68,7 @@ export const useDepartmentBudget = (budgetData: Budget[]) => {
     maintainAspectRatio: false,
     plugins: {
       legend: {
-        position: 'right',
+        position: 'right' as const,
         labels: {
           padding: 20,
           font: {
