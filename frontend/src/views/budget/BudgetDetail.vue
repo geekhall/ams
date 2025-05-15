@@ -78,6 +78,7 @@
         <el-button type="primary" :icon="Plus" @click="handleAdd"> 新增 </el-button>
         <el-button type="primary" :icon="Upload" @click="handleImport">导入</el-button>
         <el-button type="primary" :icon="Download" @click="handleExport">导出</el-button>
+        <el-button type="success" :icon="Setting" @click="showColumnSettings">列设置</el-button>
       </div>
     </div>
     <div></div>
@@ -99,16 +100,21 @@
 
       <el-table-column type="expand">
         <template #default="props">
-          <div m="4">
-            <p m="t-0 b-2">项目概述: {{ props.row.description }}</p>
-            <p m="t-0 b-2">备注: {{ props.row.remark }}</p>
-            <p m="t-0 b-2" v-if="isTech">团队: {{ props.row.teamName }}</p>
-            <p m="t-0 b-2" v-if="!isTech">优先级: {{ props.row.priority }}</p>
-            <p m="t-0 b-2" v-if="!isTech">业务优先级: {{ props.row.businessPriority }}</p>
-            <p m="t-0 b-2" v-if="!isTech">
-              业务优先级情况说明: {{ props.row.businessDescription }}
-            </p>
-            <p m="t-0 b-2" v-if="!isTech">预计启动时间: {{ props.row.plannedStartDate }}</p>
+          <div class="expand-content">
+            <div class="expand-grid">
+              <template v-for="field in expandFields" :key="field.value">
+                <div class="expand-item">
+                  <div class="expand-label">{{ field.label }}</div>
+                  <div class="expand-value">
+                    {{
+                      field.value === 'amount'
+                        ? '¥' + props.row[field.value]
+                        : props.row[field.value]
+                    }}
+                  </div>
+                </div>
+              </template>
+            </div>
           </div>
         </template>
       </el-table-column>
@@ -276,6 +282,13 @@
         </div>
       </div>
     </el-drawer>
+
+    <!-- 列设置对话框 -->
+    <ColumnSettings
+      v-model:visible="columnSettingsVisible"
+      :visibleColumns="visibleColumns"
+      @updateVisibleColumns="updateVisibleColumns"
+    />
   </div>
 </template>
 
@@ -296,13 +309,15 @@ import {
   Select,
   Upload,
   Download,
-  Refresh
+  Refresh,
+  Setting
 } from '@element-plus/icons-vue'
 import { deleteBudgetById, getBudgetList, addBudget, updateBudget } from '@/api/budget'
 import { type Budget } from '@/types/budget'
 import dayjs from 'dayjs'
 import { hasPermission } from '@/utils/permission'
 import BudgetDialog from '@/components/budget/BudgetDialog.vue'
+import ColumnSettings from '@/components/budget/ColumnSettings.vue'
 
 const { departments, fetchDepartments } = useDepartment()
 const { budgetTypes, fetchBudgetTypes } = useBudgetType()
@@ -698,6 +713,65 @@ const submitApproval = async () => {
     ElMessage.error('提交失败')
   }
 }
+
+// 列显示控制
+const visibleColumns = ref({
+  budgetType: true,
+  budgetCategory: true,
+  innovation: true,
+  name: true,
+  departmentName: true,
+  amount: true,
+  description: false,
+  teamName: false,
+  priority: false,
+  businessPriority: false,
+  businessDescription: false,
+  plannedStartDate: false,
+  remark: false
+})
+
+// 列设置对话框
+const columnSettingsVisible = ref(false)
+
+const showColumnSettings = () => {
+  columnSettingsVisible.value = true
+}
+
+// 定义字段类型
+type FieldKey = keyof typeof visibleColumns.value
+
+// 更新列显示控制
+const updateVisibleColumns = (newVisibleColumns: Record<FieldKey, boolean>) => {
+  visibleColumns.value = newVisibleColumns
+}
+
+// 计算表格显示的字段
+const tableFields = computed(() => {
+  return allFields.filter((field) => visibleColumns.value[field.value as FieldKey])
+})
+
+// 计算展开行显示的字段
+const expandFields = computed(() => {
+  return allFields.filter((field) => !visibleColumns.value[field.value as FieldKey])
+})
+
+// 所有字段定义
+const allFields = [
+  { value: 'budgetType', label: '项目类型' },
+  { value: 'budgetCategory', label: '项目性质' },
+  { value: 'innovation', label: '是否信创' },
+  { value: 'name', label: '项目名称' },
+  { value: 'departmentName', label: '部门' },
+  { value: 'amount', label: '预算金额' },
+  { value: 'description', label: '项目概述' },
+  { value: 'teamName', label: '团队' },
+  { value: 'priority', label: '优先级' },
+  { value: 'businessPriority', label: '业务优先级' },
+  { value: 'businessDescription', label: '业务优先级说明' },
+  { value: 'plannedStartDate', label: '预计启动时间' },
+  { value: 'remark', label: '备注' }
+]
 </script>
 
 <style scoped>
@@ -839,5 +913,66 @@ const submitApproval = async () => {
   background: #fff;
   border-top: 1px solid #eee;
   text-align: right;
+}
+
+.expand-content {
+  padding: 20px;
+  background-color: #fafafa;
+}
+
+.expand-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1px;
+  background-color: #ebeef5;
+  border: 1px solid #ebeef5;
+  border-radius: 4px;
+}
+
+.expand-item {
+  display: flex;
+  width: calc(33.33% - 1px);
+  background-color: #fff;
+}
+
+.expand-label {
+  width: 120px;
+  padding: 12px 15px;
+  background-color: #f5f7fa;
+  font-weight: bold;
+  color: #606266;
+  border-right: 1px solid #ebeef5;
+}
+
+.expand-value {
+  flex: 1;
+  padding: 12px 15px;
+  color: #606266;
+}
+
+/* 响应式布局 */
+@media screen and (max-width: 1200px) {
+  .expand-item {
+    width: calc(50% - 1px);
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .expand-item {
+    width: 100%;
+  }
+}
+
+:deep(.el-table .cell) {
+  white-space: nowrap;
+}
+
+:deep(.el-table .el-button) {
+  padding: 4px 8px;
+  margin: 0 2px;
+}
+
+:deep(.el-table .el-button + .el-button) {
+  margin-left: 2px;
 }
 </style>
