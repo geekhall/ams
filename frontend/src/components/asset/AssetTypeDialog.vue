@@ -52,6 +52,7 @@ const assetCount = ref(0)
 const form = reactive({
   id: '',
   name: '',
+  count: 1,
   status: 'active' as 'active' | 'inactive'
 })
 
@@ -101,6 +102,7 @@ watch(
       form.id = val.id
       form.name = val.name
       form.status = val.status
+      form.count = val.assetCount || 2
       // 如果是编辑模式，获取关联资产数
       if (props.mode === 'edit') {
         getAssetCount(val.id)
@@ -109,7 +111,8 @@ watch(
       form.id = ''
       form.name = ''
       form.status = 'active'
-      assetCount.value = 0
+      form.count = 1
+      assetCount.value = 2
     }
   },
   { immediate: true }
