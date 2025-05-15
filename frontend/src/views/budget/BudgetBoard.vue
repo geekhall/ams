@@ -2,65 +2,54 @@
   <div id="budgetBoardPage" class="content-container">
     <h1>预算概览</h1>
     <div class="chart-container">
-      <!-- 图表区域 -->
+      <!-- 第一行：部门预算分布和年度预算执行情况 -->
       <el-row :gutter="24" class="chart-section">
-        <el-col :xs="24" :lg="16">
+        <el-col :xs="24" :lg="12">
           <el-card shadow="hover" class="chart-card">
             <template #header>
               <div class="card-header">
-                <span class="header-title">资产趋势</span>
-                <el-radio-group v-model="chartTimeRange" size="small">
-                  <el-radio-button value="week">本周</el-radio-button>
-                  <el-radio-button value="month">本月</el-radio-button>
-                  <el-radio-button value="year">全年</el-radio-button>
+                <span class="header-title">部门预算分布</span>
+              </div>
+            </template>
+            <PieChart :data="departmentPieData" :options="pieChartOptions" />
+          </el-card>
+        </el-col>
+        <el-col :xs="24" :lg="12">
+          <el-card shadow="hover" class="chart-card">
+            <template #header>
+              <div class="card-header">
+                <span class="header-title">年度预算执行情况</span>
+                <el-radio-group v-model="yearRange" size="small">
+                  <el-radio-button value="2023">2023年</el-radio-button>
+                  <el-radio-button value="2024">2024年</el-radio-button>
                 </el-radio-group>
               </div>
             </template>
-            <line-chart class="chart" />
+            <LineChart :data="yearlyExecutionData" :options="lineChartOptions" />
           </el-card>
         </el-col>
-        <el-col :xs="24" :lg="8">
+      </el-row>
+
+      <!-- 第二行：预算类型分布和月度趋势 -->
+      <el-row :gutter="24" class="chart-section">
+        <el-col :xs="24" :lg="12">
           <el-card shadow="hover" class="chart-card">
             <template #header>
               <div class="card-header">
-                <span class="header-title">资产分类</span>
+                <span class="header-title">预算类型分布</span>
               </div>
             </template>
-            <random-chart class="chart" />
+            <PieChart :data="budgetTypeData" :options="pieChartOptions" />
           </el-card>
         </el-col>
-      </el-row>
-      <el-row :gutter="20">
-        <el-col :span="12">
-          <el-card shadow="hover">
+        <el-col :xs="24" :lg="12">
+          <el-card shadow="hover" class="chart-card">
             <template #header>
               <div class="card-header">
-                <span>按部门预算金额</span>
+                <span class="header-title">月度预算趋势</span>
               </div>
             </template>
-            <BarChart :data="departmentChartData" :options="chartOptions" />
-          </el-card>
-        </el-col>
-        <el-col :span="12">
-          <el-card shadow="hover">
-            <template #header>
-              <div class="card-header">
-                <span>按项目类型预算分布</span>
-              </div>
-            </template>
-            <PieChart :data="typeChartData" :options="chartOptions" />
-          </el-card>
-        </el-col>
-      </el-row>
-      <el-row :gutter="20" style="margin-top: 20px">
-        <el-col :span="24">
-          <el-card shadow="hover">
-            <template #header>
-              <div class="card-header">
-                <span>按月份预算趋势</span>
-              </div>
-            </template>
-            <LineChart :data="monthlyChartData" :options="chartOptions" />
+            <LineChart :data="monthlyTrendData" :options="areaChartOptions" />
           </el-card>
         </el-col>
       </el-row>
@@ -76,6 +65,7 @@ import LineChart from '@/components/charts/LineChart.vue'
 import { getBudgetList } from '@/api/budget'
 import { type Budget } from '@/types/budget'
 import { ElMessage } from 'element-plus'
+import { useDepartmentBudget } from '@/hooks/useDepartmentBudget'
 
 const tableWidth = ref(window.innerWidth - 50) // 设置初始表格宽度为窗口宽度减去一定的边距
 
@@ -210,24 +200,8 @@ const fetchBudgetData = async () => {
   ]
 }
 
-// 按部门预算金额图表数据
-const departmentChartData = computed(() => {
-  const departmentMap = new Map<string, number>()
-  budgetData.value.forEach((item) => {
-    const amount = departmentMap.get(item.departmentName) || 0
-    departmentMap.set(item.departmentName, amount + item.amount)
-  })
-  return {
-    labels: Array.from(departmentMap.keys()),
-    datasets: [
-      {
-        label: '预算金额',
-        backgroundColor: '#f87979',
-        data: Array.from(departmentMap.values())
-      }
-    ]
-  }
-})
+// 使用部门预算 hook
+const { departmentPieData, pieChartOptions } = useDepartmentBudget(budgetData.value)
 
 // 按项目类型预算分布图表数据
 const typeChartData = computed(() => {
@@ -269,6 +243,166 @@ const monthlyChartData = computed(() => {
     ]
   }
 })
+
+const yearRange = ref('2024')
+
+// 年度预算执行情况数据
+const yearlyExecutionData = computed(() => {
+  const months = Array.from({ length: 12 }, (_, i) => `${i + 1}月`)
+  const plannedData = Array(12).fill(0)
+  const actualData = Array(12).fill(0)
+
+  budgetData.value.forEach((item) => {
+    const month = new Date(item.plannedStartDate).getMonth()
+    plannedData[month] += item.amount
+    // 模拟实际执行数据（实际项目中应该从后端获取）
+    actualData[month] = plannedData[month] * (0.7 + Math.random() * 0.3)
+  })
+
+  return {
+    labels: months,
+    datasets: [
+      {
+        label: '计划预算',
+        borderColor: '#409EFF',
+        backgroundColor: 'rgba(64, 158, 255, 0.1)',
+        data: plannedData,
+        fill: true
+      },
+      {
+        label: '实际执行',
+        borderColor: '#67C23A',
+        backgroundColor: 'rgba(103, 194, 58, 0.1)',
+        data: actualData,
+        fill: true
+      }
+    ]
+  }
+})
+
+// 预算类型分布数据
+const budgetTypeData = computed(() => {
+  const typeMap = new Map<string, number>()
+  budgetData.value.forEach((item) => {
+    const amount = typeMap.get(item.budgetType) || 0
+    typeMap.set(item.budgetType, amount + item.amount)
+  })
+
+  const filteredData = Array.from(typeMap.entries())
+    .filter(([_, amount]) => amount > 0)
+    .sort((a, b) => b[1] - a[1])
+
+  return {
+    labels: filteredData.map(([name]) => name),
+    datasets: [
+      {
+        backgroundColor: ['#409EFF', '#67C23A', '#E6A23C', '#F56C6C', '#909399'],
+        data: filteredData.map(([_, amount]) => amount)
+      }
+    ]
+  }
+})
+
+// 月度预算趋势数据
+const monthlyTrendData = computed(() => {
+  const months = Array.from({ length: 12 }, (_, i) => `${i + 1}月`)
+  const data = Array(12).fill(0)
+
+  budgetData.value.forEach((item) => {
+    const month = new Date(item.plannedStartDate).getMonth()
+    data[month] += item.amount
+  })
+
+  return {
+    labels: months,
+    datasets: [
+      {
+        label: '预算金额',
+        borderColor: '#409EFF',
+        backgroundColor: 'rgba(64, 158, 255, 0.2)',
+        data: data,
+        fill: true,
+        tension: 0.4,
+        pointRadius: 4,
+        pointHoverRadius: 6
+      }
+    ]
+  }
+})
+
+// 折线图配置
+const lineChartOptions = {
+  responsive: true,
+  maintainAspectRatio: false,
+  plugins: {
+    legend: {
+      position: 'top'
+    },
+    tooltip: {
+      callbacks: {
+        label: function (context: any) {
+          return `${context.dataset.label}: ${context.raw.toLocaleString()}元`
+        }
+      }
+    }
+  },
+  scales: {
+    y: {
+      beginAtZero: true,
+      ticks: {
+        callback: function (value: any) {
+          return value.toLocaleString() + '元'
+        }
+      }
+    }
+  }
+}
+
+// 面积图配置
+const areaChartOptions = {
+  responsive: true,
+  maintainAspectRatio: false,
+  plugins: {
+    legend: {
+      display: false
+    },
+    tooltip: {
+      callbacks: {
+        label: function (context: any) {
+          return `${context.dataset.label}: ${context.raw.toLocaleString()}元`
+        }
+      }
+    }
+  },
+  scales: {
+    y: {
+      beginAtZero: true,
+      ticks: {
+        callback: function (value: any) {
+          return value.toLocaleString() + '元'
+        }
+      },
+      grid: {
+        color: 'rgba(0, 0, 0, 0.05)'
+      }
+    },
+    x: {
+      grid: {
+        display: false
+      }
+    }
+  },
+  elements: {
+    line: {
+      borderWidth: 2
+    },
+    point: {
+      backgroundColor: '#409EFF',
+      borderColor: '#fff',
+      borderWidth: 2
+    }
+  }
+}
 
 // 图表通用配置
 const chartOptions = {
