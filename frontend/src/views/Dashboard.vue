@@ -449,50 +449,6 @@ const initStatusChart = () => {
   statusChart.setOption(option)
 }
 
-// 初始化资产价值趋势图表
-const initValueChart = () => {
-  if (!valueChartRef.value) return
-
-  valueChart = echarts.init(valueChartRef.value)
-  const option = {
-    tooltip: {
-      trigger: 'axis'
-    },
-    grid: {
-      left: '3%',
-      right: '4%',
-      bottom: '3%',
-      containLabel: true
-    },
-    xAxis: {
-      type: 'category',
-      boundaryGap: false,
-      data: ['1月', '2月', '3月', '4月', '5月', '6月']
-    },
-    yAxis: {
-      type: 'value',
-      axisLabel: {
-        formatter: '{value} 万'
-      }
-    },
-    series: [
-      {
-        name: '资产总值',
-        type: 'line',
-        smooth: true,
-        data: [150, 230, 224, 218, 135, 147],
-        areaStyle: {
-          opacity: 0.1
-        },
-        itemStyle: {
-          color: '#409EFF'
-        }
-      }
-    ]
-  }
-  valueChart.setOption(option)
-}
-
 // 获取资产类型数据并更新图表
 const fetchAssetTypeData = async () => {
   try {
@@ -509,7 +465,6 @@ const fetchAssetTypeData = async () => {
 const handleResize = () => {
   typeChart?.resize()
   statusChart?.resize()
-  valueChart?.resize()
 }
 
 // 格式化数字
@@ -553,7 +508,6 @@ onMounted(async () => {
   ])
 
   initStatusChart()
-  initValueChart()
   window.addEventListener('resize', handleResize)
 })
 
@@ -561,7 +515,6 @@ onUnmounted(() => {
   window.removeEventListener('resize', handleResize)
   typeChart?.dispose()
   statusChart?.dispose()
-  valueChart?.dispose()
 })
 </script>
 
