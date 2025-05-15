@@ -381,6 +381,9 @@ const initTypeChart = (data: AssetTypeSummary[]) => {
 const initStatusChart = () => {
   if (!statusChartRef.value) return
 
+  // 过滤掉资产数量为0的部门
+  const filteredData = departmentSummary.value.filter((item) => item.assetCount > 0)
+
   statusChart = echarts.init(statusChartRef.value)
   const option = {
     tooltip: {
@@ -393,18 +396,21 @@ const initStatusChart = () => {
     grid: {
       left: '3%',
       right: '4%',
-      bottom: '8%',
+      bottom: '15%',
       top: '8%',
       containLabel: true
     },
     xAxis: {
       type: 'category',
-      data: ['研发部', '市场部', '财务部', '人事部', '行政部'],
+      data: filteredData.map((item) => item.name),
       axisLabel: {
         interval: 0,
-        rotate: 30,
-        fontSize: 13,
-        color: '#606266'
+        rotate: 45,
+        fontSize: 12,
+        color: '#606266',
+        margin: 15,
+        width: 80,
+        overflow: 'truncate'
       },
       axisLine: {
         lineStyle: {
@@ -433,21 +439,22 @@ const initStatusChart = () => {
     series: [
       {
         type: 'bar',
-        data: [45, 32, 28, 15, 20],
-        barWidth: '40%',
+        data: filteredData.map((item) => item.assetCount),
+        barWidth: '30%',
         itemStyle: {
           color: function (params: any) {
             const colors = ['#409EFF', '#67C23A', '#E6A23C', '#F56C6C', '#909399']
-            return colors[params.dataIndex]
+            return colors[params.dataIndex % colors.length]
           },
           borderRadius: [4, 4, 0, 0]
         },
         label: {
           show: true,
           position: 'top',
-          fontSize: 13,
+          fontSize: 12,
           color: '#606266',
-          formatter: '{c} 台'
+          formatter: '{c} 台',
+          distance: 5
         }
       }
     ]
@@ -522,7 +529,8 @@ onMounted(async () => {
   await Promise.all([
     getMessageCount().then((count) => (totalMessage.value = count)),
     fetchAssetSummary(),
-    fetchAssetTypeData()
+    fetchAssetTypeData(),
+    fetchDepartmentSummary()
   ])
 
   initStatusChart()
