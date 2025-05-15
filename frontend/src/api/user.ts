@@ -1,7 +1,6 @@
 import loki from "./loki";
 import { UserListResponse, UserDTO, AuthResponse } from "@/types/user";
 import { ApiResponse } from "@/types/index";
-import { AxiosRequestConfig } from "axios";
 
 // 用户注册
 export const userRegister = async (params: any) => {
@@ -14,34 +13,29 @@ export const userRegister = async (params: any) => {
 
 // 用户登录
 export const userLogin = async (credentials: { username: string; password: string }): Promise<AuthResponse> => {
-  console.log('credentials in authStore ::::: ', credentials)
 
   const response: AuthResponse = await loki.request({
     url: "/user/login",
     method: "POST",
     data: credentials,
   });
-  console.log('response in authStore ::::: ', response)
-  // setAuthData(response)
+
   return response;
 };
 
 
 // 获取当前用户信息
 export const getUserInfo = async (username: string): Promise<ApiResponse<UserDTO>> => {
-  console.log('username in getUserInfo ::::: ', username)
   const response: ApiResponse<UserDTO> = await loki.request({
     url: "/user/info",
     method: "POST",
     data: { username },
   });
-  // console.log('response in getUserInfo ::::: ', response)
   return response;
 };
 
 // 用户退出登录
 export const userLogout = async (): Promise<ApiResponse<void>> => {
-  // console.log('userLogout in user.ts ::::: ');
 
   const response = await loki.request({
     url: "/user/logout",

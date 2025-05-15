@@ -121,8 +121,7 @@ export const useUserStore = defineStore('user', () => {
     const storedUsername = localStorage.getItem('username')
     if (storedToken && storedUsername) {
       token.value = storedToken
-      const result = await fetchUserInfo(storedUsername)
-      console.log('result in initialize ::::: ', result)
+      await fetchUserInfo(storedUsername)
     }
   }
 
