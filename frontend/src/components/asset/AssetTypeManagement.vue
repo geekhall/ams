@@ -27,24 +27,9 @@
           </el-tag>
         </template>
       </el-table-column>
-      <!-- <el-table-column prop="status" label="状态" align="center" width="100">
-        <template #default="scope">
-          <el-tag :type="scope.row.status === 1 ? 'success' : 'warning'">
-            {{ scope.row.status === 1 ? '启用' : '停用' }}
-          </el-tag>
-        </template>
-      </el-table-column> -->
       <el-table-column label="操作" width="280" align="center">
         <template #default="scope">
           <el-button text :icon="Edit" @click="handleEdit(scope.row)">编辑</el-button>
-          <!-- <el-button
-            text
-            :type="scope.row.status === 1 ? 'warning' : 'success'"
-            :icon="scope.row.status === 1 ? 'Close' : 'Check'"
-            @click="handleStatusChange(scope.row)"
-          >
-            {{ scope.row.status === 1 ? '停用' : '启用' }}
-          </el-button> -->
           <el-button
             text
             :icon="Delete"
@@ -174,43 +159,6 @@ const handleEdit = (row: AssetType) => {
   dialogMode.value = DIALOG_MODE.EDIT
   currentAssetType.value = row
   editDialogVisible.value = true
-}
-
-// 状态变更
-const handleStatusChange = async (row: AssetType) => {
-  const newStatus =
-    row.status === ASSET_TYPE_STATUS.ACTIVE ? ASSET_TYPE_STATUS.INACTIVE : ASSET_TYPE_STATUS.ACTIVE
-  const actionText = newStatus === ASSET_TYPE_STATUS.ACTIVE ? '启用' : '停用'
-
-  try {
-    await ElMessageBox.confirm(
-      `确定要${actionText}该资产类型吗？${
-        newStatus === ASSET_TYPE_STATUS.INACTIVE
-          ? '停用后，该类型将不再出现在新增资产时的类型选择列表中。'
-          : ''
-      }`,
-      '提示',
-      {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }
-    )
-
-    const res = await updateAssetType(row.id, row.name, newStatus)
-    if (res.code === 200) {
-      ElMessage.success(`${actionText}成功`)
-      getData()
-      emit('success')
-    } else {
-      ElMessage.error(res.message || `${actionText}失败`)
-    }
-  } catch (error) {
-    if (error !== 'cancel') {
-      console.error(`${actionText}资产类型失败:`, error)
-      ElMessage.error(`${actionText}失败`)
-    }
-  }
 }
 
 // 删除

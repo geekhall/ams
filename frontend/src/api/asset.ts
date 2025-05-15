@@ -130,7 +130,7 @@ export const addAssetType = async (name: string): Promise<AssetTypeListResponse>
 };
 
 // 更新资产类型
-export const updateAssetType = async (id: string, name: string, status: 'active' | 'inactive'): Promise<AssetTypeListResponse> => {
+export const updateAssetType = async (id: string, name: string): Promise<AssetTypeListResponse> => {
   return await loki.request({
     url: "/at/update",
     method: "POST",

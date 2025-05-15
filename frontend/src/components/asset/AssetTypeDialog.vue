@@ -14,12 +14,6 @@
           {{ assetCount || 0 }}
         </el-tag>
       </el-form-item>
-      <!-- <el-form-item v-if="mode === 'edit' && assetCount === 0" label="状态">
-        <el-radio-group v-model="form.status">
-          <el-radio value="1">启用</el-radio>
-          <el-radio value="0">停用</el-radio>
-        </el-radio-group>
-      </el-form-item> -->
     </el-form>
     <template #footer>
       <span class="dialog-footer">
@@ -51,8 +45,7 @@ const assetCount = ref(0)
 
 const form = reactive({
   id: '',
-  name: '',
-  status: 1
+  name: ''
 })
 
 const rules = reactive<FormRules>({
@@ -106,15 +99,9 @@ watch(
     if (val) {
       form.id = val.id
       form.name = val.name
-      form.status = val.status
-      // 如果是编辑模式，获取关联资产数
-      if (props.mode === 'edit') {
-        getAssetCount(val.id)
-      }
     } else {
       form.id = ''
       form.name = ''
-      form.status = 1
       assetCount.value = 0
     }
   },
@@ -138,10 +125,10 @@ const handleSubmit = async () => {
         } else {
           // 如果是编辑模式且有资产关联，不允许修改状态
           if (assetCount.value > 0) {
-            await updateAssetType(form.id, form.name, form.status)
+            await updateAssetType(form.id, form.name)
           } else {
             // 如果没有资产关联，可以修改状态
-            await updateAssetType(form.id, form.name, form.status)
+            await updateAssetType(form.id, form.name)
           }
           ElMessage.success('更新成功')
         }
