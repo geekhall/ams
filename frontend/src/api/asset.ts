@@ -7,7 +7,8 @@ import {
   AssetNamesResponse,
   AssetTypeListResponse,
   AssetSummaryResponse,
-  AssetTypeSummaryListResponse
+  AssetTypeSummaryListResponse,
+  DepartmentSummaryResponse
 } from "~/types/asset";
 import { BorrowAssetParams, AssetBorrowListResponse } from "~/types/asset";
 
@@ -184,6 +185,13 @@ export const returnAsset = (data: {
 export const getAssetSummary = async (): Promise<AssetSummaryResponse> => {
   return await loki.request({
     url: '/asset/summary',
+    method: 'post'
+  } as AxiosRequestConfig);
+}
+
+export const getDepartmentSummary = async (): Promise<DepartmentSummaryResponse> => {
+  return await loki.request({
+    url: '/asset/dp',
     method: 'post'
   } as AxiosRequestConfig);
 }

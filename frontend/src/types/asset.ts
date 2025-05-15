@@ -60,6 +60,14 @@ export interface AssetSummary {
 
 export type AssetSummaryResponse = ApiResponse<AssetSummary>
 
+export interface DepartmentSummary {
+  id: string
+  name: string
+  assetCount: number
+}
+
+export type DepartmentSummaryResponse = ApiResponse<DepartmentSummary[]>
+
 // 资产领用记录
 export interface AssetBorrowRecord {
   id: string

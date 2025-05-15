@@ -193,12 +193,18 @@
 import { ref, reactive, onMounted, onUnmounted } from 'vue'
 import * as echarts from 'echarts'
 import { useMessage } from '@/hooks/useMessage'
-import { getAssetSummary, getAssetTypeSummaryList } from '@/api/asset'
-import { AssetSummaryResponse, AssetTypeSummary } from '@/types/asset'
+import { getAssetSummary, getAssetTypeSummaryList, getDepartmentSummary } from '@/api/asset'
+import {
+  AssetSummaryResponse,
+  AssetTypeSummary,
+  DepartmentSummaryResponse,
+  DepartmentSummary
+} from '@/types/asset'
 import { Box, Money, Warning, Bell, ArrowUp, ArrowDown, Plus } from '@element-plus/icons-vue'
 
 const { getMessageCount } = useMessage()
 const totalMessage = ref(0)
+const departmentSummary = ref<DepartmentSummary[]>([])
 
 // 资产统计数据
 const assetStats = reactive({
@@ -491,6 +497,18 @@ const fetchAssetSummary = async () => {
     }
   } catch (error) {
     console.error('获取资产统计数据失败:', error)
+  }
+}
+
+// 获取部门统计数据
+const fetchDepartmentSummary = async () => {
+  try {
+    const res: DepartmentSummaryResponse = await getDepartmentSummary()
+    if (res.code === 200) {
+      departmentSummary.value = res.data
+    }
+  } catch (error) {
+    console.error('获取部门统计数据失败:', error)
   }
 }
 
