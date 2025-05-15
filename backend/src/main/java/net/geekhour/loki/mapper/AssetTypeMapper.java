@@ -23,7 +23,7 @@ public interface AssetTypeMapper extends BaseMapper<AssetType> {
     @Select("SELECT id FROM h_asset_type WHERE name = #{name} AND deleted = 0")
     Long getIdByName(@Param("name") String name);
 
-    @Select("select b.id, b.name, count(a.id) as total_count from h_asset a \n" +
+    @Select("select b.id, b.name, count(a.id) as total_count, b.status  from h_asset a \n" +
             "left join h_asset_type b on a.type = b.id \n" +
             "group by b.id, b.name\n" +
             "order by b.id, b.name")

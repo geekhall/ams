@@ -124,6 +124,7 @@ const getData = async () => {
       const filteredData = query.name
         ? res.data.filter((item) => item.name.includes(query.name))
         : res.data
+      console.log('filteredData :::: ', filteredData)
 
       // 计算总数
       total.value = filteredData.length

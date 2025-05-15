@@ -33,9 +33,9 @@ public class AssetType extends Model<AssetType> {
     @TableField("name")
     private String name;
 
-    @ApiModelProperty("父类型（支持多级分类，跟类型为NULL）")
-    @TableField("parent_id")
-    private Long parentId;
+    @ApiModelProperty("状态")
+    @TableField("status")
+    private Integer status;
 
     @ApiModelProperty("版本号")
     @TableField("version")
