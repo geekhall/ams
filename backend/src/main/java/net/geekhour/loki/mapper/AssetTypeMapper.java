@@ -28,7 +28,8 @@ public interface AssetTypeMapper extends BaseMapper<AssetType> {
             "  select b.id as id , b.name as name , count(a.id) as asset_count, b.status  from h_asset a " +
             "  left join h_asset_type b on a.type = b.id " +
             "  group by b.id, b.name) y " +
-            "on x.id = y.id  " +
+            "on x.id = y.id " +
+            "where x.deleted = 0 " +
             "order by x.id ")
     List<AssetTypeSummaryDTO> getSummary();
 }

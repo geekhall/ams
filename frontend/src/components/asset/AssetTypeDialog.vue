@@ -14,12 +14,12 @@
           {{ assetCount || 0 }}
         </el-tag>
       </el-form-item>
-      <el-form-item v-if="mode === 'edit' && assetCount === 0" label="状态">
+      <!-- <el-form-item v-if="mode === 'edit' && assetCount === 0" label="状态">
         <el-radio-group v-model="form.status">
-          <el-radio label="active">启用</el-radio>
-          <el-radio label="inactive">停用</el-radio>
+          <el-radio value="1">启用</el-radio>
+          <el-radio value="0">停用</el-radio>
         </el-radio-group>
-      </el-form-item>
+      </el-form-item> -->
     </el-form>
     <template #footer>
       <span class="dialog-footer">
@@ -33,7 +33,7 @@
 <script lang="ts" setup>
 import { ref, reactive, defineProps, defineEmits, watch } from 'vue'
 import { ElMessage } from 'element-plus'
-import { addAssetType, updateAssetType, getAssetTypeList } from '@/api/asset'
+import { addAssetType, updateAssetType, getAssetTypeSummaryList } from '@/api/asset'
 import type { FormInstance, FormRules } from 'element-plus'
 import type { AssetType } from '@/types/asset'
 
@@ -52,7 +52,7 @@ const assetCount = ref(0)
 const form = reactive({
   id: '',
   name: '',
-  status: 'active' as 'active' | 'inactive'
+  status: 1
 })
 
 const rules = reactive<FormRules>({
@@ -65,15 +65,21 @@ const rules = reactive<FormRules>({
 // 获取资产类型关联的资产数
 const getAssetCount = async (typeId: string) => {
   try {
-    const res = await getAssetTypeList()
+    const res = await getAssetTypeSummaryList()
     if (res.code === 200) {
-      const type = res.data.find((item: AssetType) => item.id === typeId)
+      const type = res.data.find((item) => item.id === typeId)
       if (type) {
         assetCount.value = type.assetCount || 0
+      } else {
+        console.warn(`未找到ID为 ${typeId} 的资产类型`)
+        assetCount.value = 0
       }
+    } else {
+      ElMessage.error(res.message || '获取资产类型关联资产数失败')
     }
   } catch (error) {
     console.error('获取资产类型关联资产数失败:', error)
+    ElMessage.error('获取资产类型关联资产数失败')
   }
 }
 
@@ -108,7 +114,7 @@ watch(
     } else {
       form.id = ''
       form.name = ''
-      form.status = 'active'
+      form.status = 1
       assetCount.value = 0
     }
   },

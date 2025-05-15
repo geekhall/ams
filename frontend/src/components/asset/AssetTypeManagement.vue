@@ -27,24 +27,24 @@
           </el-tag>
         </template>
       </el-table-column>
-      <el-table-column prop="status" label="状态" align="center" width="100">
+      <!-- <el-table-column prop="status" label="状态" align="center" width="100">
         <template #default="scope">
           <el-tag :type="scope.row.status === 1 ? 'success' : 'warning'">
             {{ scope.row.status === 1 ? '启用' : '停用' }}
           </el-tag>
         </template>
-      </el-table-column>
+      </el-table-column> -->
       <el-table-column label="操作" width="280" align="center">
         <template #default="scope">
           <el-button text :icon="Edit" @click="handleEdit(scope.row)">编辑</el-button>
-          <el-button
+          <!-- <el-button
             text
             :type="scope.row.status === 1 ? 'warning' : 'success'"
             :icon="scope.row.status === 1 ? 'Close' : 'Check'"
             @click="handleStatusChange(scope.row)"
           >
             {{ scope.row.status === 1 ? '停用' : '启用' }}
-          </el-button>
+          </el-button> -->
           <el-button
             text
             :icon="Delete"
