@@ -201,6 +201,7 @@ import {
   DepartmentSummary
 } from '@/types/asset'
 import { Box, Money, Warning, Bell, ArrowUp, ArrowDown, Plus } from '@element-plus/icons-vue'
+import { useRouter } from 'vue-router'
 
 const { getMessageCount } = useMessage()
 const totalMessage = ref(0)
@@ -279,42 +280,46 @@ const quickActions = reactive([
   {
     title: '资产登记',
     icon: 'Document',
-    bgColor: 'var(--el-color-primary-light-8)'
+    bgColor: 'var(--el-color-primary-light-8)',
+    route: '/asset'
   },
   {
     title: '资产查询',
     icon: 'Search',
-    bgColor: 'var(--el-color-success-light-8)'
+    bgColor: 'var(--el-color-success-light-8)',
+    route: '/asset'
   },
   {
     title: '资产盘点',
     icon: 'List',
-    bgColor: 'var(--el-color-warning-light-8)'
+    bgColor: 'var(--el-color-warning-light-8)',
+    route: '/asset'
   },
   {
     title: '数据导入',
     icon: 'Upload',
-    bgColor: 'var(--el-color-info-light-8)'
+    bgColor: 'var(--el-color-info-light-8)',
+    route: '/asset'
   },
   {
     title: '用户管理',
     icon: 'User',
-    bgColor: 'var(--el-color-danger-light-8)'
+    bgColor: 'var(--el-color-danger-light-8)',
+    route: '/user'
   },
   {
     title: '系统设置',
     icon: 'Setting',
-    bgColor: 'var(--el-color-primary-light-8)'
+    bgColor: 'var(--el-color-primary-light-8)',
+    route: '/setting'
   }
 ])
 
 // 图表相关
 const typeChartRef = ref<HTMLElement>()
 const statusChartRef = ref<HTMLElement>()
-const valueChartRef = ref<HTMLElement>()
 let typeChart: echarts.ECharts | null = null
 let statusChart: echarts.ECharts | null = null
-let valueChart: echarts.ECharts | null = null
 
 // 初始化资产类型分布图表
 const initTypeChart = (data: AssetTypeSummary[]) => {
@@ -520,9 +525,11 @@ const fetchDepartmentSummary = async () => {
 }
 
 // 处理快捷操作点击
+const router = useRouter()
 const handleQuickAction = (action: any) => {
-  // TODO: 实现快捷操作跳转逻辑
-  console.log('Quick action clicked:', action.title)
+  if (action.route) {
+    router.push(action.route)
+  }
 }
 
 onMounted(async () => {
