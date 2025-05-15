@@ -29,8 +29,8 @@
       </el-table-column>
       <el-table-column prop="status" label="状态" align="center" width="100">
         <template #default="scope">
-          <el-tag :type="scope.row.status === 'active' ? 'success' : 'info'">
-            {{ scope.row.status === 'active' ? '启用' : '停用' }}
+          <el-tag :type="scope.row.status === 1 ? 'success' : 'warning'">
+            {{ scope.row.status === 1 ? '启用' : '停用' }}
           </el-tag>
         </template>
       </el-table-column>
@@ -39,11 +39,11 @@
           <el-button text :icon="Edit" @click="handleEdit(scope.row)">编辑</el-button>
           <el-button
             text
-            :type="scope.row.status === 'active' ? 'warning' : 'success'"
-            :icon="scope.row.status === 'active' ? 'Close' : 'Check'"
+            :type="scope.row.status === 1 ? 'warning' : 'success'"
+            :icon="scope.row.status === 1 ? 'Close' : 'Check'"
             @click="handleStatusChange(scope.row)"
           >
-            {{ scope.row.status === 'active' ? '停用' : '启用' }}
+            {{ scope.row.status === 1 ? '停用' : '启用' }}
           </el-button>
           <el-button
             text
@@ -86,7 +86,12 @@ import { ref, reactive, computed, watch } from 'vue'
 import { Delete, Edit, Search, Plus, Close, Check } from '@element-plus/icons-vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import AssetTypeDialog from '@/components/asset/AssetTypeDialog.vue'
-import { getAssetTypeList, deleteAssetType, updateAssetType } from '@/api/asset'
+import {
+  getAssetTypeList,
+  getAssetTypeSummaryList,
+  deleteAssetType,
+  updateAssetType
+} from '@/api/asset'
 import type { AssetType } from '@/types/asset'
 
 const props = defineProps<{
@@ -118,7 +123,7 @@ const currentAssetType = ref<AssetType | null>(null)
 // 获取资产类型数据
 const getData = async () => {
   try {
-    const res = await getAssetTypeList()
+    const res = await getAssetTypeSummaryList()
     if (res.code === 200) {
       // 根据分页参数过滤数据
       const filteredData = query.name

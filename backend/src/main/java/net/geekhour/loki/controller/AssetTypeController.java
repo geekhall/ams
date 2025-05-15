@@ -48,6 +48,7 @@ public class AssetTypeController {
     @PreAuthorize("hasRole('USER') || hasAuthority('asset:view')")
     public ResponseEntity<?> summary() {
         try {
+            System.out.println("AssetTypeController:: summary is called.");
             return ResponseUtil.success(assetTypeService.getSummary());
         } catch (Exception e) {
             e.printStackTrace();

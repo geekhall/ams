@@ -6,7 +6,8 @@ import {
   AssetListResponse,
   AssetNamesResponse,
   AssetTypeListResponse,
-  AssetSummaryResponse
+  AssetSummaryResponse,
+  AssetTypeSummaryListResponse
 } from "~/types/asset";
 import { BorrowAssetParams, AssetBorrowListResponse } from "~/types/asset";
 
@@ -113,7 +114,12 @@ export const getAssetTypeList = async (): Promise<AssetTypeListResponse> => {
     method: "POST",
   } as AxiosRequestConfig);
 };
-
+export const getAssetTypeSummaryList = async (): Promise<AssetTypeSummaryListResponse> => {
+  return await loki.request({
+    url: "/at/summary",
+    method: "POST",
+  } as AxiosRequestConfig);
+};
 // 添加资产类型
 export const addAssetType = async (name: string): Promise<AssetTypeListResponse> => {
   return await loki.request({

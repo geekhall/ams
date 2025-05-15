@@ -37,11 +37,19 @@ export type AssetNamesResponse = ApiResponse<{
 export interface AssetType {
   id: string
   name: string
-  status: 'active' | 'inactive'
+  status: 0 | 1
   assetCount?: number  // 关联的资产数量
+}
+export interface AssetTypeSummary {
+  id: string
+  name: string
+  assetCount?: number  // 关联的资产数量
+  status: 0 | 1
 }
 
 export type AssetTypeListResponse = ApiResponse<AssetType[]>
+
+export type AssetTypeSummaryListResponse = ApiResponse<AssetTypeSummary[]>
 
 export interface AssetSummary {
   totalCount: number
