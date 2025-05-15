@@ -14,12 +14,6 @@
           {{ assetCount || 0 }}
         </el-tag>
       </el-form-item>
-      <el-form-item v-if="mode === 'edit' && assetCount === 0" label="状态">
-        <el-radio-group v-model="form.status">
-          <el-radio label="active">启用</el-radio>
-          <el-radio label="inactive">停用</el-radio>
-        </el-radio-group>
-      </el-form-item>
     </el-form>
     <template #footer>
       <span class="dialog-footer">
@@ -33,7 +27,7 @@
 <script lang="ts" setup>
 import { ref, reactive, defineProps, defineEmits, watch } from 'vue'
 import { ElMessage } from 'element-plus'
-import { addAssetType, updateAssetType, getAssetTypeList } from '@/api/asset'
+import { addAssetType, updateAssetType, getAssetTypeSummaryList } from '@/api/asset'
 import type { FormInstance, FormRules } from 'element-plus'
 import type { AssetType } from '@/types/asset'
 
@@ -52,8 +46,7 @@ const assetCount = ref(0)
 const form = reactive({
   id: '',
   name: '',
-  count: 1,
-  status: 'active' as 'active' | 'inactive'
+  count: 0
 })
 
 const rules = reactive<FormRules>({
@@ -66,15 +59,21 @@ const rules = reactive<FormRules>({
 // 获取资产类型关联的资产数
 const getAssetCount = async (typeId: string) => {
   try {
-    const res = await getAssetTypeList()
+    const res = await getAssetTypeSummaryList()
     if (res.code === 200) {
-      const type = res.data.find((item: AssetType) => item.id === typeId)
+      const type = res.data.find((item) => item.id === typeId)
       if (type) {
         assetCount.value = type.assetCount || 0
+      } else {
+        console.warn(`未找到ID为 ${typeId} 的资产类型`)
+        assetCount.value = 0
       }
+    } else {
+      ElMessage.error(res.message || '获取资产类型关联资产数失败')
     }
   } catch (error) {
     console.error('获取资产类型关联资产数失败:', error)
+    ElMessage.error('获取资产类型关联资产数失败')
   }
 }
 
@@ -101,8 +100,7 @@ watch(
     if (val) {
       form.id = val.id
       form.name = val.name
-      form.status = val.status
-      form.count = val.assetCount || 2
+      form.count = val.assetCount || 0
       // 如果是编辑模式，获取关联资产数
       if (props.mode === 'edit') {
         getAssetCount(val.id)
@@ -110,9 +108,8 @@ watch(
     } else {
       form.id = ''
       form.name = ''
-      form.status = 'active'
-      form.count = 1
-      assetCount.value = 2
+      assetCount.value = 0
+      form.count = 0
     }
   },
   { immediate: true }
@@ -135,10 +132,10 @@ const handleSubmit = async () => {
         } else {
           // 如果是编辑模式且有资产关联，不允许修改状态
           if (assetCount.value > 0) {
-            await updateAssetType(form.id, form.name, form.status)
+            await updateAssetType(form.id, form.name)
           } else {
             // 如果没有资产关联，可以修改状态
-            await updateAssetType(form.id, form.name, form.status)
+            await updateAssetType(form.id, form.name)
           }
           ElMessage.success('更新成功')
         }

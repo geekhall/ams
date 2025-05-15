@@ -8,9 +8,9 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
-    403: typeof import('./src/views/403.vue')['default']
-    404: typeof import('./src/views/404.vue')['default']
-    500: typeof import('./src/views/500.vue')['default']
+    403: typeof import('./src/views/error/403.vue')['default']
+    404: typeof import('./src/views/error/404.vue')['default']
+    500: typeof import('./src/views/error/500.vue')['default']
     About: typeof import('./src/views/About.vue')['default']
     Asset: typeof import('./src/views/asset/Asset.vue')['default']
     AssetBorrowDialog: typeof import('./src/components/asset/AssetBorrowDialog.vue')['default']

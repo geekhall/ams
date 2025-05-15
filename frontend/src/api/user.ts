@@ -106,3 +106,17 @@ export const deleteUser = async (id: string): Promise<ApiResponse<void>> => {
   });
   return response.data;
 };
+
+// 搜索用户（用于自动完成）
+export const searchUsers = async (query: string): Promise<UserListResponse> => {
+  const response = await loki.request({
+    url: "/user/search",
+    method: "POST",
+    data: {
+      query,
+      pageIndex: 1,
+      pageSize: 10
+    }
+  });
+  return response.data;
+};

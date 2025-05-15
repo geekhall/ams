@@ -142,9 +142,9 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `h_asset_type`;
 CREATE TABLE `h_asset_type` (
-  `id` bigint NOT NULL COMMENT '主键ID',
+  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '主键ID',
   `name` varchar(255) NOT NULL COMMENT '资产类型名称',
-  `parent_id` bigint DEFAULT NULL COMMENT '父类型（支持多级分类，根类型为NULL）',
+  `status` int DEFAULT NULL COMMENT '状态',
   `version` int DEFAULT '1' COMMENT '版本号',
   `create_time` bigint DEFAULT NULL COMMENT '创建时间',
   `update_time` bigint DEFAULT NULL COMMENT '修改时间',
@@ -157,36 +157,37 @@ CREATE TABLE `h_asset_type` (
 -- Records of h_asset_type
 -- ----------------------------
 BEGIN;
-INSERT INTO `h_asset_type` VALUES (1, '服务器', NULL, 1, 1672531200000, NULL, 0);
-INSERT INTO `h_asset_type` VALUES (2, '主机', 1, 1, 1672531200000, NULL, 0);
-INSERT INTO `h_asset_type` VALUES (3, '显示器', NULL, 1, 1672531200000, NULL, 1);
-INSERT INTO `h_asset_type` VALUES (4, '网络设备', NULL, 1, 1672531200000, NULL, 0);
-INSERT INTO `h_asset_type` VALUES (5, '路由器', 4, 1, 1672531200000, NULL, 0);
-INSERT INTO `h_asset_type` VALUES (6, '交换机', 4, 1, 1672531200000, NULL, 0);
-INSERT INTO `h_asset_type` VALUES (7, '防火墙', 4, 1, 1672531200000, NULL, 0);
-INSERT INTO `h_asset_type` VALUES (8, '存储设备', NULL, 1, 1672531200000, NULL, 0);
-INSERT INTO `h_asset_type` VALUES (9, '硬盘', 8, 1, 1672531200000, NULL, 0);
-INSERT INTO `h_asset_type` VALUES (10, 'SSD', 8, 1, 1672531200000, NULL, 0);
-INSERT INTO `h_asset_type` VALUES (11, '打印机', NULL, 1, 1672531200000, NULL, 0);
-INSERT INTO `h_asset_type` VALUES (12, '传真机', NULL, 1, 1672531200000, NULL, 0);
-INSERT INTO `h_asset_type` VALUES (13, '办公设备', NULL, 1, 1672531200000, NULL, 0);
-INSERT INTO `h_asset_type` VALUES (14, '电脑', NULL, 1, 1672531200000, NULL, 0);
-INSERT INTO `h_asset_type` VALUES (15, '手机', NULL, 1, 1672531200000, NULL, 0);
-INSERT INTO `h_asset_type` VALUES (16, '平板', NULL, 1, 1672531200000, NULL, 0);
-INSERT INTO `h_asset_type` VALUES (17, '投影仪', NULL, 1, 1672531200000, NULL, 0);
-INSERT INTO `h_asset_type` VALUES (18, '音响', NULL, 1, 1672531200000, NULL, 0);
-INSERT INTO `h_asset_type` VALUES (19, '摄像头', NULL, 1, 1672531200000, NULL, 0);
-INSERT INTO `h_asset_type` VALUES (20, '监控设备', NULL, 1, 1672531200000, NULL, 0);
-INSERT INTO `h_asset_type` VALUES (21, '门禁设备', NULL, 1, 1672531200000, NULL, 0);
-INSERT INTO `h_asset_type` VALUES (22, '考勤机', NULL, 1, 1672531200000, NULL, 0);
-INSERT INTO `h_asset_type` VALUES (23, 'UPS', NULL, 1, 1672531200000, NULL, 0);
-INSERT INTO `h_asset_type` VALUES (24, '电源线', NULL, 1, 1672531200000, NULL, 0);
-INSERT INTO `h_asset_type` VALUES (25, '网线', NULL, 1, 1672531200000, NULL, 0);
-INSERT INTO `h_asset_type` VALUES (26, '鼠标', NULL, 1, 1672531200000, NULL, 0);
-INSERT INTO `h_asset_type` VALUES (27, '键盘', NULL, 1, 1672531200000, NULL, 0);
-INSERT INTO `h_asset_type` VALUES (1909619214547738625, 'API测试1', NULL, 1, NULL, NULL, 0);
-INSERT INTO `h_asset_type` VALUES (1909620524911210498, 'API测试2', NULL, 1, 1744123986830, NULL, 0);
-INSERT INTO `h_asset_type` VALUES (1909625806890520577, 'API测试33', NULL, 1, 1744125246152, 1744125939224, 0);
+INSERT INTO `loki`.`h_asset_type` (`id`, `name`, `status`, `version`, `create_time`, `update_time`, `deleted`) VALUES (1, '服务器', 1, 1, 1672531200000, NULL, 0);
+INSERT INTO `loki`.`h_asset_type` (`id`, `name`, `status`, `version`, `create_time`, `update_time`, `deleted`) VALUES (2, '主机', 1, 1, 1672531200000, NULL, 0);
+INSERT INTO `loki`.`h_asset_type` (`id`, `name`, `status`, `version`, `create_time`, `update_time`, `deleted`) VALUES (3, '显示器', 1, 1, 1672531200000, NULL, 1);
+INSERT INTO `loki`.`h_asset_type` (`id`, `name`, `status`, `version`, `create_time`, `update_time`, `deleted`) VALUES (4, '网络设备', 1, 1, 1672531200000, NULL, 0);
+INSERT INTO `loki`.`h_asset_type` (`id`, `name`, `status`, `version`, `create_time`, `update_time`, `deleted`) VALUES (5, '路由器', 1, 1, 1672531200000, NULL, 0);
+INSERT INTO `loki`.`h_asset_type` (`id`, `name`, `status`, `version`, `create_time`, `update_time`, `deleted`) VALUES (6, '交换机', 1, 1, 1672531200000, NULL, 0);
+INSERT INTO `loki`.`h_asset_type` (`id`, `name`, `status`, `version`, `create_time`, `update_time`, `deleted`) VALUES (7, '防火墙', 1, 1, 1672531200000, NULL, 0);
+INSERT INTO `loki`.`h_asset_type` (`id`, `name`, `status`, `version`, `create_time`, `update_time`, `deleted`) VALUES (8, '存储设备', 1, 1, 1672531200000, NULL, 0);
+INSERT INTO `loki`.`h_asset_type` (`id`, `name`, `status`, `version`, `create_time`, `update_time`, `deleted`) VALUES (9, '硬盘', 1, 1, 1672531200000, NULL, 0);
+INSERT INTO `loki`.`h_asset_type` (`id`, `name`, `status`, `version`, `create_time`, `update_time`, `deleted`) VALUES (10, 'SSD', 1, 1, 1672531200000, NULL, 0);
+INSERT INTO `loki`.`h_asset_type` (`id`, `name`, `status`, `version`, `create_time`, `update_time`, `deleted`) VALUES (11, '打印机', 1, 1, 1672531200000, NULL, 0);
+INSERT INTO `loki`.`h_asset_type` (`id`, `name`, `status`, `version`, `create_time`, `update_time`, `deleted`) VALUES (12, '传真机', 1, 1, 1672531200000, NULL, 0);
+INSERT INTO `loki`.`h_asset_type` (`id`, `name`, `status`, `version`, `create_time`, `update_time`, `deleted`) VALUES (13, '办公设备', 1, 1, 1672531200000, NULL, 0);
+INSERT INTO `loki`.`h_asset_type` (`id`, `name`, `status`, `version`, `create_time`, `update_time`, `deleted`) VALUES (14, '电脑', 1, 1, 1672531200000, NULL, 0);
+INSERT INTO `loki`.`h_asset_type` (`id`, `name`, `status`, `version`, `create_time`, `update_time`, `deleted`) VALUES (15, '手机', 1, 1, 1672531200000, NULL, 0);
+INSERT INTO `loki`.`h_asset_type` (`id`, `name`, `status`, `version`, `create_time`, `update_time`, `deleted`) VALUES (16, '平板', 1, 1, 1672531200000, NULL, 0);
+INSERT INTO `loki`.`h_asset_type` (`id`, `name`, `status`, `version`, `create_time`, `update_time`, `deleted`) VALUES (17, '投影仪', 1, 1, 1672531200000, NULL, 0);
+INSERT INTO `loki`.`h_asset_type` (`id`, `name`, `status`, `version`, `create_time`, `update_time`, `deleted`) VALUES (18, '音响', 1, 1, 1672531200000, NULL, 0);
+INSERT INTO `loki`.`h_asset_type` (`id`, `name`, `status`, `version`, `create_time`, `update_time`, `deleted`) VALUES (19, '摄像头', 1, 1, 1672531200000, NULL, 0);
+INSERT INTO `loki`.`h_asset_type` (`id`, `name`, `status`, `version`, `create_time`, `update_time`, `deleted`) VALUES (20, '监控设备', 1, 1, 1672531200000, NULL, 0);
+INSERT INTO `loki`.`h_asset_type` (`id`, `name`, `status`, `version`, `create_time`, `update_time`, `deleted`) VALUES (21, '门禁设备', 1, 1, 1672531200000, NULL, 0);
+INSERT INTO `loki`.`h_asset_type` (`id`, `name`, `status`, `version`, `create_time`, `update_time`, `deleted`) VALUES (22, '考勤机', 1, 1, 1672531200000, NULL, 0);
+INSERT INTO `loki`.`h_asset_type` (`id`, `name`, `status`, `version`, `create_time`, `update_time`, `deleted`) VALUES (23, 'UPS', 1, 1, 1672531200000, NULL, 0);
+INSERT INTO `loki`.`h_asset_type` (`id`, `name`, `status`, `version`, `create_time`, `update_time`, `deleted`) VALUES (24, '电源线', 1, 1, 1672531200000, NULL, 0);
+INSERT INTO `loki`.`h_asset_type` (`id`, `name`, `status`, `version`, `create_time`, `update_time`, `deleted`) VALUES (25, '网线', 1, 1, 1672531200000, NULL, 0);
+INSERT INTO `loki`.`h_asset_type` (`id`, `name`, `status`, `version`, `create_time`, `update_time`, `deleted`) VALUES (26, '鼠标', 1, 1, 1672531200000, NULL, 0);
+INSERT INTO `loki`.`h_asset_type` (`id`, `name`, `status`, `version`, `create_time`, `update_time`, `deleted`) VALUES (27, '键盘', 1, 1, 1672531200000, NULL, 0);
+INSERT INTO `loki`.`h_asset_type` (`id`, `name`, `status`, `version`, `create_time`, `update_time`, `deleted`) VALUES (28, 'API测试1', 1, 1, NULL, NULL, 0);
+INSERT INTO `loki`.`h_asset_type` (`id`, `name`, `status`, `version`, `create_time`, `update_time`, `deleted`) VALUES (29, 'API测试2', 1, 1, 1744123986830, NULL, 0);
+INSERT INTO `loki`.`h_asset_type` (`id`, `name`, `status`, `version`, `create_time`, `update_time`, `deleted`) VALUES (30, 'API测试33', 1, 1, 1744125246152, 1744125939224, 0);
+
 COMMIT;
 
 -- ----------------------------

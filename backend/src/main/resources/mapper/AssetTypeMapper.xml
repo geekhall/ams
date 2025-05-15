@@ -6,7 +6,7 @@
     <resultMap id="BaseResultMap" type="net.geekhour.loki.entity.AssetType">
         <result column="id" property="id" />
         <result column="name" property="name" />
-        <result column="parent_id" property="parentId" />
+        <result column="status" property="status" />
         <result column="version" property="version" />
         <result column="create_time" property="createTime" />
         <result column="update_time" property="updateTime" />
@@ -16,7 +16,7 @@
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
         id,
-        name, parent_id, version, create_time, update_time, deleted
+        name, status, version, create_time, update_time, deleted
     </sql>
 
 </mapper>

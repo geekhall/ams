@@ -171,7 +171,27 @@
         <el-row :gutter="24">
           <el-col :span="8">
             <el-form-item label="使用人" prop="userName">
-              <el-input v-model="form.userName" placeholder="请输入使用人"></el-input>
+              <el-autocomplete
+                v-model="form.userName"
+                :fetch-suggestions="querySearchUsers"
+                :trigger-on-focus="false"
+                placeholder="请输入使用人"
+                class="user-autocomplete"
+                @select="handleUserSelect"
+                @input="handleUserInput"
+              >
+                <template #default="{ item }">
+                  <div class="user-suggestion-item">
+                    <span class="user-name">{{ item.name }}</span>
+                    <span class="user-info">{{ item.department }} | {{ item.phone }}</span>
+                  </div>
+                </template>
+              </el-autocomplete>
+              <div v-if="selectedUser" class="selected-user-info">
+                <el-tag size="small" type="info">
+                  {{ selectedUser.department }} | {{ selectedUser.phone }}
+                </el-tag>
+              </div>
             </el-form-item>
           </el-col>
         </el-row>
@@ -190,8 +210,10 @@
 import { ref, reactive, defineProps, defineEmits, watch } from 'vue'
 import { ElMessage } from 'element-plus'
 import { addAsset, updateAsset } from '@/api/asset'
+import { searchUsers } from '@/api/user'
 import type { FormInstance, FormRules } from 'element-plus'
 import type { Asset } from '@/types/asset'
+import type { UserDTO } from '@/types/user'
 import dayjs from 'dayjs'
 
 const props = defineProps<{
@@ -243,12 +265,75 @@ const rules = reactive<FormRules>({
   count: [{ required: true, message: '请输入数量', trigger: 'blur' }]
 })
 
+// 用户搜索相关
+const selectedUser = ref<UserDTO | null>(null)
+const searchTimeout = ref<number | null>(null)
+
+// 搜索用户
+const querySearchUsers = async (query: string, callback: (data: any[]) => void) => {
+  if (searchTimeout.value) {
+    clearTimeout(searchTimeout.value)
+  }
+
+  if (!query) {
+    callback([])
+    return
+  }
+
+  searchTimeout.value = window.setTimeout(async () => {
+    try {
+      const res = await searchUsers(query)
+      if (res.code === 200) {
+        const users = res.data.items.map((user: UserDTO) => ({
+          value: user.name,
+          name: user.name,
+          department: user.department,
+          phone: user.phone,
+          email: user.email,
+          ...user
+        }))
+        callback(users)
+      } else {
+        callback([])
+      }
+    } catch (error) {
+      console.error('Search users error:', error)
+      callback([])
+    }
+  }, 300)
+}
+
+// 选择用户
+const handleUserSelect = (item: any) => {
+  selectedUser.value = item
+  form.userName = item.name
+}
+
+// 用户输入
+const handleUserInput = (value: string) => {
+  if (!value) {
+    selectedUser.value = null
+  }
+}
+
 // 监听资产数据变化
 watch(
   () => props.asset,
   (newAsset) => {
     if (newAsset && props.mode === 'edit') {
       Object.assign(form, newAsset)
+      // 如果有使用人信息，设置selectedUser
+      if (newAsset.userName) {
+        selectedUser.value = {
+          name: newAsset.userName,
+          department: newAsset.departmentName || '',
+          phone: '',
+          email: '',
+          username: '',
+          roles: [],
+          permissions: []
+        }
+      }
     } else if (props.mode === 'add') {
       // 重置表单
       Object.assign(form, {
@@ -272,6 +357,7 @@ watch(
         purchasePrice: 0,
         count: 1
       })
+      selectedUser.value = null
     }
   },
   { immediate: true }
@@ -379,5 +465,46 @@ const handleSubmit = async () => {
   &.is-focus {
     border-color: #409eff;
   }
+}
+
+.user-autocomplete {
+  width: 100%;
+}
+
+.user-suggestion-item {
+  display: flex;
+  flex-direction: column;
+  padding: 4px 0;
+
+  .user-name {
+    font-weight: 500;
+    color: #303133;
+  }
+
+  .user-info {
+    font-size: 12px;
+    color: #909399;
+    margin-top: 2px;
+  }
+}
+
+.selected-user-info {
+  margin-top: 4px;
+
+  .el-tag {
+    margin-right: 8px;
+  }
+}
+
+:deep(.el-autocomplete-suggestion) {
+  min-width: 200px !important;
+
+  .el-autocomplete-suggestion__list {
+    max-height: 280px;
+  }
+}
+
+:deep(.el-autocomplete-suggestion__wrap) {
+  max-height: 280px;
 }
 </style>

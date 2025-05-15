@@ -27,24 +27,9 @@
           </el-tag>
         </template>
       </el-table-column>
-      <el-table-column prop="status" label="状态" align="center" width="100">
-        <template #default="scope">
-          <el-tag :type="scope.row.status === 'active' ? 'success' : 'info'">
-            {{ scope.row.status === 'active' ? '启用' : '停用' }}
-          </el-tag>
-        </template>
-      </el-table-column>
       <el-table-column label="操作" width="280" align="center">
         <template #default="scope">
           <el-button text :icon="Edit" @click="handleEdit(scope.row)">编辑</el-button>
-          <el-button
-            text
-            :type="scope.row.status === 'active' ? 'warning' : 'success'"
-            :icon="scope.row.status === 'active' ? 'Close' : 'Check'"
-            @click="handleStatusChange(scope.row)"
-          >
-            {{ scope.row.status === 'active' ? '停用' : '启用' }}
-          </el-button>
           <el-button
             text
             :icon="Delete"
@@ -86,8 +71,24 @@ import { ref, reactive, computed, watch } from 'vue'
 import { Delete, Edit, Search, Plus, Close, Check } from '@element-plus/icons-vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import AssetTypeDialog from '@/components/asset/AssetTypeDialog.vue'
-import { getAssetTypeList, deleteAssetType, updateAssetType } from '@/api/asset'
+import {
+  getAssetTypeList,
+  getAssetTypeSummaryList,
+  deleteAssetType,
+  updateAssetType
+} from '@/api/asset'
 import type { AssetType } from '@/types/asset'
+
+// 常量定义
+const ASSET_TYPE_STATUS = {
+  ACTIVE: 1,
+  INACTIVE: 0
+} as const
+
+const DIALOG_MODE = {
+  ADD: 'add',
+  EDIT: 'edit'
+} as const
 
 const props = defineProps<{
   visible: boolean
@@ -112,23 +113,19 @@ const query = reactive({
 const tableData = ref<AssetType[]>([])
 const total = ref(0)
 const editDialogVisible = ref(false)
-const dialogMode = ref<'add' | 'edit'>('add')
+const dialogMode = ref<(typeof DIALOG_MODE)[keyof typeof DIALOG_MODE]>(DIALOG_MODE.ADD)
 const currentAssetType = ref<AssetType | null>(null)
 
 // 获取资产类型数据
 const getData = async () => {
   try {
-    const res = await getAssetTypeList()
+    const res = await getAssetTypeSummaryList()
     if (res.code === 200) {
-      // 根据分页参数过滤数据
       const filteredData = query.name
         ? res.data.filter((item) => item.name.includes(query.name))
         : res.data
 
-      // 计算总数
       total.value = filteredData.length
-
-      // 分页处理
       const start = (query.pageIndex - 1) * query.pageSize
       const end = start + query.pageSize
       tableData.value = filteredData.slice(start, end).map((item) => ({
@@ -136,9 +133,10 @@ const getData = async () => {
         assetCount: item.assetCount || 0
       }))
     } else {
-      ElMessage.error(res.message)
+      ElMessage.error(res.message || '获取资产类型列表失败')
     }
   } catch (error) {
+    console.error('获取资产类型列表失败:', error)
     ElMessage.error('获取资产类型列表失败')
   }
 }
@@ -151,74 +149,46 @@ const handleSearch = () => {
 
 // 新增
 const handleAdd = () => {
-  dialogMode.value = 'add'
+  dialogMode.value = DIALOG_MODE.ADD
   currentAssetType.value = null
   editDialogVisible.value = true
 }
 
 // 编辑
 const handleEdit = (row: AssetType) => {
-  dialogMode.value = 'edit'
+  dialogMode.value = DIALOG_MODE.EDIT
   currentAssetType.value = row
   editDialogVisible.value = true
 }
 
-// 状态变更
-const handleStatusChange = (row: AssetType) => {
-  const newStatus = row.status === 'active' ? 'inactive' : 'active'
-  const actionText = newStatus === 'active' ? '启用' : '停用'
-
-  ElMessageBox.confirm(
-    `确定要${actionText}该资产类型吗？${
-      newStatus === 'inactive' ? '停用后，该类型将不再出现在新增资产时的类型选择列表中。' : ''
-    }`,
-    '提示',
-    {
-      confirmButtonText: '确定',
-      cancelButtonText: '取消',
-      type: 'warning'
-    }
-  ).then(async () => {
-    try {
-      const res = await updateAssetType(row.id, row.name, newStatus)
-      if (res.code === 200) {
-        ElMessage.success(`${actionText}成功`)
-        getData()
-        emit('success')
-      } else {
-        ElMessage.error(res.message)
-      }
-    } catch (error) {
-      ElMessage.error(`${actionText}失败`)
-    }
-  })
-}
-
 // 删除
-const handleDelete = (row: AssetType) => {
+const handleDelete = async (row: AssetType) => {
   if ((row.assetCount ?? 0) > 0) {
     ElMessage.warning('该类型下存在关联资产，无法删除')
     return
   }
 
-  ElMessageBox.confirm('确定要删除该资产类型吗？', '提示', {
-    confirmButtonText: '确定',
-    cancelButtonText: '取消',
-    type: 'warning'
-  }).then(async () => {
-    try {
-      const res = await deleteAssetType(row.id)
-      if (res.code === 200) {
-        ElMessage.success('删除成功')
-        getData()
-        emit('success')
-      } else {
-        ElMessage.error(res.message)
-      }
-    } catch (error) {
+  try {
+    await ElMessageBox.confirm('确定要删除该资产类型吗？', '提示', {
+      confirmButtonText: '确定',
+      cancelButtonText: '取消',
+      type: 'warning'
+    })
+
+    const res = await deleteAssetType(row.id)
+    if (res.code === 200) {
+      ElMessage.success('删除成功')
+      getData()
+      emit('success')
+    } else {
+      ElMessage.error(res.message || '删除失败')
+    }
+  } catch (error) {
+    if (error !== 'cancel') {
+      console.error('删除资产类型失败:', error)
       ElMessage.error('删除失败')
     }
-  })
+  }
 }
 
 // 操作成功回调

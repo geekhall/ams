@@ -18,6 +18,9 @@ public class AssetTypeSummaryDTO {
     private String name;
 
     @ApiModelProperty("资产总数")
-    private Long totalCount;
+    private Long assetCount;
+
+    @ApiModelProperty("状态")
+    private Integer status;
 
 }
