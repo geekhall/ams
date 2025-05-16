@@ -8,7 +8,7 @@ import lombok.Data;
  */
 @Data
 public class DutyDTO {
-    private Long id;
+    private String id;
     private Long date;
     private String day;
     private String night;

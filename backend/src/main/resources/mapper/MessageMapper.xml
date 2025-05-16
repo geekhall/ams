@@ -9,6 +9,7 @@
         <result column="content" property="content" />
         <result column="sender" property="sender" />
         <result column="send_time" property="sendTime" />
+        <result column="type" property="type" />
         <result column="version" property="version" />
         <result column="create_date" property="createDate" />
         <result column="update_date" property="updateDate" />
@@ -18,7 +19,7 @@
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
         id,
-        title, content, sender, send_time, version, create_date, update_date, deleted
+        title, content, sender, send_time, type, version, create_date, update_date, deleted
     </sql>
 
 </mapper>

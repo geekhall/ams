@@ -25,7 +25,7 @@ import java.util.Map;
  */
 @CrossOrigin
 @RestController
-@RequestMapping("/api/messageReceiver")
+@RequestMapping("/api/mr")
 public class MessageReceiverController {
 
     @Autowired

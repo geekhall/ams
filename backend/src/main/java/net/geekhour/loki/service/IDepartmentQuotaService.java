@@ -2,8 +2,7 @@ package net.geekhour.loki.service;
 
 import net.geekhour.loki.entity.DepartmentQuota;
 import com.baomidou.mybatisplus.extension.service.IService;
-import net.geekhour.loki.entity.dto.DepartmentQuotaDTO;
-import org.springframework.stereotype.Service;
+import net.geekhour.loki.entity.dto.AssetDepartmentQuotaDTO;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -18,12 +17,12 @@ import java.util.List;
  */
 public interface IDepartmentQuotaService extends IService<DepartmentQuota> {
     List<DepartmentQuota> all();
-    List<DepartmentQuotaDTO> getQuotaList(int year, int offset, int pageSize, String name);
+    List<AssetDepartmentQuotaDTO> getQuotaList(int year, int offset, int pageSize, String name);
     long countQuotas(int year, String name);
     
-    boolean createQuota(DepartmentQuotaDTO quotaDTO);
+    boolean createQuota(AssetDepartmentQuotaDTO quotaDTO);
 
-    boolean updateQuota(DepartmentQuotaDTO quotaDTO);
+    boolean updateQuota(AssetDepartmentQuotaDTO quotaDTO);
 
     boolean deleteQuota(Long id);
 

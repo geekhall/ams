@@ -25,6 +25,6 @@ public class BudgetDepartmentSummaryDTO {
     private String name;
 
     @ApiModelProperty("部门预算总额")
-    private String budgetAmount;
+    private BigDecimal budgetAmount;
 
 }

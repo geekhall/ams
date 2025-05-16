@@ -585,6 +585,7 @@ CREATE TABLE `h_message` (
   `content` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '消息内容',
   `sender` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '发送者',
   `send_time` bigint DEFAULT NULL COMMENT '发送时间',
+  `type` int DEFAULT NULL COMMENT '消息类型(0:系统公告, 1:更新通知, 2:工作通知)',
   `version` int DEFAULT '1' COMMENT '版本号',
   `create_date` bigint DEFAULT NULL COMMENT '创建日期',
   `update_date` bigint DEFAULT NULL COMMENT '更新日期',
@@ -596,26 +597,26 @@ CREATE TABLE `h_message` (
 -- Records of h_message
 -- ----------------------------
 BEGIN;
-INSERT INTO `h_message` VALUES (1, '【系统消息】欢迎使用AMS系统', '欢迎使用本系统！', '系统管理员', 1746626369000, 1, 1746626369000, 1746626369000, 0);
-INSERT INTO `h_message` VALUES (2, '【系统通知】系统将于今晚凌晨1点到3点进行升级维护', '【系统通知】系统将于今晚凌晨1点到3点进行升级维护', '系统管理员', 1746626369000, 1, 1746626369000, 1746626369000, 0);
-INSERT INTO `h_message` VALUES (3, '【系统公告】AMS系统已上线', 'AMS系统已上线，欢迎使用！', '系统管理员', 1746626369000, 1, 1746626369000, 1746626369000, 0);
-INSERT INTO `h_message` VALUES (4, '【系统消息】请及时更新您的个人信息', '请及时更新您的个人信息，以便我们更好地为您服务。', '系统管理员', 1746626369000, 1, 1746626369000, 1746626369000, 0);
-INSERT INTO `h_message` VALUES (5, '【系统通知】系统将于下周一进行例行维护', '系统将于下周一进行例行维护，请提前做好准备。', '系统管理员', 1746626369000, 1, 1746626369000, 1746626369000, 0);
-INSERT INTO `h_message` VALUES (6, '【系统公告】AMS系统已完成升级', 'AMS系统已完成升级，感谢您的耐心等待！', '系统管理员', 1746626369000, 1, 1746626369000, 1746626369000, 0);
-INSERT INTO `h_message` VALUES (7, '【系统消息】今晚零点整发跨年红包，各位小伙伴兔年大吉，先到先得', '今晚零点整发跨年红包，各位小伙伴兔年大吉，先到先得。', '系统管理员', 1746626369000, 1, 1746626369000, 1746626369000, 0);
-INSERT INTO `h_message` VALUES (8, '【系统通知】系统将于本周五进行数据备份', '系统将于本周五进行数据备份，请提前做好准备。', '系统管理员', 1746626369000, 1, 1746626369000, 1746626369000, 0);
-INSERT INTO `h_message` VALUES (9, '【系统公告】新年红包已发放完毕，感谢各位小伙伴的参与', '新年红包已发放完毕，感谢各位小伙伴的参与！', '系统管理员', 1746626369000, 1, 1746626369000, 1746626369000, 0);
-INSERT INTO `h_message` VALUES (10, '【系统消息】预祝各位小伙伴新年快乐', '预祝各位小伙伴新年快乐', '系统管理员', 1746626369000, 1, 1746626369000, 1746626369000, 0);
-INSERT INTO `h_message` VALUES (11, '【系统通知】系统将于下周一进行例行维护', '系统将于下周一进行例行维护，请提前做好准备。', '系统管理员', 1746626369000, 1, 1746626369000, 1746626369000, 0);
-INSERT INTO `h_message` VALUES (12, '【系统公告】AMS系统已完成升级', 'AMS系统已完成升级，感谢您的耐心等待！', '系统管理员', 1746626369000, 1, 1746626369000, 1746626369000, 0);
-INSERT INTO `h_message` VALUES (13, '【系统消息】请及时更新您的个人信息', '请及时更新您的个人信息，以便我们更好地为您服务。', '系统管理员', 1746626369000, 1, 1746626369000, 1746626369000, 0);
-INSERT INTO `h_message` VALUES (14, '【系统通知】系统将于今晚凌晨1点到3点进行升级维护', '系统将于今晚凌晨1点到3点进行升级维护，请提前做好准备。', '系统管理员', 1746626369000, 1, 1746626369000, 1746626369000, 0);
-INSERT INTO `h_message` VALUES (15, '【系统公告】AMS系统更新完成，新增预算管理功能！', 'AMS系统更新完成，新增预算管理功能！', '系统管理员', 1746626369000, 1, 1746626369000, 1746626369000, 0);
-INSERT INTO `h_message` VALUES (16, 'test12', 'test content', '系统管理员', 1746627779204, 1, 1746627779204, 1746628262404, 0);
-INSERT INTO `h_message` VALUES (17, 'test1112', 'test 111111', '系统管理员', 1746628275951, 1, 1746628275951, 1746628282253, 1);
-INSERT INTO `h_message` VALUES (18, 'tttt111', 'ttttt222', '系统管理员', 1746630131938, 1, 1746630131938, 1746630142236, 1);
-INSERT INTO `h_message` VALUES (19, 'aaaa', 'absdaf', '系统管理员', 1746710585229, 1, 1746710585229, 1746710585229, 0);
-INSERT INTO `h_message` VALUES (20, 'test222', 'test222', '系统管理员', 1747019148503, 1, 1747019148503, 1747019148503, 0);
+INSERT INTO `h_message` (`id`, `title`, `content`, `sender`, `send_time`, `type`, `version`, `create_date`, `update_date`, `deleted`) VALUES (1, '【系统消息】欢迎使用AMS系统', '欢迎使用本系统！', '系统管理员',1746626369000, 0, 1, 1746626369000, 1746626369000, 0);
+INSERT INTO `h_message` (`id`, `title`, `content`, `sender`, `send_time`, `type`, `version`, `create_date`, `update_date`, `deleted`) VALUES (2, '【系统通知】系统将于今晚凌晨1点到3点进行升级维护', '【系统通知】系统将于今晚凌晨1点到3点进行升级维护', '系统管理员',1746626369000, 0, 1, 1746626369000, 1746626369000, 0);
+INSERT INTO `h_message` (`id`, `title`, `content`, `sender`, `send_time`, `type`, `version`, `create_date`, `update_date`, `deleted`) VALUES (3, '【系统公告】AMS系统已上线', 'AMS系统已上线，欢迎使用！', '系统管理员',1746626369000, 1, 0, 1746626369000, 1746626369000, 0);
+INSERT INTO `h_message` (`id`, `title`, `content`, `sender`, `send_time`, `type`, `version`, `create_date`, `update_date`, `deleted`) VALUES (4, '【系统消息】请及时更新您的个人信息', '请及时更新您的个人信息，以便我们更好地为您服务。', '系统管理员',1746626369000, 0, 1, 1746626369000, 1746626369000, 0);
+INSERT INTO `h_message` (`id`, `title`, `content`, `sender`, `send_time`, `type`, `version`, `create_date`, `update_date`, `deleted`) VALUES (5, '【系统通知】系统将于下周一进行例行维护', '系统将于下周一进行例行维护，请提前做好准备。', '系统管理员',1746626369000, 1, 1, 1746626369000, 1746626369000, 0);
+INSERT INTO `h_message` (`id`, `title`, `content`, `sender`, `send_time`, `type`, `version`, `create_date`, `update_date`, `deleted`) VALUES (6, '【系统公告】AMS系统已完成升级', 'AMS系统已完成升级，感谢您的耐心等待！', '系统管理员',1746626369000, 1, 1, 1746626369000, 1746626369000, 0);
+INSERT INTO `h_message` (`id`, `title`, `content`, `sender`, `send_time`, `type`, `version`, `create_date`, `update_date`, `deleted`) VALUES (7, '【系统消息】今晚零点整发跨年红包，各位小伙伴兔年大吉，先到先得', '今晚零点整发跨年红包，各位小伙伴兔年大吉，先到先得。', '系统管理员',1746626369000, 0, 1, 1746626369000, 1746626369000, 0);
+INSERT INTO `h_message` (`id`, `title`, `content`, `sender`, `send_time`, `type`, `version`, `create_date`, `update_date`, `deleted`) VALUES (8, '【系统通知】系统将于本周五进行数据备份', '系统将于本周五进行数据备份，请提前做好准备。', '系统管理员',1746626369000, 1, 1, 1746626369000, 1746626369000, 0);
+INSERT INTO `h_message` (`id`, `title`, `content`, `sender`, `send_time`, `type`, `version`, `create_date`, `update_date`, `deleted`) VALUES (9, '【系统公告】新年红包已发放完毕，感谢各位小伙伴的参与', '新年红包已发放完毕，感谢各位小伙伴的参与！', '系统管理员',1746626369000, 0, 1, 1746626369000, 1746626369000, 0);
+INSERT INTO `h_message` (`id`, `title`, `content`, `sender`, `send_time`, `type`, `version`, `create_date`, `update_date`, `deleted`) VALUES (10, '【系统消息】预祝各位小伙伴新年快乐', '预祝各位小伙伴新年快乐', '系统管理员',1746626369000, 0, 1, 1746626369000, 1746626369000, 0);
+INSERT INTO `h_message` (`id`, `title`, `content`, `sender`, `send_time`, `type`, `version`, `create_date`, `update_date`, `deleted`) VALUES (11, '【系统通知】系统将于下周一进行例行维护', '系统将于下周一进行例行维护，请提前做好准备。', '系统管理员',1746626369000, 1, 1, 1746626369000, 1746626369000, 0);
+INSERT INTO `h_message` (`id`, `title`, `content`, `sender`, `send_time`, `type`, `version`, `create_date`, `update_date`, `deleted`) VALUES (12, '【系统公告】AMS系统已完成升级', 'AMS系统已完成升级，感谢您的耐心等待！', '系统管理员',1746626369000, 1, 1, 1746626369000, 1746626369000, 0);
+INSERT INTO `h_message` (`id`, `title`, `content`, `sender`, `send_time`, `type`, `version`, `create_date`, `update_date`, `deleted`) VALUES (13, '【系统消息】请及时更新您的个人信息', '请及时更新您的个人信息，以便我们更好地为您服务。', '系统管理员',1746626369000, 0, 1, 1746626369000, 1746626369000, 0);
+INSERT INTO `h_message` (`id`, `title`, `content`, `sender`, `send_time`, `type`, `version`, `create_date`, `update_date`, `deleted`) VALUES (14, '【系统通知】系统将于今晚凌晨1点到3点进行升级维护', '系统将于今晚凌晨1点到3点进行升级维护，请提前做好准备。', '系统管理员',1746626369000, 1, 1, 1746626369000, 1746626369000, 0);
+INSERT INTO `h_message` (`id`, `title`, `content`, `sender`, `send_time`, `type`, `version`, `create_date`, `update_date`, `deleted`) VALUES (15, '【系统公告】AMS系统更新完成，新增预算管理功能！', 'AMS系统更新完成，新增预算管理功能！', '系统管理员',1746626369000, 1, 1, 1746626369000, 1746626369000, 0);
+INSERT INTO `h_message` (`id`, `title`, `content`, `sender`, `send_time`, `type`, `version`, `create_date`, `update_date`, `deleted`) VALUES (16, 'test12', 'test content', '系统管理员',1746627779204, 0, 1, 1746627779204, 1746628262404, 0);
+INSERT INTO `h_message` (`id`, `title`, `content`, `sender`, `send_time`, `type`, `version`, `create_date`, `update_date`, `deleted`) VALUES (17, 'test1112', 'test 111111', '系统管理员',1746628275951, 1, 1, 1746628275951, 1746628282253, 1);
+INSERT INTO `h_message` (`id`, `title`, `content`, `sender`, `send_time`, `type`, `version`, `create_date`, `update_date`, `deleted`) VALUES (18, 'tttt111', 'ttttt222', '系统管理员',1746630131938, 2, 1, 1746630131938, 1746630142236, 1);
+INSERT INTO `h_message` (`id`, `title`, `content`, `sender`, `send_time`, `type`, `version`, `create_date`, `update_date`, `deleted`) VALUES (19, 'aaaa', 'absdaf', '系统管理员',1746710585229, 2, 1, 1746710585229, 1746710585229, 0);
+INSERT INTO `h_message` (`id`, `title`, `content`, `sender`, `send_time`, `type`, `version`, `create_date`, `update_date`, `deleted`) VALUES (20, 'test222', 'test222', '系统管理员',1747019148503, 2, 1, 1747019148503, 1747019148503, 0);
 COMMIT;
 
 -- ----------------------------

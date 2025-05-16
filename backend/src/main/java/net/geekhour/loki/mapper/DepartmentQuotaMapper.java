@@ -2,7 +2,7 @@ package net.geekhour.loki.mapper;
 
 import net.geekhour.loki.entity.DepartmentQuota;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import net.geekhour.loki.entity.dto.DepartmentQuotaDTO;
+import net.geekhour.loki.entity.dto.AssetDepartmentQuotaDTO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
@@ -36,10 +36,10 @@ public interface DepartmentQuotaMapper extends BaseMapper<DepartmentQuota> {
             " ORDER BY b.id" +
             " LIMIT #{offset}, #{pageSize}" +
             "</script>")
-    List<DepartmentQuotaDTO> getQuotaList(@Param("year") int year,
-                                          @Param("offset") int offset,
-                                          @Param("pageSize") int pageSize,
-                                          @Param("name") String name);
+    List<AssetDepartmentQuotaDTO> getQuotaList(@Param("year") int year,
+                                               @Param("offset") int offset,
+                                               @Param("pageSize") int pageSize,
+                                               @Param("name") String name);
 
     @Select("<script>" +
             "SELECT COUNT(*)" +

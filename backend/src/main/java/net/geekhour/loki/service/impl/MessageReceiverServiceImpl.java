@@ -47,6 +47,8 @@ public class MessageReceiverServiceImpl extends ServiceImpl<MessageReceiverMappe
         Integer status = (Integer) params.get("status");
         String userId = (String) params.get("userId");
         String search = (String) params.get("search");
+        page = (page == null ? 1 : page);
+        pageSize = (pageSize == null ? 10 : pageSize);
 
         Page<Message> pageParam = new Page<>(page, pageSize);
         LambdaQueryWrapper<MessageReceiver> queryReceiverWrapper = new LambdaQueryWrapper<>();
@@ -59,7 +61,7 @@ public class MessageReceiverServiceImpl extends ServiceImpl<MessageReceiverMappe
         }
         List<MessageReceiver> messageReceivers = messageReceiverMapper.selectList(queryReceiverWrapper);
         //获取当前用户可见消息ID集合
-        if (!messageReceivers.isEmpty() && messageReceivers.size() > 0) {
+        if (!messageReceivers.isEmpty()) {
             List<Long> messageIdList = messageReceivers.stream()
                     .map(MessageReceiver::getMessageId)
                     .collect(Collectors.toList());

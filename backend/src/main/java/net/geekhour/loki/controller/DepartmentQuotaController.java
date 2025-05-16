@@ -2,7 +2,7 @@ package net.geekhour.loki.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import net.geekhour.loki.common.ResponseUtil;
-import net.geekhour.loki.entity.dto.DepartmentQuotaDTO;
+import net.geekhour.loki.entity.dto.AssetDepartmentQuotaDTO;
 import net.geekhour.loki.service.IDepartmentQuotaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -11,8 +11,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -71,7 +69,7 @@ public class DepartmentQuotaController {
             }
         }
         Integer offset = (pageIndex - 1) * pageSize;
-        List<DepartmentQuotaDTO> quotaList = departmentQuotaService.getQuotaList(year, offset, pageSize, name);
+        List<AssetDepartmentQuotaDTO> quotaList = departmentQuotaService.getQuotaList(year, offset, pageSize, name);
         Long count = departmentQuotaService.countQuotas(year, name);
         BigDecimal total = departmentQuotaService.totalQuotas(year, name) == null ?
                 BigDecimal.ZERO : departmentQuotaService.totalQuotas(year, name);
@@ -89,7 +87,7 @@ public class DepartmentQuotaController {
      */
     @PostMapping("/create")
     @PreAuthorize("hasRole('USER') || hasAuthority('department:manage')")
-    public ResponseEntity<?> createQuota(@RequestBody DepartmentQuotaDTO quotaDTO) {
+    public ResponseEntity<?> createQuota(@RequestBody AssetDepartmentQuotaDTO quotaDTO) {
         if (quotaDTO.getDepartmentName() == null || quotaDTO.getDepartmentName().isEmpty()) {
             return ResponseUtil.error(400, "部门名称不能为空");
         }
@@ -114,7 +112,7 @@ public class DepartmentQuotaController {
      */
     @PostMapping("/update")
     @PreAuthorize("hasRole('USER') || hasAuthority('department:manage')")
-    public ResponseEntity<?> updateQuota(@RequestBody DepartmentQuotaDTO quotaDTO) {
+    public ResponseEntity<?> updateQuota(@RequestBody AssetDepartmentQuotaDTO quotaDTO) {
         if (quotaDTO.getId() == null) {
             return ResponseUtil.error(400,"部门预算ID不能为空");
         }

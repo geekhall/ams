@@ -1,9 +1,8 @@
 package net.geekhour.loki.service.impl;
 
 import net.geekhour.loki.common.StringUtil;
-import net.geekhour.loki.entity.Asset;
 import net.geekhour.loki.entity.DepartmentQuota;
-import net.geekhour.loki.entity.dto.DepartmentQuotaDTO;
+import net.geekhour.loki.entity.dto.AssetDepartmentQuotaDTO;
 import net.geekhour.loki.mapper.DepartmentMapper;
 import net.geekhour.loki.mapper.DepartmentQuotaMapper;
 import net.geekhour.loki.service.IDepartmentQuotaService;
@@ -36,7 +35,7 @@ public class DepartmentQuotaServiceImpl extends ServiceImpl<DepartmentQuotaMappe
     }
 
     @Override
-    public List<DepartmentQuotaDTO> getQuotaList(int year, int offset, int pageSize, String name) {
+    public List<AssetDepartmentQuotaDTO> getQuotaList(int year, int offset, int pageSize, String name) {
         return departmentQuotaMapper.getQuotaList(year, offset, pageSize, name);
     }
 
@@ -46,7 +45,7 @@ public class DepartmentQuotaServiceImpl extends ServiceImpl<DepartmentQuotaMappe
     }
 
     @Override
-    public boolean createQuota(DepartmentQuotaDTO quotaDTO) {
+    public boolean createQuota(AssetDepartmentQuotaDTO quotaDTO) {
         if (StringUtil.isEmpty(quotaDTO.getDepartmentName() )) {
             return false;
         }
@@ -61,7 +60,7 @@ public class DepartmentQuotaServiceImpl extends ServiceImpl<DepartmentQuotaMappe
         return departmentQuotaMapper.insert(quota) > 0;
     }
 
-    private DepartmentQuota mapToQuota(DepartmentQuotaDTO quotaDTO) {
+    private DepartmentQuota mapToQuota(AssetDepartmentQuotaDTO quotaDTO) {
         if (quotaDTO == null) {
             return null;
         }
@@ -81,7 +80,7 @@ public class DepartmentQuotaServiceImpl extends ServiceImpl<DepartmentQuotaMappe
     }
 
     @Override
-    public boolean updateQuota(DepartmentQuotaDTO quotaDTO) {
+    public boolean updateQuota(AssetDepartmentQuotaDTO quotaDTO) {
         System.out.println("quotaDTO.getId : " + quotaDTO.getId());
         System.out.println("quotaDTO.getDepartmentName() : " + quotaDTO.getDepartmentName());
         System.out.println("quotaDTO.getYear() : " + quotaDTO.getYear());

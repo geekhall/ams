@@ -4,7 +4,7 @@ import net.geekhour.loki.common.StringUtil;
 import net.geekhour.loki.entity.Asset;
 import net.geekhour.loki.entity.dto.AssetDTO;
 import net.geekhour.loki.entity.dto.AssetSummaryDTO;
-import net.geekhour.loki.entity.dto.DepartmentAssetSummaryDTO;
+import net.geekhour.loki.entity.dto.AssetDepartmentSummaryDTO;
 import net.geekhour.loki.mapper.AssetMapper;
 import net.geekhour.loki.mapper.AssetTypeMapper;
 import net.geekhour.loki.mapper.DepartmentMapper;
@@ -90,7 +90,7 @@ public class AssetServiceImpl extends ServiceImpl<AssetMapper, Asset> implements
     }
 
     @Override
-    public List<DepartmentAssetSummaryDTO> getDepartmentSummary() {
+    public List<AssetDepartmentSummaryDTO> getDepartmentSummary() {
         return assetMapper.getDepartmentSummary();
     }
 

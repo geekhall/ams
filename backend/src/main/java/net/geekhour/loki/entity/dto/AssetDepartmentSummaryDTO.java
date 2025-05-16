@@ -6,7 +6,7 @@ import lombok.Data;
 
 @Data
 @ApiModel("部门资产汇总")
-public class DepartmentAssetSummaryDTO {
+public class AssetDepartmentSummaryDTO {
     @ApiModelProperty("部门ID")
     private String id;
 

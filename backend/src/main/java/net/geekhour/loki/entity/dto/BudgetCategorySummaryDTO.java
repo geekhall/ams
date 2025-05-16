@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
+import java.math.BigDecimal;
+
 /**
  * BudgetTypeSummaryDTO
  *
@@ -23,5 +25,5 @@ public class BudgetCategorySummaryDTO {
     private String name;
 
     @ApiModelProperty("分类预算总额")
-    private String budgetAmount;
+    private BigDecimal budgetAmount;
 }

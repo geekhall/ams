@@ -51,6 +51,10 @@ public class Message extends Model<Message> {
     @TableField("send_time")
     private Long sendTime;
 
+    @ApiModelProperty("消息类型")
+    @TableField("type")
+    private Long type;
+
     @ApiModelProperty("版本号")
     @TableField("version")
     @Version

@@ -1,11 +1,10 @@
 package net.geekhour.loki.mapper;
 
-import jakarta.validation.constraints.NotBlank;
 import net.geekhour.loki.entity.Asset;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import net.geekhour.loki.entity.dto.AssetDTO;
 import net.geekhour.loki.entity.dto.AssetSummaryDTO;
-import net.geekhour.loki.entity.dto.DepartmentAssetSummaryDTO;
+import net.geekhour.loki.entity.dto.AssetDepartmentSummaryDTO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
@@ -105,5 +104,5 @@ public interface AssetMapper extends BaseMapper<Asset> {
             "  group by b.id, b.`name`) y " +
             "on x.id = y.id " +
             "order by y.asset_count desc ")
-    List<DepartmentAssetSummaryDTO> getDepartmentSummary();
+    List<AssetDepartmentSummaryDTO> getDepartmentSummary();
 }
