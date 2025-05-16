@@ -102,8 +102,14 @@
         <template #default="props">
           <div class="expand-content">
             <div class="expand-grid">
+              <!-- 项目概述始终显示在最上方 -->
+              <div class="expand-item full-row description-item" v-if="!visibleColumns.description">
+                <div class="expand-label">项目概述</div>
+                <div class="expand-value">{{ props.row.description }}</div>
+              </div>
+              <!-- 其他字段 -->
               <template v-for="field in expandFields" :key="field.value">
-                <div class="expand-item" :class="{ 'full-row': field.value === 'description' }">
+                <div class="expand-item" v-if="field.value !== 'description'">
                   <div class="expand-label">{{ field.label }}</div>
                   <div class="expand-value">
                     {{
@@ -113,6 +119,10 @@
                         ? props.row[field.value] === '1'
                           ? '是'
                           : '否'
+                        : field.value === 'priority'
+                        ? props.row[field.value] === 1
+                          ? '优先'
+                          : '默认'
                         : props.row[field.value]
                     }}
                   </div>
@@ -1017,9 +1027,15 @@ const allFields = [
   width: calc(33.33% - 1px);
   background-color: #fff;
 }
+
 .expand-item.full-row {
   width: 100%;
-  min-height: 88px; /* 正常高度的2倍 */
+  min-height: 88px;
+}
+
+.expand-item.description-item {
+  margin-bottom: 1px;
+  border-bottom: 1px solid #ebeef5;
 }
 
 .expand-label {
@@ -1035,6 +1051,8 @@ const allFields = [
   flex: 1;
   padding: 12px 15px;
   color: #606266;
+  line-height: 1.5;
+  word-break: break-word;
 }
 
 /* 响应式布局 */
