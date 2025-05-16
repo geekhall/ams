@@ -1,0 +1,1547 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Loki测试",
+    "description": "",
+    "version": "1.0.0"
+  },
+  "tags": [],
+  "paths": {
+    "/api/auth/register": {
+      "post": {
+        "summary": "注册用户",
+        "deprecated": false,
+        "description": "",
+        "tags": [],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {}
+              },
+              "example": {
+                "username": "user10",
+                "password": "password",
+                "email": "user10@gmail.com"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    },
+    "/api/user/login": {
+      "post": {
+        "summary": "用户登录",
+        "deprecated": false,
+        "description": "",
+        "tags": [],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {}
+              },
+              "example": {
+                "username": "admin",
+                "password": "password"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    },
+    "/loki/environment/greeting": {
+      "post": {
+        "summary": "OAuth2-GitHub",
+        "deprecated": false,
+        "description": "",
+        "tags": [],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {}
+              },
+              "example": ""
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    },
+    "/loki/product/user": {
+      "post": {
+        "summary": "product-greeting",
+        "deprecated": false,
+        "description": "",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "",
+            "required": false,
+            "example": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxODg2NzA4NjczODg4MTA4NTQ1IiwidXNlcm5hbWUiOiJ1c2VyOCIsImlhdCI6MTczODY4MDk2OCwiZXhwIjoxNzM4NzY3MzY4fQ.KtgT8mfpMHuZaKYPePsPVbXKmCjmGoPaIPLNmLog4XbZGvMRn8vw9V2zxdVwi8nMCPacsqSfwzsJF_A-9TsKxg",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {}
+              },
+              "example": ""
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    },
+    "/api/article/list": {
+      "post": {
+        "summary": "Article-all",
+        "deprecated": false,
+        "description": "",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "",
+            "required": false,
+            "example": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxODg5NjkwOTE5NzM5OTI4NTc3IiwidXNlcm5hbWUiOiJhZG1pbiIsImlhdCI6MTczOTUzOTgwMSwiZXhwIjoxNzM5NjI2MjAxfQ.M1K-5x3KWUoS4WAqZa4F1VXwILKIvW0QDXT_vXJ0X_HK2JJFutXo7Cw2uVaZFqh2iWL2SkqPe85L6rFLPRUKvQ",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {}
+              },
+              "example": ""
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    },
+    "/api/user/list": {
+      "post": {
+        "summary": "Message-List",
+        "deprecated": false,
+        "description": "",
+        "tags": [],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {}
+              },
+              "example": {}
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/api/asset/list": {
+      "post": {
+        "summary": "AssetListbyName",
+        "deprecated": false,
+        "description": "",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "",
+            "required": false,
+            "example": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxODg5NjkwOTE5NzM5OTI4NTc3IiwidXNlcm5hbWUiOiJhZG1pbiIsImlhdCI6MTczOTYzODU4OCwiZXhwIjoxNzM5NzI0OTg4fQ.R7eY_sVSU8N1V4Yiws3E_ZQ4h_PlzhBCrL0H96A7N7tcP6b9zg_Yl8h88LqhIougEUS0kFdUYAkit-V3SgM3tQ",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {}
+              },
+              "example": {
+                "name": "电脑"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/ssdemo/user/list": {
+      "post": {
+        "summary": "User-List-8000",
+        "deprecated": false,
+        "description": "",
+        "tags": [],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {}
+              },
+              "example": ""
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    },
+    "/ssdemo/teacher/list": {
+      "post": {
+        "summary": "Teacher-List-8000",
+        "deprecated": false,
+        "description": "",
+        "tags": [],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {}
+              },
+              "example": ""
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/api/asset/delete/3": {
+      "delete": {
+        "summary": "Asset-Delete",
+        "deprecated": false,
+        "description": "",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "",
+            "required": false,
+            "example": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxODg5NjkwOTE5NzM5OTI4NTc3IiwidXNlcm5hbWUiOiJhZG1pbiIsImlhdCI6MTczOTYzODU4OCwiZXhwIjoxNzM5NzI0OTg4fQ.R7eY_sVSU8N1V4Yiws3E_ZQ4h_PlzhBCrL0H96A7N7tcP6b9zg_Yl8h88LqhIougEUS0kFdUYAkit-V3SgM3tQ",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {}
+              },
+              "example": ""
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/api/at/list": {
+      "post": {
+        "summary": "AssetType-summary",
+        "deprecated": false,
+        "description": "",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "",
+            "required": false,
+            "example": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxODg5NjkwOTE5NzM5OTI4NTc3IiwidXNlcm5hbWUiOiJhZG1pbiIsImlhdCI6MTczOTYzODU4OCwiZXhwIjoxNzM5NzI0OTg4fQ.R7eY_sVSU8N1V4Yiws3E_ZQ4h_PlzhBCrL0H96A7N7tcP6b9zg_Yl8h88LqhIougEUS0kFdUYAkit-V3SgM3tQ",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {}
+              },
+              "example": ""
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/api/at/delete/3": {
+      "delete": {
+        "summary": "AssetType-Delete",
+        "deprecated": false,
+        "description": "",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "",
+            "required": false,
+            "example": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxODg5NjkwOTE5NzM5OTI4NTc3IiwidXNlcm5hbWUiOiJhZG1pbiIsImlhdCI6MTczOTYzODU4OCwiZXhwIjoxNzM5NzI0OTg4fQ.R7eY_sVSU8N1V4Yiws3E_ZQ4h_PlzhBCrL0H96A7N7tcP6b9zg_Yl8h88LqhIougEUS0kFdUYAkit-V3SgM3tQ",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {}
+              },
+              "example": ""
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/api/at/create": {
+      "post": {
+        "summary": "AssetType-Create",
+        "deprecated": false,
+        "description": "",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "",
+            "required": false,
+            "example": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxODg5NjkwOTE5NzM5OTI4NTc3IiwidXNlcm5hbWUiOiJhZG1pbiIsImlhdCI6MTczOTYzODU4OCwiZXhwIjoxNzM5NzI0OTg4fQ.R7eY_sVSU8N1V4Yiws3E_ZQ4h_PlzhBCrL0H96A7N7tcP6b9zg_Yl8h88LqhIougEUS0kFdUYAkit-V3SgM3tQ",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {}
+              },
+              "example": {
+                "name": "API测试3"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/api/at/update": {
+      "post": {
+        "summary": "AssetType-Update",
+        "deprecated": false,
+        "description": "",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "",
+            "required": false,
+            "example": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxODg5NjkwOTE5NzM5OTI4NTc3IiwidXNlcm5hbWUiOiJhZG1pbiIsImlhdCI6MTczOTYzODU4OCwiZXhwIjoxNzM5NzI0OTg4fQ.R7eY_sVSU8N1V4Yiws3E_ZQ4h_PlzhBCrL0H96A7N7tcP6b9zg_Yl8h88LqhIougEUS0kFdUYAkit-V3SgM3tQ",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {}
+              },
+              "example": {
+                "id": 1909625806890520600,
+                "name": "API测试33"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/api/at/exists": {
+      "post": {
+        "summary": "AssetType-Exists",
+        "deprecated": false,
+        "description": "",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "",
+            "required": false,
+            "example": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxODg5NjkwOTE5NzM5OTI4NTc3IiwidXNlcm5hbWUiOiJhZG1pbiIsImlhdCI6MTczOTYzODU4OCwiZXhwIjoxNzM5NzI0OTg4fQ.R7eY_sVSU8N1V4Yiws3E_ZQ4h_PlzhBCrL0H96A7N7tcP6b9zg_Yl8h88LqhIougEUS0kFdUYAkit-V3SgM3tQ",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {}
+              },
+              "example": {
+                "name": "API测试2"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/api/at/names": {
+      "post": {
+        "summary": "AssetType-Names",
+        "deprecated": false,
+        "description": "",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "",
+            "required": false,
+            "example": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxODg5NjkwOTE5NzM5OTI4NTc3IiwidXNlcm5hbWUiOiJhZG1pbiIsImlhdCI6MTczOTYzODU4OCwiZXhwIjoxNzM5NzI0OTg4fQ.R7eY_sVSU8N1V4Yiws3E_ZQ4h_PlzhBCrL0H96A7N7tcP6b9zg_Yl8h88LqhIougEUS0kFdUYAkit-V3SgM3tQ",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {}
+              },
+              "example": ""
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/api/department/list": {
+      "post": {
+        "summary": "Department-List",
+        "deprecated": false,
+        "description": "",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "",
+            "required": false,
+            "example": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxODg5NjkwOTE5NzM5OTI4NTc3IiwidXNlcm5hbWUiOiJhZG1pbiIsImlhdCI6MTczOTYzODU4OCwiZXhwIjoxNzM5NzI0OTg4fQ.R7eY_sVSU8N1V4Yiws3E_ZQ4h_PlzhBCrL0H96A7N7tcP6b9zg_Yl8h88LqhIougEUS0kFdUYAkit-V3SgM3tQ",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {}
+              },
+              "example": ""
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/api/department/names": {
+      "post": {
+        "summary": "Department-Names",
+        "deprecated": false,
+        "description": "",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "",
+            "required": false,
+            "example": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxODg5NjkwOTE5NzM5OTI4NTc3IiwidXNlcm5hbWUiOiJhZG1pbiIsImlhdCI6MTczOTYzODU4OCwiZXhwIjoxNzM5NzI0OTg4fQ.R7eY_sVSU8N1V4Yiws3E_ZQ4h_PlzhBCrL0H96A7N7tcP6b9zg_Yl8h88LqhIougEUS0kFdUYAkit-V3SgM3tQ",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {}
+              },
+              "example": ""
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/api/department/create": {
+      "post": {
+        "summary": "Department-Create",
+        "deprecated": false,
+        "description": "",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "",
+            "required": false,
+            "example": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxODg5NjkwOTE5NzM5OTI4NTc3IiwidXNlcm5hbWUiOiJhZG1pbiIsImlhdCI6MTczOTYzODU4OCwiZXhwIjoxNzM5NzI0OTg4fQ.R7eY_sVSU8N1V4Yiws3E_ZQ4h_PlzhBCrL0H96A7N7tcP6b9zg_Yl8h88LqhIougEUS0kFdUYAkit-V3SgM3tQ",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {}
+              },
+              "example": ""
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/api/asset/create": {
+      "post": {
+        "summary": "Asset-Create",
+        "deprecated": false,
+        "description": "",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "",
+            "required": false,
+            "example": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxODg5NjkwOTE5NzM5OTI4NTc3IiwidXNlcm5hbWUiOiJhZG1pbiIsImlhdCI6MTczOTYzODU4OCwiZXhwIjoxNzM5NzI0OTg4fQ.R7eY_sVSU8N1V4Yiws3E_ZQ4h_PlzhBCrL0H96A7N7tcP6b9zg_Yl8h88LqhIougEUS0kFdUYAkit-V3SgM3tQ",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {}
+              },
+              "example": ""
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/api/asset/update": {
+      "post": {
+        "summary": "Asset-Update",
+        "deprecated": false,
+        "description": "",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "",
+            "required": false,
+            "example": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxODg5NjkwOTE5NzM5OTI4NTc3IiwidXNlcm5hbWUiOiJhZG1pbiIsImlhdCI6MTczOTYzODU4OCwiZXhwIjoxNzM5NzI0OTg4fQ.R7eY_sVSU8N1V4Yiws3E_ZQ4h_PlzhBCrL0H96A7N7tcP6b9zg_Yl8h88LqhIougEUS0kFdUYAkit-V3SgM3tQ",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {}
+              },
+              "example": {
+                "id": 22
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/api/quota/list": {
+      "post": {
+        "summary": "DepartmentQuota-List",
+        "deprecated": false,
+        "description": "",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "",
+            "required": false,
+            "example": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxODg5NjkwOTE5NzM5OTI4NTc3IiwidXNlcm5hbWUiOiJhZG1pbiIsImlhdCI6MTczOTYzODU4OCwiZXhwIjoxNzM5NzI0OTg4fQ.R7eY_sVSU8N1V4Yiws3E_ZQ4h_PlzhBCrL0H96A7N7tcP6b9zg_Yl8h88LqhIougEUS0kFdUYAkit-V3SgM3tQ",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {}
+              },
+              "example": {
+                "year": 2025,
+                "pageIndex": "1",
+                "pageSize": "10"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/api/quota/create": {
+      "post": {
+        "summary": "DepartmentQuota-Create",
+        "deprecated": false,
+        "description": "",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "",
+            "required": false,
+            "example": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxODg5NjkwOTE5NzM5OTI4NTc3IiwidXNlcm5hbWUiOiJhZG1pbiIsImlhdCI6MTczOTYzODU4OCwiZXhwIjoxNzM5NzI0OTg4fQ.R7eY_sVSU8N1V4Yiws3E_ZQ4h_PlzhBCrL0H96A7N7tcP6b9zg_Yl8h88LqhIougEUS0kFdUYAkit-V3SgM3tQ",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {}
+              },
+              "example": {
+                "year": "2025",
+                "departmentName": "信息科技部",
+                "quota": 100
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/api/quota/update": {
+      "post": {
+        "summary": "DepartmentQuota-Update",
+        "deprecated": false,
+        "description": "",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "",
+            "required": false,
+            "example": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxODg5NjkwOTE5NzM5OTI4NTc3IiwidXNlcm5hbWUiOiJhZG1pbiIsImlhdCI6MTczOTYzODU4OCwiZXhwIjoxNzM5NzI0OTg4fQ.R7eY_sVSU8N1V4Yiws3E_ZQ4h_PlzhBCrL0H96A7N7tcP6b9zg_Yl8h88LqhIougEUS0kFdUYAkit-V3SgM3tQ",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {}
+              },
+              "example": {
+                "id": "1911022448099172354",
+                "year": 2025,
+                "departmentName": "总行领导",
+                "quota": 3
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/api/quota/delete/1911022448099172354": {
+      "delete": {
+        "summary": "DepartmentQuota-Delete",
+        "deprecated": false,
+        "description": "",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "",
+            "required": false,
+            "example": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxODg5NjkwOTE5NzM5OTI4NTc3IiwidXNlcm5hbWUiOiJhZG1pbiIsImlhdCI6MTczOTYzODU4OCwiZXhwIjoxNzM5NzI0OTg4fQ.R7eY_sVSU8N1V4Yiws3E_ZQ4h_PlzhBCrL0H96A7N7tcP6b9zg_Yl8h88LqhIougEUS0kFdUYAkit-V3SgM3tQ",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {}
+              },
+              "example": ""
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/api/team/list": {
+      "post": {
+        "summary": "Team-List",
+        "deprecated": false,
+        "description": "",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "",
+            "required": false,
+            "example": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxODg5NjkwOTE5NzM5OTI4NTc3IiwidXNlcm5hbWUiOiJhZG1pbiIsImlhdCI6MTczOTYzODU4OCwiZXhwIjoxNzM5NzI0OTg4fQ.R7eY_sVSU8N1V4Yiws3E_ZQ4h_PlzhBCrL0H96A7N7tcP6b9zg_Yl8h88LqhIougEUS0kFdUYAkit-V3SgM3tQ",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {}
+              },
+              "example": ""
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/api/bc/list": {
+      "post": {
+        "summary": "BudgetCata-List",
+        "deprecated": false,
+        "description": "",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "",
+            "required": false,
+            "example": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxODg5NjkwOTE5NzM5OTI4NTc3IiwidXNlcm5hbWUiOiJhZG1pbiIsImlhdCI6MTczOTYzODU4OCwiZXhwIjoxNzM5NzI0OTg4fQ.R7eY_sVSU8N1V4Yiws3E_ZQ4h_PlzhBCrL0H96A7N7tcP6b9zg_Yl8h88LqhIougEUS0kFdUYAkit-V3SgM3tQ",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {}
+              },
+              "example": ""
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/api/budget/list": {
+      "post": {
+        "summary": "Budget-List",
+        "deprecated": false,
+        "description": "",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "",
+            "required": false,
+            "example": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxODg5NjkwOTE5NzM5OTI4NTc3IiwidXNlcm5hbWUiOiJhZG1pbiIsImlhdCI6MTczOTYzODU4OCwiZXhwIjoxNzM5NzI0OTg4fQ.R7eY_sVSU8N1V4Yiws3E_ZQ4h_PlzhBCrL0H96A7N7tcP6b9zg_Yl8h88LqhIougEUS0kFdUYAkit-V3SgM3tQ",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {}
+              },
+              "example": {
+                "budgetType": "软件",
+                "year": 2025,
+                "pageIndex": "1",
+                "pageSize": "10"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/api/asset/summary": {
+      "post": {
+        "summary": "Asset-Dp",
+        "deprecated": false,
+        "description": "",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "",
+            "required": false,
+            "example": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxODg5NjkwOTE5NzM5OTI4NTc3IiwidXNlcm5hbWUiOiJhZG1pbiIsImlhdCI6MTczOTYzODU4OCwiZXhwIjoxNzM5NzI0OTg4fQ.R7eY_sVSU8N1V4Yiws3E_ZQ4h_PlzhBCrL0H96A7N7tcP6b9zg_Yl8h88LqhIougEUS0kFdUYAkit-V3SgM3tQ",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {}
+              },
+              "example": {}
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/api/user/info": {
+      "post": {
+        "summary": "User-Info",
+        "deprecated": false,
+        "description": "",
+        "tags": [],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {}
+              },
+              "example": "\n    \"username\": \"admin\"\n"
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Pet": {
+        "required": [
+          "name",
+          "photoUrls",
+          "id",
+          "category",
+          "tags",
+          "status"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 1,
+            "description": "宠物ID编号"
+          },
+          "category": {
+            "$ref": "#/components/schemas/Category",
+            "description": "分组"
+          },
+          "name": {
+            "type": "string",
+            "description": "名称",
+            "examples": [
+              "doggie"
+            ]
+          },
+          "photoUrls": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "照片URL"
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Tag"
+            },
+            "description": "标签"
+          },
+          "status": {
+            "type": "string",
+            "description": "宠物销售状态",
+            "enum": [
+              "available",
+              "pending",
+              "sold"
+            ]
+          }
+        }
+      },
+      "Category": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 1,
+            "description": "分组ID编号"
+          },
+          "name": {
+            "type": "string",
+            "description": "分组名称"
+          }
+        },
+        "xml": {
+          "name": "Category"
+        }
+      },
+      "Tag": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 1,
+            "description": "标签ID编号"
+          },
+          "name": {
+            "type": "string",
+            "description": "标签名称"
+          }
+        },
+        "xml": {
+          "name": "Tag"
+        }
+      }
+    },
+    "securitySchemes": {
+      "bearer": {
+        "type": "http",
+        "scheme": "bearer"
+      }
+    }
+  },
+  "servers": [],
+  "security": []
+}
