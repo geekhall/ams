@@ -7,7 +7,7 @@
         <result column="id" property="id" />
         <result column="message_id" property="messageId" />
         <result column="user_id" property="userId" />
-        <result column="is_read" property="read" />
+        <result column="is_read" property="isRead" />
         <result column="status" property="status" />
         <result column="read_time" property="readTime" />
         <result column="version" property="version" />

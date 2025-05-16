@@ -44,7 +44,7 @@ public class MessageReceiver extends Model<MessageReceiver> {
 
     @ApiModelProperty("是否已读：0-未读，1-已读")
     @TableField("is_read")
-    private Boolean read;
+    private Boolean isRead;
 
     @ApiModelProperty("状态：0-正常，1-已删除")
     @TableField("status")
