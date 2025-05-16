@@ -1,7 +1,10 @@
 package net.geekhour.loki.service.impl;
 
 import net.geekhour.loki.entity.Budget;
+import net.geekhour.loki.entity.dto.BudgetCategorySummaryDTO;
 import net.geekhour.loki.entity.dto.BudgetDTO;
+import net.geekhour.loki.entity.dto.BudgetDepartmentSummaryDTO;
+import net.geekhour.loki.entity.dto.BudgetTypeSummaryDTO;
 import net.geekhour.loki.mapper.*;
 import net.geekhour.loki.service.IBudgetService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -196,6 +199,21 @@ public class BudgetServiceImpl extends ServiceImpl<BudgetMapper, Budget> impleme
             e.printStackTrace();
             throw new RuntimeException("导出 Excel 失败: " + e.getMessage());
         }
+    }
+
+    @Override
+    public List<BudgetDepartmentSummaryDTO> getBudgetDepartmentSummary() {
+        return budgetMapper.getBudgetDepartmentSummary();
+    }
+
+    @Override
+    public List<BudgetTypeSummaryDTO> getBudgetTypeSummary() {
+        return budgetMapper.getBudgetTypeSummary();
+    }
+
+    @Override
+    public List<BudgetCategorySummaryDTO> getBudgetCategorySummary() {
+        return budgetMapper.getBudgetCategorySummary();
     }
 
     /**

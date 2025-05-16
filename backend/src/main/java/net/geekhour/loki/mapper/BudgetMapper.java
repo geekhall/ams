@@ -2,7 +2,10 @@ package net.geekhour.loki.mapper;
 
 import net.geekhour.loki.entity.Budget;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import net.geekhour.loki.entity.dto.BudgetCategorySummaryDTO;
 import net.geekhour.loki.entity.dto.BudgetDTO;
+import net.geekhour.loki.entity.dto.BudgetDepartmentSummaryDTO;
+import net.geekhour.loki.entity.dto.BudgetTypeSummaryDTO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
@@ -180,4 +183,28 @@ public interface BudgetMapper extends BaseMapper<Budget> {
 
     @Select("select count(*) from h_budget where name = #{name} and deleted = 0")
     boolean checkBudgetNameExists(@Param("name")  String name);
+
+    @Select("select b.id, b.name, sum(amount) from h_budget a " +
+            " left join h_department b " +
+            " on a.department_id = b.id " +
+            " where a.deleted = b.deleted " +
+            " group by b.id, b.name " +
+            " order by b.id, b.name ")
+    List<BudgetDepartmentSummaryDTO> getBudgetDepartmentSummary();
+
+    @Select("select b.id, b.name, sum(amount) from h_budget a " +
+            " left join h_budget_type b " +
+            " on a.type = b.id " +
+            " where a.deleted = 0 and b.deleted=0 " +
+            " group by b.id, b.name " +
+            " order by b.id, b.name ")
+    List<BudgetTypeSummaryDTO> getBudgetTypeSummary();
+
+    @Select("select b.id, b.name, sum(amount) from h_budget a " +
+            " left join h_budget_category b " +
+            " on a.type = b.id " +
+            " where a.deleted = 0 and b.deleted=0 " +
+            " group by b.id, b.name " +
+            " order by b.id, b.name ")
+    List<BudgetCategorySummaryDTO> getBudgetCategorySummary();
 }

@@ -75,7 +75,7 @@ const budgetData = ref<Budget[]>([])
 
 const fetchBudgetData = async () => {
   try {
-    const res = await getBudgetList({
+    const res = await getBudgetDepartmentSummary({
       year: new Date().getFullYear(),
       pageIndex: 1,
       pageSize: 1000,

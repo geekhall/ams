@@ -2,7 +2,10 @@ package net.geekhour.loki.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import net.geekhour.loki.common.ResponseUtil;
+import net.geekhour.loki.entity.dto.BudgetCategorySummaryDTO;
 import net.geekhour.loki.entity.dto.BudgetDTO;
+import net.geekhour.loki.entity.dto.BudgetDepartmentSummaryDTO;
+import net.geekhour.loki.entity.dto.BudgetTypeSummaryDTO;
 import net.geekhour.loki.service.IBudgetService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -159,6 +162,25 @@ public class BudgetController {
         } catch (Exception e) {
             e.printStackTrace();
             throw new RuntimeException("导出 Excel 失败: " + e.getMessage());
+        }
+    }
+
+    @RequestMapping("/summary")
+    @PreAuthorize("hasRole('USER') || hasAuthority('budget:view')")
+    public ResponseEntity<?> getBudgetSummary() {
+        try {
+            List<BudgetDepartmentSummaryDTO> budgetDepartmentSummary = budgetService.getBudgetDepartmentSummary();
+            List<BudgetTypeSummaryDTO> budgetTypeSummary = budgetService.getBudgetTypeSummary();
+            List<BudgetCategorySummaryDTO> budgetCategorySummary = budgetService.getBudgetCategorySummary();
+
+            return ResponseUtil.success(Map.of(
+                    "budgetDepartmentSummary", budgetDepartmentSummary,
+                    "budgetTypeSummary", budgetTypeSummary,
+                    "budgetCategorySummary", budgetCategorySummary
+            ));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseUtil.error(500, e.getMessage());
         }
     }
 }

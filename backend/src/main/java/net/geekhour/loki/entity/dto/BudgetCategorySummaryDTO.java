@@ -14,14 +14,14 @@ import lombok.experimental.Accessors;
 @Getter
 @Setter
 @Accessors(chain = true)
-public class BudgetTypeSummaryDTO {
+public class BudgetCategorySummaryDTO {
 
     @ApiModelProperty("ID")
     private String id;
 
-    @ApiModelProperty("类型名称")
+    @ApiModelProperty("分类名称")
     private String name;
 
-    @ApiModelProperty("类型预算总额")
+    @ApiModelProperty("分类预算总额")
     private String budgetAmount;
 }

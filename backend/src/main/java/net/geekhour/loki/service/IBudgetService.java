@@ -2,7 +2,10 @@ package net.geekhour.loki.service;
 
 import net.geekhour.loki.entity.Budget;
 import com.baomidou.mybatisplus.extension.service.IService;
+import net.geekhour.loki.entity.dto.BudgetCategorySummaryDTO;
 import net.geekhour.loki.entity.dto.BudgetDTO;
+import net.geekhour.loki.entity.dto.BudgetDepartmentSummaryDTO;
+import net.geekhour.loki.entity.dto.BudgetTypeSummaryDTO;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
@@ -29,4 +32,10 @@ public interface IBudgetService extends IService<Budget> {
     boolean updateBudget(BudgetDTO budgetDTO);
 
     void exportToExcel(Map<String, Object> requestMap, HttpServletResponse response);
+
+    List<BudgetDepartmentSummaryDTO> getBudgetDepartmentSummary();
+
+    List<BudgetTypeSummaryDTO> getBudgetTypeSummary();
+
+    List<BudgetCategorySummaryDTO> getBudgetCategorySummary();
 }
