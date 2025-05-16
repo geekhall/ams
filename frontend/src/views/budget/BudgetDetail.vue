@@ -109,6 +109,10 @@
                     {{
                       field.value === 'amount'
                         ? '¥' + props.row[field.value]
+                        : field.value === 'innovation'
+                        ? props.row[field.value] === '1'
+                          ? '是'
+                          : '否'
                         : props.row[field.value]
                     }}
                   </div>
@@ -118,15 +122,90 @@
           </div>
         </template>
       </el-table-column>
+
       <el-table-column prop="projectInfo" label="项目概述" align="center">
-        <el-table-column prop="budgetType" label="项目类型" align="center"></el-table-column>
-        <el-table-column prop="budgetCategory" label="项目性质" align="center"></el-table-column>
-        <el-table-column prop="innovation" label="是否信创" align="center" width="60px">
+        <el-table-column
+          prop="budgetType"
+          label="项目类型"
+          align="center"
+          v-if="visibleColumns.budgetType"
+        ></el-table-column>
+        <el-table-column
+          prop="budgetCategory"
+          label="项目性质"
+          align="center"
+          v-if="visibleColumns.budgetCategory"
+        ></el-table-column>
+        <el-table-column
+          prop="innovation"
+          label="是否信创"
+          align="center"
+          width="60px"
+          v-if="visibleColumns.innovation"
+        >
+          <template #default="scope">
+            {{ scope.row.innovation === '1' ? '是' : '否' }}
+          </template>
         </el-table-column>
-        <el-table-column prop="name" label="项目名称" align="center"> </el-table-column>
+        <el-table-column
+          prop="name"
+          label="项目名称"
+          align="center"
+          v-if="visibleColumns.name"
+        ></el-table-column>
       </el-table-column>
-      <el-table-column prop="departmentName" label="部门" align="center"> </el-table-column>
-      <el-table-column prop="amount" label="预算金额" align="center"> </el-table-column>
+
+      <el-table-column
+        prop="departmentName"
+        label="部门"
+        align="center"
+        v-if="visibleColumns.departmentName"
+      ></el-table-column>
+
+      <el-table-column prop="amount" label="预算金额" align="center" v-if="visibleColumns.amount">
+        <template #default="scope"> ¥{{ scope.row.amount.toLocaleString() }} </template>
+      </el-table-column>
+
+      <el-table-column
+        prop="teamName"
+        label="团队"
+        align="center"
+        v-if="visibleColumns.teamName"
+      ></el-table-column>
+
+      <el-table-column prop="priority" label="优先级" align="center" v-if="visibleColumns.priority">
+        <template #default="scope">
+          {{ scope.row.priority === 1 ? '优先' : '默认' }}
+        </template>
+      </el-table-column>
+
+      <el-table-column
+        prop="businessPriority"
+        label="业务优先级"
+        align="center"
+        v-if="visibleColumns.businessPriority"
+      ></el-table-column>
+
+      <el-table-column
+        prop="businessDescription"
+        label="业务优先级说明"
+        align="center"
+        v-if="visibleColumns.businessDescription"
+      ></el-table-column>
+
+      <el-table-column
+        prop="plannedStartDate"
+        label="预计启动时间"
+        align="center"
+        v-if="visibleColumns.plannedStartDate"
+      ></el-table-column>
+
+      <el-table-column
+        prop="remark"
+        label="备注"
+        align="center"
+        v-if="visibleColumns.remark"
+      ></el-table-column>
 
       <el-table-column label="操作" width="220" align="center">
         <template #default="scope">

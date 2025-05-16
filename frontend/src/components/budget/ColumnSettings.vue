@@ -2,20 +2,23 @@
   <el-dialog
     v-model="dialogVisible"
     title="列设置"
-    width="500px"
+    width="700px"
     :close-on-click-modal="false"
     @close="handleClose"
   >
-    <el-checkbox-group v-model="selectedColumns" class="column-list">
-      <el-checkbox
-        v-for="field in allFields"
-        :key="field.value"
-        :label="field.value"
-        class="column-item"
-      >
-        {{ field.label }}
-      </el-checkbox>
-    </el-checkbox-group>
+    <div class="transfer-container">
+      <el-transfer
+        v-model="selectedColumns"
+        :data="transferData"
+        :titles="['已选列', '可选列']"
+        :props="{
+          key: 'value',
+          label: 'label'
+        }"
+        filterable
+        filter-placeholder="请输入列名"
+      />
+    </div>
     <template #footer>
       <span class="dialog-footer">
         <el-button @click="handleClose">取 消</el-button>
@@ -26,7 +29,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, watch } from 'vue'
+import { ref, watch, computed } from 'vue'
 
 const props = defineProps<{
   visible: boolean
@@ -57,6 +60,9 @@ const allFields = [
   { value: 'remark', label: '备注' }
 ]
 
+// 转换为穿梭框数据格式
+const transferData = computed(() => allFields)
+
 // 选中的列
 const selectedColumns = ref<string[]>([])
 
@@ -68,7 +74,7 @@ watch(
     if (newVal) {
       // 初始化选中的列
       selectedColumns.value = Object.entries(props.visibleColumns)
-        .filter(([_, value]) => value)
+        .filter(([_, value]) => !value)
         .map(([key]) => key)
     }
   }
@@ -92,7 +98,7 @@ const handleConfirm = () => {
   const newVisibleColumns = { ...props.visibleColumns }
   // 更新所有列的显示状态
   allFields.forEach((field) => {
-    newVisibleColumns[field.value] = selectedColumns.value.includes(field.value)
+    newVisibleColumns[field.value] = !selectedColumns.value.includes(field.value)
   })
   emit('updateVisibleColumns', newVisibleColumns)
   dialogVisible.value = false
@@ -100,23 +106,45 @@ const handleConfirm = () => {
 </script>
 
 <style scoped>
-.column-list {
+.transfer-container {
   display: flex;
-  flex-direction: column;
-  gap: 12px;
-  max-height: 400px;
-  overflow-y: auto;
-  padding: 10px;
+  justify-content: center;
+  padding: 20px 0;
 }
 
-.column-item {
-  margin-right: 0;
-  padding: 8px;
-  border-radius: 4px;
-  transition: background-color 0.3s;
+:deep(.el-transfer) {
+  width: 100%;
+  display: flex;
+  justify-content: center;
 }
 
-.column-item:hover {
-  background-color: #f5f7fa;
+:deep(.el-transfer-panel) {
+  width: 40%;
+  min-width: 200px;
+}
+
+:deep(.el-transfer-panel__body) {
+  height: 400px;
+}
+
+:deep(.el-transfer-panel__list) {
+  height: calc(100% - 40px);
+}
+
+:deep(.el-transfer-panel__filter) {
+  margin: 10px;
+}
+
+:deep(.el-transfer__buttons) {
+  padding: 0 20px;
+}
+
+:deep(.el-transfer__button) {
+  display: block;
+  margin: 10px 0;
+}
+
+:deep(.el-transfer__button:first-child) {
+  margin-bottom: 20px;
 }
 </style>
