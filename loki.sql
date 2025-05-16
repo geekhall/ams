@@ -400,8 +400,8 @@ CREATE TABLE `h_department` (
 -- ----------------------------
 BEGIN;
 INSERT INTO `h_department` VALUES (1, '总行领导', '总行领导', '0001', NULL, 1, 1, 1, 20230304112717, NULL, 0);
-INSERT INTO `h_department` VALUES (2, '驻盛京银行纪检监察组', '驻盛京银行纪检监察组', '0002', NULL, 1, 2, 1, 20230304112717, NULL, 0);
-INSERT INTO `h_department` VALUES (3, '驻盛京银行纪检监察组纪检监察部', '驻盛京银行纪检监察组纪检监察部', '0003', NULL, 1, 3, 1, 20230304112717, NULL, 0);
+INSERT INTO `h_department` VALUES (2, '纪检监察组', '纪检监察组', '0002', NULL, 1, 2, 1, 20230304112717, NULL, 0);
+INSERT INTO `h_department` VALUES (3, '纪检监察组纪检监察部', '纪检监察组纪检监察部', '0003', NULL, 1, 3, 1, 20230304112717, NULL, 0);
 INSERT INTO `h_department` VALUES (4, '党委办公室', '党委办公室', '0004', NULL, 1, 4, 1, 20230304112717, NULL, 0);
 INSERT INTO `h_department` VALUES (5, '办公室', '办公室', '0005', NULL, 1, 5, 1, 20230304112717, NULL, 0);
 INSERT INTO `h_department` VALUES (6, '党委组织部', '党委组织部', '0006', NULL, 1, 6, 1, 20230304112717, NULL, 0);
@@ -453,14 +453,14 @@ INSERT INTO `h_department` VALUES (51, '盘锦分行', '盘锦分行', '0051', N
 INSERT INTO `h_department` VALUES (52, '铁岭分行', '铁岭分行', '0052', NULL, 1, 52, 1, 20230304112717, NULL, 0);
 INSERT INTO `h_department` VALUES (53, '朝阳分行', '朝阳分行', '0053', NULL, 1, 53, 1, 20230304112717, NULL, 0);
 INSERT INTO `h_department` VALUES (54, '葫芦岛分行', '葫芦岛分行', '0054', NULL, 1, 54, 1, 20230304112717, NULL, 0);
-INSERT INTO `h_department` VALUES (55, '盛银消费金融有限公司', '盛银消费金融有限公司', '0055', NULL, 1, 55, 1, 20230304112717, NULL, 0);
-INSERT INTO `h_department` VALUES (56, '盛银数科（沈阳）技术有限公司', '盛银数科（沈阳）技术有限公司', '0056', NULL, 1, 56, 1, 20230304112717, NULL, 0);
-INSERT INTO `h_department` VALUES (57, '上海宝山富民村镇银行', '上海宝山富民村镇银行', '0057', NULL, 1, 57, 1, 20230304112717, NULL, 0);
-INSERT INTO `h_department` VALUES (58, '沈阳沈北富民村镇银行', '沈阳沈北富民村镇银行', '0058', NULL, 1, 58, 1, 20230304112717, NULL, 0);
-INSERT INTO `h_department` VALUES (59, '沈阳辽中富民村镇银行', '沈阳辽中富民村镇银行', '0059', NULL, 1, 59, 1, 20230304112717, NULL, 0);
-INSERT INTO `h_department` VALUES (60, '沈阳法库富民村镇银行', '沈阳法库富民村镇银行', '0060', NULL, 1, 60, 1, 20230304112717, NULL, 0);
-INSERT INTO `h_department` VALUES (61, '沈阳新民富民村镇银行', '沈阳新民富民村镇银行', '0061', NULL, 1, 61, 1, 20230304112717, NULL, 0);
-INSERT INTO `h_department` VALUES (62, '宁波江北富民村镇银行', '宁波江北富民村镇银行', '0062', NULL, 1, 62, 1, 20230304112717, NULL, 0);
+INSERT INTO `h_department` VALUES (55, '消费金融有限公司', '消费金融有限公司', '0055', NULL, 1, 55, 1, 20230304112717, NULL, 0);
+INSERT INTO `h_department` VALUES (56, '数科技术有限公司', '数科技术有限公司', '0056', NULL, 1, 56, 1, 20230304112717, NULL, 0);
+INSERT INTO `h_department` VALUES (57, '上海宝山', '上海宝山', '0057', NULL, 1, 57, 1, 20230304112717, NULL, 0);
+INSERT INTO `h_department` VALUES (58, '沈阳沈北', '沈阳沈北', '0058', NULL, 1, 58, 1, 20230304112717, NULL, 0);
+INSERT INTO `h_department` VALUES (59, '沈阳辽中', '沈阳辽中', '0059', NULL, 1, 59, 1, 20230304112717, NULL, 0);
+INSERT INTO `h_department` VALUES (60, '沈阳法库', '沈阳法库', '0060', NULL, 1, 60, 1, 20230304112717, NULL, 0);
+INSERT INTO `h_department` VALUES (61, '沈阳新民', '沈阳新民', '0061', NULL, 1, 61, 1, 20230304112717, NULL, 0);
+INSERT INTO `h_department` VALUES (62, '宁波江北', '宁波江北', '0062', NULL, 1, 62, 1, 20230304112717, NULL, 0);
 INSERT INTO `h_department` VALUES (63, '其他', '其他', '0063', NULL, 1, 63, 1, 20230304112717, NULL, 0);
 COMMIT;
 
