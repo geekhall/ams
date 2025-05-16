@@ -55,7 +55,6 @@ public class DepartmentQuotaController {
         Integer year = LocalDate.now().getYear();
         Integer pageIndex = 1;
         Integer pageSize = 15;
-        System.out.println(" ##########  year: " + year);
         if (requestBody != null && !requestBody.isEmpty()) {
             try {
                 Map<String, Object> requestMap = new ObjectMapper().readValue(requestBody, Map.class);
@@ -66,7 +65,6 @@ public class DepartmentQuotaController {
                         Integer.parseInt(requestMap.get("pageIndex").toString());
                 pageSize = requestMap.get("pageSize") == null ? 15 :
                         Integer.parseInt(requestMap.get("pageSize").toString());
-                System.out.println(" ##########  year: " + year);
             } catch (Exception e) {
                 e.printStackTrace();
                 return ResponseUtil.error(500, e.getMessage());
@@ -96,8 +94,6 @@ public class DepartmentQuotaController {
             return ResponseUtil.error(400, "部门名称不能为空");
         }
         Long currentYear = System.currentTimeMillis() / 1000 / 60 / 60 / 24 / 365 + 1970;
-        System.out.println("currentYear: " + currentYear);
-        System.out.println("quotaDTO.getYear(): " + quotaDTO.getYear());
         if (quotaDTO.getYear() == null || quotaDTO.getYear() < currentYear) {
             return ResponseUtil.error(400,"预算年度不能为空或小于当前年份");
         }
