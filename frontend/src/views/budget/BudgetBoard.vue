@@ -13,26 +13,7 @@
             </template>
             <PieChart :data="departmentPieData" :options="pieChartOptions" />
           </el-card>
-        </el-col>
-        <el-col :xs="24" :lg="12">
-          <el-card shadow="hover" class="chart-card">
-            <template #header>
-              <div class="card-header">
-                <span class="header-title">年度预算执行情况</span>
-                <el-radio-group v-model="yearRange" size="small">
-                  <el-radio-button value="2023">2023年</el-radio-button>
-                  <el-radio-button value="2024">2024年</el-radio-button>
-                </el-radio-group>
-              </div>
-            </template>
-            <LineChart :data="yearlyExecutionData" :options="lineChartOptions" />
-          </el-card>
-        </el-col>
-      </el-row>
 
-      <!-- 第二行：预算类型分布和月度趋势 -->
-      <el-row :gutter="24" class="chart-section">
-        <el-col :xs="24" :lg="12">
           <el-card shadow="hover" class="chart-card">
             <template #header>
               <div class="card-header">
@@ -43,13 +24,17 @@
           </el-card>
         </el-col>
         <el-col :xs="24" :lg="12">
-          <el-card shadow="hover" class="chart-card">
+          <el-card shadow="hover" class="execution-card">
             <template #header>
               <div class="card-header">
-                <span class="header-title">月度预算趋势</span>
+                <span class="header-title">年度预算执行情况</span>
+                <el-radio-group v-model="yearRange" size="small">
+                  <el-radio-button value="2023">2023年</el-radio-button>
+                  <el-radio-button value="2024">2024年</el-radio-button>
+                </el-radio-group>
               </div>
             </template>
-            <LineChart :data="monthlyTrendData" :options="areaChartOptions" />
+            <LineChart :data="yearlyExecutionData" :options="lineChartOptions" />
           </el-card>
         </el-col>
       </el-row>
@@ -428,17 +413,48 @@ const areaChartOptions = {
 .chart-container {
   margin-bottom: 20px;
 }
+
 .card-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
+
 .table-container {
   max-width: 100%;
   overflow-x: auto;
   padding: 10px 0;
 }
+
 .el-table {
   width: 100%;
+}
+
+.execution-card {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  min-height: 400px;
+}
+
+.chart-card {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  min-height: 400px;
+}
+
+:deep(.el-card__body) {
+  height: 350px;
+  padding: 20px;
+}
+
+@media screen and (max-width: 1200px) {
+  .execution-card,
+  .chart-card {
+    min-height: 350px;
+  }
+
+  :deep(.el-card__body) {
+    height: 300px;
+  }
 }
 </style>

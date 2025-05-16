@@ -653,59 +653,6 @@ onUnmounted(() => {
   }
 }
 
-// 轮播图区域样式
-.carousel-section {
-  margin-bottom: 24px;
-
-  .carousel-card {
-    .el-carousel {
-      .el-carousel__item {
-        .carousel-content {
-          height: 100%;
-          background-size: cover;
-          background-position: center;
-          border-radius: 8px;
-          position: relative;
-          overflow: hidden;
-
-          &::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(to right, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.3));
-          }
-
-          .carousel-info {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            padding: 24px;
-            color: #fff;
-
-            .carousel-title {
-              font-size: 24px;
-              font-weight: 600;
-              margin-bottom: 12px;
-              text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-            }
-
-            .carousel-desc {
-              font-size: 16px;
-              line-height: 1.5;
-              opacity: 0.9;
-              text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
-            }
-          }
-        }
-      }
-    }
-  }
-}
-
 // 底部区域样式
 .bottom-section {
   margin-bottom: 24px;

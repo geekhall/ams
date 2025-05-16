@@ -1,6 +1,6 @@
 <template>
   <div id="tabsPage" class="content-container">
-    <el-tabs v-model="message">
+    <el-tabs v-model="message" class="custom-tabs">
       <el-tab-pane :label="`未读消息(${state.unread.length})`" name="first">
         <el-table :data="state.unread" :show-header="false" style="width: 100%">
           <el-table-column>
@@ -112,5 +112,57 @@ const handleRestore = (index: number) => {
 }
 .handle-row {
   margin-top: 30px;
+}
+
+/* 优化 Tab 标签样式 */
+.custom-tabs {
+  width: 100%;
+}
+
+:deep(.el-tabs__header) {
+  margin-bottom: 20px;
+}
+
+:deep(.el-tabs__nav-wrap) {
+  padding: 0 4px;
+}
+
+:deep(.el-tabs__item) {
+  height: 40px;
+  line-height: 40px;
+  font-size: 14px;
+  transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+  min-width: 120px;
+  text-align: center;
+}
+
+:deep(.el-tabs__item.is-active) {
+  font-weight: 500;
+}
+
+:deep(.el-tabs__active-bar) {
+  transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+}
+
+/* 优化内容区域过渡 */
+:deep(.el-tab-pane) {
+  transition: opacity 0.3s ease-in-out;
+}
+
+/* 防止内容闪烁 */
+:deep(.el-tabs__content) {
+  overflow: hidden;
+  position: relative;
+}
+
+/* 优化数字显示 */
+:deep(.el-tabs__item) {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+:deep(.el-tabs__item .el-badge__content) {
+  transform: translateY(-50%) translateX(100%);
 }
 </style>
