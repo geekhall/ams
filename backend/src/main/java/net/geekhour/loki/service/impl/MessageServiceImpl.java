@@ -93,7 +93,7 @@ public class MessageServiceImpl extends ServiceImpl<MessageMapper, Message> impl
                     MessageReceiver receiver = new MessageReceiver();
                     receiver.setMessageId(message.getId())
                             .setUserId(userId)
-                            .setRead(false)
+                            .setIsRead(false)
                             .setCreateDate(System.currentTimeMillis())
                             .setUpdateDate(System.currentTimeMillis())
                             .setDeleted((byte) 0);
