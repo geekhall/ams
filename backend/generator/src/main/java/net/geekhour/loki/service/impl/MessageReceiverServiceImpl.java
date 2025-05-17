@@ -2,7 +2,6 @@ package net.geekhour.loki.service.impl;
 
 import net.geekhour.loki.entity.MessageReceiver;
 import net.geekhour.loki.mapper.MessageReceiverMapper;
-import net.geekhour.loki.service.IMessageReceiverService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 

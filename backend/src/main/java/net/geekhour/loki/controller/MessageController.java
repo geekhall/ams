@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -40,13 +41,13 @@ public class MessageController {
       return ResponseUtil.error(400, "参数不能为空");
     }
     try {
-      Page<Message> result = messageService.getMessageList(params);
+      List<MessageDTO> messageList = messageService.getMessageList(params);
+      Long total = messageService.countMessage(params);
+      System.out.println("result: " + messageList);
 
-      Map<String, Object> data = new HashMap<>();
-      data.put("total", result.getTotal());
-      data.put("list", result.getRecords());
-
-      return ResponseUtil.success(data);
+      return ResponseUtil.success(Map.of(
+              "items", messageList,
+              "total", total));
     } catch (Exception e) {
       return ResponseUtil.error(500, "获取消息列表失败: " + e.getMessage());
     }
@@ -69,6 +70,7 @@ public class MessageController {
   @PreAuthorize("hasRole('USER') || hasAuthority('message:manage')")
   public ResponseEntity<?> updateMessage(@RequestBody MessageDTO messageDTO) {
     try {
+      System.out.println("updateMessage: " + messageDTO);
       boolean success = messageService.updateMessage(messageDTO);
       return success ? ResponseUtil.success(messageDTO) : ResponseUtil.error(500, "消息更新失败");
     } catch (Exception e) {

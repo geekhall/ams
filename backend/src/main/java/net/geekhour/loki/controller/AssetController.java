@@ -95,30 +95,26 @@ public class AssetController {
     @RequestMapping("/list")
     @PreAuthorize("hasRole('USER') || hasAuthority('asset:view')")
     public ResponseEntity<?> getAssetList(@RequestBody(required = false) String requestBody) {
-        String name = null;
-        int pageIndex = 1;
-        int pageSize = 10;
-        if (requestBody != null && !requestBody.isEmpty()) {
-            try {
-                Map<String, Object> requestMap = new ObjectMapper().readValue(requestBody,
-                        new com.fasterxml.jackson.core.type.TypeReference<Map<String, Object>>() {
-                        });
-                name = (String) requestMap.get("name");
-                Object pageIndexObj = requestMap.get("pageIndex");
-                Object pageSizeObj = requestMap.get("pageSize");
-                pageIndex = pageIndexObj == null ? 1 : ((Number) pageIndexObj).intValue();
-                pageSize = pageSizeObj == null ? 10 : ((Number) pageSizeObj).intValue();
-            } catch (Exception e) {
-                e.printStackTrace();
-                return ResponseUtil.error(400, e.getMessage());
-            }
+        if (requestBody == null || requestBody.isEmpty()) {
+            return ResponseUtil.error(400, "参数不能为空");
         }
-        Integer offset = (pageIndex - 1) * pageSize;
-        List<AssetDTO> assetList = assetService.getAssetList(offset, pageSize, name);
-        Long total = assetService.countAssets(name);
-        return ResponseUtil.success(Map.of(
-                "items", assetList,
-                "total", total));
+        try {
+            Map<String, Object> requestMap = new ObjectMapper().readValue(requestBody,
+                    new com.fasterxml.jackson.core.type.TypeReference<>() {
+                    });
+            String name = (String) requestMap.get("name");
+            int pageIndex = requestMap.get("pageIndex") == null ? 1 : ((Number) requestMap.get("pageIndex")).intValue();
+            int pageSize = requestMap.get("pageSize") == null ? 10 : ((Number) requestMap.get("pageSize")).intValue();
+            Integer offset = (pageIndex - 1) * pageSize;
+            List<AssetDTO> assetList = assetService.getAssetList(offset, pageSize, name);
+            Long total = assetService.countAssets(name);
+            return ResponseUtil.success(Map.of(
+                    "items", assetList,
+                    "total", total));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseUtil.error(400, e.getMessage());
+        }
     }
 
     /**

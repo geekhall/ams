@@ -1,7 +1,5 @@
 package net.geekhour.loki.service.impl;
 
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import net.geekhour.loki.entity.Message;
 import net.geekhour.loki.entity.MessageReceiver;
 import net.geekhour.loki.entity.User;
@@ -41,25 +39,24 @@ public class MessageServiceImpl extends ServiceImpl<MessageMapper, Message> impl
     private MessageReceiverMapper messageReceiverMapper;
 
     @Override
-    public Page<Message> getMessageList(Map<String, Object> params) {
-        Integer page = (Integer) params.get("page");
-        Integer pageSize = (Integer) params.get("pageSize");
+    public List<MessageDTO> getMessageList(Map<String, Object> params) {
+        String userId = (String) params.get("userId");
         String search = (String) params.get("search");
+        int pageIndex = params.get("pageIndex") == null ? 1 : ((Number) params.get("pageIndex")).intValue();
+        int pageSize = params.get("pageSize") == null ? 10 : ((Number) params.get("pageSize")).intValue();
+        Integer offset = (pageIndex - 1) * pageSize;
 
-        Page<Message> pageParam = new Page<>(page, pageSize);
-        LambdaQueryWrapper<Message> queryWrapper = new LambdaQueryWrapper<>();
-
-        if (search != null && !search.isEmpty()) {
-          queryWrapper.like(Message::getTitle, search)
-              .or()
-              .like(Message::getContent, search);
-        }
-
-        queryWrapper.orderByDesc(Message::getSendTime);
-
-        return messageMapper.selectPage(pageParam, queryWrapper);
+        return messageMapper.getMessageList(userId, search, offset, pageSize);
     }
 
+    @Override
+    public Long countMessage(Map<String, Object> params) {
+        String userId = (String) params.get("userId");
+        String search = (String) params.get("search");
+        Long count = messageMapper.countMessage(userId, search);
+
+        return count;
+    }
     @Override
     @Transactional
     public boolean sendMessage(MessageDTO messageDTO) {
@@ -93,7 +90,7 @@ public class MessageServiceImpl extends ServiceImpl<MessageMapper, Message> impl
                     MessageReceiver receiver = new MessageReceiver();
                     receiver.setMessageId(message.getId())
                             .setUserId(userId)
-                            .setIsRead(false)
+                            .setStatus(0L)
                             .setCreateDate(System.currentTimeMillis())
                             .setUpdateDate(System.currentTimeMillis())
                             .setDeleted((byte) 0);
@@ -109,12 +106,34 @@ public class MessageServiceImpl extends ServiceImpl<MessageMapper, Message> impl
     @Override
     @Transactional
     public boolean updateMessage(MessageDTO messageDTO) {
-        Message message = new Message();
-        BeanUtils.copyProperties(messageDTO, message);
-
+        // 先查询消息是否存在
+        Message existingMessage = messageMapper.selectById(messageDTO.getId());
+        if (existingMessage == null) {
+            return false; // 消息不存在
+        }
+        // 更新消息
+        Message message = mapToMessage(messageDTO);
+        if (message == null) {
+            return false; // 映射失败
+        }
         message.setUpdateDate(System.currentTimeMillis());
+        message.setDeleted((byte) 0);
 
         return messageMapper.updateById(message) > 0;
+    }
+
+    private Message mapToMessage(MessageDTO messageDTO) {
+        Message message = new Message();
+        if (messageDTO.getId() != null && !messageDTO.getId().isEmpty()) {
+            message.setId(Long.valueOf(messageDTO.getId()));
+        } else {
+            return null; // ID不能为空
+        }
+        message.setTitle(messageDTO.getTitle());
+        message.setContent(messageDTO.getContent());
+        message.setType(messageDTO.getType());
+        message.setSender(messageDTO.getSender());
+        return message;
     }
 
     @Override
@@ -122,4 +141,6 @@ public class MessageServiceImpl extends ServiceImpl<MessageMapper, Message> impl
     public boolean deleteMessage(Long id) {
     return messageMapper.deleteById(id) > 0;
     }
+
+
 }

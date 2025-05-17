@@ -585,7 +585,7 @@ CREATE TABLE `h_message` (
   `content` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '消息内容',
   `sender` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '发送者',
   `send_time` bigint DEFAULT NULL COMMENT '发送时间',
-  `type` int DEFAULT NULL COMMENT '消息类型(0:系统公告, 1:更新通知, 2:工作通知)',
+  `type` varchar(50) DEFAULT NULL COMMENT '消息类型',
   `version` int DEFAULT '1' COMMENT '版本号',
   `create_date` bigint DEFAULT NULL COMMENT '创建日期',
   `update_date` bigint DEFAULT NULL COMMENT '更新日期',
@@ -597,26 +597,26 @@ CREATE TABLE `h_message` (
 -- Records of h_message
 -- ----------------------------
 BEGIN;
-INSERT INTO `h_message` (`id`, `title`, `content`, `sender`, `send_time`, `type`, `version`, `create_date`, `update_date`, `deleted`) VALUES (1, '【系统消息】欢迎使用AMS系统', '欢迎使用本系统！', '系统管理员',1746626369000, 0, 1, 1746626369000, 1746626369000, 0);
-INSERT INTO `h_message` (`id`, `title`, `content`, `sender`, `send_time`, `type`, `version`, `create_date`, `update_date`, `deleted`) VALUES (2, '【系统通知】系统将于今晚凌晨1点到3点进行升级维护', '【系统通知】系统将于今晚凌晨1点到3点进行升级维护', '系统管理员',1746626369000, 0, 1, 1746626369000, 1746626369000, 0);
-INSERT INTO `h_message` (`id`, `title`, `content`, `sender`, `send_time`, `type`, `version`, `create_date`, `update_date`, `deleted`) VALUES (3, '【系统公告】AMS系统已上线', 'AMS系统已上线，欢迎使用！', '系统管理员',1746626369000, 1, 0, 1746626369000, 1746626369000, 0);
-INSERT INTO `h_message` (`id`, `title`, `content`, `sender`, `send_time`, `type`, `version`, `create_date`, `update_date`, `deleted`) VALUES (4, '【系统消息】请及时更新您的个人信息', '请及时更新您的个人信息，以便我们更好地为您服务。', '系统管理员',1746626369000, 0, 1, 1746626369000, 1746626369000, 0);
-INSERT INTO `h_message` (`id`, `title`, `content`, `sender`, `send_time`, `type`, `version`, `create_date`, `update_date`, `deleted`) VALUES (5, '【系统通知】系统将于下周一进行例行维护', '系统将于下周一进行例行维护，请提前做好准备。', '系统管理员',1746626369000, 1, 1, 1746626369000, 1746626369000, 0);
-INSERT INTO `h_message` (`id`, `title`, `content`, `sender`, `send_time`, `type`, `version`, `create_date`, `update_date`, `deleted`) VALUES (6, '【系统公告】AMS系统已完成升级', 'AMS系统已完成升级，感谢您的耐心等待！', '系统管理员',1746626369000, 1, 1, 1746626369000, 1746626369000, 0);
-INSERT INTO `h_message` (`id`, `title`, `content`, `sender`, `send_time`, `type`, `version`, `create_date`, `update_date`, `deleted`) VALUES (7, '【系统消息】今晚零点整发跨年红包，各位小伙伴兔年大吉，先到先得', '今晚零点整发跨年红包，各位小伙伴兔年大吉，先到先得。', '系统管理员',1746626369000, 0, 1, 1746626369000, 1746626369000, 0);
-INSERT INTO `h_message` (`id`, `title`, `content`, `sender`, `send_time`, `type`, `version`, `create_date`, `update_date`, `deleted`) VALUES (8, '【系统通知】系统将于本周五进行数据备份', '系统将于本周五进行数据备份，请提前做好准备。', '系统管理员',1746626369000, 1, 1, 1746626369000, 1746626369000, 0);
-INSERT INTO `h_message` (`id`, `title`, `content`, `sender`, `send_time`, `type`, `version`, `create_date`, `update_date`, `deleted`) VALUES (9, '【系统公告】新年红包已发放完毕，感谢各位小伙伴的参与', '新年红包已发放完毕，感谢各位小伙伴的参与！', '系统管理员',1746626369000, 0, 1, 1746626369000, 1746626369000, 0);
-INSERT INTO `h_message` (`id`, `title`, `content`, `sender`, `send_time`, `type`, `version`, `create_date`, `update_date`, `deleted`) VALUES (10, '【系统消息】预祝各位小伙伴新年快乐', '预祝各位小伙伴新年快乐', '系统管理员',1746626369000, 0, 1, 1746626369000, 1746626369000, 0);
-INSERT INTO `h_message` (`id`, `title`, `content`, `sender`, `send_time`, `type`, `version`, `create_date`, `update_date`, `deleted`) VALUES (11, '【系统通知】系统将于下周一进行例行维护', '系统将于下周一进行例行维护，请提前做好准备。', '系统管理员',1746626369000, 1, 1, 1746626369000, 1746626369000, 0);
-INSERT INTO `h_message` (`id`, `title`, `content`, `sender`, `send_time`, `type`, `version`, `create_date`, `update_date`, `deleted`) VALUES (12, '【系统公告】AMS系统已完成升级', 'AMS系统已完成升级，感谢您的耐心等待！', '系统管理员',1746626369000, 1, 1, 1746626369000, 1746626369000, 0);
-INSERT INTO `h_message` (`id`, `title`, `content`, `sender`, `send_time`, `type`, `version`, `create_date`, `update_date`, `deleted`) VALUES (13, '【系统消息】请及时更新您的个人信息', '请及时更新您的个人信息，以便我们更好地为您服务。', '系统管理员',1746626369000, 0, 1, 1746626369000, 1746626369000, 0);
-INSERT INTO `h_message` (`id`, `title`, `content`, `sender`, `send_time`, `type`, `version`, `create_date`, `update_date`, `deleted`) VALUES (14, '【系统通知】系统将于今晚凌晨1点到3点进行升级维护', '系统将于今晚凌晨1点到3点进行升级维护，请提前做好准备。', '系统管理员',1746626369000, 1, 1, 1746626369000, 1746626369000, 0);
-INSERT INTO `h_message` (`id`, `title`, `content`, `sender`, `send_time`, `type`, `version`, `create_date`, `update_date`, `deleted`) VALUES (15, '【系统公告】AMS系统更新完成，新增预算管理功能！', 'AMS系统更新完成，新增预算管理功能！', '系统管理员',1746626369000, 1, 1, 1746626369000, 1746626369000, 0);
-INSERT INTO `h_message` (`id`, `title`, `content`, `sender`, `send_time`, `type`, `version`, `create_date`, `update_date`, `deleted`) VALUES (16, 'test12', 'test content', '系统管理员',1746627779204, 0, 1, 1746627779204, 1746628262404, 0);
-INSERT INTO `h_message` (`id`, `title`, `content`, `sender`, `send_time`, `type`, `version`, `create_date`, `update_date`, `deleted`) VALUES (17, 'test1112', 'test 111111', '系统管理员',1746628275951, 1, 1, 1746628275951, 1746628282253, 1);
-INSERT INTO `h_message` (`id`, `title`, `content`, `sender`, `send_time`, `type`, `version`, `create_date`, `update_date`, `deleted`) VALUES (18, 'tttt111', 'ttttt222', '系统管理员',1746630131938, 2, 1, 1746630131938, 1746630142236, 1);
-INSERT INTO `h_message` (`id`, `title`, `content`, `sender`, `send_time`, `type`, `version`, `create_date`, `update_date`, `deleted`) VALUES (19, 'aaaa', 'absdaf', '系统管理员',1746710585229, 2, 1, 1746710585229, 1746710585229, 0);
-INSERT INTO `h_message` (`id`, `title`, `content`, `sender`, `send_time`, `type`, `version`, `create_date`, `update_date`, `deleted`) VALUES (20, 'test222', 'test222', '系统管理员',1747019148503, 2, 1, 1747019148503, 1747019148503, 0);
+INSERT INTO `h_message` (`id`, `title`, `content`, `sender`, `send_time`, `type`, `version`, `create_date`, `update_date`, `deleted`) VALUES (1, '【系统消息】欢迎使用AMS系统', '欢迎使用本系统！', '系统管理员',1746626369000, "系统消息", 1, 1746626369000, 1746626369000, 0);
+INSERT INTO `h_message` (`id`, `title`, `content`, `sender`, `send_time`, `type`, `version`, `create_date`, `update_date`, `deleted`) VALUES (2, '【系统通知】系统将于今晚凌晨1点到3点进行升级维护', '【系统通知】系统将于今晚凌晨1点到3点进行升级维护', '系统管理员',1746626369000, "系统通知", 1, 1746626369000, 1746626369000, 0);
+INSERT INTO `h_message` (`id`, `title`, `content`, `sender`, `send_time`, `type`, `version`, `create_date`, `update_date`, `deleted`) VALUES (3, '【系统公告】AMS系统已上线', 'AMS系统已上线，欢迎使用！', '系统管理员',1746626369000, "系统公告", 0, 1746626369000, 1746626369000, 0);
+INSERT INTO `h_message` (`id`, `title`, `content`, `sender`, `send_time`, `type`, `version`, `create_date`, `update_date`, `deleted`) VALUES (4, '【系统消息】请及时更新您的个人信息', '请及时更新您的个人信息，以便我们更好地为您服务。', '系统管理员',1746626369000, "系统消息", 1, 1746626369000, 1746626369000, 0);
+INSERT INTO `h_message` (`id`, `title`, `content`, `sender`, `send_time`, `type`, `version`, `create_date`, `update_date`, `deleted`) VALUES (5, '【系统通知】系统将于下周一进行例行维护', '系统将于下周一进行例行维护，请提前做好准备。', '系统管理员',1746626369000, "系统消息", 1, 1746626369000, 1746626369000, 0);
+INSERT INTO `h_message` (`id`, `title`, `content`, `sender`, `send_time`, `type`, `version`, `create_date`, `update_date`, `deleted`) VALUES (6, '【系统公告】AMS系统已完成升级', 'AMS系统已完成升级，感谢您的耐心等待！', '系统管理员',1746626369000, "系统公告", 1, 1746626369000, 1746626369000, 0);
+INSERT INTO `h_message` (`id`, `title`, `content`, `sender`, `send_time`, `type`, `version`, `create_date`, `update_date`, `deleted`) VALUES (7, '【系统消息】今晚零点整发跨年红包，各位小伙伴兔年大吉，先到先得', '今晚零点整发跨年红包，各位小伙伴兔年大吉，先到先得。', '系统管理员',1746626369000, "系统消息", 1, 1746626369000, 1746626369000, 0);
+INSERT INTO `h_message` (`id`, `title`, `content`, `sender`, `send_time`, `type`, `version`, `create_date`, `update_date`, `deleted`) VALUES (8, '【系统通知】系统将于本周五进行数据备份', '系统将于本周五进行数据备份，请提前做好准备。', '系统管理员',1746626369000, "系统通知", 1, 1746626369000, 1746626369000, 0);
+INSERT INTO `h_message` (`id`, `title`, `content`, `sender`, `send_time`, `type`, `version`, `create_date`, `update_date`, `deleted`) VALUES (9, '【系统公告】新年红包已发放完毕，感谢各位小伙伴的参与', '新年红包已发放完毕，感谢各位小伙伴的参与！', '系统管理员',1746626369000, "系统公告", 1, 1746626369000, 1746626369000, 0);
+INSERT INTO `h_message` (`id`, `title`, `content`, `sender`, `send_time`, `type`, `version`, `create_date`, `update_date`, `deleted`) VALUES (10, '【系统消息】预祝各位小伙伴新年快乐', '预祝各位小伙伴新年快乐', '系统管理员',1746626369000, "系统消息", 1, 1746626369000, 1746626369000, 0);
+INSERT INTO `h_message` (`id`, `title`, `content`, `sender`, `send_time`, `type`, `version`, `create_date`, `update_date`, `deleted`) VALUES (11, '【系统通知】系统将于下周一进行例行维护', '系统将于下周一进行例行维护，请提前做好准备。', '系统管理员',1746626369000, "系统消息", 1, 1746626369000, 1746626369000, 0);
+INSERT INTO `h_message` (`id`, `title`, `content`, `sender`, `send_time`, `type`, `version`, `create_date`, `update_date`, `deleted`) VALUES (12, '【系统公告】AMS系统已完成升级', 'AMS系统已完成升级，感谢您的耐心等待！', '系统管理员',1746626369000, "系统消息", 1, 1746626369000, 1746626369000, 0);
+INSERT INTO `h_message` (`id`, `title`, `content`, `sender`, `send_time`, `type`, `version`, `create_date`, `update_date`, `deleted`) VALUES (13, '【系统消息】请及时更新您的个人信息', '请及时更新您的个人信息，以便我们更好地为您服务。', '系统管理员',1746626369000, "系统消息", 1, 1746626369000, 1746626369000, 0);
+INSERT INTO `h_message` (`id`, `title`, `content`, `sender`, `send_time`, `type`, `version`, `create_date`, `update_date`, `deleted`) VALUES (14, '【系统通知】系统将于今晚凌晨1点到3点进行升级维护', '系统将于今晚凌晨1点到3点进行升级维护，请提前做好准备。', '系统管理员',1746626369000, "系统消息", 1, 1746626369000, 1746626369000, 0);
+INSERT INTO `h_message` (`id`, `title`, `content`, `sender`, `send_time`, `type`, `version`, `create_date`, `update_date`, `deleted`) VALUES (15, '【系统公告】AMS系统更新完成，新增预算管理功能！', 'AMS系统更新完成，新增预算管理功能！', '系统管理员',1746626369000, "系统消息", 1, 1746626369000, 1746626369000, 0);
+INSERT INTO `h_message` (`id`, `title`, `content`, `sender`, `send_time`, `type`, `version`, `create_date`, `update_date`, `deleted`) VALUES (16, 'test12', 'test content', '系统管理员',1746627779204, "系统消息", 1, 1746627779204, 1746628262404, 0);
+INSERT INTO `h_message` (`id`, `title`, `content`, `sender`, `send_time`, `type`, `version`, `create_date`, `update_date`, `deleted`) VALUES (17, 'test1112', 'test 111111', '系统管理员',1746628275951, "系统消息", 1, 1746628275951, 1746628282253, 1);
+INSERT INTO `h_message` (`id`, `title`, `content`, `sender`, `send_time`, `type`, `version`, `create_date`, `update_date`, `deleted`) VALUES (18, 'tttt111', 'ttttt222', '系统管理员',1746630131938, "系统消息", 1, 1746630131938, 1746630142236, 1);
+INSERT INTO `h_message` (`id`, `title`, `content`, `sender`, `send_time`, `type`, `version`, `create_date`, `update_date`, `deleted`) VALUES (19, 'aaaa', 'absdaf', '系统管理员',1746710585229, "系统消息", 1, 1746710585229, 1746710585229, 0);
+INSERT INTO `h_message` (`id`, `title`, `content`, `sender`, `send_time`, `type`, `version`, `create_date`, `update_date`, `deleted`) VALUES (20, 'test222', 'test222', '系统管理员',1747019148503, "系统消息", 1, 1747019148503, 1747019148503, 0);
 COMMIT;
 
 -- ----------------------------
@@ -627,9 +627,7 @@ CREATE TABLE `h_message_receiver` (
   `id` bigint NOT NULL AUTO_INCREMENT COMMENT '记录ID',
   `message_id` bigint NOT NULL COMMENT '消息ID',
   `user_id` bigint NOT NULL COMMENT '接收用户ID',
-  `is_read` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否已读：0-未读，1-已读',
-  `status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '状态：0-正常，1-已删除',
-  `read_time` bigint DEFAULT NULL COMMENT '阅读时间',
+  `status` int NOT NULL DEFAULT '0' COMMENT '状态：0-正常，1-已读, 2-回收站',
   `version` int DEFAULT '1' COMMENT '版本号',
   `create_date` bigint DEFAULT NULL COMMENT '创建日期',
   `update_date` bigint DEFAULT NULL COMMENT '更新日期',
@@ -641,42 +639,42 @@ CREATE TABLE `h_message_receiver` (
 -- Records of h_message_receiver
 -- ----------------------------
 BEGIN;
-INSERT INTO `h_message_receiver` VALUES (1920469505086148610, 19, 1897630015512547329, 0, 0, NULL, 1, 1746710585263, 1746710585263, 0);
-INSERT INTO `h_message_receiver` VALUES (1920469505086148611, 19, 1898257421470494721, 0, 0, NULL, 1, 1746710585263, 1746710585263, 0);
-INSERT INTO `h_message_receiver` VALUES (1920469505086148612, 19, 1898257629201788929, 0, 0, NULL, 1, 1746710585263, 1746710585263, 0);
-INSERT INTO `h_message_receiver` VALUES (1920469505086148613, 19, 1898258120480616450, 0, 0, NULL, 1, 1746710585263, 1746710585263, 0);
-INSERT INTO `h_message_receiver` VALUES (1920469505086148614, 19, 1898312658545778690, 0, 0, NULL, 1, 1746710585263, 1746710585263, 0);
-INSERT INTO `h_message_receiver` VALUES (1920469505090342914, 19, 1908467995296985090, 0, 0, NULL, 1, 1746710585263, 1746710585263, 0);
-INSERT INTO `h_message_receiver` VALUES (1920469505090342915, 19, 1908471088071897089, 0, 0, NULL, 1, 1746710585263, 1746710585263, 0);
-INSERT INTO `h_message_receiver` VALUES (1920469505090342916, 19, 1908480162679287810, 0, 0, NULL, 1, 1746710585263, 1746710585263, 0);
-INSERT INTO `h_message_receiver` VALUES (1920469505094537217, 19, 1912050960380383234, 0, 0, NULL, 1, 1746710585263, 1746710585263, 0);
-INSERT INTO `h_message_receiver` VALUES (1920469505094537218, 19, 1917576896571314178, 0, 0, NULL, 1, 1746710585263, 1746710585263, 0);
-INSERT INTO `h_message_receiver` VALUES (1920469505094537219, 19, 1917577780013338625, 0, 0, NULL, 1, 1746710585263, 1746710585263, 0);
-INSERT INTO `h_message_receiver` VALUES (1920469505094537220, 19, 1917844358466453506, 0, 0, NULL, 1, 1746710585263, 1746710585263, 0);
-INSERT INTO `h_message_receiver` VALUES (1920469505094537221, 19, 1917846652826238977, 0, 0, NULL, 1, 1746710585263, 1746710585263, 0);
-INSERT INTO `h_message_receiver` VALUES (1920469505094537222, 19, 1918659054115323905, 0, 0, NULL, 1, 1746710585263, 1746710585263, 0);
-INSERT INTO `h_message_receiver` VALUES (1920469505094537223, 19, 1918826227513229314, 0, 0, NULL, 1, 1746710585263, 1746710585263, 0);
-INSERT INTO `h_message_receiver` VALUES (1920469505098731522, 19, 6119170176878989095, 0, 0, NULL, 1, 1746710585263, 1746710585263, 0);
-INSERT INTO `h_message_receiver` VALUES (1920469505098731523, 19, 6706720622553003629, 0, 0, NULL, 1, 1746710585263, 1746710585263, 0);
-INSERT INTO `h_message_receiver` VALUES (1921763714258993153, 20, 1897630015512547329, 0, 0, NULL, 1, 1747019148648, 1747019148648, 0);
-INSERT INTO `h_message_receiver` VALUES (1921763714334490626, 20, 1898257421470494721, 0, 0, NULL, 1, 1747019148648, 1747019148648, 0);
-INSERT INTO `h_message_receiver` VALUES (1921763714338684930, 20, 1898257629201788929, 0, 0, NULL, 1, 1747019148648, 1747019148648, 0);
-INSERT INTO `h_message_receiver` VALUES (1921763714342879233, 20, 1898258120480616450, 0, 0, NULL, 1, 1747019148648, 1747019148648, 0);
-INSERT INTO `h_message_receiver` VALUES (1921763714347073537, 20, 1898312658545778690, 0, 0, NULL, 1, 1747019148648, 1747019148648, 0);
-INSERT INTO `h_message_receiver` VALUES (1921763714351267841, 20, 1908467995296985090, 0, 0, NULL, 1, 1747019148648, 1747019148648, 0);
-INSERT INTO `h_message_receiver` VALUES (1921763714355462146, 20, 1908471088071897089, 0, 0, NULL, 1, 1747019148648, 1747019148648, 0);
-INSERT INTO `h_message_receiver` VALUES (1921763714363850754, 20, 1908480162679287810, 0, 0, NULL, 1, 1747019148648, 1747019148648, 0);
-INSERT INTO `h_message_receiver` VALUES (1921763714363850755, 20, 1912050960380383234, 0, 0, NULL, 1, 1747019148648, 1747019148648, 0);
-INSERT INTO `h_message_receiver` VALUES (1921763714368045057, 20, 1917576896571314178, 0, 0, NULL, 1, 1747019148648, 1747019148648, 0);
-INSERT INTO `h_message_receiver` VALUES (1921763714368045058, 20, 1917577780013338625, 0, 0, NULL, 1, 1747019148648, 1747019148648, 0);
-INSERT INTO `h_message_receiver` VALUES (1921763714368045059, 20, 1917844358466453506, 0, 0, NULL, 1, 1747019148648, 1747019148648, 0);
-INSERT INTO `h_message_receiver` VALUES (1921763714372239361, 20, 1917846652826238977, 0, 0, NULL, 1, 1747019148648, 1747019148648, 0);
-INSERT INTO `h_message_receiver` VALUES (1921763714372239362, 20, 1918659054115323905, 0, 0, NULL, 1, 1747019148648, 1747019148648, 0);
-INSERT INTO `h_message_receiver` VALUES (1921763714384822273, 20, 1918826227513229314, 0, 0, NULL, 1, 1747019148648, 1747019148648, 0);
-INSERT INTO `h_message_receiver` VALUES (1921763714384822274, 20, 1920830621851144193, 0, 0, NULL, 1, 1747019148648, 1747019148648, 0);
-INSERT INTO `h_message_receiver` VALUES (1921763714397405186, 20, 1921512565949644801, 0, 0, NULL, 1, 1747019148648, 1747019148648, 0);
-INSERT INTO `h_message_receiver` VALUES (1921763714414182401, 20, 6119170176878989095, 0, 0, NULL, 1, 1747019148648, 1747019148648, 0);
-INSERT INTO `h_message_receiver` VALUES (1921763714414182402, 20, 6706720622553003629, 0, 0, NULL, 1, 1747019148648, 1747019148648, 0);
+INSERT INTO `h_message_receiver` VALUES (1920469505086148610, 19, 1897630015512547329, 0, 1, 1746710585263, 1746710585263, 0);
+INSERT INTO `h_message_receiver` VALUES (1920469505086148611, 19, 1898257421470494721, 0, 1, 1746710585263, 1746710585263, 0);
+INSERT INTO `h_message_receiver` VALUES (1920469505086148612, 19, 1898257629201788929, 0, 1, 1746710585263, 1746710585263, 0);
+INSERT INTO `h_message_receiver` VALUES (1920469505086148613, 19, 1898258120480616450, 0, 1, 1746710585263, 1746710585263, 0);
+INSERT INTO `h_message_receiver` VALUES (1920469505086148614, 19, 1898312658545778690, 0, 1, 1746710585263, 1746710585263, 0);
+INSERT INTO `h_message_receiver` VALUES (1920469505090342914, 19, 1908467995296985090, 0, 1, 1746710585263, 1746710585263, 0);
+INSERT INTO `h_message_receiver` VALUES (1920469505090342915, 19, 1908471088071897089, 0, 1, 1746710585263, 1746710585263, 0);
+INSERT INTO `h_message_receiver` VALUES (1920469505090342916, 19, 1908480162679287810, 0, 1, 1746710585263, 1746710585263, 0);
+INSERT INTO `h_message_receiver` VALUES (1920469505094537217, 19, 1912050960380383234, 0, 1, 1746710585263, 1746710585263, 0);
+INSERT INTO `h_message_receiver` VALUES (1920469505094537218, 19, 1917576896571314178, 0, 1, 1746710585263, 1746710585263, 0);
+INSERT INTO `h_message_receiver` VALUES (1920469505094537219, 19, 1917577780013338625, 0, 1, 1746710585263, 1746710585263, 0);
+INSERT INTO `h_message_receiver` VALUES (1920469505094537220, 19, 1917844358466453506, 0, 1, 1746710585263, 1746710585263, 0);
+INSERT INTO `h_message_receiver` VALUES (1920469505094537221, 19, 1917846652826238977, 0, 1, 1746710585263, 1746710585263, 0);
+INSERT INTO `h_message_receiver` VALUES (1920469505094537222, 19, 1918659054115323905, 0, 1, 1746710585263, 1746710585263, 0);
+INSERT INTO `h_message_receiver` VALUES (1920469505094537223, 19, 1918826227513229314, 0, 1, 1746710585263, 1746710585263, 0);
+INSERT INTO `h_message_receiver` VALUES (1920469505098731522, 19, 6119170176878989095, 0, 1, 1746710585263, 1746710585263, 0);
+INSERT INTO `h_message_receiver` VALUES (1920469505098731523, 19, 6706720622553003629, 0, 1, 1746710585263, 1746710585263, 0);
+INSERT INTO `h_message_receiver` VALUES (1921763714258993153, 20, 1897630015512547329, 0, 1, 1747019148648, 1747019148648, 0);
+INSERT INTO `h_message_receiver` VALUES (1921763714334490626, 20, 1898257421470494721, 0, 1, 1747019148648, 1747019148648, 0);
+INSERT INTO `h_message_receiver` VALUES (1921763714338684930, 20, 1898257629201788929, 0, 1, 1747019148648, 1747019148648, 0);
+INSERT INTO `h_message_receiver` VALUES (1921763714342879233, 20, 1898258120480616450, 0, 1, 1747019148648, 1747019148648, 0);
+INSERT INTO `h_message_receiver` VALUES (1921763714347073537, 20, 1898312658545778690, 0, 1, 1747019148648, 1747019148648, 0);
+INSERT INTO `h_message_receiver` VALUES (1921763714351267841, 20, 1908467995296985090, 0, 1, 1747019148648, 1747019148648, 0);
+INSERT INTO `h_message_receiver` VALUES (1921763714355462146, 20, 1908471088071897089, 0, 1, 1747019148648, 1747019148648, 0);
+INSERT INTO `h_message_receiver` VALUES (1921763714363850754, 20, 1908480162679287810, 0, 1, 1747019148648, 1747019148648, 0);
+INSERT INTO `h_message_receiver` VALUES (1921763714363850755, 20, 1912050960380383234, 0, 1, 1747019148648, 1747019148648, 0);
+INSERT INTO `h_message_receiver` VALUES (1921763714368045057, 20, 1917576896571314178, 0, 1, 1747019148648, 1747019148648, 0);
+INSERT INTO `h_message_receiver` VALUES (1921763714368045058, 20, 1917577780013338625, 0, 1, 1747019148648, 1747019148648, 0);
+INSERT INTO `h_message_receiver` VALUES (1921763714368045059, 20, 1917844358466453506, 0, 1, 1747019148648, 1747019148648, 0);
+INSERT INTO `h_message_receiver` VALUES (1921763714372239361, 20, 1917846652826238977, 0, 1, 1747019148648, 1747019148648, 0);
+INSERT INTO `h_message_receiver` VALUES (1921763714372239362, 20, 1918659054115323905, 0, 1, 1747019148648, 1747019148648, 0);
+INSERT INTO `h_message_receiver` VALUES (1921763714384822273, 20, 1918826227513229314, 0, 1, 1747019148648, 1747019148648, 0);
+INSERT INTO `h_message_receiver` VALUES (1921763714384822274, 20, 1920830621851144193, 0, 1, 1747019148648, 1747019148648, 0);
+INSERT INTO `h_message_receiver` VALUES (1921763714397405186, 20, 1921512565949644801, 0, 1, 1747019148648, 1747019148648, 0);
+INSERT INTO `h_message_receiver` VALUES (1921763714414182401, 20, 6119170176878989095, 0, 1, 1747019148648, 1747019148648, 0);
+INSERT INTO `h_message_receiver` VALUES (1921763714414182402, 20, 6706720622553003629, 0, 1, 1747019148648, 1747019148648, 0);
 COMMIT;
 
 -- ----------------------------

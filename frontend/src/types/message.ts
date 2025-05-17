@@ -1,5 +1,5 @@
 import { ApiResponse } from "./index";
-interface Message {
+export interface Message {
   id: number
   title: string
   content: string
@@ -7,7 +7,7 @@ interface Message {
   send_time: string
 }
 
-interface MessageForm {
+export interface MessageForm {
   title: string
   content: string
 }
@@ -24,6 +24,6 @@ export interface CreateMessageDTO extends Omit<MessageDTO, 'id'> { }
 
 export interface MessageListResponse extends ApiResponse<{
   total: number;
-  list: MessageDTO[];
+  items: MessageDTO[];
 }> { }
 

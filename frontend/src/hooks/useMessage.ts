@@ -18,13 +18,17 @@ export const useMessage = () => {
   const fetchMessages = async () => {
     loading.value = true
     try {
+      const userStore = useUserStore()
       const response = await getMessageList({
-        page: pageNum.value,
+        pageIndex: pageNum.value,
         pageSize: pageSize.value,
+        userId: userStore.userInfo.id || '',
         search: searchQuery.value
       })
       if (response.code === 200) {
-        messages.value = response.data.list
+        console.log('获取消息列表成功:', response.data);
+
+        messages.value = response.data.items
         total.value = response.data.total
       }
     } catch (error) {

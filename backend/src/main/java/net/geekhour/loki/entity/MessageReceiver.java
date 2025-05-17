@@ -42,13 +42,9 @@ public class MessageReceiver extends Model<MessageReceiver> {
     @TableField("user_id")
     private Long userId;
 
-    @ApiModelProperty("是否已读：0-未读，1-已读")
-    @TableField("is_read")
-    private Boolean isRead;
-
-    @ApiModelProperty("状态：0-正常，1-已删除")
+    @ApiModelProperty("状态：0-正常，1-已读，2-已删除")
     @TableField("status")
-    private Boolean status;
+    private Long status;
 
     @ApiModelProperty("阅读时间")
     @TableField("read_time")

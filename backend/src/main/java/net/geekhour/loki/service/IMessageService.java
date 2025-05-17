@@ -5,6 +5,7 @@ import net.geekhour.loki.entity.Message;
 import net.geekhour.loki.entity.dto.MessageDTO;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -23,7 +24,7 @@ public interface IMessageService extends IService<Message> {
    * @param params 查询参数
    * @return 分页消息列表
    */
-  Page<Message> getMessageList(Map<String, Object> params);
+  List<MessageDTO> getMessageList(Map<String, Object> params);
 
   /**
    * 发送消息
@@ -48,4 +49,6 @@ public interface IMessageService extends IService<Message> {
    * @return 是否成功
    */
   boolean deleteMessage(Long id);
+
+  Long countMessage(Map<String, Object> params);
 }

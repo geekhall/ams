@@ -115,23 +115,26 @@ const items: MenuItem[] = [
       }
     ]
   },
-  {
-    icon: 'Message',
-    index: '/message',
-    title: '消息管理',
-    permission: [PermissionType.MESSAGE_VIEW, PermissionType.MESSAGE_MANAGE]
-  },
-  {
-    icon: 'User',
-    index: '/user',
-    title: '用户管理',
-    permission: PermissionType.USER_MANAGE
-  },
+
   {
     icon: 'Setting',
     index: '/setting',
     title: '系统设置',
-    permission: PermissionType.SETTING_MANAGE
+    permission: PermissionType.SETTING_MANAGE,
+    subs: [
+      {
+        icon: 'Message',
+        index: '/message',
+        title: '消息管理',
+        permission: [PermissionType.MESSAGE_VIEW, PermissionType.MESSAGE_MANAGE]
+      },
+      {
+        icon: 'User',
+        index: '/user',
+        title: '用户管理',
+        permission: PermissionType.USER_MANAGE
+      }
+    ]
   }
 ]
 

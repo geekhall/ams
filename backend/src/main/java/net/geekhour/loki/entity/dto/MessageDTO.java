@@ -30,11 +30,11 @@ public class MessageDTO {
   private String sender;
 
   @ApiModelProperty("类型")
-  private Long type;
+  private String type;
 
   @ApiModelProperty("发送时间")
   private Long sendTime;
 
   @ApiModelProperty("状态")
-  private String status;
+  private Long status;
 }

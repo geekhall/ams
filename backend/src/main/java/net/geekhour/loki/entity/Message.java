@@ -53,7 +53,7 @@ public class Message extends Model<Message> {
 
     @ApiModelProperty("消息类型")
     @TableField("type")
-    private Long type;
+    private String type;
 
     @ApiModelProperty("版本号")
     @TableField("version")

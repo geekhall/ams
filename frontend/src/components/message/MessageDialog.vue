@@ -29,7 +29,7 @@
 <script setup lang="ts">
 import { ref, reactive, watch } from 'vue'
 import type { FormInstance, FormRules } from 'element-plus'
-import type { Message, MessageForm } from '~/types/message'
+import type { Message, MessageForm } from '@/types/message'
 
 const props = defineProps<{
   visible: boolean

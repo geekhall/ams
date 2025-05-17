@@ -7,7 +7,6 @@
         <result column="id" property="id" />
         <result column="message_id" property="messageId" />
         <result column="user_id" property="userId" />
-        <result column="is_read" property="isRead" />
         <result column="status" property="status" />
         <result column="read_time" property="readTime" />
         <result column="version" property="version" />
@@ -19,7 +18,7 @@
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
         id,
-        message_id, user_id, is_read, status, read_time, version, create_date, update_date, deleted
+        message_id, user_id, status, read_time, version, create_date, update_date, deleted
     </sql>
 
 </mapper>

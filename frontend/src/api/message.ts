@@ -5,8 +5,9 @@ import { MessageDTO, CreateMessageDTO, MessageListResponse } from "@/types/messa
 
 // 获取消息列表
 export const getMessageList = async (params: {
-  page: number;
+  pageIndex: number;
   pageSize: number;
+  userId: string;
   search?: string;
 }): Promise<MessageListResponse> => {
   return await loki.request({
