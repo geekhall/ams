@@ -13,6 +13,15 @@
             </div>
             <h2 class="username">{{ userInfo.username }}</h2>
             <p class="bio">{{ userInfo.bio || '这个人很懒，什么都没留下' }}</p>
+            <div class="user-tags">
+              <el-tag size="small" effect="plain" class="user-tag">{{ userInfo.role }}</el-tag>
+              <el-tag size="small" effect="plain" type="success" class="user-tag">{{
+                userInfo.department
+              }}</el-tag>
+              <el-tag size="small" effect="plain" type="warning" class="user-tag">{{
+                userInfo.status
+              }}</el-tag>
+            </div>
           </div>
           <el-divider class="custom-divider" />
           <div class="profile-stats">
@@ -29,6 +38,26 @@
               <span class="stat-label">关注</span>
             </div>
           </div>
+        </el-card>
+
+        <el-card shadow="hover" class="activity-card">
+          <template #header>
+            <div class="card-header">
+              <span class="header-title">最近活动</span>
+              <el-button type="primary" link>查看全部</el-button>
+            </div>
+          </template>
+          <el-timeline>
+            <el-timeline-item
+              v-for="activity in recentActivities"
+              :key="activity.id"
+              :type="activity.type"
+              :timestamp="activity.time"
+              :hollow="activity.hollow"
+            >
+              {{ activity.content }}
+            </el-timeline-item>
+          </el-timeline>
         </el-card>
       </el-col>
       <el-col :xs="24" :sm="24" :md="16" :lg="16" :xl="16">
@@ -163,6 +192,87 @@
         </el-card>
       </el-col>
     </el-row>
+
+    <!-- 待办事项卡片 -->
+    <el-row :gutter="24" class="todo-section">
+      <el-col :span="24">
+        <el-card shadow="hover" class="todo-card">
+          <template #header>
+            <div class="card-header">
+              <span class="header-title">待办事项</span>
+              <div class="todo-header-actions">
+                <el-input
+                  v-model="newTodo"
+                  placeholder="添加新的待办事项"
+                  class="todo-input"
+                  @keyup.enter="addTodo"
+                >
+                  <template #append>
+                    <el-button @click="addTodo">
+                      <el-icon><Plus /></el-icon>
+                    </el-button>
+                  </template>
+                </el-input>
+              </div>
+            </div>
+          </template>
+          <el-tabs v-model="todoTab" class="todo-tabs">
+            <el-tab-pane label="全部" name="all">
+              <el-checkbox-group v-model="checkedTodos" class="todo-list">
+                <div v-for="todo in filteredTodos" :key="todo.id" class="todo-item">
+                  <el-checkbox :value="todo.id">
+                    <span :class="{ 'todo-done': todo.done }">{{ todo.content }}</span>
+                  </el-checkbox>
+                  <div class="todo-actions">
+                    <el-tag size="small" :type="todo.priority" effect="plain">
+                      {{ todo.priorityText }}
+                    </el-tag>
+                    <el-button type="danger" link @click="deleteTodo(todo.id)">
+                      <el-icon><Delete /></el-icon>
+                    </el-button>
+                  </div>
+                </div>
+              </el-checkbox-group>
+            </el-tab-pane>
+            <el-tab-pane label="待完成" name="active">
+              <el-checkbox-group v-model="checkedTodos" class="todo-list">
+                <div v-for="todo in activeTodos" :key="todo.id" class="todo-item">
+                  <el-checkbox :value="todo.id">
+                    <span>{{ todo.content }}</span>
+                  </el-checkbox>
+                  <div class="todo-actions">
+                    <el-tag size="small" :type="todo.priority" effect="plain">
+                      {{ todo.priorityText }}
+                    </el-tag>
+                    <el-button type="danger" link @click="deleteTodo(todo.id)">
+                      <el-icon><Delete /></el-icon>
+                    </el-button>
+                  </div>
+                </div>
+              </el-checkbox-group>
+            </el-tab-pane>
+            <el-tab-pane label="已完成" name="completed">
+              <el-checkbox-group v-model="checkedTodos" class="todo-list">
+                <div v-for="todo in completedTodos" :key="todo.id" class="todo-item">
+                  <el-checkbox :value="todo.id">
+                    <span class="todo-done">{{ todo.content }}</span>
+                  </el-checkbox>
+                  <div class="todo-actions">
+                    <el-tag size="small" :type="todo.priority" effect="plain">
+                      {{ todo.priorityText }}
+                    </el-tag>
+                    <el-button type="danger" link @click="deleteTodo(todo.id)">
+                      <el-icon><Delete /></el-icon>
+                    </el-button>
+                  </div>
+                </div>
+              </el-checkbox-group>
+            </el-tab-pane>
+          </el-tabs>
+        </el-card>
+      </el-col>
+    </el-row>
+
     <el-dialog
       v-model="avatarDialogVisible"
       title="更换头像"
@@ -202,9 +312,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, onMounted } from 'vue'
+import { ref, reactive, computed, onMounted, watch } from 'vue'
 import { ElMessage, FormInstance } from 'element-plus'
-import { Camera } from '@element-plus/icons-vue'
+import { Camera, Plus, Delete } from '@element-plus/icons-vue'
 import VueCropper from 'vue-cropperjs'
 import 'cropperjs/dist/cropper.css'
 import { useUserStore } from '@/stores/user'
@@ -219,7 +329,10 @@ const userInfo = reactive({
   bio: '',
   postCount: 0,
   followers: 0,
-  following: 0
+  following: 0,
+  role: '普通用户',
+  department: '技术部',
+  status: '在线'
 })
 
 // 表单引用
@@ -375,6 +488,110 @@ const handleNotificationSubmit = () => {
   // TODO: 调用API保存通知设置
   ElMessage.success('通知设置已更新')
 }
+
+// 最近活动数据
+const recentActivities = reactive([
+  {
+    id: 1,
+    content: '更新了个人资料',
+    time: '2024-03-20 10:30',
+    type: 'primary',
+    hollow: false
+  },
+  {
+    id: 2,
+    content: '完成了资产盘点任务',
+    time: '2024-03-19 15:45',
+    type: 'success',
+    hollow: false
+  },
+  {
+    id: 3,
+    content: '添加了新的待办事项',
+    time: '2024-03-18 09:15',
+    type: 'warning',
+    hollow: true
+  },
+  {
+    id: 4,
+    content: '修改了密码',
+    time: '2024-03-17 14:20',
+    type: 'info',
+    hollow: true
+  }
+])
+
+// 待办事项相关
+const todoTab = ref('all')
+const newTodo = ref('')
+const checkedTodos = ref<number[]>([])
+
+interface Todo {
+  id: number
+  content: string
+  done: boolean
+  priority: 'success' | 'warning' | 'danger' | 'info'
+  priorityText: string
+}
+
+const todos = reactive<Todo[]>([
+  {
+    id: 1,
+    content: '审核资产采购申请',
+    done: false,
+    priority: 'danger',
+    priorityText: '紧急'
+  },
+  {
+    id: 2,
+    content: '更新资产分类信息',
+    done: false,
+    priority: 'warning',
+    priorityText: '重要'
+  },
+  {
+    id: 3,
+    content: '处理资产调拨申请',
+    done: true,
+    priority: 'info',
+    priorityText: '普通'
+  }
+])
+
+const filteredTodos = computed(() => todos)
+const activeTodos = computed(() => todos.filter((todo) => !todo.done))
+const completedTodos = computed(() => todos.filter((todo) => todo.done))
+
+const addTodo = () => {
+  if (!newTodo.value.trim()) return
+
+  const todo: Todo = {
+    id: Date.now(),
+    content: newTodo.value,
+    done: false,
+    priority: 'info',
+    priorityText: '普通'
+  }
+
+  todos.unshift(todo)
+  newTodo.value = ''
+  ElMessage.success('添加成功')
+}
+
+const deleteTodo = (id: number) => {
+  const index = todos.findIndex((todo) => todo.id === id)
+  if (index > -1) {
+    todos.splice(index, 1)
+    ElMessage.success('删除成功')
+  }
+}
+
+// 监听待办事项状态变化
+watch(checkedTodos, (newVal) => {
+  todos.forEach((todo) => {
+    todo.done = newVal.includes(todo.id)
+  })
+})
 
 // 初始化数据
 onMounted(() => {
@@ -649,6 +866,107 @@ onMounted(() => {
   cursor: pointer;
 }
 
+.user-tags {
+  margin-top: 16px;
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+
+  .user-tag {
+    padding: 0 12px;
+    height: 24px;
+    line-height: 24px;
+    border-radius: 12px;
+  }
+}
+
+.activity-card {
+  margin-top: 24px;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  }
+
+  :deep(.el-timeline-item__content) {
+    color: var(--el-text-color-regular);
+    font-size: 14px;
+  }
+
+  :deep(.el-timeline-item__timestamp) {
+    color: var(--el-text-color-secondary);
+    font-size: 12px;
+  }
+}
+
+.todo-section {
+  margin-top: 24px;
+}
+
+.todo-card {
+  .card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--el-border-color-lighter);
+
+    .header-title {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--el-text-color-primary);
+    }
+
+    .todo-header-actions {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+
+      .todo-input {
+        width: 300px;
+      }
+    }
+  }
+
+  .todo-tabs {
+    padding: 20px;
+  }
+
+  .todo-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .todo-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px;
+    background-color: var(--el-bg-color-page);
+    border-radius: 8px;
+    transition: all 0.3s ease;
+
+    &:hover {
+      transform: translateX(4px);
+      background-color: var(--el-bg-color);
+    }
+
+    .todo-done {
+      text-decoration: line-through;
+      color: var(--el-text-color-secondary);
+    }
+
+    .todo-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+  }
+}
+
 @media screen and (max-width: 768px) {
   .content-container {
     padding: 16px;
@@ -666,6 +984,37 @@ onMounted(() => {
   .custom-select,
   .custom-textarea {
     max-width: 100%;
+  }
+
+  .activity-card {
+    margin-top: 16px;
+  }
+
+  .todo-card {
+    .card-header {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 12px;
+
+      .todo-header-actions {
+        width: 100%;
+
+        .todo-input {
+          width: 100%;
+        }
+      }
+    }
+
+    .todo-item {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 8px;
+
+      .todo-actions {
+        width: 100%;
+        justify-content: space-between;
+      }
+    }
   }
 }
 </style>
