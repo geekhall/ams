@@ -47,7 +47,7 @@
         </el-card>
       </el-col>
       <el-col :xs="24" :sm="12" :md="6" :lg="6" :xl="6">
-        <el-card shadow="hover" class="overview-card" @click="router.push('/message')">
+        <el-card shadow="hover" class="overview-card" @click="router.push('/profile')">
           <div class="overview-item">
             <div class="overview-icon" style="background: var(--el-color-warning-light-8)">
               <el-icon><Warning /></el-icon>

@@ -26,13 +26,10 @@ export const useMessage = () => {
         search: searchQuery.value
       })
       if (response.code === 200) {
-        console.log('获取消息列表成功:', response.data);
-
         messages.value = response.data.items
         total.value = response.data.total
       }
     } catch (error) {
-      console.error('获取消息列表失败:', error)
       ElMessage.error('获取消息列表失败')
     } finally {
       loading.value = false
