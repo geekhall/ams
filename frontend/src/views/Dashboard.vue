@@ -3,7 +3,7 @@
     <!-- 顶部数据概览 -->
     <el-row :gutter="24" class="data-overview">
       <el-col :xs="24" :sm="12" :md="6" :lg="6" :xl="6">
-        <el-card shadow="hover" class="overview-card">
+        <el-card shadow="hover" class="overview-card" @click="router.push('/asset')">
           <div class="overview-item">
             <div class="overview-icon" style="background: var(--el-color-primary-light-8)">
               <el-icon><Box /></el-icon>
@@ -25,7 +25,7 @@
         </el-card>
       </el-col>
       <el-col :xs="24" :sm="12" :md="6" :lg="6" :xl="6">
-        <el-card shadow="hover" class="overview-card">
+        <el-card shadow="hover" class="overview-card" @click="router.push('/asset')">
           <div class="overview-item">
             <div class="overview-icon" style="background: var(--el-color-success-light-8)">
               <el-icon><Money /></el-icon>
@@ -47,7 +47,7 @@
         </el-card>
       </el-col>
       <el-col :xs="24" :sm="12" :md="6" :lg="6" :xl="6">
-        <el-card shadow="hover" class="overview-card">
+        <el-card shadow="hover" class="overview-card" @click="router.push('/message')">
           <div class="overview-item">
             <div class="overview-icon" style="background: var(--el-color-warning-light-8)">
               <el-icon><Warning /></el-icon>
@@ -67,7 +67,7 @@
         </el-card>
       </el-col>
       <el-col :xs="24" :sm="12" :md="6" :lg="6" :xl="6">
-        <el-card shadow="hover" class="overview-card">
+        <el-card shadow="hover" class="overview-card" @click="router.push('/message')">
           <div class="overview-item">
             <div class="overview-icon" style="background: var(--el-color-danger-light-8)">
               <el-icon><Bell /></el-icon>
@@ -565,6 +565,7 @@ onUnmounted(() => {
   .overview-card {
     height: 120px;
     transition: all 0.3s ease;
+    cursor: pointer;
 
     &:hover {
       transform: translateY(-5px);
