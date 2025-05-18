@@ -3,6 +3,7 @@ package net.geekhour.loki.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import net.geekhour.loki.common.ResponseUtil;
 import net.geekhour.loki.entity.dto.UserDTO;
+import net.geekhour.loki.exception.LokiException;
 import net.geekhour.loki.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -30,6 +31,7 @@ public class UserController {
 
     /**
      * get all users (获取所有用户)
+     *
      * @return
      */
     @RequestMapping("/all")
@@ -40,6 +42,7 @@ public class UserController {
 
     /**
      * 分页查询用户
+     *
      * @param requestBody {name: "用户名", pageIndex: 1, pageSize: 10}
      * @return 分页后的用户列表
      */
@@ -52,22 +55,22 @@ public class UserController {
         try {
             Map<String, Object> requestMap = new ObjectMapper().readValue(requestBody, Map.class);
             String username = (String) requestMap.get("username");
-            Integer pageIndex = requestMap.get("pageIndex") == null ? 1 :
-                    Integer.parseInt(requestMap.get("pageIndex").toString());
-            Integer pageSize = requestMap.get("pageSize") == null ? 10 :
-                    Integer.parseInt(requestMap.get("pageSize").toString());
+            Integer pageIndex = requestMap.get("pageIndex") == null ? 1
+                    : Integer.parseInt(requestMap.get("pageIndex").toString());
+            Integer pageSize = requestMap.get("pageSize") == null ? 10
+                    : Integer.parseInt(requestMap.get("pageSize").toString());
             Integer offset = (pageIndex - 1) * pageSize;
             List<UserDTO> userList = userService.getUserList(username, offset, pageSize);
             Long total = userService.countUser(username, offset, pageSize);
             return ResponseUtil.success(Map.of(
                     "items", userList,
-                    "total", total
-            ));
+                    "total", total));
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseUtil.error(500, e.getMessage());
         }
     }
+
     @PostMapping("/info")
     public ResponseEntity<?> info(@RequestBody(required = false) String requestBody) {
         if (requestBody == null || requestBody.isEmpty()) {
@@ -76,7 +79,7 @@ public class UserController {
         try {
             Map<String, Object> requestMap = new ObjectMapper().readValue(requestBody, Map.class);
             String username = (String) requestMap.get("username");
-            UserDTO user =  userService.getUserinfo(username);
+            UserDTO user = userService.getUserinfo(username);
             return ResponseUtil.success(user);
         } catch (Exception e) {
             e.printStackTrace();
@@ -84,6 +87,7 @@ public class UserController {
         }
 
     }
+
     @PostMapping("/update")
     @PreAuthorize("hasRole('ADMIN') || hasAuthority('user:manage')")
     public ResponseEntity<?> updateUser(@RequestBody UserDTO userDTO) {
@@ -106,11 +110,13 @@ public class UserController {
     @PostMapping("/add")
     @PreAuthorize("hasRole('ADMIN') || hasAuthority('user:manage')")
     public ResponseEntity<?> addUser(@RequestBody UserDTO userDTO) {
-        System.out.println("addUser: " + userDTO);
         try {
             return userService.addUser(userDTO)
                     ? ResponseUtil.success(userDTO)
                     : ResponseUtil.error(500, "添加用户失败");
+        } catch (LokiException e) {
+            e.printStackTrace();
+            return ResponseUtil.error(e.getCode(), e.getMessage());
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseUtil.error(500, e.getMessage());
@@ -119,6 +125,7 @@ public class UserController {
 
     /**
      * 删除用户
+     *
      * @param id 用户ID
      * @return 删除结果
      */
@@ -134,6 +141,5 @@ public class UserController {
             return ResponseUtil.error(500, e.getMessage());
         }
     }
-
 
 }

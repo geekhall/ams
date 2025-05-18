@@ -29,21 +29,10 @@
       <el-table-column prop="createTime" label="上线时间"></el-table-column>
       <el-table-column label="操作" width="220" align="center">
         <template #default="scope">
-          <el-button
-            text
-            :icon="Edit"
-            @click="handleEdit(scope.$index, scope.row)"
-            v-permission="15"
-          >
+          <el-button text :icon="Edit" @click="handleEdit(scope.$index, scope.row)">
             编辑
           </el-button>
-          <el-button
-            text
-            :icon="Delete"
-            class="red"
-            @click="handleDelete(scope.$index)"
-            v-permission="16"
-          >
+          <el-button text :icon="Delete" class="red" @click="handleDelete(scope.$index)">
             删除
           </el-button>
         </template>

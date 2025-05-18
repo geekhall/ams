@@ -5,6 +5,7 @@ import jakarta.annotation.Resource;
 import net.geekhour.loki.common.IDUtil;
 import net.geekhour.loki.entity.User;
 import net.geekhour.loki.entity.dto.UserDTO;
+import net.geekhour.loki.exception.LokiException;
 import net.geekhour.loki.mapper.DepartmentMapper;
 import net.geekhour.loki.mapper.RoleMapper;
 import net.geekhour.loki.mapper.UserMapper;
@@ -133,21 +134,17 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     @Transactional
     public boolean addUser(UserDTO userDTO) {
         if (userMapper.checkUsernameExists(userDTO.getUsername())) {
-            System.out.println("### UserServiceImpl.addUser: Username already exists");
-            return false; // 用户名已存在
+            throw new LokiException(400, "用户名已存在");
         }
         if (userDTO.getPhone() != null && userMapper.checkPhoneExists(userDTO.getPhone())) {
-            System.out.println("### UserServiceImpl.addUser: Phone number already exists");
-            return false; // 手机号已存在
+            throw new LokiException(400, "手机号已存在");
         }
         if (userDTO.getEmail() != null && userMapper.checkEmailExists(userDTO.getEmail())) {
-            System.out.println("### UserServiceImpl.addUser: Email already exists");
-            return false; // 邮箱已存在
+            throw new LokiException(400, "邮箱已存在");
         }
         User user = mapToUser(userDTO);
         if (user == null) {
-            System.out.println("### UserServiceImpl.addUser: Mapping failed");
-            return false; // 映射失败
+            throw new LokiException(500, "用户信息映射失败");
         }
         if (user.getPassword() == null || user.getPassword().isEmpty()) {
             user.setPassword(passwordEncoder.encode(defaultPassword)); // 设置默认密码

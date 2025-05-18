@@ -48,37 +48,14 @@
       <el-table-column prop="name" label="昵称"></el-table-column>
       <el-table-column prop="phone" label="手机号"></el-table-column>
       <el-table-column prop="email" label="邮箱"></el-table-column>
-      <!-- <el-table-column label="头像(查看大图)" align="center">
-        <template #default="scope">
-          <el-image
-            class="table-td-avatar"
-            :src="scope.row.avatar"
-            :z-index="10"
-            :preview-src-list="[scope.row.avatar]"
-            preview-teleported
-          >
-          </el-image>
-        </template>
-      </el-table-column> -->
       <el-table-column prop="department" label="部门"></el-table-column>
 
       <el-table-column label="操作" width="220" align="center">
         <template #default="scope">
-          <el-button
-            text
-            :icon="Edit"
-            @click="openEditDialog(scope.$index, scope.row)"
-            v-permission="15"
-          >
+          <el-button text :icon="Edit" @click="openEditDialog(scope.$index, scope.row)">
             编辑
           </el-button>
-          <el-button
-            text
-            :icon="Delete"
-            class="red"
-            @click="handleDelete(scope.$index)"
-            v-permission="16"
-          >
+          <el-button text :icon="Delete" class="red" @click="handleDelete(scope.$index)">
             删除
           </el-button>
         </template>
@@ -169,10 +146,7 @@ const openAddDialog = () => {
 }
 const openEditDialog = (idx: number, row: UserDTO) => {
   isEdit.value = true
-  // console.log('currentFormData', currentFormData)
-  // console.log('row', row)
   currentFormData.value = { ...row }
-
   dialogVisible.value = true
 }
 
@@ -205,7 +179,6 @@ const getData = async () => {
       pageTotal.value = 0
     }
   } catch (error) {
-    console.error('获取用户列表失败:', error)
     ElMessage.error('获取用户列表失败')
     tableData.value = []
     pageTotal.value = 0

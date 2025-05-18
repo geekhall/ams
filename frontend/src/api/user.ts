@@ -59,13 +59,13 @@ export const getUserList = async (
     pageIndex: number;
     pageSize: number;
   }
-): Promise<UserListResponse> => {
+) => {
   const response = await loki.request({
     url: "/user/list",
     method: "POST",
     data: params || {},
   });
-  return response.data;
+  return response;
 };
 
 // 添加用户
