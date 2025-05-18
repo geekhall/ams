@@ -10,6 +10,7 @@
       ></el-input>
       <el-button type="primary" :icon="Search" @click="handleSearch">搜索</el-button>
       <el-button type="primary" :icon="Plus" @click="openAddDialog">新增</el-button>
+      <el-button type="success" :icon="Setting" @click="showColumnSettings">列设置</el-button>
     </div>
     <el-table
       :data="tableData"
@@ -27,29 +28,23 @@
       ></el-table-column>
       <el-table-column type="expand">
         <template #default="props">
-          <div m="4">
-            <p m="t-0 b-2">角色: {{ props.row.roles }}</p>
-            <p m="t-0 b-2">权限: {{ props.row.permissions }}</p>
-            <p m="t-0 b-2">团队: {{ props.row.teamName }}</p>
-            <p m="t-0 b-2">年龄: {{ props.row.age }}</p>
-            <p m="t-0 b-2">地址: {{ props.row.address }}</p>
-            <p m="t-0 b-2">性别: {{ props.row.gender }}</p>
-            <p m="t-0 b-2">上次登录时间: {{ props.row.lastLoginTime }}</p>
-            <p m="t-0 b-2">上次登录IP: {{ props.row.lastLoginIp }}</p>
-            <p m="t-0 b-2">注册时间: {{ props.row.createTime }}</p>
-            <p m="t-0 b-2">更新时间: {{ props.row.updateTime }}</p>
-            <p m="t-0 b-2">状态: {{ props.row.status === 0 ? '正常' : '禁用' }}</p>
-            <p m="t-0 b-2">是否启用: {{ props.row.isActive }}</p>
-            <p m="t-0 b-2">是否锁定: {{ props.row.isLocked }}</p>
+          <div class="expand-content">
+            <div class="expand-grid">
+              <template v-for="field in expandFields" :key="field.value">
+                <div class="expand-item">
+                  <div class="expand-label">{{ field.label }}</div>
+                  <div class="expand-value">
+                    {{ formatFieldValue(props.row[field.value], field.value) }}
+                  </div>
+                </div>
+              </template>
+            </div>
           </div>
         </template>
       </el-table-column>
-      <el-table-column prop="username" label="用户名"></el-table-column>
-      <el-table-column prop="name" label="昵称"></el-table-column>
-      <el-table-column prop="phone" label="手机号"></el-table-column>
-      <el-table-column prop="email" label="邮箱"></el-table-column>
-      <el-table-column prop="department" label="部门"></el-table-column>
-
+      <template v-for="field in tableFields" :key="field.value">
+        <el-table-column :prop="field.value" :label="field.label" align="center"></el-table-column>
+      </template>
       <el-table-column label="操作" width="220" align="center">
         <template #default="scope">
           <el-button text :icon="Edit" @click="openEditDialog(scope.$index, scope.row)">
@@ -79,16 +74,25 @@
       :form-data="currentFormData"
       @save="handleSave"
     />
+
+    <!-- 列设置对话框 -->
+    <ColumnSettings
+      v-model:visible="columnSettingsVisible"
+      :visibleColumns="visibleColumns"
+      @updateVisibleColumns="updateVisibleColumns"
+    />
   </div>
 </template>
 
 <script lang="ts" setup>
-import { ref, reactive, onMounted } from 'vue'
+import { ref, reactive, onMounted, computed } from 'vue'
 import { ElMessage, ElMessageBox, FormInstance } from 'element-plus'
-import { Delete, Edit, Search, Plus } from '@element-plus/icons-vue'
+import { Delete, Edit, Search, Plus, Setting } from '@element-plus/icons-vue'
 import { getUserList, addUser, updateUser, deleteUser } from '~/api/user'
 import { UserDTO } from '~/types/user'
 import UserDialog from '../components/user/UserDialog.vue'
+import ColumnSettings from '../components/user/ColumnSettings.vue'
+
 const dialogVisible = ref(false)
 const isEdit = ref(false)
 const currentFormData = ref<UserDTO>({
@@ -158,6 +162,108 @@ const query = reactive({
 const tableData = ref<UserDTO[]>([])
 const pageTotal = ref(0)
 
+// 定义所有字段
+const allFields = [
+  { value: 'username', label: '用户名' },
+  { value: 'name', label: '昵称' },
+  { value: 'phone', label: '手机号' },
+  { value: 'email', label: '邮箱' },
+  { value: 'department', label: '部门' },
+  { value: 'roles', label: '角色' },
+  { value: 'permissions', label: '权限' },
+  { value: 'teamName', label: '团队' },
+  { value: 'age', label: '年龄' },
+  { value: 'address', label: '地址' },
+  { value: 'gender', label: '性别' },
+  { value: 'lastLoginTime', label: '上次登录时间' },
+  { value: 'lastLoginIp', label: '上次登录IP' },
+  { value: 'createTime', label: '注册时间' },
+  { value: 'updateTime', label: '更新时间' },
+  { value: 'status', label: '状态' },
+  { value: 'isActive', label: '是否启用' },
+  { value: 'isLocked', label: '是否锁定' }
+]
+
+// 选中的列（表格显示字段）
+const selectedColumns = ref<string[]>([])
+
+// 计算表格显示的字段
+const tableFields = computed(() => {
+  return allFields.filter((field) => selectedColumns.value.includes(field.value))
+})
+
+// 计算展开行显示的字段
+const expandFields = computed(() => {
+  return allFields.filter((field) => !selectedColumns.value.includes(field.value))
+})
+
+// 列显示控制
+const visibleColumns = ref({
+  username: true,
+  name: true,
+  phone: true,
+  email: true,
+  department: true,
+  roles: false,
+  permissions: false,
+  teamName: false,
+  age: false,
+  address: false,
+  gender: false,
+  lastLoginTime: false,
+  lastLoginIp: false,
+  createTime: false,
+  updateTime: false,
+  status: false,
+  isActive: false,
+  isLocked: false
+})
+
+// 列设置对话框
+const columnSettingsVisible = ref(false)
+
+const showColumnSettings = () => {
+  // 初始化选中的列（表格中显示的字段）
+  selectedColumns.value = Object.entries(visibleColumns.value)
+    .filter(([_, value]) => value)
+    .map(([key]) => key)
+  columnSettingsVisible.value = true
+}
+
+// 更新列显示控制
+const updateVisibleColumns = (newVisibleColumns: any) => {
+  visibleColumns.value = newVisibleColumns
+  // 更新选中的列（表格中显示的字段）
+  selectedColumns.value = Object.entries(newVisibleColumns)
+    .filter(([_, value]) => value)
+    .map(([key]) => key)
+}
+
+// 格式化字段值
+const formatFieldValue = (value: any, field: string) => {
+  if (value === null || value === undefined) return '-'
+
+  switch (field) {
+    case 'status':
+      return value === 0 ? '正常' : '禁用'
+    case 'isActive':
+      return value ? '是' : '否'
+    case 'isLocked':
+      return value ? '是' : '否'
+    case 'gender':
+      return value === '男' ? '男' : '女'
+    case 'roles':
+    case 'permissions':
+      return Array.isArray(value) ? value.join(', ') : value
+    case 'lastLoginTime':
+    case 'createTime':
+    case 'updateTime':
+      return value ? new Date(value).toLocaleString() : '-'
+    default:
+      return value
+  }
+}
+
 // 获取表格数据
 const getData = async () => {
   try {
@@ -185,22 +291,16 @@ const getData = async () => {
   }
 }
 
-onMounted(async () => {
-  try {
-    // 从 localStorage 获取保存的页码
-    const savedPageIndex = localStorage.getItem('AMSCurentUserManagementPageIndex')
-    if (savedPageIndex) {
-      query.pageIndex = parseInt(savedPageIndex, 10)
-    }
-    // 确保页码有效
-    if (isNaN(query.pageIndex) || query.pageIndex < 1) {
-      query.pageIndex = 1
-    }
-    await getData()
-  } catch (error) {
-    console.error('初始化数据失败:', error)
-    ElMessage.error('初始化数据失败')
+onMounted(() => {
+  const savedPageIndex = localStorage.getItem('AMSCurentUserManagementPageIndex')
+  if (savedPageIndex) {
+    query.pageIndex = parseInt(savedPageIndex, 10)
   }
+  // 初始化选中的列
+  selectedColumns.value = Object.entries(visibleColumns.value)
+    .filter(([_, value]) => value)
+    .map(([key]) => key)
+  getData()
 })
 
 // 搜索操作
@@ -272,20 +372,72 @@ const handleDelete = async (index: number) => {
 .handle-input {
   width: 300px;
 }
+
 .table {
   width: 100%;
   font-size: 14px;
 }
+
 .red {
   color: #f56c6c;
 }
+
 .mr10 {
   margin-right: 10px;
 }
+
 .table-td-avatar {
   display: block;
   margin: auto;
   width: 40px;
   height: 40px;
+}
+
+.expand-content {
+  padding: 20px;
+  background-color: #fafafa;
+}
+
+.expand-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1px;
+  background-color: #ebeef5;
+  border: 1px solid #ebeef5;
+  border-radius: 4px;
+}
+
+.expand-item {
+  display: flex;
+  width: calc(33.33% - 1px);
+  background-color: #fff;
+}
+
+.expand-label {
+  width: 120px;
+  padding: 12px 15px;
+  background-color: #f5f7fa;
+  font-weight: bold;
+  color: #606266;
+  border-right: 1px solid #ebeef5;
+}
+
+.expand-value {
+  flex: 1;
+  padding: 12px 15px;
+  color: #606266;
+}
+
+/* 响应式布局 */
+@media screen and (max-width: 1200px) {
+  .expand-item {
+    width: calc(50% - 1px);
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .expand-item {
+    width: 100%;
+  }
 }
 </style>
