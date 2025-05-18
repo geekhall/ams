@@ -10,7 +10,7 @@
       <el-transfer
         v-model="selectedColumns"
         :data="transferData"
-        :titles="['展开行字段', '表格显示字段']"
+        :titles="['表格显示字段', '展开行字段']"
         :props="{
           key: 'value',
           label: 'label'
