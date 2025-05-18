@@ -83,9 +83,9 @@ watch(
   (newVal) => {
     dialogVisible.value = newVal
     if (newVal) {
-      // 初始化选中的列（表格显示字段）
+      // 初始化选中的列（展开行字段）
       selectedColumns.value = Object.entries(props.visibleColumns)
-        .filter(([_, value]) => value)
+        .filter(([_, value]) => !value)
         .map(([key]) => key)
     }
   }
@@ -99,7 +99,7 @@ const handleSave = () => {
   // 更新列显示状态
   const newVisibleColumns = { ...props.visibleColumns }
   Object.keys(newVisibleColumns).forEach((key) => {
-    newVisibleColumns[key] = selectedColumns.value.includes(key)
+    newVisibleColumns[key] = !selectedColumns.value.includes(key)
   })
   emit('updateVisibleColumns', newVisibleColumns)
   dialogVisible.value = false
