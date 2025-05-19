@@ -1,7 +1,6 @@
 <template>
   <div class="header">
     <div class="collapse-btn" @click="collapseMenu">
-      <!-- <i-ep-menu class="icon" /> -->
       <el-icon size="30" v-if="sidebar.collapse"><Expand /></el-icon>
       <el-icon size="30" v-else><Fold /> </el-icon>
     </div>
@@ -13,12 +12,12 @@
         <div class="btn-bell" @click="router.push('/tabs')">
           <el-tooltip
             effect="dark"
-            :content="message ? `有${message}条未读消息` : `消息中心`"
+            :content="messageCount ? `有${messageCount}条未读消息` : `消息中心`"
             placement="bottom"
           >
             <el-icon size="30"><Bell /> </el-icon>
           </el-tooltip>
-          <span class="btn-bell-badge" v-if="message"></span>
+          <span class="btn-bell-badge" v-if="messageCount"></span>
         </div>
         <!-- 用户头像 -->
         <el-avatar class="user-avatar" :size="30" :src="imgurl" />
@@ -76,16 +75,19 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted } from 'vue'
+import { onMounted, computed } from 'vue'
 import { useSidebarStore } from '@/stores/sidebar'
 import { useRouter } from 'vue-router'
 import imgurl from '~/assets/img/avatar.png'
 import { SwitchButton } from '@element-plus/icons-vue'
 import { useUserStore } from '@/stores/user'
+import { useMessage } from '@/hooks/useMessage'
 
 const userStore = useUserStore()
 const username = computed(() => userStore.userInfo.username)
 const message: number = 2
+const { messages, getMessageCount } = useMessage()
+const messageCount = getMessageCount()
 
 const sidebar = useSidebarStore()
 
