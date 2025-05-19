@@ -70,7 +70,7 @@ import { Delete, Edit, Search, Plus } from '@element-plus/icons-vue'
 import { useUserStore } from '@/stores/user'
 
 interface TableItem {
-  id: number
+  id: string
   name: string
   intro: string
   level: number

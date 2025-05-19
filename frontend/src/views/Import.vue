@@ -32,7 +32,7 @@ import { ref, reactive } from 'vue'
 import * as XLSX from 'xlsx'
 
 interface TableItem {
-  id: number
+  id: string
   name: string
   intro: string
   career: string

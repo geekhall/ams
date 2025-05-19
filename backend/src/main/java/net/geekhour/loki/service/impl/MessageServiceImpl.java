@@ -57,6 +57,25 @@ public class MessageServiceImpl extends ServiceImpl<MessageMapper, Message> impl
 
         return count;
     }
+
+    @Override
+    public boolean updateMessageStatusById(Map<String, Object> params) {
+        Object userIdObj = params.get("user_id");
+        Object messageIdObj = params.get("message_id");
+        Object statusObj = params.get("status");
+
+        if (userIdObj == null || messageIdObj == null || statusObj == null) {
+            return false;
+        }
+
+        Long userId = userIdObj instanceof Long ? (Long) userIdObj : Long.valueOf(userIdObj.toString());
+        Long messageId = messageIdObj instanceof Long ? (Long) messageIdObj : Long.valueOf(messageIdObj.toString());
+        Integer status = statusObj instanceof Integer ? (Integer) statusObj : Integer.valueOf(statusObj.toString());
+
+        int result = messageReceiverMapper.updateStatusById(userId, messageId, status);
+        return result > 0;
+    }
+
     @Override
     @Transactional
     public boolean sendMessage(MessageDTO messageDTO) {

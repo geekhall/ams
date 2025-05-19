@@ -2,6 +2,7 @@ package net.geekhour.loki.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiModelProperty;
 import io.swagger.annotations.ApiOperation;
 import net.geekhour.loki.common.ResponseUtil;
 import net.geekhour.loki.entity.Message;
@@ -77,6 +78,24 @@ public class MessageController {
       return ResponseUtil.error(500, "消息更新失败: " + e.getMessage());
     }
   }
+
+  @ApiModelProperty("更新消息状态")
+  @PostMapping("/update/status")
+  @PreAuthorize("hasRole('USER') || hasAuthority('message:status')")
+  public ResponseEntity<?> updateMessageStatusById(
+            @RequestBody Map<String, Object> params) {
+    System.out.println("updateMessageStatusById: " + params);
+      if (params == null || params.isEmpty()) {
+        return ResponseUtil.error(400, "参数不能为空");
+      }
+      try {
+      boolean success = messageService.updateMessageStatusById(params);
+        return success ? ResponseUtil.success(params) : ResponseUtil.error(500, "消息状态更新失败");
+      } catch (Exception e) {
+        return ResponseUtil.error(500, "消息状态更新失败: " + e.getMessage());
+      }
+    }
+
 
   @DeleteMapping("/delete/{id}")
   @ApiOperation("删除消息")

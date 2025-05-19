@@ -76,7 +76,7 @@ import { ElMessage, ElMessageBox } from 'element-plus'
 import { Delete, Edit, Search, Plus } from '@element-plus/icons-vue'
 
 interface TableItem {
-  id: number
+  id: string
   name: string
   intro: string
   level: number

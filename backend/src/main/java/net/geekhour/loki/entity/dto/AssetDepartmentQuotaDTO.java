@@ -2,12 +2,11 @@ package net.geekhour.loki.entity.dto;
 
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 import io.swagger.annotations.ApiModelProperty;
+import java.io.Serializable;
+import java.math.BigDecimal;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
-
-import java.io.Serializable;
-import java.math.BigDecimal;
 
 /**
  * @author Jasper Yang

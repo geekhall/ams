@@ -15,7 +15,7 @@ import java.util.List;
 public class UserDTO {
 
     @ApiModelProperty("ID")
-    private String id; // 这里不能使用Long类型，否则前端会发生精度丢失
+    private String id;
 
     @ApiModelProperty("姓名")
     private String name;

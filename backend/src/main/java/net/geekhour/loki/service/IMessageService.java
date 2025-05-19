@@ -51,4 +51,6 @@ public interface IMessageService extends IService<Message> {
   boolean deleteMessage(Long id);
 
   Long countMessage(Map<String, Object> params);
+
+  boolean updateMessageStatusById(Map<String, Object> params);
 }

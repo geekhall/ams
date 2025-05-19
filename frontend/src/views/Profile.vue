@@ -220,13 +220,24 @@
             <el-tab-pane label="全部" name="all">
               <el-checkbox-group v-model="checkedTodos" class="todo-list">
                 <div v-for="todo in filteredTodos" :key="todo.id" class="todo-item">
-                  <el-checkbox :value="todo.id">
+                  <el-checkbox :label="todo.id">
                     <span :class="{ 'todo-done': todo.done }">{{ todo.content }}</span>
                   </el-checkbox>
                   <div class="todo-actions">
-                    <el-tag size="small" :type="todo.priority" effect="plain">
-                      {{ todo.priorityText }}
-                    </el-tag>
+                    <el-dropdown
+                      @command="(command: 'success' | 'warning' | 'danger' | 'info') => updateTodoPriority(todo.id, command)"
+                    >
+                      <el-tag size="small" :type="todo.priority" effect="plain">
+                        {{ todo.priorityText }}
+                      </el-tag>
+                      <template #dropdown>
+                        <el-dropdown-menu>
+                          <el-dropdown-item command="danger">紧急</el-dropdown-item>
+                          <el-dropdown-item command="warning">重要</el-dropdown-item>
+                          <el-dropdown-item command="info">普通</el-dropdown-item>
+                        </el-dropdown-menu>
+                      </template>
+                    </el-dropdown>
                     <el-button type="danger" link @click="deleteTodo(todo.id)">
                       <el-icon><Delete /></el-icon>
                     </el-button>
@@ -237,13 +248,24 @@
             <el-tab-pane label="待完成" name="active">
               <el-checkbox-group v-model="checkedTodos" class="todo-list">
                 <div v-for="todo in activeTodos" :key="todo.id" class="todo-item">
-                  <el-checkbox :value="todo.id">
+                  <el-checkbox :label="todo.id">
                     <span>{{ todo.content }}</span>
                   </el-checkbox>
                   <div class="todo-actions">
-                    <el-tag size="small" :type="todo.priority" effect="plain">
-                      {{ todo.priorityText }}
-                    </el-tag>
+                    <el-dropdown
+                      @command="(command: 'success' | 'warning' | 'danger' | 'info') => updateTodoPriority(todo.id, command)"
+                    >
+                      <el-tag size="small" :type="todo.priority" effect="plain">
+                        {{ todo.priorityText }}
+                      </el-tag>
+                      <template #dropdown>
+                        <el-dropdown-menu>
+                          <el-dropdown-item command="danger">紧急</el-dropdown-item>
+                          <el-dropdown-item command="warning">重要</el-dropdown-item>
+                          <el-dropdown-item command="info">普通</el-dropdown-item>
+                        </el-dropdown-menu>
+                      </template>
+                    </el-dropdown>
                     <el-button type="danger" link @click="deleteTodo(todo.id)">
                       <el-icon><Delete /></el-icon>
                     </el-button>
@@ -254,13 +276,24 @@
             <el-tab-pane label="已完成" name="completed">
               <el-checkbox-group v-model="checkedTodos" class="todo-list">
                 <div v-for="todo in completedTodos" :key="todo.id" class="todo-item">
-                  <el-checkbox :value="todo.id">
+                  <el-checkbox :label="todo.id">
                     <span class="todo-done">{{ todo.content }}</span>
                   </el-checkbox>
                   <div class="todo-actions">
-                    <el-tag size="small" :type="todo.priority" effect="plain">
-                      {{ todo.priorityText }}
-                    </el-tag>
+                    <el-dropdown
+                      @command="(command: 'success' | 'warning' | 'danger' | 'info') => updateTodoPriority(todo.id, command)"
+                    >
+                      <el-tag size="small" :type="todo.priority" effect="plain">
+                        {{ todo.priorityText }}
+                      </el-tag>
+                      <template #dropdown>
+                        <el-dropdown-menu>
+                          <el-dropdown-item command="danger">紧急</el-dropdown-item>
+                          <el-dropdown-item command="warning">重要</el-dropdown-item>
+                          <el-dropdown-item command="info">普通</el-dropdown-item>
+                        </el-dropdown-menu>
+                      </template>
+                    </el-dropdown>
                     <el-button type="danger" link @click="deleteTodo(todo.id)">
                       <el-icon><Delete /></el-icon>
                     </el-button>
@@ -527,7 +560,7 @@ const newTodo = ref('')
 const checkedTodos = ref<number[]>([])
 
 interface Todo {
-  id: number
+  id: string
   content: string
   done: boolean
   priority: 'success' | 'warning' | 'danger' | 'info'
@@ -562,6 +595,7 @@ const filteredTodos = computed(() => todos)
 const activeTodos = computed(() => todos.filter((todo) => !todo.done))
 const completedTodos = computed(() => todos.filter((todo) => todo.done))
 
+// 添加待办事项
 const addTodo = () => {
   if (!newTodo.value.trim()) return
 
@@ -578,7 +612,8 @@ const addTodo = () => {
   ElMessage.success('添加成功')
 }
 
-const deleteTodo = (id: number) => {
+// 删除待办事项
+const deleteTodo = (id: string) => {
   const index = todos.findIndex((todo) => todo.id === id)
   if (index > -1) {
     todos.splice(index, 1)
@@ -586,10 +621,36 @@ const deleteTodo = (id: number) => {
   }
 }
 
+// 切换待办事项状态
+const toggleTodoStatus = (id: string) => {
+  const todo = todos.find((todo) => todo.id === id)
+  if (todo) {
+    todo.done = !todo.done
+    ElMessage.success(todo.done ? '已完成' : '已取消完成')
+  }
+}
+
+// 更新待办事项优先级
+const updateTodoPriority = (id: string, priority: 'success' | 'warning' | 'danger' | 'info') => {
+  const todo = todos.find((todo) => todo.id === id)
+  if (todo) {
+    todo.priority = priority
+    todo.priorityText = {
+      success: '普通',
+      warning: '重要',
+      danger: '紧急',
+      info: '普通'
+    }[priority]
+    ElMessage.success('优先级已更新')
+  }
+}
+
 // 监听待办事项状态变化
 watch(checkedTodos, (newVal) => {
   todos.forEach((todo) => {
-    todo.done = newVal.includes(todo.id)
+    if (newVal.includes(todo.id) !== todo.done) {
+      toggleTodoStatus(todo.id)
+    }
   })
 })
 

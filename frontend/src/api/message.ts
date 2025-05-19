@@ -36,7 +36,7 @@ export const updateMessage = async (message: MessageDTO): Promise<ApiResponse<Me
 };
 
 // 删除消息
-export const deleteMessage = async (id: number): Promise<ApiResponse<any>> => {
+export const deleteMessage = async (id: string): Promise<ApiResponse<any>> => {
   return await loki.request({
     url: `/message/delete/${id}`,
     method: "DELETE",
@@ -45,7 +45,7 @@ export const deleteMessage = async (id: number): Promise<ApiResponse<any>> => {
 
 // 获取角色列表
 export const getRoleList = async (): Promise<ApiResponse<Array<{
-  id: number;
+  id: string;
   name: string;
 }>>> => {
   return await loki.request({
@@ -53,3 +53,15 @@ export const getRoleList = async (): Promise<ApiResponse<Array<{
     method: "GET",
   } as AxiosRequestConfig);
 };
+
+export const updateMessageStatusById = async (user_id: string, message_id: string, status: number): Promise<ApiResponse<any>> => {
+  return await loki.request({
+    url: `/message/update/status`,
+    method: "POST",
+    data: {
+      user_id: user_id,
+      message_id: message_id,
+      status: status,
+    },
+  } as AxiosRequestConfig);
+}

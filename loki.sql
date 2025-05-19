@@ -22,7 +22,7 @@ SET FOREIGN_KEY_CHECKS = 0;
 -- ----------------------------
 DROP TABLE IF EXISTS `h_article`;
 CREATE TABLE `h_article` (
-  `id` bigint NOT NULL COMMENT '主键ID',
+  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '主键ID',
   `title` varchar(255) NOT NULL COMMENT '标题',
   `subtitle` varchar(255) NOT NULL COMMENT '副标题',
   `summary` tinytext COMMENT '摘要',
@@ -49,7 +49,7 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `h_asset`;
 CREATE TABLE `h_asset` (
-  `id` bigint NOT NULL COMMENT '主键ID',
+  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '主键ID',
   `name` varchar(255) NOT NULL COMMENT '资产名称',
   `code` varchar(255) NOT NULL COMMENT '资产编号',
   `sn` varchar(255) DEFAULT NULL COMMENT '资产序列号',
@@ -195,7 +195,7 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `h_budget`;
 CREATE TABLE `h_budget` (
-  `id` bigint NOT NULL COMMENT '主键ID',
+  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '主键ID',
   `year` int NOT NULL COMMENT '预算年度',
   `name` varchar(255) NOT NULL COMMENT '项目名称',
   `description` varchar(4096) DEFAULT NULL COMMENT '项目描述',
@@ -249,7 +249,7 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `h_budget_adjustment`;
 CREATE TABLE `h_budget_adjustment` (
-  `id` bigint NOT NULL COMMENT '主键ID',
+  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '主键ID',
   `budget_id` bigint NOT NULL COMMENT '预算ID',
   `user_id` bigint NOT NULL COMMENT '申请人ID',
   `adjustment_amount` decimal(17,2) NOT NULL COMMENT '调整金额',
@@ -275,7 +275,7 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `h_budget_category`;
 CREATE TABLE `h_budget_category` (
-  `id` bigint NOT NULL COMMENT '主键ID',
+  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '主键ID',
   `name` varchar(255) NOT NULL COMMENT '预算性质名称',
   `parent_id` bigint DEFAULT NULL COMMENT '父类型（支持多级分类，根类型为NULL）',
   `version` int DEFAULT '1' COMMENT '版本号',
@@ -307,7 +307,7 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `h_budget_execution`;
 CREATE TABLE `h_budget_execution` (
-  `id` bigint NOT NULL COMMENT '主键ID',
+  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '主键ID',
   `budget_id` bigint NOT NULL COMMENT '预算ID',
   `execution_amount` decimal(17,2) NOT NULL COMMENT '执行金额',
   `execution_reason` varchar(255) NOT NULL COMMENT '执行原因',
@@ -330,7 +330,7 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `h_budget_type`;
 CREATE TABLE `h_budget_type` (
-  `id` bigint NOT NULL COMMENT '主键ID',
+  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '主键ID',
   `name` varchar(255) NOT NULL COMMENT '预算类型名称',
   `parent_id` bigint DEFAULT NULL COMMENT '父类型（支持多级分类，根类型为NULL）',
   `version` int DEFAULT '1' COMMENT '版本号',
@@ -357,7 +357,7 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `h_comment`;
 CREATE TABLE `h_comment` (
-  `id` bigint NOT NULL COMMENT '主键ID',
+  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '主键ID',
   `post_id` bigint NOT NULL COMMENT '文章ID',
   `user_id` bigint NOT NULL COMMENT '用户ID',
   `parent_id` bigint DEFAULT NULL COMMENT '父评论ID',
@@ -381,7 +381,7 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `h_department`;
 CREATE TABLE `h_department` (
-  `id` bigint NOT NULL COMMENT '部门ID',
+  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '主键ID',
   `name` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '部门名称',
   `description` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '部门描述',
   `code` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '部门编码',
@@ -469,7 +469,7 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `h_department_quota`;
 CREATE TABLE `h_department_quota` (
-  `id` bigint NOT NULL COMMENT '主键ID',
+  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '主键ID',
   `department_id` bigint NOT NULL COMMENT '部门ID',
   `budget_year` int NOT NULL COMMENT '预算年度',
   `quota` decimal(17,2) NOT NULL COMMENT '预算额度',
@@ -534,7 +534,7 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `h_image`;
 CREATE TABLE `h_image` (
-  `id` bigint NOT NULL COMMENT '主键ID',
+  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '主键ID',
   `name` varchar(30) NOT NULL COMMENT '名称',
   `type` varchar(50) DEFAULT NULL COMMENT '类型',
   `path` varchar(256) DEFAULT NULL COMMENT '路径',
@@ -553,7 +553,7 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `h_machine`;
 CREATE TABLE `h_machine` (
-  `id` bigint NOT NULL COMMENT '主键ID',
+  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '主键ID',
   `name` varchar(30) DEFAULT NULL COMMENT '名称',
   `type` int DEFAULT NULL COMMENT '类型',
   `ip` varchar(50) DEFAULT NULL COMMENT 'ip地址',
@@ -580,7 +580,7 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `h_message`;
 CREATE TABLE `h_message` (
-  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '消息ID',
+  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '主键ID',
   `title` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '消息标题',
   `content` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '消息内容',
   `sender` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '发送者',
@@ -624,7 +624,7 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `h_message_receiver`;
 CREATE TABLE `h_message_receiver` (
-  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '记录ID',
+  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '主键ID',
   `message_id` bigint NOT NULL COMMENT '消息ID',
   `user_id` bigint NOT NULL COMMENT '接收用户ID',
   `status` int NOT NULL DEFAULT '0' COMMENT '状态：0-正常，1-已读, 2-回收站',
@@ -682,7 +682,7 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `h_permission`;
 CREATE TABLE `h_permission` (
-  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '权限ID',
+  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '主键ID',
   `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '权限名称',
   `path` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '权限路径',
   `component` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '权限组件',
@@ -735,7 +735,7 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `h_role`;
 CREATE TABLE `h_role` (
-  `id` bigint NOT NULL COMMENT '角色ID',
+  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '主键ID',
   `name` varchar(30) DEFAULT NULL COMMENT '角色名称',
   `description` varchar(255) DEFAULT NULL COMMENT '角色描述',
   `code` varchar(30) DEFAULT NULL COMMENT '角色编码',
@@ -765,7 +765,7 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `h_role_permission`;
 CREATE TABLE `h_role_permission` (
-  `id` bigint NOT NULL COMMENT '角色权限关联ID',
+  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '主键ID',
   `role_id` bigint DEFAULT NULL COMMENT '角色ID',
   `permission_id` bigint DEFAULT NULL COMMENT '权限ID',
   `version` int DEFAULT '1' COMMENT '版本号',
@@ -862,7 +862,7 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `h_team`;
 CREATE TABLE `h_team` (
-  `id` bigint NOT NULL COMMENT '主键ID',
+  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '主键ID',
   `name` varchar(255) NOT NULL COMMENT '团队名称',
   `description` varchar(255) DEFAULT NULL COMMENT '团队描述',
   `leader_id` bigint DEFAULT NULL COMMENT '团队负责人ID',
@@ -877,22 +877,23 @@ CREATE TABLE `h_team` (
 -- Records of h_team
 -- ----------------------------
 BEGIN;
-INSERT INTO `h_team` VALUES (0, '未指定', '未指定', 1897630015512547329, 1, NULL, NULL, 0);
-INSERT INTO `h_team` VALUES (1, '核心开发', '核心开发', 1897630015512547329, 1, NULL, NULL, 0);
-INSERT INTO `h_team` VALUES (2, '外围开发', '外围开发', 1897630015512547329, 1, NULL, NULL, 0);
-INSERT INTO `h_team` VALUES (3, '管理系统', '管理系统', 1897630015512547329, 1, NULL, NULL, 0);
-INSERT INTO `h_team` VALUES (4, '电子银行', '电子银行', 1897630015512547329, 1, NULL, NULL, 0);
-INSERT INTO `h_team` VALUES (5, '信息安全', '信息安全', 1897630015512547329, 1, NULL, NULL, 0);
-INSERT INTO `h_team` VALUES (6, '设备运行', '设备运行', 1897630015512547329, 1, NULL, NULL, 0);
-INSERT INTO `h_team` VALUES (7, '网络通讯', '网络通讯', 1897630015512547329, 1, NULL, NULL, 0);
-INSERT INTO `h_team` VALUES (8, '生产运行', '生产运行', 1897630015512547329, 1, NULL, NULL, 0);
-INSERT INTO `h_team` VALUES (9, '应用维护', '应用维护', 1897630015512547329, 1, NULL, NULL, 0);
-INSERT INTO `h_team` VALUES (10, '数据中心', '数据中心', 1897630015512547329, 1, NULL, NULL, 0);
-INSERT INTO `h_team` VALUES (11, '测试', '测试', 1897630015512547329, 1, NULL, NULL, 0);
-INSERT INTO `h_team` VALUES (12, 'PMO', 'PMO', 1897630015512547329, 1, NULL, NULL, 0);
-INSERT INTO `h_team` VALUES (13, '人力', '人力', 1897630015512547329, 1, NULL, NULL, 0);
-INSERT INTO `h_team` VALUES (14, '新核心', '新核心', 1897630015512547329, 1, NULL, NULL, 0);
-INSERT INTO `h_team` VALUES (15, '其他', '其他', 1897630015512547329, 1, NULL, NULL, 0);
+
+INSERT INTO `h_team`(`name`,`description`,`leader_id`,`version`,`create_time`,`update_time`,`deleted`) VALUES ('未指定', '未指定', 1897630015512547329, 1, NULL, NULL, 0);
+INSERT INTO `h_team`(`name`,`description`,`leader_id`,`version`,`create_time`,`update_time`,`deleted`) VALUES ('核心开发', '核心开发', 1897630015512547329, 1, NULL, NULL, 0);
+INSERT INTO `h_team`(`name`,`description`,`leader_id`,`version`,`create_time`,`update_time`,`deleted`) VALUES ('外围开发', '外围开发', 1897630015512547329, 1, NULL, NULL, 0);
+INSERT INTO `h_team`(`name`,`description`,`leader_id`,`version`,`create_time`,`update_time`,`deleted`) VALUES ('管理系统', '管理系统', 1897630015512547329, 1, NULL, NULL, 0);
+INSERT INTO `h_team`(`name`,`description`,`leader_id`,`version`,`create_time`,`update_time`,`deleted`) VALUES ('电子银行', '电子银行', 1897630015512547329, 1, NULL, NULL, 0);
+INSERT INTO `h_team`(`name`,`description`,`leader_id`,`version`,`create_time`,`update_time`,`deleted`) VALUES ('信息安全', '信息安全', 1897630015512547329, 1, NULL, NULL, 0);
+INSERT INTO `h_team`(`name`,`description`,`leader_id`,`version`,`create_time`,`update_time`,`deleted`) VALUES ('设备运行', '设备运行', 1897630015512547329, 1, NULL, NULL, 0);
+INSERT INTO `h_team`(`name`,`description`,`leader_id`,`version`,`create_time`,`update_time`,`deleted`) VALUES ('网络通讯', '网络通讯', 1897630015512547329, 1, NULL, NULL, 0);
+INSERT INTO `h_team`(`name`,`description`,`leader_id`,`version`,`create_time`,`update_time`,`deleted`) VALUES ('生产运行', '生产运行', 1897630015512547329, 1, NULL, NULL, 0);
+INSERT INTO `h_team`(`name`,`description`,`leader_id`,`version`,`create_time`,`update_time`,`deleted`) VALUES ('应用维护', '应用维护', 1897630015512547329, 1, NULL, NULL, 0);
+INSERT INTO `h_team`(`name`,`description`,`leader_id`,`version`,`create_time`,`update_time`,`deleted`) VALUES ( '数据中心', '数据中心', 1897630015512547329, 1, NULL, NULL, 0);
+INSERT INTO `h_team`(`name`,`description`,`leader_id`,`version`,`create_time`,`update_time`,`deleted`) VALUES ( '测试', '测试', 1897630015512547329, 1, NULL, NULL, 0);
+INSERT INTO `h_team`(`name`,`description`,`leader_id`,`version`,`create_time`,`update_time`,`deleted`) VALUES ( 'PMO', 'PMO', 1897630015512547329, 1, NULL, NULL, 0);
+INSERT INTO `h_team`(`name`,`description`,`leader_id`,`version`,`create_time`,`update_time`,`deleted`) VALUES ( '人力', '人力', 1897630015512547329, 1, NULL, NULL, 0);
+INSERT INTO `h_team`(`name`,`description`,`leader_id`,`version`,`create_time`,`update_time`,`deleted`) VALUES ( '新核心', '新核心', 1897630015512547329, 1, NULL, NULL, 0);
+INSERT INTO `h_team`(`name`,`description`,`leader_id`,`version`,`create_time`,`update_time`,`deleted`) VALUES ( '其他', '其他', 1897630015512547329, 1, NULL, NULL, 0);
 COMMIT;
 
 -- ----------------------------
@@ -900,7 +901,7 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `h_user`;
 CREATE TABLE `h_user` (
-  `id` bigint NOT NULL COMMENT '主键ID',
+  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '主键ID',
   `name` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '姓名',
   `username` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '用户名',
   `password` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '密码',
@@ -956,7 +957,7 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `h_user_role`;
 CREATE TABLE `h_user_role` (
-  `id` bigint NOT NULL AUTO_INCREMENT,
+  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '主键ID',
   `user_id` bigint NOT NULL COMMENT '用户ID',
   `role_id` bigint NOT NULL COMMENT '角色ID',
   `version` int DEFAULT '1' COMMENT '版本号',
@@ -989,24 +990,16 @@ INSERT INTO `h_user_role` VALUES (16, 1898312658545778690, 8, 1, NULL, NULL, 0);
 INSERT INTO `h_user_role` VALUES (17, 1917577780013338625, 8, 1, NULL, NULL, 0);
 INSERT INTO `h_user_role` VALUES (18, 1917846652826238977, 8, 1, 1746085248563, NULL, 0);
 INSERT INTO `h_user_role` VALUES (20, 1918659054115323905, 8, 1, NULL, NULL, 0);
-INSERT INTO `h_user_role` VALUES (4743803260383612998, 1921847830786637826, 2, 1, 1747039203774, NULL, 0);
-INSERT INTO `h_user_role` VALUES (8671322849260191369, 1920830621851144193, 8, 1, 1746796682220, NULL, 0);
-INSERT INTO `h_user_role` VALUES (8990838681356496535, 6706720622553003629, 8, 1, NULL, NULL, 0);
-INSERT INTO `h_user_role` VALUES (8990838681356496536, 6706720622553003629, 4, 1, NULL, NULL, 0);
-INSERT INTO `h_user_role` VALUES (8990838681356496537, 1918826227513229314, 8, 1, NULL, NULL, 0);
-INSERT INTO `h_user_role` VALUES (8990838681356496542, 1908471088071897089, 4, 1, NULL, NULL, 0);
-INSERT INTO `h_user_role` VALUES (8990838681356496543, 1908471088071897089, 8, 1, NULL, NULL, 0);
-INSERT INTO `h_user_role` VALUES (8990838681356496544, 6119170176878989095, 8, 1, NULL, NULL, 0);
-INSERT INTO `h_user_role` VALUES (9073155160205823331, 1921512565949644801, 8, 1, 1746959270362, NULL, 0);
+INSERT INTO `h_user_role` VALUES (21, 1921847830786637826, 2, 1, 1747039203774, NULL, 0);
+INSERT INTO `h_user_role` VALUES (22, 1920830621851144193, 8, 1, 1746796682220, NULL, 0);
+INSERT INTO `h_user_role` VALUES (23, 6706720622553003629, 8, 1, NULL, NULL, 0);
+INSERT INTO `h_user_role` VALUES (24, 6706720622553003629, 4, 1, NULL, NULL, 0);
+INSERT INTO `h_user_role` VALUES (25, 1918826227513229314, 8, 1, NULL, NULL, 0);
+INSERT INTO `h_user_role` VALUES (26, 1908471088071897089, 4, 1, NULL, NULL, 0);
+INSERT INTO `h_user_role` VALUES (27, 1908471088071897089, 8, 1, NULL, NULL, 0);
+INSERT INTO `h_user_role` VALUES (28, 6119170176878989095, 8, 1, NULL, NULL, 0);
+INSERT INTO `h_user_role` VALUES (29, 1921512565949644801, 8, 1, 1746959270362, NULL, 0);
 COMMIT;
 
--- ----------------------------
-select a.username, b.role_id, c.name, c.description, e.name, e.path, e.component, e.permission, e.description from h_user a
-left join h_user_role b on a.id = b.user_id
-left join h_role c on b.role_id = c.id
-left join h_role_permission d on b.role_id = d.role_id
-left join h_permission e on d.permission_id = e.id
-where a.username='user';
--- ----------------------------
 
 SET FOREIGN_KEY_CHECKS = 1;

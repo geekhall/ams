@@ -1,7 +1,7 @@
-import { ref, computed } from 'vue'
+import { ref, computed, toRef } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { type MessageDTO, type CreateMessageDTO } from '@/types/message'
-import { getMessageList, sendMessage, updateMessage, deleteMessage } from '@/api/message'
+import { getMessageList, sendMessage, updateMessage, deleteMessage, updateMessageStatusById } from '@/api/message'
 import { useUserStore } from '@/stores/user'
 import dayjs from 'dayjs'
 
@@ -26,11 +26,13 @@ export const useMessage = () => {
         search: searchQuery.value
       })
       if (response.code === 200) {
+        console.log('获取消息列表成功:', response.data);
         messages.value = response.data.items
         total.value = response.data.total
       }
     } catch (error) {
       ElMessage.error('获取消息列表失败')
+      console.error('获取消息列表失败:', error)
     } finally {
       loading.value = false
     }
@@ -45,6 +47,8 @@ export const useMessage = () => {
         content: form.content,
         sender: userStore.$state.user?.username || '系统管理员',
         send_time: dayjs().format('YYYY-MM-DD HH:mm:ss'),
+        type: form.type,
+        status: 0,
       }
 
       if (editingMessage.value) {
@@ -114,6 +118,24 @@ export const useMessage = () => {
     return total.value
   }
 
+  const updateMessageStatus = async (user_id: string, message_id: string, status: number) => {
+    try {
+      const userStore = useUserStore()
+      const response = await updateMessageStatusById(
+        user_id,
+        message_id,
+        status
+      )
+      if (response.code === 200) {
+        ElMessage.success('消息状态更新成功')
+        await fetchMessages()
+      }
+    } catch (error) {
+      ElMessage.error('消息状态更新失败')
+      console.error('消息状态更新失败:', error)
+    }
+  }
+
   return {
     messages,
     total,
@@ -129,5 +151,6 @@ export const useMessage = () => {
     handleSizeChange,
     handleCurrentChange,
     getMessageCount,
+    updateMessageStatus,
   }
 }
