@@ -100,6 +100,10 @@ import { addBudget, updateBudget } from '@/api/budget'
 import type { Budget } from '@/types/budget'
 import dayjs from 'dayjs'
 import { hasPermission } from '@/utils/permission'
+import { useUserStore } from '@/stores/user'
+import { PermissionType } from '@/types/user'
+
+const userStore = useUserStore()
 
 const props = defineProps<{
   visible: boolean
@@ -186,7 +190,7 @@ const handleClose = () => {
 }
 
 const handleSubmit = async () => {
-  if (props.mode === 'edit' && !hasPermission(15)) {
+  if (props.mode === 'edit' && !hasPermission(userStore.userInfo, PermissionType.BUDGET_EDIT)) {
     // 如果没有编辑权限，触发审批流程
     emit('approval-required', form)
     handleClose()
