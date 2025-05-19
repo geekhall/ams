@@ -12,7 +12,7 @@
         <div class="btn-bell" @click="router.push('/tabs')">
           <el-tooltip
             effect="dark"
-            :content="messageCount ? `有${messageCount}条未读消息` : `消息中心`"
+            :content="messageCount ? `有${unread}条未读消息` : `消息中心`"
             placement="bottom"
           >
             <el-icon size="30"><Bell /> </el-icon>
@@ -75,7 +75,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, computed } from 'vue'
+import { onMounted, computed, ref } from 'vue'
 import { useSidebarStore } from '@/stores/sidebar'
 import { useRouter } from 'vue-router'
 import imgurl from '~/assets/img/avatar.png'
@@ -85,9 +85,8 @@ import { useMessage } from '@/hooks/useMessage'
 
 const userStore = useUserStore()
 const username = computed(() => userStore.userInfo.username)
-const message: number = 2
-const { messages, getMessageCount } = useMessage()
-const messageCount = getMessageCount()
+const { unread, getMessageCount } = useMessage()
+const messageCount = ref(0)
 
 const sidebar = useSidebarStore()
 
@@ -96,7 +95,8 @@ const collapseMenu = () => {
   sidebar.handleCollapse()
 }
 
-onMounted(() => {
+onMounted(async () => {
+  messageCount.value = await getMessageCount()
   if (document.body.clientWidth < 1500) {
     collapseMenu()
   }

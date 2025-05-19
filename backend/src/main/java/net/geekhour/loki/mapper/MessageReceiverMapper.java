@@ -20,7 +20,7 @@ public interface MessageReceiverMapper extends BaseMapper<MessageReceiver> {
     @Update("<script>" +
             "UPDATE h_message_receiver " +
             "SET status = #{status} " +
-            "WHERE user_id = #{user_id} AND message_id = #{message_id} " +
+            "WHERE user_id = #{user_id} AND message_id = #{message_id} AND deleted = 0" +
             "</script>")
     int updateStatusById(@Param("user_id") Long user_id, @Param("message_id") Long message_id, @Param("status") Integer status);
 }

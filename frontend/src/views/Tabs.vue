@@ -68,7 +68,7 @@ import { useUserStore } from '@/stores/user'
 
 const userStore = useUserStore()
 const activeTab = ref('unread')
-const { messages, fetchMessages, getMessageCount, updateMessageStatus } = useMessage()
+const { messages, fetchMessages, updateMessageStatus } = useMessage()
 
 const state = reactive({
   unread: [] as MessageDTO[],
@@ -78,19 +78,24 @@ const state = reactive({
 
 // 处理单条消息标为已读
 const handleRead = async (message: MessageDTO) => {
-  const index = state.unread.findIndex((item) => item.id === message.id)
-  if (index > -1) {
-    const item = state.unread.splice(index, 1)[0]
-    console.log('item:', item)
+  try {
+    const index = state.unread.findIndex((item) => item.id === message.id)
+    if (index > -1) {
+      const item = state.unread.splice(index, 1)[0]
+      console.log('item:', item)
 
-    item.status = 1
-    const user_id = userStore.userInfo.id || ''
-    // 调用接口更新消息状态
-    await updateMessageStatus(user_id, message.id, item.status)
+      item.status = 1
+      const user_id = userStore.userInfo.id || ''
+      // 调用接口更新消息状态
+      await updateMessageStatus(user_id, message.id, item.status)
 
-    // 更新本地状态
-    state.read.unshift(item)
-    ElMessage.success('已标为已读')
+      // 更新本地状态
+      state.read.unshift(item)
+      ElMessage.success('已标为已读')
+    }
+  } catch (error) {
+    ElMessage.error('标为已读失败')
+    console.error('Failed to mark message as read:', error)
   }
 }
 
@@ -108,6 +113,12 @@ const handleReadAll = () => {
   })
     .then(() => {
       const items = state.unread.map((item) => ({ ...item, status: 1 }))
+      const user_id = userStore.userInfo.id || ''
+      // 调用接口更新消息状态
+      items.forEach(async (item) => {
+        await updateMessageStatus(user_id, item.id, item.status)
+      })
+      // 更新本地状态
       state.read = [...items, ...state.read]
       state.unread = []
       ElMessage.success('已全部标为已读')
@@ -116,11 +127,15 @@ const handleReadAll = () => {
 }
 
 // 处理删除单条消息
-const handleDel = (message: MessageDTO) => {
+const handleDel = async (message: MessageDTO) => {
   const index = state.read.findIndex((item) => item.id === message.id)
   if (index > -1) {
     const item = state.read.splice(index, 1)[0]
     item.status = 2
+    const user_id = userStore.userInfo.id || ''
+    // 调用接口更新消息状态
+    await updateMessageStatus(user_id, message.id, item.status)
+    // 更新本地状态
     state.recycle.unshift(item)
     ElMessage.success('已删除')
   }
@@ -140,6 +155,12 @@ const handleDelAll = () => {
   })
     .then(() => {
       const items = state.read.map((item) => ({ ...item, status: 2 }))
+      const user_id = userStore.userInfo.id || ''
+      // 调用接口更新消息状态
+      items.forEach(async (item) => {
+        await updateMessageStatus(user_id, item.id, item.status)
+      })
+      // 更新本地状态
       state.recycle = [...items, ...state.recycle]
       state.read = []
       ElMessage.success('已全部删除')
@@ -148,13 +169,23 @@ const handleDelAll = () => {
 }
 
 // 处理还原消息
-const handleRestore = (message: MessageDTO) => {
-  const index = state.recycle.findIndex((item) => item.id === message.id)
-  if (index > -1) {
-    const item = state.recycle.splice(index, 1)[0]
-    item.status = 1
-    state.read.unshift(item)
-    ElMessage.success('已还原')
+const handleRestore = async (message: MessageDTO) => {
+  try {
+    const index = state.recycle.findIndex((item) => item.id === message.id)
+    if (index > -1) {
+      const item = state.recycle.splice(index, 1)[0]
+      item.status = 1
+
+      const user_id = userStore.userInfo.id || ''
+      // 调用接口更新消息状态
+      await updateMessageStatus(user_id, message.id, item.status)
+      // 更新本地状态
+      state.read.unshift(item)
+      ElMessage.success('已还原')
+    }
+  } catch (error) {
+    ElMessage.error('还原失败')
+    console.error('Failed to restore message:', error)
   }
 }
 

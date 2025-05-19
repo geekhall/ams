@@ -26,6 +26,7 @@ export interface CreateMessageDTO extends Omit<MessageDTO, 'id'> { }
 
 export interface MessageListResponse extends ApiResponse<{
   total: number;
+  unread: number;
   items: MessageDTO[];
 }> { }
 

@@ -44,11 +44,15 @@ public class MessageController {
     try {
       List<MessageDTO> messageList = messageService.getMessageList(params);
       Long total = messageService.countMessage(params);
+      Long unread = messageList.stream().filter(m -> m.getStatus() == 0).count();
       System.out.println("result: " + messageList);
+      System.out.println("total: " + total);
+      System.out.println("unread: " + unread);
 
       return ResponseUtil.success(Map.of(
               "items", messageList,
-              "total", total));
+              "total", total,
+              "unread", unread));
     } catch (Exception e) {
       return ResponseUtil.error(500, "获取消息列表失败: " + e.getMessage());
     }

@@ -1,4 +1,4 @@
-import { ref, computed, toRef } from 'vue'
+import { ref } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { type MessageDTO, type CreateMessageDTO } from '@/types/message'
 import { getMessageList, sendMessage, updateMessage, deleteMessage, updateMessageStatusById } from '@/api/message'
@@ -8,6 +8,7 @@ import dayjs from 'dayjs'
 export const useMessage = () => {
   const messages = ref<MessageDTO[]>([])
   const total = ref(0)
+  const unread = ref(0)
   const loading = ref(false)
   const pageNum = ref(1)
   const pageSize = ref(10)
@@ -29,6 +30,7 @@ export const useMessage = () => {
         console.log('获取消息列表成功:', response.data);
         messages.value = response.data.items
         total.value = response.data.total
+        unread.value = response.data.unread
       }
     } catch (error) {
       ElMessage.error('获取消息列表失败')
@@ -119,26 +121,17 @@ export const useMessage = () => {
   }
 
   const updateMessageStatus = async (user_id: string, message_id: string, status: number) => {
-    try {
-      const userStore = useUserStore()
-      const response = await updateMessageStatusById(
-        user_id,
-        message_id,
-        status
-      )
-      if (response.code === 200) {
-        ElMessage.success('消息状态更新成功')
-        await fetchMessages()
-      }
-    } catch (error) {
-      ElMessage.error('消息状态更新失败')
-      console.error('消息状态更新失败:', error)
-    }
+    return await updateMessageStatusById(
+      user_id,
+      message_id,
+      status
+    )
   }
 
   return {
     messages,
     total,
+    unread,
     loading,
     pageNum,
     pageSize,
