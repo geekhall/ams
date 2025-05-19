@@ -7,6 +7,7 @@ import io.swagger.annotations.ApiOperation;
 import net.geekhour.loki.common.ResponseUtil;
 import net.geekhour.loki.entity.Message;
 import net.geekhour.loki.entity.dto.MessageDTO;
+import net.geekhour.loki.mapper.MessageReceiverMapper;
 import net.geekhour.loki.service.IMessageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -93,7 +94,7 @@ public class MessageController {
         return ResponseUtil.error(400, "参数不能为空");
       }
       try {
-      boolean success = messageService.updateMessageStatusById(params);
+        boolean success = messageService.updateMessageStatusById(params);
         return success ? ResponseUtil.success(params) : ResponseUtil.error(500, "消息状态更新失败");
       } catch (Exception e) {
         return ResponseUtil.error(500, "消息状态更新失败: " + e.getMessage());
@@ -113,6 +114,21 @@ public class MessageController {
       e.printStackTrace();
       System.out.println("MessageController deleteMessage error: " + e.getMessage());
       return ResponseUtil.error(500, "消息删除失败: " + e.getMessage());
+    }
+  }
+  @PostMapping("/receiver/delete")
+  @ApiOperation("清空回收站")
+  @PreAuthorize("hasRole('USER') || hasAuthority('message:manage')")
+  @Transactional
+  public ResponseEntity<?> deleteMessageReceiver(@RequestBody Map<String, Object> params) {
+    if (params == null || params.isEmpty()) {
+      return ResponseUtil.error(400, "参数不能为空");
+    }
+    try {
+      boolean success = messageService.clearRecycle(params);
+      return success ? ResponseUtil.success(params) : ResponseUtil.error(500, "清空回收站失败");
+    } catch (Exception e) {
+      return ResponseUtil.error(500, "清空回收站失败: " + e.getMessage());
     }
   }
 }

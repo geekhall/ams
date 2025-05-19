@@ -68,7 +68,7 @@ import { useUserStore } from '@/stores/user'
 
 const userStore = useUserStore()
 const activeTab = ref('unread')
-const { messages, fetchMessages, updateMessageStatus } = useMessage()
+const { messages, fetchMessages, updateMessageStatus, clearRecycle } = useMessage()
 
 const state = reactive({
   unread: [] as MessageDTO[],
@@ -202,6 +202,11 @@ const handleClearRecycle = () => {
     type: 'warning'
   })
     .then(() => {
+      // 调用接口更新消息状态
+      const user_id = userStore.userInfo.id || ''
+      state.recycle.forEach(async (item) => {
+        await clearRecycle(user_id, item.id)
+      })
       state.recycle = []
       ElMessage.success('回收站已清空')
     })

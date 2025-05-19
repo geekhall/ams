@@ -1,7 +1,7 @@
 import { ref } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { type MessageDTO, type CreateMessageDTO } from '@/types/message'
-import { getMessageList, sendMessage, updateMessage, deleteMessage, updateMessageStatusById } from '@/api/message'
+import { getMessageList, sendMessage, updateMessage, deleteMessage, updateMessageStatusById, deleteMessageReceiver } from '@/api/message'
 import { useUserStore } from '@/stores/user'
 import dayjs from 'dayjs'
 
@@ -127,6 +127,10 @@ export const useMessage = () => {
       status
     )
   }
+  const clearRecycle = async (user_id: string, message_id: string) => {
+    return await deleteMessageReceiver(user_id, message_id)
+  }
+
 
   return {
     messages,
@@ -145,5 +149,6 @@ export const useMessage = () => {
     handleCurrentChange,
     getMessageCount,
     updateMessageStatus,
+    clearRecycle,
   }
 }

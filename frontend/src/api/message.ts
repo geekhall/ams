@@ -65,3 +65,14 @@ export const updateMessageStatusById = async (user_id: string, message_id: strin
     },
   } as AxiosRequestConfig);
 }
+
+export const deleteMessageReceiver = async (user_id: string, message_id: string): Promise<ApiResponse<any>> => {
+  return await loki.request({
+    url: `/message/receiver/delete`,
+    method: "POST",
+    data: {
+      user_id: user_id,
+      message_id: message_id,
+    },
+  } as AxiosRequestConfig);
+}

@@ -53,4 +53,7 @@ public interface IMessageService extends IService<Message> {
   Long countMessage(Map<String, Object> params);
 
   boolean updateMessageStatusById(Map<String, Object> params);
+
+
+  boolean clearRecycle(Map<String, Object> params);
 }

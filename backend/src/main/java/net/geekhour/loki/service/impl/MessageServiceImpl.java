@@ -77,6 +77,23 @@ public class MessageServiceImpl extends ServiceImpl<MessageMapper, Message> impl
     }
 
     @Override
+    public boolean clearRecycle(Map<String, Object> params) {
+        Object userIdObj = params.get("user_id");
+        Object messageIdObj = params.get("message_id");
+
+        if (userIdObj == null || messageIdObj == null ) {
+            return false;
+        }
+
+        Long userId = userIdObj instanceof Long ? (Long) userIdObj : Long.valueOf(userIdObj.toString());
+        Long messageId = messageIdObj instanceof Long ? (Long) messageIdObj : Long.valueOf(messageIdObj.toString());
+        System.out.println("userId" + userId);
+        System.out.println("messageId" + messageId);
+        int result = messageReceiverMapper.clearRecycle(userId, messageId);
+        return result > 0;
+    }
+
+    @Override
     @Transactional
     public boolean sendMessage(MessageDTO messageDTO) {
         Message message = new Message();
