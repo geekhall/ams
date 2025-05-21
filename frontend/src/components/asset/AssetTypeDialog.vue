@@ -130,19 +130,14 @@ const handleSubmit = async () => {
           await addAssetType(form.name)
           ElMessage.success('添加成功')
         } else {
-          // 如果是编辑模式且有资产关联，不允许修改状态
-          if (assetCount.value > 0) {
-            await updateAssetType(form.id, form.name)
-          } else {
-            // 如果没有资产关联，可以修改状态
-            await updateAssetType(form.id, form.name)
-          }
+          await updateAssetType(form.id, form.name)
           ElMessage.success('更新成功')
         }
         emit('success')
         handleClose()
       } catch (error) {
-        ElMessage.error(props.mode === 'add' ? '添加失败' : '更新失败')
+        const errorMessage = props.mode === 'add' ? '添加失败' : '更新失败'
+        ElMessage.error(error instanceof Error ? error.message : errorMessage)
       }
     }
   })

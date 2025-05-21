@@ -15,7 +15,7 @@ export function useBudgetCategory() {
         ElMessage.error(res.message);
       }
     } catch (error) {
-      ElMessage.error('获取预算性质失败');
+      ElMessage.error(error instanceof Error ? error.message : '获取预算性质失败')
     }
   };
 

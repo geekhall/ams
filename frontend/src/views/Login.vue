@@ -104,7 +104,7 @@ const handleLogin = async () => {
       }
       try {
         loading.value = true
-        const response = await userStore.loginAction(user.username, user.password)
+        await userStore.loginAction(user.username, user.password)
         router.push('/dashboard')
       } catch (error) {
         console.log('login error 001')

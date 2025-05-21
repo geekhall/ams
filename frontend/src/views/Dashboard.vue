@@ -202,6 +202,7 @@ import {
 } from '@/types/asset'
 import { Box, Money, Warning, Bell, ArrowUp, ArrowDown, Plus } from '@element-plus/icons-vue'
 import { useRouter } from 'vue-router'
+import { ElMessage } from 'element-plus'
 
 const { getMessageCount } = useMessage()
 const totalMessage = ref(0)
@@ -476,6 +477,7 @@ const fetchAssetTypeData = async () => {
     }
   } catch (error) {
     console.error('获取资产类型数据失败:', error)
+    ElMessage.error(error instanceof Error ? error.message : '获取资产类型数据失败')
   }
 }
 

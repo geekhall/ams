@@ -505,7 +505,8 @@ const getData = async () => {
       ElMessage.error(res.message)
     }
   } catch (err) {
-    ElMessage.error('获取数据失败')
+    console.error('Failed to fetch data:', err)
+    ElMessage.error(err instanceof Error ? err.message : '获取数据失败')
   }
 }
 onMounted(() => {
@@ -576,7 +577,8 @@ const handleAdd = async () => {
     currentBudget.value = null
     dialogVisible.value = true
   } catch (err) {
-    ElMessage.error('获取数据失败')
+    console.error('Failed to fetch data:', err)
+    ElMessage.error(err instanceof Error ? err.message : '获取数据失败')
   }
 }
 // 保存新增操作
@@ -595,7 +597,8 @@ const handleEdit = async (index: number, row: Budget) => {
     currentBudget.value = row
     dialogVisible.value = true
   } catch (err) {
-    ElMessage.error('获取数据失败')
+    console.error('Failed to fetch data:', err)
+    ElMessage.error(err instanceof Error ? err.message : '获取数据失败')
   }
 }
 

@@ -80,14 +80,14 @@ export const useUserStore = defineStore('user', () => {
       return false
     } catch (error) {
       console.error('Login error:', error)
-      ElMessage.error('登录失败')
+      ElMessage.error(error instanceof Error ? error.message : '登录失败')
       return false
     }
   }
 
   // 用户注册
   const register = async (newUser: User) => {
-    const response = await loki.post('/user/register', newUser)
+    await loki.post('/user/register', newUser)
     user.value = { username: newUser.username, rememberPassword: newUser.password }
   }
 
@@ -134,7 +134,7 @@ export const useUserStore = defineStore('user', () => {
       return true
     } catch (error) {
       console.error('Error fetching user info:', error)
-      ElMessage.error('获取用户信息失败')
+      ElMessage.error(error instanceof Error ? error.message : '获取用户信息失败')
       return false
     }
   }
@@ -144,6 +144,7 @@ export const useUserStore = defineStore('user', () => {
       await userLogout()
     } catch (error) {
       console.error('Logout error:', error)
+      ElMessage.error(error instanceof Error ? error.message : '登出失败')
     } finally {
       // 清除用户状态
       token.value = null

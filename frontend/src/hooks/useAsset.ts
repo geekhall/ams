@@ -40,40 +40,28 @@ export const useAsset = () => {
       } else {
         ElMessage.error(res.message)
       }
-    } catch (err) {
-      ElMessage.error('获取数据失败')
+    } catch (error) {
+      ElMessage.error(error instanceof Error ? error.message : '获取数据失败')
     }
   }
 
   // 搜索操作
   const handleSearch = async () => {
     query.pageIndex = 1
-    try {
-      await getData()
-    } catch (err) {
-      ElMessage.error('搜索失败')
-    }
+    await getData()
   }
 
   // 分页导航
   const handleSizeChange = async (val: number) => {
     query.pageSize = val
     query.pageIndex = 1
-    try {
-      await getData()
-    } catch (err) {
-      ElMessage.error('搜索失败')
-    }
+    await getData()
   }
 
   const handleCurrentChange = async (val: number) => {
     query.pageIndex = val
     localStorage.setItem('AMSCurrentAssetPageIndex', val.toString())
-    try {
-      await getData()
-    } catch (err) {
-      ElMessage.error('搜索失败')
-    }
+    await getData()
   }
 
   // 新增操作

@@ -15,7 +15,7 @@ export function useRole() {
         ElMessage.error(res.message);
       }
     } catch (error) {
-      ElMessage.error('获取角色列表失败');
+      ElMessage.error(error instanceof Error ? error.message : '获取角色列表失败')
     }
   };
 

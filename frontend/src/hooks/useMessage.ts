@@ -33,7 +33,7 @@ export const useMessage = () => {
         unread.value = response.data.unread
       }
     } catch (error) {
-      ElMessage.error('获取消息列表失败')
+      ElMessage.error(error instanceof Error ? error.message : '获取消息列表失败')
       console.error('获取消息列表失败:', error)
     } finally {
       loading.value = false

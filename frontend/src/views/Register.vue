@@ -205,7 +205,7 @@ const handleRegister = async () => {
       console.log(' ##### Register.vue handleRegister valid ok ##### ')
       try {
         loading.value = true
-        const response = await userStore.register(user)
+        await userStore.register(user)
         // 将保存的密码自动填充到登录表单
         if (param.remember) {
           userStore.setRememberPassword(param.password)

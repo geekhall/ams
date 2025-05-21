@@ -197,18 +197,14 @@ const handleSubmit = async () => {
     return
   }
 
-  try {
-    const res = props.mode === 'add' ? await addBudget(form) : await updateBudget(form)
+  const res = props.mode === 'add' ? await addBudget(form) : await updateBudget(form)
 
-    if (res.code === 200) {
-      ElMessage.success(props.mode === 'add' ? '新增成功' : '修改成功')
-      emit('success')
-      handleClose()
-    } else {
-      ElMessage.error(res.message)
-    }
-  } catch (err) {
-    ElMessage.error(props.mode === 'add' ? '新增失败' : '修改失败')
+  if (res.code === 200) {
+    ElMessage.success(props.mode === 'add' ? '新增成功' : '修改成功')
+    emit('success')
+    handleClose()
+  } else {
+    ElMessage.error(res.message)
   }
 }
 </script>

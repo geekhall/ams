@@ -239,7 +239,7 @@ router.beforeEach(async (to: RouteLocationNormalized, from: RouteLocationNormali
     next()
   } catch (error) {
     console.error('Route guard error:', error)
-    ElMessage.error('系统错误，请稍后重试')
+    ElMessage.error(error instanceof Error ? error.message : '系统错误，请稍后重试')
     next('/500')
   }
 })

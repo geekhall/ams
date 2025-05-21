@@ -44,16 +44,14 @@
 
 <script setup lang="ts">
 import { ref, onMounted, onBeforeUnmount, computed } from 'vue'
-import BarChart from '@/components/charts/BarChart.vue'
 import PieChart from '@/components/charts/PieChart.vue'
 import LineChart from '@/components/charts/LineChart.vue'
-import { getBudgetList } from '@/api/budget'
 import { type Budget } from '@/types/budget'
 import { ElMessage } from 'element-plus'
 import { useDepartmentBudget } from '@/hooks/useDepartmentBudget'
 
 const tableWidth = ref(window.innerWidth - 50) // 设置初始表格宽度为窗口宽度减去一定的边距
-
+const { getBudgetDepartmentSummary } = useDepartmentBudget()
 // 监听窗口大小变化
 const updateTableWidth = () => {
   tableWidth.value = window.innerWidth - 50 // 根据窗口宽度动态设置表格宽度
@@ -87,7 +85,7 @@ const fetchBudgetData = async () => {
     } else {
       ElMessage.error(res.message)
     }
-  } catch (err) {
+  } catch (error) {
     ElMessage.error('获取预算数据失败')
   }
   // 添加临时数据

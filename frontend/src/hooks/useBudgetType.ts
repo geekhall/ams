@@ -15,7 +15,7 @@ export function useBudgetType() {
         ElMessage.error(res.message);
       }
     } catch (error) {
-      ElMessage.error('获取预算类型失败');
+      ElMessage.error(error instanceof Error ? error.message : '获取预算类型失败')
     }
   };
 

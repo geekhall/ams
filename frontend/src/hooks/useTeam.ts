@@ -15,7 +15,7 @@ export function useTeam() {
         ElMessage.error(res.message);
       }
     } catch (error) {
-      ElMessage.error('获取团队列表失败');
+      ElMessage.error(error instanceof Error ? error.message : '获取团队列表失败')
     }
   };
 

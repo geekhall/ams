@@ -223,8 +223,8 @@ onMounted(async () => {
     state.recycle = messages.value.filter((item) => item.status === 2)
     console.log('state after filter:', state)
   } catch (error) {
-    ElMessage.error('获取消息失败')
     console.error('Failed to fetch messages:', error)
+    ElMessage.error(error instanceof Error ? error.message : '获取消息失败')
   }
 })
 </script>

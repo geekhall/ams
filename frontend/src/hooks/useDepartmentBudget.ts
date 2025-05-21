@@ -19,7 +19,7 @@ export const useDepartmentBudget = (budgetData: Ref<Budget[]>) => {
     const departmentMap = new Map<string, number>()
     budgetData.value.forEach((item) => {
       if (item.departmentName && item.amount) {
-        const amount = departmentMap.get(item.departmentName) || 0
+        const amount = departmentMap.get(item.departmentName) ?? 0
         departmentMap.set(item.departmentName, amount + item.amount)
       }
     })
@@ -79,8 +79,8 @@ export const useDepartmentBudget = (budgetData: Ref<Budget[]>) => {
       tooltip: {
         callbacks: {
           label: function (context: any) {
-            const label = context.label || ''
-            const value = context.raw || 0
+            const label = context.label
+            const value = context.raw
             const total = context.dataset.data.reduce((a: number, b: number) => a + b, 0)
             const percentage = ((value / total) * 100).toFixed(1)
             return `${label}: ${value.toLocaleString()}元 (${percentage}%)`
