@@ -60,7 +60,7 @@ export const getUserList = async (
     pageSize: number;
   }
 ) => {
-  const response = await loki.request({
+  const response: UserListResponse = await loki.request({
     url: "/user/list",
     method: "POST",
     data: params || {},

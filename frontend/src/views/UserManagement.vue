@@ -86,10 +86,10 @@
 
 <script lang="ts" setup>
 import { ref, reactive, onMounted, computed } from 'vue'
-import { ElMessage, ElMessageBox, FormInstance } from 'element-plus'
+import { ElMessage, ElMessageBox } from 'element-plus'
 import { Delete, Edit, Search, Plus, Setting } from '@element-plus/icons-vue'
 import { getUserList, addUser, updateUser, deleteUser } from '~/api/user'
-import { UserDTO } from '~/types/user'
+import { UserDTO, UserListResponse } from '~/types/user'
 import UserDialog from '../components/user/UserDialog.vue'
 import ColumnSettings from '../components/user/ColumnSettings.vue'
 
@@ -274,7 +274,7 @@ const getData = async () => {
       pageSize: query.pageSize || 10
     }
 
-    const res = await getUserList(params)
+    const res: UserListResponse = await getUserList(params)
 
     if (res.code === 200 && res.data) {
       tableData.value = res.data.items || []
@@ -285,9 +285,7 @@ const getData = async () => {
       pageTotal.value = 0
     }
   } catch (error) {
-    ElMessage.error('获取用户列表失败')
-    tableData.value = []
-    pageTotal.value = 0
+    ElMessage.error(error instanceof Error ? error.message : '获取用户列表失败')
   }
 }
 
