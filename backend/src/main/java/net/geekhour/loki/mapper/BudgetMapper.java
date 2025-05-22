@@ -94,7 +94,7 @@ public interface BudgetMapper extends BaseMapper<Budget> {
                                   @Param("departmentName") String departmentName,
                                   @Param("offset") Integer offset,
                                   @Param("pageSize") Integer pageSize); // 新增
-    
+
     @Select("<script>" +
             "select count(*) from h_budget a " +
             "left join h_department b on a.department_id = b.id " +

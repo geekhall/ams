@@ -100,10 +100,10 @@
                     placeholder="请选择部门"
                     class="custom-select"
                   >
-                    <el-option label="技术部" value="tech" />
-                    <el-option label="市场部" value="marketing" />
-                    <el-option label="人事部" value="hr" />
-                    <el-option label="财务部" value="finance" />
+                    <el-option label="信息科技部" value="tech" />
+                    <el-option label="公司业务部" value="marketing" />
+                    <el-option label="人力资源部" value="hr" />
+                    <el-option label="计划财务部" value="finance" />
                   </el-select>
                 </el-form-item>
                 <el-form-item label="昵称" prop="nickname">
@@ -363,8 +363,8 @@ const userInfo = reactive({
   postCount: 0,
   followers: 0,
   following: 0,
-  role: '普通用户',
-  department: '技术部',
+  role: '系统管理员',
+  department: '信息科技部',
   status: '在线'
 })
 
@@ -658,7 +658,7 @@ watch(checkedTodos, (newVal) => {
 onMounted(() => {
   // TODO: 从API获取用户信息
   // 这里使用模拟数据
-  userInfo.bio = '热爱生活，热爱编程'
+  userInfo.bio = '信息科技部'
   userInfo.postCount = 42
   userInfo.followers = 128
   userInfo.following = 256
