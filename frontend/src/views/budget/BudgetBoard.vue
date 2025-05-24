@@ -63,7 +63,7 @@ const fetchBudgetData = async () => {
       pageIndex: 1,
       pageSize: 1000,
       innovation: '',
-      tech: '1'
+      tech: ''
     })
     if (res.code === 200) {
       budgetData.value = res.data.items
@@ -121,17 +121,18 @@ const departmentPieData = computed(() => {
     }
   }
 
+  // 使用更现代的配色方案
   const colors = [
-    '#409EFF',
-    '#67C23A',
-    '#E6A23C',
-    '#F56C6C',
-    '#909399',
-    '#8E44AD',
-    '#16A085',
-    '#D35400',
-    '#2C3E50',
-    '#7F8C8D'
+    '#3B82F6', // 蓝色
+    '#10B981', // 绿色
+    '#F59E0B', // 橙色
+    '#EF4444', // 红色
+    '#8B5CF6', // 紫色
+    '#EC4899', // 粉色
+    '#06B6D4', // 青色
+    '#F97316', // 深橙色
+    '#6366F1', // 靛蓝色
+    '#14B8A6' // 青绿色
   ]
 
   return {
@@ -139,7 +140,9 @@ const departmentPieData = computed(() => {
     datasets: [
       {
         backgroundColor: colors.slice(0, filteredData.length),
-        data: filteredData.map(([_, amount]) => amount)
+        data: filteredData.map(([_, amount]) => amount),
+        borderWidth: 2,
+        borderColor: '#ffffff'
       }
     ]
   }
@@ -223,15 +226,15 @@ const yearlyExecutionData = computed(() => {
     datasets: [
       {
         label: '计划预算',
-        borderColor: '#409EFF',
-        backgroundColor: 'rgba(64, 158, 255, 0.1)',
+        borderColor: '#3B82F6',
+        backgroundColor: 'rgba(59, 130, 246, 0.1)',
         data: plannedData,
         fill: true
       },
       {
         label: '实际执行',
-        borderColor: '#67C23A',
-        backgroundColor: 'rgba(103, 194, 58, 0.1)',
+        borderColor: '#10B981',
+        backgroundColor: 'rgba(16, 185, 129, 0.1)',
         data: actualData,
         fill: true
       }
@@ -243,17 +246,37 @@ const yearlyExecutionData = computed(() => {
 const pieChartOptions = {
   responsive: true,
   maintainAspectRatio: false,
+  cutout: '60%',
+  animation: {
+    animateScale: true,
+    animateRotate: true,
+    duration: 1000,
+    easing: 'easeOutQuart' as const
+  },
   plugins: {
     legend: {
       position: 'right' as const,
       labels: {
         padding: 20,
         font: {
-          size: 12
-        }
+          size: 13,
+          family: "'Helvetica Neue', 'Helvetica', 'Arial', sans-serif",
+          weight: 'bold' as const
+        },
+        usePointStyle: true,
+        pointStyle: 'circle'
       }
     },
     tooltip: {
+      backgroundColor: 'rgba(0, 0, 0, 0.8)',
+      padding: 12,
+      titleFont: {
+        size: 14,
+        weight: 'bold' as const
+      },
+      bodyFont: {
+        size: 13
+      },
       callbacks: {
         label: function (context: any) {
           const label = context.label
@@ -271,11 +294,38 @@ const pieChartOptions = {
 const lineChartOptions = {
   responsive: true,
   maintainAspectRatio: false,
+  animation: {
+    duration: 1000,
+    easing: 'easeOutQuart' as const
+  },
+  interaction: {
+    intersect: false,
+    mode: 'index' as const
+  },
   plugins: {
     legend: {
-      position: 'top'
+      position: 'top' as const,
+      labels: {
+        padding: 20,
+        font: {
+          size: 13,
+          family: "'Helvetica Neue', 'Helvetica', 'Arial', sans-serif",
+          weight: 'bold' as const
+        },
+        usePointStyle: true,
+        pointStyle: 'circle'
+      }
     },
     tooltip: {
+      backgroundColor: 'rgba(0, 0, 0, 0.8)',
+      padding: 12,
+      titleFont: {
+        size: 14,
+        weight: 'bold' as const
+      },
+      bodyFont: {
+        size: 13
+      },
       callbacks: {
         label: function (context: any) {
           return `${context.dataset.label}: ${context.raw.toLocaleString()}元`
@@ -286,11 +336,43 @@ const lineChartOptions = {
   scales: {
     y: {
       beginAtZero: true,
+      grid: {
+        color: 'rgba(0, 0, 0, 0.05)',
+        drawBorder: false
+      },
       ticks: {
+        padding: 10,
+        font: {
+          size: 12,
+          family: "'Helvetica Neue', 'Helvetica', 'Arial', sans-serif"
+        },
         callback: function (value: any) {
           return value.toLocaleString() + '元'
         }
       }
+    },
+    x: {
+      grid: {
+        display: false
+      },
+      ticks: {
+        padding: 10,
+        font: {
+          size: 12,
+          family: "'Helvetica Neue', 'Helvetica', 'Arial', sans-serif"
+        }
+      }
+    }
+  },
+  elements: {
+    line: {
+      tension: 0.4,
+      borderWidth: 2
+    },
+    point: {
+      radius: 4,
+      hoverRadius: 6,
+      borderWidth: 2
     }
   }
 }
@@ -310,6 +392,14 @@ onMounted(() => {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding: 16px 20px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.header-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #1f2937;
 }
 
 .table-container {
@@ -326,17 +416,35 @@ onMounted(() => {
   margin-top: 20px;
   margin-bottom: 20px;
   min-height: 400px;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.execution-card:hover {
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .chart-card {
   margin-top: 20px;
   margin-bottom: 20px;
   min-height: 400px;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.chart-card:hover {
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 :deep(.el-card__body) {
   height: 350px;
   padding: 20px;
+}
+
+:deep(.el-card__header) {
+  padding: 0;
 }
 
 @media screen and (max-width: 1200px) {
