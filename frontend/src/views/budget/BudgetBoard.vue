@@ -29,8 +29,8 @@
               <div class="card-header">
                 <span class="header-title">年度预算执行情况</span>
                 <el-radio-group v-model="yearRange" size="small" @change="handleYearChange">
-                  <el-radio-button value="2023">2023年</el-radio-button>
-                  <el-radio-button value="2024">2024年</el-radio-button>
+                  <el-radio-button value="2023">2024年</el-radio-button>
+                  <el-radio-button value="2024">2025年</el-radio-button>
                 </el-radio-group>
               </div>
             </template>
@@ -51,7 +51,7 @@ import { ElMessage } from 'element-plus'
 import { getBudgetList } from '@/api/budget'
 
 const loading = ref(false)
-const yearRange = ref('2024')
+const yearRange = ref('2025')
 const budgetData = ref<Budget[]>([])
 
 // 获取预算数据
@@ -67,6 +67,7 @@ const fetchBudgetData = async () => {
     })
     if (res.code === 200) {
       budgetData.value = res.data.items
+      console.log('budgetData ', budgetData.value)
     } else {
       ElMessage.error(res.message || '获取预算数据失败')
     }
@@ -103,10 +104,12 @@ const departmentPieData = computed(() => {
       departmentMap.set(item.departmentName, amount + item.amount)
     }
   })
+  console.log('departmentMap', departmentMap)
 
   const filteredData = Array.from(departmentMap.entries())
     .filter(([_, amount]) => amount > 0)
     .sort((a, b) => b[1] - a[1])
+  console.log('filteredData', filteredData)
 
   if (filteredData.length === 0) {
     return {
@@ -119,7 +122,8 @@ const departmentPieData = computed(() => {
       ]
     }
   }
-
+  console.log('filteredData', filteredData)
+  console.log('filteredData.length', filteredData.length)
   return {
     labels: filteredData.map(([name]) => name),
     datasets: [

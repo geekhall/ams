@@ -79,6 +79,10 @@ public class BudgetController {
             Integer offset = (pageIndex - 1) * pageSize;
             List<BudgetDTO> budgetList = budgetService.getBudgetList(year, budgetType, budgetCategory, innovation, name, tech, departmentName, offset, pageSize);
             Long total = budgetService.countBudgets(year,budgetType, budgetCategory, innovation, name, tech, departmentName);
+            for (BudgetDTO budget : budgetList) {
+                // 打印调试信息
+                System.out.println("BudgetController getBudgetList: " + budget);
+            }
             return ResponseUtil.success(Map.of(
                     "items", budgetList,
                     "total", total));

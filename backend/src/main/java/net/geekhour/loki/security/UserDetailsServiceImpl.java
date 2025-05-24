@@ -54,12 +54,10 @@ public class UserDetailsServiceImpl implements UserDetailsService , UserDetailsP
         Collection<GrantedAuthority> authorities = new ArrayList<>();
         for (String role : roles) {
             authorities.add(new SimpleGrantedAuthority(role));
-            System.out.println("loadUserByUsername:::role: "+ role);
         }
 
         for (String permission : permissions) {
             authorities.add(new SimpleGrantedAuthority(permission));
-            System.out.println("loadUserByUsername:::permission: "+ permission);
         }
         boolean isNonLocked = !userMapper.isLocked(user.getId());
         boolean isEnabled = userMapper.isEnabled(user.getId());

@@ -75,4 +75,25 @@ public class BudgetDTO extends Model<BudgetDTO> {
     public Serializable pkVal() {
         return this.id;
     }
+
+    public String toString() {
+        return "BudgetDTO{" +
+                "id='" + id + '\'' +
+                ", year=" + year +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", budgetType='" + budgetType + '\'' +
+                ", budgetCategory='" + budgetCategory + '\'' +
+                ", innovation='" + innovation + '\'' +
+                ", amount=" + amount +
+                ", departmentName='" + departmentName + '\'' +
+                ", teamName='" + teamName + '\'' +
+                ", priority='" + priority + '\'' +
+                ", businessPriority='" + businessPriority + '\'' +
+                ", businessDescription='" + businessDescription + '\'' +
+                ", plannedStartDate='" + plannedStartDate + '\'' +
+                ", remark='" + remark + '\'' +
+                ", status='" + status + '\'' +
+                '}';
+    }
 }
