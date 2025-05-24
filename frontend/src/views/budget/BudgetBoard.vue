@@ -104,12 +104,10 @@ const departmentPieData = computed(() => {
       departmentMap.set(item.departmentName, amount + item.amount)
     }
   })
-  console.log('departmentMap', departmentMap)
 
   const filteredData = Array.from(departmentMap.entries())
     .filter(([_, amount]) => amount > 0)
     .sort((a, b) => b[1] - a[1])
-  console.log('filteredData', filteredData)
 
   if (filteredData.length === 0) {
     return {
@@ -122,24 +120,25 @@ const departmentPieData = computed(() => {
       ]
     }
   }
-  console.log('filteredData', filteredData)
-  console.log('filteredData.length', filteredData.length)
+
+  const colors = [
+    '#409EFF',
+    '#67C23A',
+    '#E6A23C',
+    '#F56C6C',
+    '#909399',
+    '#8E44AD',
+    '#16A085',
+    '#D35400',
+    '#2C3E50',
+    '#7F8C8D'
+  ]
+
   return {
     labels: filteredData.map(([name]) => name),
     datasets: [
       {
-        backgroundColor: [
-          '#409EFF',
-          '#67C23A',
-          '#E6A23C',
-          '#F56C6C',
-          '#909399',
-          '#8E44AD',
-          '#16A085',
-          '#D35400',
-          '#2C3E50',
-          '#7F8C8D'
-        ],
+        backgroundColor: colors.slice(0, filteredData.length),
         data: filteredData.map(([_, amount]) => amount)
       }
     ]

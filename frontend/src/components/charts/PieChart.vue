@@ -3,8 +3,9 @@
 </template>
 
 <script lang="ts" setup>
-import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js'
+import { Chart as ChartJS, ArcElement, Tooltip, Legend, type ChartOptions } from 'chart.js'
 import { Pie } from 'vue-chartjs'
+import { computed } from 'vue'
 
 ChartJS.register(ArcElement, Tooltip, Legend)
 
@@ -16,42 +17,32 @@ const props = defineProps<{
       data: number[]
     }[]
   }
-  options?: {
-    responsive?: boolean
-    maintainAspectRatio?: boolean
-    plugins?: {
-      legend?: {
-        position?: string
-        labels?: {
-          padding?: number
-          font?: {
-            size?: number
-          }
-        }
-      }
-      tooltip?: {
-        callbacks?: {
-          label?: (context: any) => string
-        }
-      }
-    }
-  }
+  options?: ChartOptions<'pie'>
 }>()
 
-const chartData = props.data || {
-  labels: ['部门A', '部门B', '部门C'],
-  datasets: [
-    {
-      backgroundColor: ['#409EFF', '#67C23A', '#E6A23C'],
-      data: [300, 200, 100]
+const chartData = computed(() => {
+  if (!props.data) {
+    return {
+      labels: ['暂无数据'],
+      datasets: [
+        {
+          backgroundColor: ['#909399'],
+          data: [1]
+        }
+      ]
     }
-  ]
-}
+  }
+  return props.data
+})
 
-const chartOptions = props.options || {
-  responsive: true,
-  maintainAspectRatio: false
-}
+const chartOptions = computed(() => {
+  return (
+    props.options || {
+      responsive: true,
+      maintainAspectRatio: false
+    }
+  )
+})
 </script>
 
 <style lang="less" scoped>
