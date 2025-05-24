@@ -67,7 +67,7 @@ const fetchBudgetData = async () => {
     })
     if (res.code === 200) {
       budgetData.value = res.data.items
-      console.log('budgetData ', budgetData.value)
+      // console.log('budgetData ', budgetData.value)
     } else {
       ElMessage.error(res.message || '获取预算数据失败')
     }

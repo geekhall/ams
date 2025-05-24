@@ -27,7 +27,7 @@ export const useMessage = () => {
         search: searchQuery.value
       })
       if (response.code === 200) {
-        console.log('获取消息列表成功:', response.data);
+        // console.log('获取消息列表成功:', response.data);
         messages.value = response.data.items
         total.value = response.data.total
         unread.value = response.data.unread
