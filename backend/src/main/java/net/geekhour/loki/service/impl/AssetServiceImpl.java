@@ -166,6 +166,13 @@ public class AssetServiceImpl extends ServiceImpl<AssetMapper, Asset> implements
         asset.setDepartmentId(departmentId);
         asset.setLocation(assetDTO.getLocation());
         asset.setStatus(assetDTO.getStatus());
+        asset.setIp(assetDTO.getIp());
+        asset.setSn(assetDTO.getSn());
+        asset.setConfig(assetDTO.getConfig());
+        asset.setDescription(assetDTO.getDescription());
+        asset.setModel(assetDTO.getModel());
+        asset.setProvider(assetDTO.getProvider());
+        asset.setUseStatus(assetDTO.getUseStatus());
 
         try {
             Long purchaseDateTimestamp = LocalDate.parse(assetDTO.getPurchaseDate(), DATE_FORMATTER)
