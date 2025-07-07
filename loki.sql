@@ -1,17 +1,17 @@
 /*
- Navicat Premium Data Transfer
+ Navicat Premium Dump SQL
 
- Source Server         : docker-root
+ Source Server         : docker-loki
  Source Server Type    : MySQL
  Source Server Version : 90300 (9.3.0)
- Source Host           : 127.0.0.1:3326
+ Source Host           : localhost:3326
  Source Schema         : loki
 
  Target Server Type    : MySQL
  Target Server Version : 90300 (9.3.0)
  File Encoding         : 65001
 
- Date: 24/05/2025 22:50:22
+ Date: 08/07/2025 06:57:40
 */
 
 SET NAMES utf8mb4;
@@ -75,13 +75,13 @@ CREATE TABLE `h_asset` (
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `code` (`code`),
   UNIQUE KEY `sn` (`sn`)
-) ENGINE=InnoDB AUTO_INCREMENT=1921218695261110275 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=1942205591386681347 DEFAULT CHARSET=utf8mb3;
 
 -- ----------------------------
 -- Records of h_asset
 -- ----------------------------
 BEGIN;
-INSERT INTO `h_asset` (`id`, `name`, `code`, `sn`, `type`, `model`, `config`, `ip`, `description`, `provider`, `department_id`, `owner_id`, `user_id`, `location`, `status`, `use_status`, `purchase_date`, `purchase_price`, `count`, `version`, `create_time`, `update_time`, `deleted`) VALUES (1, 'Dell电脑', 'DELL-2025', NULL, 1, NULL, NULL, NULL, NULL, NULL, 5, NULL, NULL, '科技部', '正常', NULL, 1672243200000, 12002.00, 2, 1, 1672531200000, 1746883000426, 0);
+INSERT INTO `h_asset` (`id`, `name`, `code`, `sn`, `type`, `model`, `config`, `ip`, `description`, `provider`, `department_id`, `owner_id`, `user_id`, `location`, `status`, `use_status`, `purchase_date`, `purchase_price`, `count`, `version`, `create_time`, `update_time`, `deleted`) VALUES (1, 'Dell电脑', 'DELL-2025', 'SN1', 1, '型号1', '4C', '16.24.32.11', '资产描述', 'Dell', 5, NULL, NULL, '科技部', '正常', '在用', 1671379200000, 112004.00, 2, 1, 1672531200000, 1751892133541, 0);
 INSERT INTO `h_asset` (`id`, `name`, `code`, `sn`, `type`, `model`, `config`, `ip`, `description`, `provider`, `department_id`, `owner_id`, `user_id`, `location`, `status`, `use_status`, `purchase_date`, `purchase_price`, `count`, `version`, `create_time`, `update_time`, `deleted`) VALUES (2, '服务器', 'IP14-2023', NULL, 2, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, '科技部', '正常', NULL, 1672531200000, 8000.00, 10, 1, 1672531200000, NULL, 0);
 INSERT INTO `h_asset` (`id`, `name`, `code`, `sn`, `type`, `model`, `config`, `ip`, `description`, `provider`, `department_id`, `owner_id`, `user_id`, `location`, `status`, `use_status`, `purchase_date`, `purchase_price`, `count`, `version`, `create_time`, `update_time`, `deleted`) VALUES (3, '交换机', 'DXPS-2023', NULL, 3, NULL, NULL, NULL, NULL, NULL, 2, NULL, NULL, '会议室', '正常', NULL, 1672531200000, 10000.00, 2, 1, 1672531200000, NULL, 0);
 INSERT INTO `h_asset` (`id`, `name`, `code`, `sn`, `type`, `model`, `config`, `ip`, `description`, `provider`, `department_id`, `owner_id`, `user_id`, `location`, `status`, `use_status`, `purchase_date`, `purchase_price`, `count`, `version`, `create_time`, `update_time`, `deleted`) VALUES (4, '路由器', 'RTP-2023', NULL, 4, NULL, NULL, NULL, NULL, NULL, 14, NULL, NULL, '科技部', '正常', NULL, 1672416000000, 5000.00, 2, 1, 1672531200000, 1744889852678, 0);
@@ -135,6 +135,8 @@ INSERT INTO `h_asset` (`id`, `name`, `code`, `sn`, `type`, `model`, `config`, `i
 INSERT INTO `h_asset` (`id`, `name`, `code`, `sn`, `type`, `model`, `config`, `ip`, `description`, `provider`, `department_id`, `owner_id`, `user_id`, `location`, `status`, `use_status`, `purchase_date`, `purchase_price`, `count`, `version`, `create_time`, `update_time`, `deleted`) VALUES (1910352072333651970, '测试资产166', 'TEST-2025-16', NULL, 4, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, '正常', NULL, 1744214400000, 666.00, 6, 1, 1744298401327, NULL, 0);
 INSERT INTO `h_asset` (`id`, `name`, `code`, `sn`, `type`, `model`, `config`, `ip`, `description`, `provider`, `department_id`, `owner_id`, `user_id`, `location`, `status`, `use_status`, `purchase_date`, `purchase_price`, `count`, `version`, `create_time`, `update_time`, `deleted`) VALUES (1910354939274653697, '测试资产17', 'TEST-2025-17', NULL, 1, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, '正常', NULL, 1744214400000, 7.00, 7, 1, 1744299084859, 1744299099146, 1);
 INSERT INTO `h_asset` (`id`, `name`, `code`, `sn`, `type`, `model`, `config`, `ip`, `description`, `provider`, `department_id`, `owner_id`, `user_id`, `location`, `status`, `use_status`, `purchase_date`, `purchase_price`, `count`, `version`, `create_time`, `update_time`, `deleted`) VALUES (1921218695261110274, '测试资产12', 'Test-Code1', NULL, 4, NULL, NULL, NULL, NULL, NULL, 32, NULL, NULL, '信悦汇15楼', '正常', NULL, 1746806400000, 0.00, 1, 1, 1746889206125, NULL, 0);
+INSERT INTO `h_asset` (`id`, `name`, `code`, `sn`, `type`, `model`, `config`, `ip`, `description`, `provider`, `department_id`, `owner_id`, `user_id`, `location`, `status`, `use_status`, `purchase_date`, `purchase_price`, `count`, `version`, `create_time`, `update_time`, `deleted`) VALUES (1927356979265646594, '服务器1', 'SERVER1', NULL, 1, NULL, NULL, NULL, NULL, NULL, 13, NULL, NULL, '', '正常', NULL, 1748275200000, 0.00, 1, 1, 1748352687076, NULL, 0);
+INSERT INTO `h_asset` (`id`, `name`, `code`, `sn`, `type`, `model`, `config`, `ip`, `description`, `provider`, `department_id`, `owner_id`, `user_id`, `location`, `status`, `use_status`, `purchase_date`, `purchase_price`, `count`, `version`, `create_time`, `update_time`, `deleted`) VALUES (1942205591386681346, 'test1', '1', '', 1, '', '', '', '', '', 8, NULL, NULL, '', '正常', '闲置', 1751731200000, 1.00, 1, 1, 1751892872079, 1751892882805, 0);
 COMMIT;
 
 -- ----------------------------
@@ -151,13 +153,13 @@ CREATE TABLE `h_asset_type` (
   `deleted` tinyint unsigned NOT NULL DEFAULT '0' COMMENT '逻辑删除',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `name` (`name`)
-) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=1935971366803144707 DEFAULT CHARSET=utf8mb3;
 
 -- ----------------------------
 -- Records of h_asset_type
 -- ----------------------------
 BEGIN;
-INSERT INTO `h_asset_type` (`id`, `name`, `status`, `version`, `create_time`, `update_time`, `deleted`) VALUES (1, '服务器', 1, 1, 1672531200000, NULL, 0);
+INSERT INTO `h_asset_type` (`id`, `name`, `status`, `version`, `create_time`, `update_time`, `deleted`) VALUES (1, '服务器1', 1, 1, 1672531200000, 1751892902128, 0);
 INSERT INTO `h_asset_type` (`id`, `name`, `status`, `version`, `create_time`, `update_time`, `deleted`) VALUES (2, '主机', 1, 1, 1672531200000, NULL, 0);
 INSERT INTO `h_asset_type` (`id`, `name`, `status`, `version`, `create_time`, `update_time`, `deleted`) VALUES (3, '显示器', 1, 1, 1672531200000, NULL, 1);
 INSERT INTO `h_asset_type` (`id`, `name`, `status`, `version`, `create_time`, `update_time`, `deleted`) VALUES (4, '网络设备', 1, 1, 1672531200000, NULL, 0);
@@ -187,6 +189,7 @@ INSERT INTO `h_asset_type` (`id`, `name`, `status`, `version`, `create_time`, `u
 INSERT INTO `h_asset_type` (`id`, `name`, `status`, `version`, `create_time`, `update_time`, `deleted`) VALUES (28, 'API测试1', 1, 1, NULL, NULL, 0);
 INSERT INTO `h_asset_type` (`id`, `name`, `status`, `version`, `create_time`, `update_time`, `deleted`) VALUES (29, 'API测试2', 1, 1, 1744123986830, NULL, 0);
 INSERT INTO `h_asset_type` (`id`, `name`, `status`, `version`, `create_time`, `update_time`, `deleted`) VALUES (30, 'API测试33', 1, 1, 1744125246152, 1744125939224, 0);
+INSERT INTO `h_asset_type` (`id`, `name`, `status`, `version`, `create_time`, `update_time`, `deleted`) VALUES (1935971366803144706, '测试', NULL, 1, 1750406517114, NULL, 0);
 COMMIT;
 
 -- ----------------------------
@@ -590,7 +593,7 @@ CREATE TABLE `h_message` (
   `update_date` bigint DEFAULT NULL COMMENT '更新日期',
   `deleted` tinyint unsigned NOT NULL DEFAULT '0' COMMENT '逻辑删除',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='消息表';
+) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='消息表';
 
 -- ----------------------------
 -- Records of h_message
@@ -619,6 +622,8 @@ INSERT INTO `h_message` (`id`, `title`, `content`, `sender`, `send_time`, `type`
 INSERT INTO `h_message` (`id`, `title`, `content`, `sender`, `send_time`, `type`, `version`, `create_date`, `update_date`, `deleted`) VALUES (21, '【系统公告】今晚8点更新', '【系统公告】今晚8点更新', '系统管理员', 1747664871279, NULL, 1, 1747664871279, 1747664871279, 0);
 INSERT INTO `h_message` (`id`, `title`, `content`, `sender`, `send_time`, `type`, `version`, `create_date`, `update_date`, `deleted`) VALUES (22, '【系统消息】欢迎使用AMS系统', '欢迎使用本系统！', '系统管理员', 1747667538392, NULL, 1, 1747667538392, 1747667538392, 0);
 INSERT INTO `h_message` (`id`, `title`, `content`, `sender`, `send_time`, `type`, `version`, `create_date`, `update_date`, `deleted`) VALUES (23, '【系统通知】系统将于今晚凌晨1点到3点进行升级维护', '【系统通知】系统将于今晚凌晨1点到3点进行升级维护', '系统管理员', 1747668105841, NULL, 1, 1747668105841, 1747668105841, 0);
+INSERT INTO `h_message` (`id`, `title`, `content`, `sender`, `send_time`, `type`, `version`, `create_date`, `update_date`, `deleted`) VALUES (24, '【系统更新】今晚11点更新', '【系统更新】今晚11点更新', 'admin', 1748175571285, NULL, 1, 1748175571285, 1748175571285, 0);
+INSERT INTO `h_message` (`id`, `title`, `content`, `sender`, `send_time`, `type`, `version`, `create_date`, `update_date`, `deleted`) VALUES (25, '测试消息', '测试消息', '系统管理员', 1748352911344, NULL, 1, 1748352911344, 1748352911344, 0);
 COMMIT;
 
 -- ----------------------------
@@ -635,7 +640,7 @@ CREATE TABLE `h_message_receiver` (
   `update_date` bigint DEFAULT NULL COMMENT '更新日期',
   `deleted` tinyint unsigned NOT NULL DEFAULT '0' COMMENT '逻辑删除',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1924485637497491462 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='消息接收记录表';
+) ENGINE=InnoDB AUTO_INCREMENT=1927357919997702147 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='消息接收记录表';
 
 -- ----------------------------
 -- Records of h_message_receiver
@@ -737,6 +742,46 @@ INSERT INTO `h_message_receiver` (`id`, `message_id`, `user_id`, `status`, `vers
 INSERT INTO `h_message_receiver` (`id`, `message_id`, `user_id`, `status`, `version`, `create_date`, `update_date`, `deleted`) VALUES (1924485637497491459, 23, 1921847830786637826, 0, 1, 1747668105846, 1747668105846, 0);
 INSERT INTO `h_message_receiver` (`id`, `message_id`, `user_id`, `status`, `version`, `create_date`, `update_date`, `deleted`) VALUES (1924485637497491460, 23, 6119170176878989095, 0, 1, 1747668105846, 1747668105846, 0);
 INSERT INTO `h_message_receiver` (`id`, `message_id`, `user_id`, `status`, `version`, `create_date`, `update_date`, `deleted`) VALUES (1924485637497491461, 23, 6706720622553003629, 0, 1, 1747668105846, 1747668105846, 0);
+INSERT INTO `h_message_receiver` (`id`, `message_id`, `user_id`, `status`, `version`, `create_date`, `update_date`, `deleted`) VALUES (1926614101925003265, 24, 1897630015512547329, 0, 1, 1748175571302, 1748175571302, 0);
+INSERT INTO `h_message_receiver` (`id`, `message_id`, `user_id`, `status`, `version`, `create_date`, `update_date`, `deleted`) VALUES (1926614101933391873, 24, 1898257421470494721, 0, 1, 1748175571302, 1748175571302, 0);
+INSERT INTO `h_message_receiver` (`id`, `message_id`, `user_id`, `status`, `version`, `create_date`, `update_date`, `deleted`) VALUES (1926614101933391874, 24, 1898257629201788929, 0, 1, 1748175571302, 1748175571302, 0);
+INSERT INTO `h_message_receiver` (`id`, `message_id`, `user_id`, `status`, `version`, `create_date`, `update_date`, `deleted`) VALUES (1926614101933391875, 24, 1898258120480616450, 0, 1, 1748175571302, 1748175571302, 0);
+INSERT INTO `h_message_receiver` (`id`, `message_id`, `user_id`, `status`, `version`, `create_date`, `update_date`, `deleted`) VALUES (1926614101933391876, 24, 1898312658545778690, 0, 1, 1748175571302, 1748175571302, 0);
+INSERT INTO `h_message_receiver` (`id`, `message_id`, `user_id`, `status`, `version`, `create_date`, `update_date`, `deleted`) VALUES (1926614101937586177, 24, 1908467995296985090, 0, 1, 1748175571302, 1748175571302, 0);
+INSERT INTO `h_message_receiver` (`id`, `message_id`, `user_id`, `status`, `version`, `create_date`, `update_date`, `deleted`) VALUES (1926614101937586178, 24, 1908471088071897089, 0, 1, 1748175571302, 1748175571302, 0);
+INSERT INTO `h_message_receiver` (`id`, `message_id`, `user_id`, `status`, `version`, `create_date`, `update_date`, `deleted`) VALUES (1926614101941780481, 24, 1908480162679287810, 0, 1, 1748175571302, 1748175571302, 0);
+INSERT INTO `h_message_receiver` (`id`, `message_id`, `user_id`, `status`, `version`, `create_date`, `update_date`, `deleted`) VALUES (1926614101941780482, 24, 1912050960380383234, 0, 1, 1748175571302, 1748175571302, 0);
+INSERT INTO `h_message_receiver` (`id`, `message_id`, `user_id`, `status`, `version`, `create_date`, `update_date`, `deleted`) VALUES (1926614101945974786, 24, 1917576896571314178, 0, 1, 1748175571302, 1748175571302, 0);
+INSERT INTO `h_message_receiver` (`id`, `message_id`, `user_id`, `status`, `version`, `create_date`, `update_date`, `deleted`) VALUES (1926614101945974787, 24, 1917577780013338625, 0, 1, 1748175571302, 1748175571302, 0);
+INSERT INTO `h_message_receiver` (`id`, `message_id`, `user_id`, `status`, `version`, `create_date`, `update_date`, `deleted`) VALUES (1926614101945974788, 24, 1917844358466453506, 0, 1, 1748175571302, 1748175571302, 0);
+INSERT INTO `h_message_receiver` (`id`, `message_id`, `user_id`, `status`, `version`, `create_date`, `update_date`, `deleted`) VALUES (1926614101945974789, 24, 1917846652826238977, 0, 1, 1748175571302, 1748175571302, 0);
+INSERT INTO `h_message_receiver` (`id`, `message_id`, `user_id`, `status`, `version`, `create_date`, `update_date`, `deleted`) VALUES (1926614101971140610, 24, 1918659054115323905, 0, 1, 1748175571302, 1748175571302, 0);
+INSERT INTO `h_message_receiver` (`id`, `message_id`, `user_id`, `status`, `version`, `create_date`, `update_date`, `deleted`) VALUES (1926614101975334913, 24, 1918826227513229314, 0, 1, 1748175571302, 1748175571302, 0);
+INSERT INTO `h_message_receiver` (`id`, `message_id`, `user_id`, `status`, `version`, `create_date`, `update_date`, `deleted`) VALUES (1926614101975334914, 24, 1920830621851144193, 0, 1, 1748175571302, 1748175571302, 0);
+INSERT INTO `h_message_receiver` (`id`, `message_id`, `user_id`, `status`, `version`, `create_date`, `update_date`, `deleted`) VALUES (1926614101979529218, 24, 1921512565949644801, 0, 1, 1748175571302, 1748175571302, 0);
+INSERT INTO `h_message_receiver` (`id`, `message_id`, `user_id`, `status`, `version`, `create_date`, `update_date`, `deleted`) VALUES (1926614101979529219, 24, 1921847830786637826, 0, 1, 1748175571302, 1748175571302, 0);
+INSERT INTO `h_message_receiver` (`id`, `message_id`, `user_id`, `status`, `version`, `create_date`, `update_date`, `deleted`) VALUES (1926614101979529220, 24, 6119170176878989095, 0, 1, 1748175571302, 1748175571302, 0);
+INSERT INTO `h_message_receiver` (`id`, `message_id`, `user_id`, `status`, `version`, `create_date`, `update_date`, `deleted`) VALUES (1926614101979529221, 24, 6706720622553003629, 0, 1, 1748175571302, 1748175571302, 0);
+INSERT INTO `h_message_receiver` (`id`, `message_id`, `user_id`, `status`, `version`, `create_date`, `update_date`, `deleted`) VALUES (1927357919976730625, 25, 1897630015512547329, 1, 1, 1748352911353, 1748352911353, 0);
+INSERT INTO `h_message_receiver` (`id`, `message_id`, `user_id`, `status`, `version`, `create_date`, `update_date`, `deleted`) VALUES (1927357919980924930, 25, 1898257421470494721, 0, 1, 1748352911353, 1748352911353, 0);
+INSERT INTO `h_message_receiver` (`id`, `message_id`, `user_id`, `status`, `version`, `create_date`, `update_date`, `deleted`) VALUES (1927357919980924931, 25, 1898257629201788929, 0, 1, 1748352911353, 1748352911353, 0);
+INSERT INTO `h_message_receiver` (`id`, `message_id`, `user_id`, `status`, `version`, `create_date`, `update_date`, `deleted`) VALUES (1927357919980924932, 25, 1898258120480616450, 0, 1, 1748352911353, 1748352911353, 0);
+INSERT INTO `h_message_receiver` (`id`, `message_id`, `user_id`, `status`, `version`, `create_date`, `update_date`, `deleted`) VALUES (1927357919985119233, 25, 1898312658545778690, 0, 1, 1748352911353, 1748352911353, 0);
+INSERT INTO `h_message_receiver` (`id`, `message_id`, `user_id`, `status`, `version`, `create_date`, `update_date`, `deleted`) VALUES (1927357919985119234, 25, 1908467995296985090, 0, 1, 1748352911353, 1748352911353, 0);
+INSERT INTO `h_message_receiver` (`id`, `message_id`, `user_id`, `status`, `version`, `create_date`, `update_date`, `deleted`) VALUES (1927357919985119235, 25, 1908471088071897089, 0, 1, 1748352911353, 1748352911353, 0);
+INSERT INTO `h_message_receiver` (`id`, `message_id`, `user_id`, `status`, `version`, `create_date`, `update_date`, `deleted`) VALUES (1927357919985119236, 25, 1908480162679287810, 0, 1, 1748352911353, 1748352911353, 0);
+INSERT INTO `h_message_receiver` (`id`, `message_id`, `user_id`, `status`, `version`, `create_date`, `update_date`, `deleted`) VALUES (1927357919989313537, 25, 1912050960380383234, 0, 1, 1748352911353, 1748352911353, 0);
+INSERT INTO `h_message_receiver` (`id`, `message_id`, `user_id`, `status`, `version`, `create_date`, `update_date`, `deleted`) VALUES (1927357919989313538, 25, 1917576896571314178, 0, 1, 1748352911353, 1748352911353, 0);
+INSERT INTO `h_message_receiver` (`id`, `message_id`, `user_id`, `status`, `version`, `create_date`, `update_date`, `deleted`) VALUES (1927357919989313539, 25, 1917577780013338625, 0, 1, 1748352911353, 1748352911353, 0);
+INSERT INTO `h_message_receiver` (`id`, `message_id`, `user_id`, `status`, `version`, `create_date`, `update_date`, `deleted`) VALUES (1927357919989313540, 25, 1917844358466453506, 0, 1, 1748352911353, 1748352911353, 0);
+INSERT INTO `h_message_receiver` (`id`, `message_id`, `user_id`, `status`, `version`, `create_date`, `update_date`, `deleted`) VALUES (1927357919989313541, 25, 1917846652826238977, 0, 1, 1748352911353, 1748352911353, 0);
+INSERT INTO `h_message_receiver` (`id`, `message_id`, `user_id`, `status`, `version`, `create_date`, `update_date`, `deleted`) VALUES (1927357919989313542, 25, 1918659054115323905, 0, 1, 1748352911353, 1748352911353, 0);
+INSERT INTO `h_message_receiver` (`id`, `message_id`, `user_id`, `status`, `version`, `create_date`, `update_date`, `deleted`) VALUES (1927357919993507841, 25, 1918826227513229314, 0, 1, 1748352911353, 1748352911353, 0);
+INSERT INTO `h_message_receiver` (`id`, `message_id`, `user_id`, `status`, `version`, `create_date`, `update_date`, `deleted`) VALUES (1927357919993507842, 25, 1920830621851144193, 0, 1, 1748352911353, 1748352911353, 0);
+INSERT INTO `h_message_receiver` (`id`, `message_id`, `user_id`, `status`, `version`, `create_date`, `update_date`, `deleted`) VALUES (1927357919993507843, 25, 1921512565949644801, 0, 1, 1748352911353, 1748352911353, 0);
+INSERT INTO `h_message_receiver` (`id`, `message_id`, `user_id`, `status`, `version`, `create_date`, `update_date`, `deleted`) VALUES (1927357919993507844, 25, 1921847830786637826, 0, 1, 1748352911353, 1748352911353, 0);
+INSERT INTO `h_message_receiver` (`id`, `message_id`, `user_id`, `status`, `version`, `create_date`, `update_date`, `deleted`) VALUES (1927357919993507845, 25, 6119170176878989095, 0, 1, 1748352911353, 1748352911353, 0);
+INSERT INTO `h_message_receiver` (`id`, `message_id`, `user_id`, `status`, `version`, `create_date`, `update_date`, `deleted`) VALUES (1927357919997702146, 25, 6706720622553003629, 0, 1, 1748352911353, 1748352911353, 0);
 COMMIT;
 
 -- ----------------------------
