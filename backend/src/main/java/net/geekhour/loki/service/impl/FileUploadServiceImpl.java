@@ -34,13 +34,13 @@ public class FileUploadServiceImpl implements IFileUploadService {
         String fileType = file.getContentType();
         long fileSize = file.getSize();
         String fileName = file.getOriginalFilename();
-        log.info("[文件类型] - [{}]", fileType);
-        log.info("[文件名称] - [{}]", fileName);
-        log.info("[文件大小] - [{}]", fileSize);
+//        log.info("[文件类型] - [{}]", fileType);
+//        log.info("[文件名称] - [{}]", fileName);
+//        log.info("[文件大小] - [{}]", fileSize);
 
         // generate random filename
         String newFileName = UUID.randomUUID().toString().replace("-", "") + fileName.substring(fileName.lastIndexOf("."));
-        log.info("[新文件名] - [{}]", newFileName);
+//        log.info("[新文件名] - [{}]", newFileName);
 
         // push the file information to the client
         Map<String, Object> result = new HashMap<>(16);
@@ -53,7 +53,7 @@ public class FileUploadServiceImpl implements IFileUploadService {
             if (!createResult) {
                 result.put("code", 500);
                 result.put("msg", "文件上传失败");
-                log.error("文件上传失败" + writePath);
+//                log.error("文件上传失败" + writePath);
                 return result;
             }
             file.transferTo(new File(writePath + "/" + newFileName));

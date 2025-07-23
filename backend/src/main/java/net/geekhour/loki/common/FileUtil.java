@@ -150,15 +150,15 @@ public class FileUtil {
         boolean result = false;
         File directory = new File(writePath);
         if (!directory.exists()) {
-            log.info("Directory {} not exists, create it.", writePath);
+//            log.info("Directory {} not exists, create it.", writePath);
             result =  directory.mkdirs();
             if (result) {
-                log.info("Directory {} created.", writePath);
+//                log.info("Directory {} created.", writePath);
             } else {
-                log.error("Directory {} created failed.", writePath);
+//                log.error("Directory {} created failed.", writePath);
             }
         } else {
-            log.info("Directory {} exists.", writePath);
+//            log.info("Directory {} exists.", writePath);
         }
         return result;
     }

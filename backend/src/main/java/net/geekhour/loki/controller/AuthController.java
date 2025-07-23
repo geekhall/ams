@@ -71,13 +71,13 @@ public class AuthController {
     public ResponseEntity<?> register(@Valid @RequestBody RegisterRequest registerRequest) {
         if (userMapper.existsByUsername(registerRequest.getUsername())) {
             System.out.println("Username {} already exists: " + registerRequest.getUsername());
-            log.error("Username {} already exists", registerRequest.getUsername());
+//            log.error("Username {} already exists", registerRequest.getUsername());
             return ResponseUtil.error(400, "用户名已被使用");
         }
 
         if (userMapper.existsByEmail(registerRequest.getEmail())) {
             System.out.println("Email {} already exists: " + registerRequest.getEmail());
-            log.error("Email {} already exists", registerRequest.getEmail());
+//            log.error("Email {} already exists", registerRequest.getEmail());
             return ResponseUtil.error(400, "邮箱已被使用");
         }
 

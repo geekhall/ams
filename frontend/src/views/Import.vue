@@ -45,7 +45,7 @@ const tableData = ref<TableItem[]>([])
 const getData = () => {
   tableData.value = [
     {
-      id: 1,
+      id: '1',
       name: '张三',
       intro: '金牌讲师',
       career: '前端',
@@ -53,7 +53,7 @@ const getData = () => {
       gender: '男'
     },
     {
-      id: 2,
+      id: '2',
       name: '李四',
       intro: '白金讲师',
       career: '后端',
@@ -61,7 +61,7 @@ const getData = () => {
       gender: '女'
     },
     {
-      id: 3,
+      id: '3',
       name: '银八',
       intro: '砖石讲师',
       career: '人工智能',

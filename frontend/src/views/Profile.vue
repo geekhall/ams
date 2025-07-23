@@ -557,7 +557,7 @@ const recentActivities = reactive([
 // 待办事项相关
 const todoTab = ref('all')
 const newTodo = ref('')
-const checkedTodos = ref<number[]>([])
+const checkedTodos = ref<string[]>([])
 
 interface Todo {
   id: string
@@ -569,21 +569,21 @@ interface Todo {
 
 const todos = reactive<Todo[]>([
   {
-    id: 1,
+    id: '1',
     content: '审核资产采购申请',
     done: false,
     priority: 'danger',
     priorityText: '紧急'
   },
   {
-    id: 2,
+    id: '2',
     content: '更新资产分类信息',
     done: false,
     priority: 'warning',
     priorityText: '重要'
   },
   {
-    id: 3,
+    id: '3',
     content: '处理资产调拨申请',
     done: true,
     priority: 'info',
@@ -600,7 +600,7 @@ const addTodo = () => {
   if (!newTodo.value.trim()) return
 
   const todo: Todo = {
-    id: Date.now(),
+    id: Date.now().toString(),
     content: newTodo.value,
     done: false,
     priority: 'info',

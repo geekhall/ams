@@ -93,14 +93,14 @@ public class DepartmentQuotaServiceImpl extends ServiceImpl<DepartmentQuotaMappe
 
         // 不能跨年修改
         if (!Objects.equals(existingQuota.getBudgetYear(), quotaDTO.getYear())) {
-            log.error("updateQuota ###### 不能跨年修改");
+//            log.error("updateQuota ###### 不能跨年修改");
             System.out.println("updateQuota ###### 不能跨年修改");
             return false;
         }
         System.out.println("updateQuota ###### step 002");
         // 不能修改部门
         if (existingQuota.getDepartmentId() != departmentMapper.getDepartmentIdByName(quotaDTO.getDepartmentName())) {
-            log.error("updateQuota ###### 不能修改部门");
+//            log.error("updateQuota ###### 不能修改部门");
             System.out.println("updateQuota ###### 不能修改部门");
             return false;
         }
