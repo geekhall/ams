@@ -5,7 +5,7 @@
       <el-icon size="30" v-else><Fold /> </el-icon>
     </div>
     <div class="logo"></div>
-    <div class="title">AMS资产管理系统</div>
+    <div class="title">BMS预算管理系统</div>
     <div class="header-right">
       <div class="header-user-con">
         <!-- 消息中心 -->

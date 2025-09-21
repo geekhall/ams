@@ -3,11 +3,11 @@
     <div class="login-content">
       <div class="login-left">
         <div class="brand-section">
-          <h1 class="brand-title">AMS</h1>
-          <p class="brand-subtitle">资产管理系统</p>
+          <h1 class="brand-title">BMS</h1>
+          <p class="brand-subtitle">预算管理系统</p>
           <div class="brand-description">
             <p>高效 · 智能 · 安全</p>
-            <p>让资产管理更简单</p>
+            <p>让预算管理更简单</p>
           </div>
         </div>
       </div>
