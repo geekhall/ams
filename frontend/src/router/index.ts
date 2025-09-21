@@ -212,16 +212,23 @@ router.beforeEach(async (to: RouteLocationNormalized, from: RouteLocationNormali
     }
 
     // 检查路由权限
+    console.log('用户信息:', userStore.userInfo)
+    console.log('目标路由:', to.path)
+    console.log('路由权限检查结果:', hasRoutePermission(userStore.userInfo, to))
+
     if (!hasRoutePermission(userStore.userInfo, to)) {
       // 检查是否有meta.permission
       if (to.meta.permission) {
         const permission = to.meta.permission as PermissionType | PermissionType[]
+        console.log('需要权限:', permission)
+        console.log('用户权限:', userStore.userInfo.permissions)
         if (!hasPermission(userStore.userInfo, permission)) {
           ElMessage.error('您没有权限访问该页面')
           next('/403')
           return
         }
       } else {
+        console.log('路由没有配置权限，但hasRoutePermission返回false')
         ElMessage.error('您没有权限访问该页面')
         next('/403')
         return

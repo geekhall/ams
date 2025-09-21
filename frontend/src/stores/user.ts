@@ -128,9 +128,11 @@ export const useUserStore = defineStore('user', () => {
   async function fetchUserInfo(username: string) {
     try {
       const response: ApiResponse<UserDTO> = await getUserInfo(username)
-      // console.log('response in fetchUserInfo ::::: ', response)
+      console.log('获取用户信息响应:', response)
       userInfo.value = response.data
-      // console.log('userInfo in fetchUserInfo ::::: ', userInfo.value)
+      console.log('设置用户信息:', userInfo.value)
+      console.log('用户角色:', userInfo.value.roles)
+      console.log('用户权限:', userInfo.value.permissions)
       return true
     } catch (error) {
       console.error('Error fetching user info:', error)

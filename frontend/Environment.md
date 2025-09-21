@@ -1,7 +1,8 @@
 # Environment
 
 ## 0. 软件版本列表
-```bash
+
+```txt
 pnpm: 6.32.6
 node: 18.11.18
 typescript: 4.9.3
@@ -12,6 +13,7 @@ element-plus: 2.2.28
 pinia: 4.0.2
 axios: 1.2.3
 ```
+
 ## 1. 初始化Vite工程
 
 ```bash
@@ -23,13 +25,13 @@ pnpm run dev
 ## 2. 安装及配置Element Plus
 
 ### 2.1 安装Element Plus
+
 ```bash
 pnpm install -D element-plus
 # or
 yarn add element-plus -D
 
 ```
-
 
 ### 2.2 配置完整导入Element Plus
 
@@ -48,6 +50,7 @@ app.mount('#app')
 
 Volar支持
 如果您使用 `Volar`，请在 `tsconfig.json` 中通过 `compilerOptions.type` 指定全局组件类型。
+
 ```json
 // tsconfig.json
 {
@@ -57,6 +60,7 @@ Volar支持
   }
 }
 ```
+
 ### 2.2 配置按需导入Element Plus(推荐)
 
 安装`unplugin-vue-components` 和 `unplugin-auto-import`这两款插件
@@ -137,7 +141,6 @@ export default router
 
 ```
 
-
 在`main.ts`中引入`router`并挂载
 
 ```ts
@@ -179,6 +182,7 @@ export default defineConfig({
 })
 
 ```
+
 ## 4. 安装及配置Pinia
 
 ### 4.1 安装Pinia
@@ -227,6 +231,7 @@ export default mainStore
 ```
 
 在组件或者ts中使用Pinia：
+
 ```vue
 <template>
   <div class="counter">
@@ -390,7 +395,6 @@ server: {
 
 ```
 
-
 ## 6. 安装及配置vue-i18n，添加国际化支持
 
 ### 6.1 安装vue-i18n
@@ -415,7 +419,6 @@ export const LOCALES = [
 ]
 
 ```
-
 
 `locales` 文件夹中新建 `index.ts` 文件，用于导出所有语言包
 
@@ -498,6 +501,7 @@ router.isReady().then(() => {
 ```
 
 使用：
+
 ```vue
 <template>
   <div>
@@ -627,7 +631,7 @@ module.exports = {
 }
 ```
 
-`preflight: false, `这个比较重要，否则会和Element Plus的样式冲突
+`preflight: false,`这个比较重要，否则会和Element Plus的样式冲突
 
 ```js
 // postcss.config.cjs
@@ -685,6 +689,7 @@ export default defineConfig({
 ```ts
 import 'uno.css'
 ```
+
 ## 11. 安装使用Normalize.css
 
 ### 11.1 安装Normalize.css
@@ -698,7 +703,6 @@ pnpm i -D normalize.css
 ```ts
 import 'normalize.css/normalize.css'
 ```
-
 
 ## 12. 安装使用iconify
 
@@ -742,8 +746,6 @@ import '@purge-icons/generated'
 
 可以在 [iconify](https://iconify.design/icon-sets/) 中搜索图标，然后复制图标代码
 
-
-
 ## 13 自动导入ElementPlus组件、函数、Icons、样式
 
 ### 13.1 安装插件
@@ -754,6 +756,7 @@ pnpm i @element-plus/icons-vue
 ```
 
 ### 13.2 配置插件
+
 ```ts
 // vite.config.ts
 import Icons from 'unplugin-icons/vite'
@@ -794,7 +797,6 @@ export default defineConfig({
 })
 
 ```
-
 
 ```ts
 // vite.config.ts
@@ -915,13 +917,13 @@ const icon = defineAsyncComponent(() => import(`~/assets/svg/${props.name}.svg`)
 </style>
 
 ```
+
 ### 14.3 使用
 
 ```vue
 <icon name="ep-home-1"></icon>
 <icon name="ep-home-1-door-1"></icon>
 ```
-
 
 ## 15. 集成wangEditor富文本编辑器
 
@@ -932,6 +934,7 @@ pnpm i wangeditor
 ```
 
 ### 15.2 使用
+
 ```vue
 <template>
   <div class="content-container">
@@ -1091,7 +1094,6 @@ const options = {
 
 ```
 
-
 ### 启动环境
 
 ```bash
@@ -1100,16 +1102,16 @@ npx vite --port=4000
 
 会随VSCode启动，自动打开浏览器
 
-
-
 ## Data
+
 参考[data/loki.sql](data/loki.sql)文件
 
 ## 打包部署
+
 pnpm i -g serve
+
 ```bash
 pnpm run build
 cd dist;
 serve
 ```
-

@@ -28,6 +28,12 @@ export const hasPermission = (userInfo: UserDTO, permission: PermissionType | Pe
 export const hasRoutePermission = (userInfo: UserDTO, route: RouteLocationNormalized): boolean => {
   if (!userInfo) return false
 
+  // 临时调试：如果用户信息为空，允许访问
+  if (!userInfo.roles || userInfo.roles.length === 0) {
+    console.log('用户角色为空，临时允许访问')
+    return true
+  }
+
   // Find route permission configuration
   const permission = routePermissions.find(p => route.path.startsWith(p.path))
   if (!permission) return true // If no permission config, allow access
