@@ -122,6 +122,7 @@ export const getBudgetTypeList = async (): Promise<BudgetTypeListResponse> => {
     method: "POST",
   } as AxiosRequestConfig);
 };
+
 // 获取预算性质名
 export const getBudgetCategoryNames = async (): Promise<BudgetCategoryNameResponse> => {
   return await loki.request({
