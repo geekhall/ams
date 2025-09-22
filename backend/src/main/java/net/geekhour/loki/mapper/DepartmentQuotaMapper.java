@@ -76,4 +76,15 @@ public interface DepartmentQuotaMapper extends BaseMapper<DepartmentQuota> {
             "(SELECT id FROM h_department WHERE name = #{name} and deleted = 0) " +
             "AND budget_year = #{year} AND deleted = 0")
     boolean checkQuotaExists(@Param("name") String name, Integer year);
+    // 新增：根据部门ID和年份查询额度
+    @Select("SELECT quota " +
+            "FROM h_department_quota " +
+            "WHERE department_id = #{departmentId} " +  // 匹配部门ID
+            "AND budget_year = #{year} " +            // 匹配年份
+            "AND deleted = 0 " +                      // 过滤已删除数据（与现有逻辑一致）
+            "LIMIT 1")                                // 确保只返回一条记录
+    BigDecimal selectQuotaByDepartmentAndYear(
+            @Param("departmentId") Long departmentId,  // 部门ID参数
+            @Param("year") Integer year                // 年份参数
+    );
 }

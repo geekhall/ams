@@ -48,6 +48,13 @@ export const useUserStore = defineStore('user', () => {
   const getStatus = computed(() => status.value || null)
   const getVersion = computed(() => version.value || null)
   const getPermissions = computed(() => permissions.value || null)
+
+  // 新增获取部门
+  const getDepartment = computed(() => {
+    // 从 userInfo 中获取部门信息（后端返回的用户信息需包含 department 字段）
+    return userInfo.value.department || null;
+  });
+
   const getRoles = computed(() => roles.value || null)
   const isAuthenticated = computed(() => !!token.value)
   const getToken = computed(() => token.value)

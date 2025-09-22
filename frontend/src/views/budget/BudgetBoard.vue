@@ -49,10 +49,28 @@ import LineChart from '@/components/charts/LineChart.vue'
 import { type Budget } from '@/types/budget'
 import { ElMessage } from 'element-plus'
 import { getBudgetList } from '@/api/budget'
+// 导入用户状态和权限类型
+import { useUserStore } from '@/stores/user'
+import { PermissionType } from '@/types/user'
+import { hasPermission } from '@/utils/permission'
 
 const loading = ref(false)
 const yearRange = ref('2025')
 const budgetData = ref<Budget[]>([])
+
+
+// 用户状态
+const userStore = useUserStore()
+
+// 判断是否有“查看所有数据”的权限
+const hasAllDataPermission  = computed(() => {
+  return hasPermission(userStore.userInfo, PermissionType.DATA_ALL)
+})
+
+// 获取当前用户所属部门
+const userDepartment = computed(() => {
+  return userStore.userInfo?.department || ''
+})
 
 // 获取预算数据
 const fetchBudgetData = async () => {
@@ -63,7 +81,9 @@ const fetchBudgetData = async () => {
       pageIndex: 1,
       pageSize: 1000,
       innovation: '',
-      tech: ''
+      tech: '',
+      // 概览页面无需筛选器，直接按用户权限自动筛选，普通用户仅看本部门数据。
+      departmentName: hasAllDataPermission.value ? '' : userDepartment.value
     })
     if (res.code === 200) {
       budgetData.value = res.data.items

@@ -143,5 +143,27 @@ public class DepartmentQuotaController {
             return ResponseUtil.error(500, e.getMessage());
         }
     }
+    /**
+     * 新增接口：根据部门和年份查询单个部门的额度
+     * 对应前端 getDepartmentQuota 方法的请求
+     */
+    @GetMapping("/department")  // 接口路径，完整路径为 /api/quota/department
+    @PreAuthorize("hasRole('USER') || hasAuthority('department:view')")  // 与列表查询权限一致，避免401
+    public ResponseEntity<?> getQuotaByDepartmentAndYear(
+            @RequestParam("departmentName") String departmentName,  // 接收前端传递的部门名称
+            @RequestParam("year") Integer year                       // 接收前端传递的年份
+    ) {
+        try {
+            // 1. 调用Service层已实现的方法查询额度
+            BigDecimal quota = departmentQuotaService.getQuotaByDepartmentAndYear(departmentName, year);
+
+            // 2. 返回统一响应格式（与原有接口一致，前端可正常解析）
+            return ResponseUtil.success(quota);
+        } catch (Exception e) {
+            // 3. 异常处理（与原有接口一致，返回错误信息）
+            e.printStackTrace();
+            return ResponseUtil.error(500, "查询部门额度失败：" + e.getMessage());
+        }
+    }
 
 }

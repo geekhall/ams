@@ -122,5 +122,19 @@ public class DepartmentQuotaServiceImpl extends ServiceImpl<DepartmentQuotaMappe
     public BigDecimal totalQuotas(Integer year, String name) {
         return departmentQuotaMapper.totalQuotas(year, name);
     }
-
+    // 新增方法getQuotaByDepartmentAndYear,实现根据部门名称和年份查询额度
+    @Override
+    public BigDecimal getQuotaByDepartmentAndYear(String departmentName, Integer year) {
+        // 参数校验
+        if (StringUtil.isEmpty(departmentName) || year == null) {
+            return BigDecimal.ZERO;
+        }
+        // 获取部门ID
+        Long departmentId = departmentMapper.getDepartmentIdByName(departmentName);
+        if (departmentId == null) {
+            return BigDecimal.ZERO; // 部门不存在返回0
+        }
+        // 查询该部门该年度的额度
+        return departmentQuotaMapper.selectQuotaByDepartmentAndYear(departmentId, year);
+    }
 }

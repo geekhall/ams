@@ -10,10 +10,13 @@ import net.geekhour.loki.service.IBudgetService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-
+import net.geekhour.loki.service.IUserService; // 导入用户服务
+import org.springframework.security.core.userdetails.UserDetails; // 导入Security相关类
 import javax.servlet.http.HttpServletResponse;
 import java.io.OutputStream;
 import java.util.List;
@@ -32,6 +35,10 @@ import java.util.Map;
 public class BudgetController {
     @Autowired
     private IBudgetService budgetService;
+
+    // 新增：注入用户服务
+    @Autowired
+    private IUserService userService;
 
     /**
      * List all budgets
@@ -57,6 +64,21 @@ public class BudgetController {
             return ResponseUtil.error(400, "参数不能为空");
         }
         try {
+            // ========== 新增：1. 获取当前登录用户信息（部门+角色） ==========
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            String username = null;
+            // 从Spring Security上下文获取登录用户名
+            if (auth != null && auth.isAuthenticated() && auth.getPrincipal() instanceof UserDetails) {
+                UserDetails userDetails = (UserDetails) auth.getPrincipal();
+                username = userDetails.getUsername();
+            }
+            // 调用用户服务，获取用户完整信息（含 department 部门、roles 角色列表）
+            net.geekhour.loki.entity.dto.UserDTO currentUser = userService.getUserinfo(username);
+            // 判断是否为管理员（假设管理员角色标识为 "ADMIN"，需与你系统角色一致）
+            boolean isAdmin = currentUser != null
+                    && currentUser.getRoles() != null
+                    && currentUser.getRoles().contains("ROLE_ADMIN"); // 原来是ADMIN
+            // ========== 原有逻辑：解析请求参数 ==========
             Map<String, Object> requestMap = new ObjectMapper().readValue(requestBody, Map.class);
             String budgetType = (String) requestMap.get("budgetType");
             String budgetCategory = (String) requestMap.get("budgetCategory");
@@ -70,13 +92,26 @@ public class BudgetController {
             if (requestMap.get("tech") != null && !requestMap.get("tech").toString().isEmpty()) {
                 tech = Integer.valueOf(requestMap.get("tech").toString());
             }
-            // ← 新增：从请求中取 departmentName
-            String departmentName = (String) requestMap.get("departmentName");
+
+//            // ← 新增：从请求中取 departmentName
+//            String departmentName = (String) requestMap.get("departmentName");
+            // ========== 新增：2. 非管理员强制覆盖部门参数 ==========
+            String departmentName = null;
+            if (!isAdmin && currentUser != null) {
+                // 普通用户：强制用自己的部门筛选（覆盖请求中的部门参数）
+                departmentName = currentUser.getDepartment();
+            } else {
+                // 管理员：用请求中传递的部门参数（可查全部）
+                departmentName = (String) requestMap.get("departmentName");
+            }
+            // ========== 原有逻辑：分页参数解析 + 调用服务 ==========
             int pageIndex = requestMap.get("pageIndex") == null ? 1
                     : Integer.parseInt(requestMap.get("pageIndex").toString());
             int pageSize = requestMap.get("pageSize") == null ? 10
                     : Integer.parseInt(requestMap.get("pageSize").toString());
             Integer offset = (pageIndex - 1) * pageSize;
+
+            // 调用服务时，传递处理后的 departmentName（普通用户已被强制填充）
             List<BudgetDTO> budgetList = budgetService.getBudgetList(year, budgetType, budgetCategory, innovation, name, tech, departmentName, offset, pageSize);
             Long total = budgetService.countBudgets(year,budgetType, budgetCategory, innovation, name, tech, departmentName);
             for (BudgetDTO budget : budgetList) {
@@ -173,9 +208,30 @@ public class BudgetController {
     @PreAuthorize("hasRole('USER') || hasAuthority('budget:view')")
     public ResponseEntity<?> getBudgetSummary() {
         try {
-            List<BudgetDepartmentSummaryDTO> budgetDepartmentSummary = budgetService.getBudgetDepartmentSummary();
-            List<BudgetTypeSummaryDTO> budgetTypeSummary = budgetService.getBudgetTypeSummary();
-            List<BudgetCategorySummaryDTO> budgetCategorySummary = budgetService.getBudgetCategorySummary();
+            // ========== 新增：1. 获取当前登录用户信息 ==========
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            String username = null;
+            if (auth != null && auth.isAuthenticated() && auth.getPrincipal() instanceof UserDetails) {
+                UserDetails userDetails = (UserDetails) auth.getPrincipal();
+                username = userDetails.getUsername();
+            }
+            net.geekhour.loki.entity.dto.UserDTO currentUser = userService.getUserinfo(username);
+            boolean isAdmin = currentUser != null
+                    && currentUser.getRoles() != null
+                    && currentUser.getRoles().contains("ROLE_ADMIN"); // 原先是ADMIN
+
+            // ========== 新增：2. 非管理员强制筛选部门 ==========
+            String departmentName = isAdmin ? null : currentUser.getDepartment();
+
+            // ========== 修改：3. 调用带部门参数的概览查询方法 ==========
+            // 注意：需在 IBudgetService 中新增带 departmentName 参数的重载方法
+//            List<BudgetDepartmentSummaryDTO> budgetDepartmentSummary = budgetService.getBudgetDepartmentSummary();
+//            List<BudgetTypeSummaryDTO> budgetTypeSummary = budgetService.getBudgetTypeSummary();
+//            List<BudgetCategorySummaryDTO> budgetCategorySummary = budgetService.getBudgetCategorySummary();
+
+              List<BudgetDepartmentSummaryDTO> budgetDepartmentSummary = budgetService.getBudgetDepartmentSummary(departmentName);
+              List<BudgetTypeSummaryDTO> budgetTypeSummary = budgetService.getBudgetTypeSummary(departmentName);
+              List<BudgetCategorySummaryDTO> budgetCategorySummary = budgetService.getBudgetCategorySummary(departmentName);
 
             return ResponseUtil.success(Map.of(
                     "budgetDepartmentSummary", budgetDepartmentSummary,

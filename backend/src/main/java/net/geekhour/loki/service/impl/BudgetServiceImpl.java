@@ -201,21 +201,36 @@ public class BudgetServiceImpl extends ServiceImpl<BudgetMapper, Budget> impleme
         }
     }
 
+//    @Override
+//    public List<BudgetDepartmentSummaryDTO> getBudgetDepartmentSummary() {
+//        return budgetMapper.getBudgetDepartmentSummary();
+//    }
+
+    // 新增方法（普通用户用，传递部门参数）
     @Override
-    public List<BudgetDepartmentSummaryDTO> getBudgetDepartmentSummary() {
-        return budgetMapper.getBudgetDepartmentSummary();
+    public List<BudgetDepartmentSummaryDTO> getBudgetDepartmentSummary(String departmentName) {
+        return budgetMapper.getBudgetDepartmentSummary(departmentName);
     }
 
-    @Override
-    public List<BudgetTypeSummaryDTO> getBudgetTypeSummary() {
-        return budgetMapper.getBudgetTypeSummary();
-    }
+//    @Override
+//    public List<BudgetTypeSummaryDTO> getBudgetTypeSummary() {
+//        return budgetMapper.getBudgetTypeSummary();
+//    }
 
     @Override
-    public List<BudgetCategorySummaryDTO> getBudgetCategorySummary() {
-        return budgetMapper.getBudgetCategorySummary();
+    public List<BudgetTypeSummaryDTO> getBudgetTypeSummary(String departmentName) {
+        return budgetMapper.getBudgetTypeSummary(departmentName);
     }
 
+//    @Override
+//    public List<BudgetCategorySummaryDTO> getBudgetCategorySummary() {
+//        return budgetMapper.getBudgetCategorySummary();
+//    }
+
+    @Override
+    public List<BudgetCategorySummaryDTO> getBudgetCategorySummary(String departmentName) {
+        return budgetMapper.getBudgetCategorySummary(departmentName);
+    }
     /**
      * 根据月份判断是否属于指定的季度
      */
@@ -244,15 +259,28 @@ public class BudgetServiceImpl extends ServiceImpl<BudgetMapper, Budget> impleme
         if (departmentId == null) {
             return null;
         }
-        Long teamId;
-        if (budgetDTO.getTeamName() != null && budgetDTO.getTeamName().isEmpty()) {
-            teamId = teamMapper.selectIdByName(budgetDTO.getTeamName());
-            if (teamId == null) {
-                return null;
+        // 团队ID转换修改：按类型区分 科技or业务
+        Long teamId = null; // 默认为 null
+        if (budgetDTO.getIsTech() != null && budgetDTO.getIsTech()) {
+            // 科技类型：必须有团队，查询teamId
+            if (budgetDTO.getTeamName() == null || budgetDTO.getTeamName().trim().isEmpty()) {
+                return null; // 科技类型缺少团队名称
             }
-        } else {
-            teamId = 0L;
+            teamId = teamMapper.selectIdByName(budgetDTO.getTeamName().trim());
+            if (teamId == null) {
+                return null; // 团队不存在
+            }
         }
+        // 业务类型：不处理，保持teamId = null
+//        if (budgetDTO.getTeamName() != null && budgetDTO.getTeamName().isEmpty()) {
+//            teamId = teamMapper.selectIdByName(budgetDTO.getTeamName());
+//            if (teamId == null) {
+//                return null;
+//            }
+//        } else {
+//            teamId = 0L;
+//        }
+        // 构建 Budget 对象
         Budget budget = new Budget();
         if (budgetDTO.getId() != null && !budgetDTO.getId().isEmpty()) {
             budget.setId(Long.valueOf(budgetDTO.getId()));

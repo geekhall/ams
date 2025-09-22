@@ -33,9 +33,14 @@ public interface IBudgetService extends IService<Budget> {
 
     void exportToExcel(Map<String, Object> requestMap, HttpServletResponse response);
 
-    List<BudgetDepartmentSummaryDTO> getBudgetDepartmentSummary();
+//    List<BudgetDepartmentSummaryDTO> getBudgetDepartmentSummary();
 
-    List<BudgetTypeSummaryDTO> getBudgetTypeSummary();
+    // 新增方法（普通用户用，带部门筛选）
+    List<BudgetDepartmentSummaryDTO> getBudgetDepartmentSummary(String departmentName);
 
-    List<BudgetCategorySummaryDTO> getBudgetCategorySummary();
+//    List<BudgetTypeSummaryDTO> getBudgetTypeSummary();
+    List<BudgetTypeSummaryDTO> getBudgetTypeSummary(String departmentName);
+
+//    List<BudgetCategorySummaryDTO> getBudgetCategorySummary();
+    List<BudgetCategorySummaryDTO> getBudgetCategorySummary(String departmentName);
 }

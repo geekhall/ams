@@ -54,18 +54,29 @@ springdoc:
     enabled: true
     # http://localhost:8888/swagger-ui/index.html
     path: /swagger-ui.html
-
+#
+#logging:
+#  level:
+#    root: INFO
+#    net.geekhour.controller: info
+#  file:
+#    path: ./log
+#    name: ./log/loki_test.log
+#  pattern:
+#    console: "%d{yyyy-MM-dd HH:mm:ss.SSS} -- [%thread] -- %-5level -- %logger{50} -- %msg%n"
+#    file: "%d{yyyy-MM-dd HH:mm:ss.SSS} == [%thread] == %-5level == %logger{50} == %msg%n"
 logging:
   level:
-    root: INFO
-    net.geekhour.controller: info
+    root: INFO  # 根日志保持INFO，避免冗余
+    net.geekhour.loki: DEBUG  # 覆盖项目所有包（controller/service/mapper），记录异常
+    net.geekhour.loki.controller: DEBUG  # 单独指定controller，确保接口错误被捕获
+    net.geekhour.loki.service: DEBUG     # 单独指定service，确保业务逻辑错误被捕获
   file:
     path: ./log
     name: ./log/loki_test.log
   pattern:
-    console: "%d{yyyy-MM-dd HH:mm:ss.SSS} -- [%thread] -- %-5level -- %logger{50} -- %msg%n"
-    file: "%d{yyyy-MM-dd HH:mm:ss.SSS} == [%thread] == %-5level == %logger{50} == %msg%n"
-
+    console: "%d{yyyy-MM-dd HH:mm:ss.SSS} -- [%thread] -- %-5level -- %logger{50} -- %msg%n%ex"  # 控制台也显示异常栈
+    file: "%d{yyyy-MM-dd HH:mm:ss.SSS} == [%thread] == %-5level == %logger{50} == %msg%n%ex"    # 文件日志显示异常栈（关键！）
 # ===== App Config ===== #
 loki:
   server:

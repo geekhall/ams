@@ -71,6 +71,10 @@ public class BudgetDTO extends Model<BudgetDTO> {
     @ApiModelProperty("状态")
     private String status;
 
+    // 新增：区分科技类型/业务类型（true=科技类型，false=业务类型）
+    @ApiModelProperty("是否为科技类型预算（true=是，false=否）")
+    private Boolean isTech;
+
     @Override
     public Serializable pkVal() {
         return this.id;
@@ -94,6 +98,7 @@ public class BudgetDTO extends Model<BudgetDTO> {
                 ", plannedStartDate='" + plannedStartDate + '\'' +
                 ", remark='" + remark + '\'' +
                 ", status='" + status + '\'' +
+                ", isTech=" + isTech +  // 补充新字段到toString
                 '}';
     }
 }

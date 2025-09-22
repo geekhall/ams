@@ -16,9 +16,9 @@ export const getBudgetList = async (
     year?: number;
     budgetType?: string;
     budgetCategory?: string;
-    innovation: string;
+    innovation?: string;
     name?: string;
-    tech: string;
+    tech?: string;
     departmentName?: string   // ← 新增按部门查询
     pageIndex?: number;
     pageSize?: number

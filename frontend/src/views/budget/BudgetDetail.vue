@@ -5,11 +5,16 @@
         {{ formatYear(selectedYear) }}
       </div>
       年度
+      <div class="tech-toggle-wrapper">
       <div type="warning" :icon="Switch" @click="toggleTech" class="switch-button">
         {{ buttonName }}
       </div>
+        <p class="toggle-tip" >点击此处切换业务/科技</p>
+      </div>
       预算明细
     </h1>
+
+
     <div class="table-title">
       <div class="handle-box">
         <div class="filter-bar">
@@ -38,8 +43,8 @@
                 ></el-option>
               </el-select>
             </el-form-item>
-            <!-- 部门（新加） -->
-            <el-form-item style="width: 200px">
+            <!-- 部门（新加） ：仅对有全部数据权限的用户显示-->
+            <el-form-item style="width: 200px" v-if="hasAllDataPermission">
               <el-select
                 v-model="query.departmentName"
                 placeholder="部门"
@@ -120,9 +125,9 @@
                           ? '是'
                           : '否'
                         : field.value === 'priority'
-                        ? props.row[field.value] === 1
-                          ? '优先'
-                          : '默认'
+                        ? props.row[field.value] === 2  // 2表示优先
+                          ? '其他'
+                          : '年度预算内'  // 1表示年度预算内
                         : props.row[field.value]
                     }}
                   </div>
@@ -180,12 +185,12 @@
         prop="teamName"
         label="团队"
         align="center"
-        v-if="visibleColumns.teamName"
+        v-if="visibleColumns.teamName && isTech"
       ></el-table-column>
 
       <el-table-column prop="priority" label="优先级" align="center" v-if="visibleColumns.priority">
         <template #default="scope">
-          {{ scope.row.priority === 1 ? '优先' : '默认' }}
+          {{ scope.row.priority === 2 ? '其他' : '年度预算内' }}
         </template>
       </el-table-column>
 
@@ -376,6 +381,7 @@
     <ColumnSettings
       v-model:visible="columnSettingsVisible"
       :visibleColumns="visibleColumns"
+      :is-tech="isTech"
       @updateVisibleColumns="updateVisibleColumns"
     />
   </div>
@@ -420,6 +426,16 @@ const buttonName = ref('科技')
 const toggleTech = () => {
   isTech.value = !isTech.value
   buttonName.value = isTech.value === true ? '科技' : '业务'
+  // 核心：管理员切换时，仅控制部门筛选器默认值（非强制）
+  if (hasAllDataPermission.value) {
+    if (isTech.value) {
+      // 科技模式：默认选中“信息科技部”（管理员可手动清空）
+      query.departmentName = '信息科技部';
+    } else {
+      // 业务模式：默认清空部门（显示所有非信息科技部数据）
+      query.departmentName = '';
+    }
+  }
   // 切换时重新获取数据
   getData()
 }
@@ -482,20 +498,62 @@ const currentBudget = ref<Budget | null>(null)
 
 const userStore = useUserStore()
 
-// 获取表格数据
+// 计算属性：判断是否有“查看所有数据”权限（复用PermissionType.DATA_ALL）
+const hasAllDataPermission = computed(() => {
+  // 调用utils/permission中的hasPermission，判断是否有DATA_ALL权限
+  return hasPermission(userStore.userInfo, PermissionType.DATA_ALL)
+})
+
+// 计算属性：获取当前用户所属部门（从userInfo中读取）
+const userDepartment = computed(() => {
+  // userInfo.department在BaseUser接口中已定义，后端返回用户部门时会填充
+  return userStore.userInfo?.department || ''
+})
+
+// 获取表格数据：普通用户无 DATA_ALL 权限，强制用自身部门筛选；管理员用筛选器选择的部门（或空，查全部）
 const getData = async () => {
   try {
-    const res = await getBudgetList({
+    // const res = await getBudgetList({
+    //   year: selectedYear.value.getFullYear(),
+    //   budgetType: query.budgetType,
+    //   budgetCategory: query.budgetCategory,
+    //   innovation: query.innovation,
+    //   name: query.name,
+    //   tech: isTech.value ? '1' : '0',
+    //   // departmentName: query.departmentName,
+    //   // 关键：普通用户用自身部门，有权限用户用手动选择的部门
+    //   departmentName: hasAllDataPermission.value ? query.departmentName : userDepartment.value,
+    //   pageIndex: query.pageIndex,
+    //   pageSize: query.pageSize
+    // })
+
+    // 1. 构建基础参数
+    const baseParams = {
       year: selectedYear.value.getFullYear(),
-      budgetType: query.budgetType,
-      budgetCategory: query.budgetCategory,
+      budgetType: query.budgetType || undefined, // 空值时传递 undefined
+      budgetCategory: query.budgetCategory || undefined,
       innovation: query.innovation,
-      name: query.name,
-      tech: isTech.value ? '1' : '0',
-      departmentName: query.departmentName,
+      name: query.name || undefined,
+      departmentName: hasAllDataPermission.value ? query.departmentName : userDepartment.value,
       pageIndex: query.pageIndex,
       pageSize: query.pageSize
-    })
+    };
+
+    // 2. 动态构建最终参数：仅普通用户传递 tech
+    const requestParams = {
+          year: selectedYear.value.getFullYear(),
+          budgetType: query.budgetType || undefined, // 空值时传递 undefined
+          budgetCategory: query.budgetCategory || undefined,
+          innovation: query.innovation,
+          name: query.name || undefined,
+          departmentName: hasAllDataPermission.value ? query.departmentName : userDepartment.value,
+          pageIndex: query.pageIndex,
+          pageSize: query.pageSize,
+          tech: isTech.value ? '1' : '0' // 普通用户：tech=1（科技）/0（业务），后端强制筛选
+        };
+
+    // 3. 调用接口（传递动态参数）
+    const res = await getBudgetList(requestParams);
 
     if (res.code === 200) {
       // console.log('getBudgetList res.data:', res.data)
@@ -513,6 +571,10 @@ onMounted(() => {
   const savedPageIndex = localStorage.getItem('AMSCurrentBudgetPageIndex')
   if (savedPageIndex) {
     query.pageIndex = parseInt(savedPageIndex, 10)
+  }
+  // 普通用户：页面加载时自动填充自身部门
+  if (!hasAllDataPermission.value && userDepartment.value) {
+    query.departmentName = userDepartment.value
   }
   getData()
   fetchBudgetTypes()
@@ -536,7 +598,9 @@ const handleClear = () => {
   query.budgetCategory = ''
   query.innovation = ''
   query.amount = 0
-  query.departmentName = ''
+  // query.departmentName = ''
+  // 普通用户清空筛选时，避免误删部门条件导致看到其他部门数据。
+  query.departmentName = hasAllDataPermission.value ? '' : userDepartment.value
   query.teamName = ''
   query.priority = ''
   query.businessPriority = ''
@@ -656,7 +720,7 @@ const changesData = computed(() => {
     // 格式化显示值
     const formatValue = (val: any) => {
       if (key === 'innovation') return val === '1' ? '是' : '否'
-      if (key === 'priority') return val === 1 ? '优先' : '默认'
+      if (key === 'priority') return val === 2 ? '其他' : '年度预算内'
       if (key === 'amount') return `¥${val.toLocaleString()}`
       return val
     }
@@ -843,13 +907,26 @@ const updateVisibleColumns = (newVisibleColumns: Record<FieldKey, boolean>) => {
 }
 
 // 计算表格显示的字段
+// const tableFields = computed(() => {
+//   return allFields.filter((field) => visibleColumns.value[field.value as FieldKey])
+// })
+// 计算表格显示的字段 - 过滤掉团队字段（如果是业务模式）
 const tableFields = computed(() => {
-  return allFields.filter((field) => visibleColumns.value[field.value as FieldKey])
+  return allFields.filter(field => {
+    // 如果是业务模式且是团队字段，则不显示
+    if (!isTech.value && field.onlyTech) return false
+    return visibleColumns.value[field.value as FieldKey]
+  })
 })
 
 // 计算展开行显示的字段
 const expandFields = computed(() => {
-  return allFields.filter((field) => !visibleColumns.value[field.value as FieldKey])
+  // return allFields.filter((field) => !visibleColumns.value[field.value as FieldKey])
+  return allFields.filter(field => {
+    // 如果是业务模式且是团队字段，则不显示
+    if (!isTech.value && field.onlyTech) return false
+    return !visibleColumns.value[field.value as FieldKey]
+  })
 })
 
 // 所有字段定义
@@ -861,7 +938,8 @@ const allFields = [
   { value: 'departmentName', label: '部门' },
   { value: 'amount', label: '预算金额' },
   { value: 'description', label: '项目概述' },
-  { value: 'teamName', label: '团队' },
+  // 团队字段根据模式决定是否显示
+  { value: 'teamName', label: '团队', onlyTech: true },
   { value: 'priority', label: '优先级' },
   { value: 'businessPriority', label: '业务优先级' },
   { value: 'businessDescription', label: '业务优先级说明' },
@@ -877,6 +955,7 @@ const allFields = [
   align-items: center;
   background: #fafafa;
   overflow: hidden;
+  margin-top: 30px; /* 新增：拉开与上方提示语的距离，数值可按需调整 */
 }
 .handle-box {
   /* margin-bottom: 20px; */
@@ -1057,7 +1136,25 @@ const allFields = [
   line-height: 1.5;
   word-break: break-word;
 }
+/* “科技”按钮的包裹容器：增加底部内边距，撑开与下方灰色框的距离 */
+.tech-toggle-wrapper {
+  position: relative;     /* 子元素定位基准 */
+  display: inline-flex;
+  align-items: center;
+  padding-bottom: 16px;   /* 关键：增加底部空间，避免提示文字紧贴下方灰色框 */
+}
 
+/* 提示文字：调整与上方“科技”按钮的距离 */
+.toggle-tip {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-top: 1px;       /* 增大与上方“科技”按钮的间距（原8px → 12px，可按需调整） */
+  white-space: nowrap;
+  color: #000;
+  font-size: 14px;
+}
 /* 响应式布局 */
 @media screen and (max-width: 1200px) {
   .expand-item {

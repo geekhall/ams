@@ -27,4 +27,7 @@ public interface IDepartmentQuotaService extends IService<DepartmentQuota> {
     boolean deleteQuota(Long id);
 
     BigDecimal totalQuotas(Integer year, String name);
+
+    // 新增：根据部门名称和年份查询额度
+    BigDecimal getQuotaByDepartmentAndYear(String departmentName, Integer year);
 }
