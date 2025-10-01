@@ -1,5 +1,6 @@
 <template>
-  <div id="budgetBoardPage" class="content-container">
+  <!-- 仅管理员可见预算概览内容 -->
+  <div id="budgetBoardPage" class="content-container" v-if="isAdmin">
     <h1>预算概览</h1>
     <div class="chart-container">
       <!-- 第一行：部门预算分布和年度预算执行情况 -->
@@ -27,7 +28,7 @@
           <el-card shadow="hover" class="execution-card" v-loading="loading">
             <template #header>
               <div class="card-header">
-                <span class="header-title">年度预算执行情况</span>
+                <span class="header-title">年度预算使用情况</span>
                 <el-radio-group v-model="yearRange" size="small" @change="handleYearChange">
                   <el-radio-button value="2023">2024年</el-radio-button>
                   <el-radio-button value="2024">2025年</el-radio-button>
@@ -40,6 +41,10 @@
       </el-row>
     </div>
   </div>
+  <!-- 非管理员显示无权限提示 -->
+  <div v-else class="no-permission">
+    <p>您没有权限查看预算概览页面，仅管理员可访问。</p>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -51,7 +56,7 @@ import { ElMessage } from 'element-plus'
 import { getBudgetList } from '@/api/budget'
 // 导入用户状态和权限类型
 import { useUserStore } from '@/stores/user'
-import { PermissionType } from '@/types/user'
+import { PermissionType, UserRole  } from '@/types/user'
 import { hasPermission } from '@/utils/permission'
 
 const loading = ref(false)
@@ -65,6 +70,12 @@ const userStore = useUserStore()
 // 判断是否有“查看所有数据”的权限
 const hasAllDataPermission  = computed(() => {
   return hasPermission(userStore.userInfo, PermissionType.DATA_ALL)
+})
+
+// 0928新增：判断用户是否为管理员（ROLE_ADMIN角色）
+const isAdmin = computed(() => {
+  // 检查用户角色列表是否包含ROLE_ADMIN（管理员标识）
+  return userStore.userInfo?.roles?.includes(UserRole.ADMIN) || false
 })
 
 // 获取当前用户所属部门
@@ -397,9 +408,14 @@ const lineChartOptions = {
   }
 }
 
-// 在组件挂载时获取数据
+// 在组件挂载时获取数据（仅管理员加载0928）
+// onMounted(() => {
+//   fetchBudgetData()
+// })
 onMounted(() => {
-  fetchBudgetData()
+  if (isAdmin.value) { // 仅当用户是管理员时，才加载数据
+    fetchBudgetData()
+  }
 })
 </script>
 
@@ -476,5 +492,19 @@ onMounted(() => {
   :deep(.el-card__body) {
     height: 300px;
   }
+}
+/* 新增：无权限提示样式 */
+.no-permission {
+  padding: 60px 20px;
+  text-align: center;
+  color: #666;
+  font-size: 16px;
+  background-color: #fff;
+  border-radius: 8px;
+  margin: 20px;
+  min-height: 400px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 </style>

@@ -6,16 +6,20 @@
       </div>
       年度 部门预算额度管理
     </h1>
-
+    <!-- 【修改】操作栏：仅管理员显示“部门搜索框”和“新增按钮” -->
     <div class="handle-box">
+      <!-- 部门搜索框：管理员可见 -->
       <el-input
+          v-if="isAdmin"
         v-model="query.departmentName"
         placeholder="输入部门名称"
         class="handle-input mr10"
         @keyup.enter.native="handleSearch"
       ></el-input>
-      <el-button type="primary" :icon="Search" @click="handleSearch">搜索</el-button>
-      <el-button type="primary" :icon="Plus" @click="handleAdd"> 新增 </el-button>
+      <!-- 搜索按钮：管理员可见（与搜索框联动） -->
+      <el-button v-if="isAdmin" type="primary" :icon="Search" @click="handleSearch">搜索</el-button>
+      <!-- 新增按钮：管理员可见（普通用户无权限） -->
+      <el-button v-if="isAdmin" type="primary" :icon="Plus" @click="handleAdd"> 新增 </el-button>
     </div>
 
     <el-table
@@ -46,6 +50,7 @@
         </template>
       </el-table-column>
     </el-table>
+
     <div class="footer-container">
       <div class="pagination-container">
         <el-pagination
@@ -93,7 +98,8 @@
     <el-dialog title="新增部门额度" v-model="addVisible" width="30%">
       <el-form label-width="70px">
         <el-form-item label="部门">
-          <el-select v-model="addForm.departmentName">
+          <el-select v-model="addForm.departmentName"
+                     :disabled="!isAdmin">
             <el-option
               v-for="item in departments"
               :key="item.name"
@@ -122,7 +128,8 @@
         </el-form-item>
 
         <el-form-item label="部门">
-          <el-select v-model="editForm.departmentName">
+          <el-select v-model="editForm.departmentName"
+                     :disabled="!isAdmin">
             <el-option
               v-for="item in departments"
               :key="item.name"
@@ -154,7 +161,27 @@ import { getDepartmentList } from '@/api/department'
 import { type Quota } from '@/types/quota'
 import { Department, DepartmentListResponse } from '@/types/department'
 import dayjs from 'dayjs'
+// ------------新增0928-------------
+// 导入用户状态、角色枚举（用于权限判断）
+import { useUserStore } from '@/stores/user'
+import { UserRole, UserDTO } from '@/types/user'
+import { hasPermission } from '@/utils/permission'
+// 初始化用户状态
+const userStore = useUserStore()
 
+// 新增：计算属性 - 判断是否为管理员（ROLE_ADMIN角色）
+const isAdmin = ref(false)
+// 新增：计算属性 - 当前用户所属部门
+const userDepartment = ref('')
+// 初始化用户权限（页面加载时获取）
+const initUserPermission = () => {
+  const userInfo = userStore.userInfo as UserDTO
+  // 1. 判断是否为管理员（角色包含ROLE_ADMIN）
+  isAdmin.value = userInfo?.roles?.includes(UserRole.ADMIN) || false
+  // 2. 获取当前用户的部门（从userInfo中读取）
+  userDepartment.value = userInfo?.department || ''
+}
+// -------end0928--------
 const departments = ref<Department[]>([])
 const query = reactive({
   id: '',
@@ -206,7 +233,7 @@ const saveYear = () => {
 const addVisible = ref(false)
 let addForm = reactive({
   year: selectedYear.value.getFullYear(),
-  departmentName: '信息科技部',
+  departmentName: '', // 初始为空，普通用户在handleAdd中填充
   quota: 0
 })
 const editVisible = ref(false)
@@ -229,41 +256,94 @@ const getDepartments = () => {
   })
 }
 // 获取表格数据
+// const getData = () => {
+//   getQuotaList({
+//     name: query.departmentName,
+//     year: selectedYear.value.getFullYear(),
+//     pageIndex: query.pageIndex,
+//     pageSize: query.pageSize
+//   })
+//     .then((res) => {
+//       if (res.code === 200) {
+//         tableData.value = res.data.items
+//         pageTotal.value = res.data.count
+//         query.yearTotal = res.data.total
+//       } else {
+//         ElMessage.error(res.message)
+//       }
+//     })
+//     .catch((err) => {
+//       ElMessage.error('获取数据失败')
+//     })
+//     .finally(() => {
+//       // 这里可以添加一些清理操作
+//     })
+// }
 const getData = () => {
+  // 动态构建部门查询参数：
+  // - 管理员：使用手动输入的departmentName（支持搜索所有部门）
+  // - 普通用户：强制使用自身部门（忽略手动输入）
+  const departmentQuery = isAdmin.value
+      ? query.departmentName
+      : userDepartment.value
+
   getQuotaList({
-    name: query.departmentName,
+    name: departmentQuery, // 用动态参数覆盖原query.departmentName
     year: selectedYear.value.getFullYear(),
     pageIndex: query.pageIndex,
     pageSize: query.pageSize
   })
-    .then((res) => {
-      if (res.code === 200) {
-        tableData.value = res.data.items
-        pageTotal.value = res.data.count
-        query.yearTotal = res.data.total
-      } else {
-        ElMessage.error(res.message)
-      }
-    })
-    .catch((err) => {
-      ElMessage.error('获取数据失败')
-    })
-    .finally(() => {
-      // 这里可以添加一些清理操作
-    })
+      .then((res) => {
+        if (res.code === 200) {
+          tableData.value = res.data.items
+          pageTotal.value = res.data.count
+          query.yearTotal = res.data.total
+        } else {
+          ElMessage.error(res.message)
+        }
+      })
+      .catch((err) => {
+        ElMessage.error('获取数据失败')
+      })
 }
+// onMounted(() => {
+//   const savedPageIndex = localStorage.getItem('AMSCurrentQuotaPageIndex')
+//   if (savedPageIndex) {
+//     query.pageIndex = parseInt(savedPageIndex, 10)
+//   }
+//   getData()
+// })
+
+// 【修改】页面初始化：初始化权限+普通用户默认填充自身部门
 onMounted(() => {
+
   const savedPageIndex = localStorage.getItem('AMSCurrentQuotaPageIndex')
   if (savedPageIndex) {
     query.pageIndex = parseInt(savedPageIndex, 10)
+  }
+  // 新增：初始化用户权限（必须在getData前执行）
+  initUserPermission()
+  // 新增：普通用户默认填充自身部门（确保加载数据时筛选自身部门）
+  if (!isAdmin.value) {
+    query.departmentName = userDepartment.value
   }
   getData()
 })
 
 // 搜索操作
+// const handleSearch = () => {
+//   query.pageIndex = 1
+//   // 这里可以添加搜索逻辑
+//   getData()
+// }
+
+// 【修改】搜索操作：普通用户忽略手动输入，强制搜索自身部门
 const handleSearch = () => {
   query.pageIndex = 1
-  // 这里可以添加搜索逻辑
+  // 普通用户：覆盖搜索关键词为自身部门
+  if (!isAdmin.value) {
+    query.departmentName = userDepartment.value
+  }
   getData()
 }
 
@@ -292,6 +372,10 @@ const handleCurrentChange = async (val: number) => {
 const handleAdd = async () => {
   await getDepartments()
   addVisible.value = true
+  // 普通用户：默认选中自身部门且不可修改（已在模板中加disabled）
+  if (!isAdmin.value) {
+    addForm.departmentName = userDepartment.value
+  }
 }
 const getMaxPage = () => {
   if (!pageTotal.value) {
@@ -446,7 +530,7 @@ const handleDelete = async (index: number) => {
 
 .year-picker .block {
   text-align: left;
-  widows: 100%;
+  windows: 100%;
   border-right: solid 1px var(--el-border-color);
   flex: 1;
 }

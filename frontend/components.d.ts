@@ -69,6 +69,7 @@ declare module 'vue' {
     ElTimelineItem: typeof import('element-plus/es')['ElTimelineItem']
     ElTooltip: typeof import('element-plus/es')['ElTooltip']
     ElTransfer: typeof import('element-plus/es')['ElTransfer']
+    ForgotPassword: typeof import('./src/views/ForgotPassword.vue')['default']
     Home: typeof import('./src/views/Home.vue')['default']
     Icon: typeof import('./src/components/icon.vue')['default']
     IconSample: typeof import('./src/views/IconSample.vue')['default']

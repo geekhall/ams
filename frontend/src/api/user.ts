@@ -1,6 +1,6 @@
 import loki from "./loki";
 import { UserListResponse, UserDTO, AuthResponse } from "@/types/user";
-import { ApiResponse } from "@/types/index";
+import { ApiResponse } from "@/types";
 
 // 用户注册
 export const userRegister = async (params: any) => {

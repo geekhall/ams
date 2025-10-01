@@ -576,6 +576,11 @@ onMounted(() => {
   if (!hasAllDataPermission.value && userDepartment.value) {
     query.departmentName = userDepartment.value
   }
+  // -------- 新增逻辑：根据部门设置默认模式 --------
+  if (userDepartment.value !== '信息科技部') {
+    isTech.value = false // 非信息科技部 → 默认“业务”模式
+    buttonName.value = '业务'
+  }
   getData()
   fetchBudgetTypes()
   fetchBudgetCategories()
